@@ -1,0 +1,9 @@
+
+class CellEvents {
+    
+    constructor() {
+
+    }
+
+    
+}
