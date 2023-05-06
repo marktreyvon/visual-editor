@@ -7,6 +7,9 @@ dependencies:
   '@antv/x6':
     specifier: ^2.9.7
     version: 2.9.7
+  '@antv/x6-plugin-dnd':
+    specifier: ^2.0.5
+    version: 2.0.5(@antv/x6@2.9.7)
   '@antv/x6-plugin-export':
     specifier: ^2.1.6
     version: 2.1.6(@antv/x6@2.9.7)
@@ -40,6 +43,9 @@ dependencies:
   sass:
     specifier: ^1.62.0
     version: 1.62.0
+  systemjs:
+    specifier: ^6.14.1
+    version: 6.14.1
   vue:
     specifier: ^3.2.47
     version: 3.2.47
@@ -2129,6 +2135,10 @@ packages:
   /supports-preserve-symlinks-flag@1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
+
+  /systemjs@6.14.1:
+    resolution: {integrity: sha512-8ftwWd+XnQtZ/aGbatrN4QFNGrKJzmbtixW+ODpci7pyoTajg4sonPP8aFLESAcuVxaC1FyDESt+SpfFCH9rZQ==}
+    dev: false
 
   /tailwindcss@3.3.1(postcss@8.4.22):
     resolution: {integrity: sha512-Vkiouc41d4CEq0ujXl6oiGFQ7bA3WEhUZdTgXAhtKxSy49OmKs8rEfQmupsfF0IGW8fv2iQkp1EVUuapCFrZ9g==}

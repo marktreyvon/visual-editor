@@ -8,10 +8,19 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
     />
     <title>TP Visualization Editor</title>
+    <script type="systemjs-importmap">
+      {
+        "imports": {
+          "vue": "lib:vue",
+          "element-plus": "lib:element-plus"
+        }
+      }
+    </script>
   </head>
   <body>
     <script src="https://unpkg.com/@dataview/datav-vue3@latest/umd/datav.umd.js"></script>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
+
   </body>
 </html>
