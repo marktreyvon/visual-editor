@@ -22,11 +22,15 @@
     "@kjgl77/datav-vue3": "^1.5.0",
     "element-plus": "^2.3.3",
     "sass": "^1.62.0",
+    "systemjs": "^6.14.1",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
+    "@antv/x6-plugin-dnd": "^2.0.5",
+    "@types/systemjs": "^6.13.1",
     "@vitejs/plugin-vue": "^4.1.0",
+    "@vitejs/plugin-vue-jsx": "^3.0.1",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.22",
     "tailwindcss": "^3.3.1",
