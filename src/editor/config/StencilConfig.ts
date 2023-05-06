@@ -55,8 +55,11 @@ class StencilConfig implements IStencilConfig {
             title: '组件列表',
             target: this.graph,
             search(cell, keyword) {
-                const text: string = cell.getAttrs()?.text?.text || '';
-                return text.indexOf(keyword) !== -1
+                const text = cell.getAttrs()?.text?.text || '';
+                if (typeof text === 'string') {
+                    return text.indexOf(keyword) !== -1
+                }
+                return false;
             },
             groups: this.groups
         });

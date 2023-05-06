@@ -1,10 +1,13 @@
-import { Cell, Graph } from '@antv/x6';
+import { Cell, Graph, Node } from '@antv/x6';
 import { Selection } from "@antv/x6-plugin-selection";
 import { History } from "@antv/x6-plugin-history";
 import { Snapline } from "@antv/x6-plugin-snapline";
 import { Transform } from "@antv/x6-plugin-transform";
 import { Export } from "@antv/x6-plugin-export";
+
+import { register } from "@antv/x6-vue-shape";
 import * as Common from "@/editor/common";
+import { CellEvents } from '../events/CellEvents';
 /**
  * @author cxs
  * @date 2023-04-19
@@ -29,6 +32,7 @@ import * as Common from "@/editor/common";
 class CanvasConfig implements ICanvasConfig {
     private static instance: CanvasConfig;
     graph: Graph | undefined = undefined;
+    cellEvents: CellEvents | undefined = undefined;
     containerId: string;
     autoResize: boolean = Common.DEFAULT_AUTO_RESIZE;
     gridSize: number = Common.DEFAULT_GRID_SIZE;
@@ -102,7 +106,7 @@ class CanvasConfig implements ICanvasConfig {
             })
           );
 
-        // 启用节点缩放
+        // 配置节点缩放
         const resizingOptions = {
             enabled: true,
             minWidth: 1,
@@ -114,11 +118,12 @@ class CanvasConfig implements ICanvasConfig {
             preserveAspectRatio: false,
         }
 
-        // 启用节点旋转
+        // 配置节点旋转
         const rotatingOptions = {
             enabled: true,
             grid: this.rotatingGrid,
         }
+        // 启用缩放和旋转
         this.graph.use(
             new Transform({
               resizing: resizingOptions,
@@ -128,11 +133,18 @@ class CanvasConfig implements ICanvasConfig {
 
         // 启用导出
         this.graph.use(new Export());
+
+        // 监听节点事件
+        this.cellEvents = new CellEvents(this.graph);
     }
 
 
     public getGraph(): Graph | undefined {
         return this.graph;
+    }
+
+    public getEvents(): CellEvents | undefined {
+        return this.cellEvents;
     }
 
     
@@ -211,10 +223,32 @@ class CanvasConfig implements ICanvasConfig {
             throw new Error('Graph is undefined.');
         this.graph.exportJPEG(fileName, options);
     }
+
+    public addComponent(
+        component: any, 
+        name: string, 
+        pos?: {x: number, y: number}, 
+        size?: {w: number, h: number}, 
+        data?: Object): Node<Node.Properties> {
+        if (!this.graph) 
+            throw new Error('Graph is undefined.');
+        register({
+            shape: name,
+            width: size?.w || 100,
+            height: size?.h || 100,
+            component
+        })
+        let _data: { width: number, height: number } = { width: size?.w || 100, height: size?.h || 100 };
+        
+        return this.graph.addNode({
+            shape: name,
+            x: pos?.x || 0,
+            y: pos?.y || 0,
+            data: _data
+        });
+    }
+
 }
 
-class CellEvent {
-        
-}
 
 export { CanvasConfig };

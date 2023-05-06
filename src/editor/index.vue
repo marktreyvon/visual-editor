@@ -34,6 +34,9 @@ import CanvasEditor from "./components/canvas-editor/index.vue";
 import RightAttributePanel from "./components/right-attribute-panel/index.vue";
 import { useTools } from './hooks/useTools'
 
+onMounted(() => {
+  console.log('editor mounted')
+})
 </script>
 
 <style lang="scss">

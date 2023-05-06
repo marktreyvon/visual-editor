@@ -13,9 +13,6 @@
     "skipLibCheck": true,
     "noEmit": true,
     "baseUrl": ".",
-    "types": [
-      "./src/types/*.d.ts"
-    ],
     "paths": {
       "@/*": ["src/*"],
     }

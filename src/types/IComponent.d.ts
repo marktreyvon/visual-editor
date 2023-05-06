@@ -1,7 +1,7 @@
 import { Cell } from '@antv/x6';
 import { Ref } from 'vue';
 
-interface ComponentProps extends Cell{
+declare interface IComponent {
     id: string;
     type: string;
     icon: string;
@@ -18,8 +18,8 @@ interface ComponentProps extends Cell{
     component: VueComponent;
     events: Record<string, any>;
     slots: Record<string, any>;
-    children: ComponentProps[];
-    parent: Ref<ComponentProps | null>;
+    children: IComponent[];
+    parent: Ref<IComponent | null>;
     isContainer: boolean;
     isRoot: boolean;
     isDraggable: boolean;

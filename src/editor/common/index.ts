@@ -1,1 +1,1 @@
-export * from './Const.ts';
+export * from './Const';

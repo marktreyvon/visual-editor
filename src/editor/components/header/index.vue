@@ -1,7 +1,10 @@
 <template>
     <div class="relative w-full">
-        <div class="absolute w-64">
-            大屏标题
+        <div class="absolute w-64 text-left pl-6">
+            <el-icon class="align-middle" :size="20">
+                <House />
+              </el-icon>
+            <span class="align-middle pl-6">大屏标题</span>
         </div>
         <div class="mx-64 w-auto">
 
@@ -36,6 +39,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, toRefs } from "vue";
+import { House } from "@element-plus/icons-vue";
 const props = defineProps({ 
     tools: {
         type: Object,
@@ -60,7 +64,7 @@ const {
 
 const handleClickExport = () => {
     const json = toJSON();
-    console.log('handleClickExport', json)
+    console.log(json);
 }
 
 const handleCommandExport = (command: string) => {

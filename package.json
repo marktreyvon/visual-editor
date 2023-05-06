@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@antv/g2plot": "^2.4.29",
     "@antv/x6": "^2.9.7",
     "@antv/x6-plugin-export": "^2.1.6",
     "@antv/x6-plugin-history": "^2.2.1",
@@ -17,6 +18,8 @@
     "@antv/x6-plugin-stencil": "^2.0.3",
     "@antv/x6-plugin-transform": "^2.1.7",
     "@antv/x6-vue-shape": "^2.0.11",
+    "@element-plus/icons-vue": "^2.1.0",
+    "@kjgl77/datav-vue3": "^1.5.0",
     "element-plus": "^2.3.3",
     "sass": "^1.62.0",
     "vue": "^3.2.47",

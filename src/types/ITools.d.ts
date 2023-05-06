@@ -2,24 +2,22 @@
  * @author cxs
  * @date 2023-04-20
  * @update 2023-04-20
+ * @description 工具栏接口
  * @interface ITools
  */
 declare interface ITools {
     /**
      * 自适应
-     * @returns 
      */
     zoomToFit: () => void;
 
     /**
      * 缩小
-     * @returns 
      */
     zoomOut: () => void;
 
     /**
      * 放大
-     * @returns 
      */
     zoomIn: () => void;
 
@@ -44,8 +42,7 @@ declare interface ITools {
     redo: () => void;
 
     /**
-     * 
-     * @returns 导出JSON
+     * 导出JSON
      */
     toJSON: () => {
         cells: Cell.Properties[];

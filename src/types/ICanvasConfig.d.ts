@@ -13,6 +13,11 @@ declare interface ICanvasConfig {
     private graph: Graph | undefined;
 
     /**
+     * 节点事件处理
+     */
+    private cellEvents: CellEvents | undefined;
+
+    /**
      * 画布容器ID
      */
     private containerId: string;
@@ -67,6 +72,8 @@ declare interface ICanvasConfig {
      * @returns Graph | undefined
      */
     getGraph(): Graph | undefined;
+
+    getEvents(): CellEvents | undefined;
 
     /**
      * 画布自适应
@@ -139,4 +146,41 @@ declare interface ICanvasConfig {
      */
     exportJPEG(fileName?: string, options?: Export.ToImageOptions): void;
 
+    /**
+     * 添加自定义组件
+     * @param component 
+     * @param name 名称
+     * @returns Node<Node.Properties>
+     */
+    addComponent(component: any, name: string): Node<Node.Properties>;
+
+    /**
+     * 添加自定义组件
+     * @param component 
+     * @param name 名称
+     * @param pos 坐标
+     * @returns Node<Node.Properties>
+     */
+    addComponent(component: any, name: string, pos: { x: number, y: number }): Node<Node.Properties>;
+
+    /**
+     * 添加自定义组件
+     * @param component 
+     * @param name 名称
+     * @param pos 坐标
+     * @param size 大小
+     * @returns Node<Node.Properties>
+     */
+    addComponent(component: any, name: string, pos: { x: number, y: number }, size: {w: number, h: number}): Node<Node.Properties>;
+
+    /**
+     * 添加自定义组件
+     * @param component 
+     * @param name 名称
+     * @param pos   坐标
+     * @param size  大小
+     * @param data  数据
+     * @returns Node<Node.Properties>
+     */
+    addComponent(component: any, name: string, pos: { x: number, y: number }, size: {w: number, h: number}, data: Object): Node<Node.Properties>;
 }
