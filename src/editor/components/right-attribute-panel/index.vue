@@ -1,7 +1,7 @@
 <template>
     <div class="">
         <ElTabs v-model="activeName" @click="handleClick">
-            <el-tab-pane label="属性" name="attr">
+            <el-tab-pane label="样式" name="attr">
                 <div>
                     <BaseAttr />
                     <component :is="attributeComp" />
@@ -11,8 +11,9 @@
             <el-tab-pane label="数据" name="data">
                 <component :is="dataComp" />
             </el-tab-pane>
-            <el-tab-pane label="动画" name="animate">Role</el-tab-pane>
-            <el-tab-pane label="事件" name="event">Task</el-tab-pane>
+            <el-tab-pane label="结构" name="componentList">
+                结构
+            </el-tab-pane>
         </ElTabs>
     </div>
 </template>

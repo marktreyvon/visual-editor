@@ -1,3 +1,4 @@
+
 declare interface IPluginConfig {
     private components: Map<String, any>;
 
