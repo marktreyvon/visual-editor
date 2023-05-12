@@ -1,46 +1,52 @@
 <template>
-  <div class="">
-    <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-      <el-tab-pane label="属性" name="attr">
+    <div class="">
+        <ElTabs v-model="activeName" @click="handleClick">
+            <el-tab-pane label="属性" name="attr">
+                <div>
+                    <BaseAttr />
+                    <component :is="attributeComp" />
+                </div>
 
-      </el-tab-pane>
-      <el-tab-pane label="数据" name="data">Config</el-tab-pane>
-      <el-tab-pane label="动画" name="animate">Role</el-tab-pane>
-      <el-tab-pane label="事件" name="event">Task</el-tab-pane>
-    </el-tabs>
-  </div>
+            </el-tab-pane>
+            <el-tab-pane label="数据" name="data">
+                <component :is="dataComp" />
+            </el-tab-pane>
+            <el-tab-pane label="动画" name="animate">Role</el-tab-pane>
+            <el-tab-pane label="事件" name="event">Task</el-tab-pane>
+        </ElTabs>
+    </div>
 </template>
-<script lang="ts" setup>
-import { ref, onMounted } from 'vue'
-import type { TabsPaneContext } from 'element-plus'
-import { CanvasConfig } from '../../config';
 
-const activeName = ref('attr')
+<script setup lang="ts">
+import { CanvasConfig, PluginConfig } from "@/editor/config";
+import { ref, onMounted } from "vue";
+import BaseAttr from "./components/BaseAttr";
 
-const handleClick = (tab: TabsPaneContext, event: Event) => {
-  console.log(tab, event)
-}
+const activeName = ref("attr");
+let attributeComp = ref<any>(null);
+let dataComp = ref<any>(null);
 onMounted(() => {
-  let canvasConfig: ICanvasConfig = CanvasConfig.getInstance('container');
-  const events: ICellEvents = canvasConfig.getEvents();
-  events.setClickEventListener((data: any) => {
-    if (data.cell) {
-      console.log("setClickEventListener.节点", data);
-    } else {
-      console.log("setClickEventListener.画布", data);
-    }
-  });
-})
+    let canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
+    const events: ICellEvents = canvasConfig.getEvents();
+    events.setClickEventListener((data: any) => {
+        const node = data.node || data.cell;
+        const pluginConfig: IPluginConfig = PluginConfig.getInstance();
+        const component = pluginConfig.getComponent(node.shape);
+        if (component) {
+            attributeComp.value = component.Attribute;
+            dataComp.value = component.Data;
 
+        } else {
+            attributeComp.value = null;
+            dataComp.value = null;
+        }
+
+    });
+});
+
+const handleClick = (tab: any) => {
+    console.log(tab);
+};
 </script>
 
-<style>
-.demo-tabs>.el-tabs__content {
-  color: #6b778c;
-  font-size: 22px;
-  font-weight: 600;
-}
-
-.el-tab-pane {}
-</style>
-  
+<style lang="scss" scoped></style>

@@ -25,9 +25,6 @@ import { CellEvents } from '../events/CellEvents';
  * @param rotatingGrid 节点每次旋转的角度
  * @class CanvasConfig
  * @implements {ICanvasConfig}
- * @example
- * const canvasConfig = CanvasConfig.getInstance();
- * canvasConfig.zoomToFit();
  */
 class CanvasConfig implements ICanvasConfig {
     private static instance: CanvasConfig;

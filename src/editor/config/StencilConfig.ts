@@ -1,6 +1,6 @@
 import { Stencil } from "@antv/x6-plugin-stencil";
 import * as Common from "@/editor/common";
-import { Graph } from "@antv/x6";
+import { Graph, Node } from "@antv/x6";
 /**
  * @author cxs
  * @date 2023-04-20
@@ -61,7 +61,10 @@ class StencilConfig implements IStencilConfig {
                 }
                 return false;
             },
-            groups: this.groups
+            groups: this.groups,
+            getDropNode: (node) => {
+                return this.getDropNode(node);
+            }
         });
 
         document.getElementById(this.stencilId)?.appendChild(this.stencil.container);
@@ -69,6 +72,20 @@ class StencilConfig implements IStencilConfig {
 
     public getStencil(): Stencil | undefined {
         return this.stencil;
+    }
+
+    private getDropNode(node) {
+        if (!this.graph) return null;
+        console.log('getDropNode', node)
+        const { data } = node;
+        return this.graph.createNode({
+            shape: data.name,
+            x: 100,
+            y: 40,
+            width: 200,
+            height: 200,
+            label: data.name
+        });
     }
 }
 

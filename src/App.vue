@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import {Render} from './Demo'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import en from 'element-plus/dist/locale/en.mjs'
 
@@ -14,6 +15,7 @@ const toggle = () => {
 <template>
   <el-config-provider :locale="locale">
     <router-view></router-view>
+    <!-- <Render/> -->
   </el-config-provider>
 </template>
 

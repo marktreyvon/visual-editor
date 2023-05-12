@@ -1,5 +1,5 @@
 <template>
-    <el-progress type="dashboard" :percentage="percentage" :width="80">
+    <el-progress style="width:100%;height:100%" type="dashboard" :percentage="percentage">
     </el-progress>
 </template>
   
@@ -19,8 +19,8 @@ export default defineComponent({
              
         node.on("change:data", ({ current }) => {
             const { progress, width, height } = current;
-            console.log('width, height', width, height)
-            this.percentage = progress;
+            console.log(' progress, width, height ', progress, width, height)
+            this.percentage = progress || 10;
         });
     },
 });

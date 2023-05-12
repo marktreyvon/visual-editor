@@ -1,7 +1,7 @@
 /**
  * 默认画布容器ID
  */
-export const DEFAULT_CONTAINER_ID = 'container';
+export const DEFAULT_CONTAINER_ID = 'canvas_container';
 
 /**
  * 默认缩略图容器ID
