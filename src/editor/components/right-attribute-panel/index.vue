@@ -1,7 +1,7 @@
 <template>
     <div class="">
         <ElTabs v-model="activeName" @click="handleClick">
-            <el-tab-pane label="样式" name="attr">
+            <el-tab-pane label="外观" name="attr">
                 <div>
                     <BaseAttr />
                     <component :is="attributeComp" />
@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import { CanvasConfig, PluginConfig } from "@/editor/config";
 import { ref, onMounted } from "vue";
-import BaseAttr from "./components/BaseAttr";
+import BaseAttr from "./components/BaseAttr.vue";
 
 const activeName = ref("attr");
 let attributeComp = ref<any>(null);

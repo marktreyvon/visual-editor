@@ -17,7 +17,7 @@
           <!-- 中间编辑区域end -->
   
           <!-- 右侧属性面板start -->
-          <RightAttributePanel class="absolute inset-y-0 right-0 w-64 z-50 h-full bg-gray-300 "/>
+          <RightAttributePanel class="absolute inset-y-0 p-2 right-0 w-64 z-50 h-full bg-white"/>
           <!-- 右侧属性面板end -->
         </el-main>
       </el-container>
