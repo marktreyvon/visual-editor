@@ -11,7 +11,6 @@
                 <el-col :span="12" ><el-input></el-input></el-col>
                 <el-col :span="12"><el-input></el-input></el-col>
             </el-row>
-            
         </el-form-item>
         
         <el-form-item label="对齐:">

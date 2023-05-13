@@ -1,18 +1,18 @@
 <template>
     <div class="">
-        <ElTabs v-model="activeName" @click="handleClick">
+        <ElTabs v-model="activeName">
             <el-tab-pane label="外观" name="attr">
                 <div>
                     <BaseAttr />
-                    <component :is="attributeComp" />
+                    <component :is="attributeComp" @changeData="changeAttrData"/>
                 </div>
 
             </el-tab-pane>
             <el-tab-pane label="数据" name="data">
                 <component :is="dataComp" />
             </el-tab-pane>
-            <el-tab-pane label="结构" name="componentList">
-                结构
+            <el-tab-pane label="图层" name="componentList">
+                <ComponentList/>
             </el-tab-pane>
         </ElTabs>
     </div>
@@ -20,8 +20,9 @@
 
 <script setup lang="ts">
 import { CanvasConfig, PluginConfig } from "@/editor/config";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, reactive, watch } from "vue";
 import BaseAttr from "./components/BaseAttr.vue";
+import ComponentList from "./components/ComponentList.vue";
 
 const activeName = ref("attr");
 let attributeComp = ref<any>(null);
@@ -44,10 +45,10 @@ onMounted(() => {
 
     });
 });
-
-const handleClick = (tab: any) => {
-    console.log(tab);
-};
+const changeAttrData = (data: any) => {
+    console.log('changeAttrData', data);
+    
+}
 </script>
 
 <style lang="scss" scoped></style>
