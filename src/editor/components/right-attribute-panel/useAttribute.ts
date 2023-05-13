@@ -1,5 +1,8 @@
 
 export const useAttribute = () => {
 
+    render: () => {
+
+    }
 
 }

@@ -4,9 +4,18 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, reactive } from "vue";
+<script lang="ts">
+import { ref, reactive, defineComponent } from "vue";
+export default defineComponent({
+  data() {
+    return {
 
+    }
+  },
+  methods: {
+    
+  }
+})
 </script>
 
 <style lang="scss" scoped>

@@ -18,19 +18,40 @@
   </el-collapse>
 </template>
 
-<script setup lang="ts">
-import { ref, reactive, watch } from "vue";
-const activeNames = ref<string>("style");
-const emit = defineEmits(["changeData"]);
-const formData = reactive({
-  fontSize: 20,
-  fontColor: '',
-  bgColor: ''
-})
+<script lang="ts">
+import { defineComponent } from "vue";
 
-watch(formData, () => {
-  emit("changeData", formData);
-}, { deep: true})
+export default defineComponent({
+  data() {
+    return {
+      activeNames: 'style',
+      formData: {
+        fontSize: 20,
+        fontColor: '',
+        bgColor: ''
+      }
+    }
+  },
+  watch: {
+    formData: {
+      handler(val) {
+        this.$emit("changeData", val);
+      },
+      deep: true
+    }
+  }
+})
+// const activeNames = ref<string>("style");
+// const emit = defineEmits(["changeData"]);
+// const formData = reactive({
+//   fontSize: 20,
+//   fontColor: '',
+//   bgColor: ''
+// })
+
+// watch(formData, () => {
+//   emit("changeData", formData);
+// }, { deep: true})
 </script>
 
 <style lang="scss" scoped>

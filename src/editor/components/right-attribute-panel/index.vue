@@ -27,17 +27,18 @@ import ComponentList from "./components/ComponentList.vue";
 const activeName = ref("attr");
 let attributeComp = ref<any>(null);
 let dataComp = ref<any>(null);
+let component: any = {};
 onMounted(() => {
     let canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
     const events: ICellEvents = canvasConfig.getEvents();
     events.setClickEventListener((data: any) => {
         const node = data.node || data.cell;
         const pluginConfig: IPluginConfig = PluginConfig.getInstance();
-        const component = pluginConfig.getComponent(node.shape);
+        component = pluginConfig.getComponent(node.shape);
         if (component) {
             attributeComp.value = component.Attribute;
             dataComp.value = component.Data;
-
+            console.log('component', component.Attribute);
         } else {
             attributeComp.value = null;
             dataComp.value = null;
@@ -47,7 +48,9 @@ onMounted(() => {
 });
 const changeAttrData = (data: any) => {
     console.log('changeAttrData', data);
-    
+    console.log('changeAttrData.component', component.Main.methods.changeData());
+    component.Main.props.style = data;
+    // component.Main.fun();
 }
 </script>
 
