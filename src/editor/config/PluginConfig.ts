@@ -13,24 +13,22 @@ class PluginConfig implements IPluginConfig  {
         }
         return PluginConfig.instance;
     }
+    
+    public addComponent(name: string, component: any): void {
+        this.components.set(name, component);
+    }
 
     public setComponents(components: Map<String, any>): void {
         this.components = components;
-    }
-
-    public getComponents(): Map<String, any> {
-        return this.components;
-    }
-
-    public addComponent(name: string, component: any): void {
-        console.log('addComponent', name, component)
-        this.components.set(name, component);
     }
 
     public getComponent(name: string): any {
         return this.components.get(name);
     }
 
+    public getComponents(): Map<String, any> {
+        return this.components;
+    }
 }
 
 export { PluginConfig }

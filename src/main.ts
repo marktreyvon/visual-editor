@@ -7,9 +7,8 @@ import 'element-plus/dist/index.css'
 import * as ElementPlus from 'element-plus'
 
 // 第三方插件
-import * as Plugins from './plugins';
+import * as Plugins from './dependence';
 
-// import ElementPlus from 'element-plus';
 
 import 'systemjs'
 // @ts-ignore

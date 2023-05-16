@@ -2,6 +2,7 @@ import { CanvasConfig, StencilConfig } from '../config';
 import * as Common from '../common';
 import { Graph } from '@antv/x6';
 import { Stencil } from "@antv/x6-plugin-stencil";
+import { defineComponent } from 'vue';
 
 
 const getGraph = (): Graph => {
@@ -22,12 +23,12 @@ function useStencil(plugins: any) {
     const stencilConfig: IStencilConfig = getStencilConfig();
     
     let nodeList: any[] = [];
-    let groupList: Map<String, string> = new WeakMap();
     
     for (const key in plugins) {
         const plugin = plugins[key];
         const { views } = plugin.default;
         views.forEach((view: any) => {
+
             const node = graph?.createNode({
                 shape: 'image',
                 x: 40,

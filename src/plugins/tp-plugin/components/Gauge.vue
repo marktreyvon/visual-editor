@@ -1,5 +1,5 @@
 <template>
-    <div id="pm25-container" style="width:100%;height:100%"></div>
+    <div :id="'container_gauge_' + id" style="width:100%;height:100%"></div>
   </template>
   
   <script lang="ts">
@@ -7,12 +7,19 @@
   import { defineComponent } from "vue";
   
   export default defineComponent ({
-      name: "pm25",
+      name: "Gauge",
       components: {
           Gauge
       },
+      props: {
+        id: {
+            type: String,
+            required: true,
+            default: "gauge"
+        }
+      },
       mounted() {
-          const gauge = new Gauge('pm25-container', {
+          const gauge = new Gauge('container_gauge_' + this.id, {
           percent: 0.75,
           range: {
               color: '#5B8FF9',

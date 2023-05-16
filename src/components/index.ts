@@ -1,1 +1,0 @@
-export * as tpPlugin from './tp-plugin';

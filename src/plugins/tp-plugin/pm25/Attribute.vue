@@ -35,23 +35,16 @@ export default defineComponent({
   watch: {
     formData: {
       handler(val) {
-        this.$emit("changeData", val);
+        this.$emit("onChange", {
+          style: val
+        });
       },
       deep: true
     }
   }
 })
-// const activeNames = ref<string>("style");
-// const emit = defineEmits(["changeData"]);
-// const formData = reactive({
-//   fontSize: 20,
-//   fontColor: '',
-//   bgColor: ''
-// })
 
-// watch(formData, () => {
-//   emit("changeData", formData);
-// }, { deep: true})
+
 </script>
 
 <style lang="scss" scoped>

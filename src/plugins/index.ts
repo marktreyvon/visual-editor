@@ -1,2 +1,1 @@
-export * from './element-plus';
-export * from './data-v';
+export * as tpPlugin from './tp-plugin';

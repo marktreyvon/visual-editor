@@ -1,6 +1,10 @@
 import { Stencil } from "@antv/x6-plugin-stencil";
+import { register } from "@antv/x6-vue-shape";
 import * as Common from "@/editor/common";
 import { Graph, Node } from "@antv/x6";
+import { PluginConfig } from ".";
+import { getDropComponent } from '@/editor/components/canvas-editor/DropComponent'
+import { Component } from "vue";
 /**
  * @author cxs
  * @date 2023-04-20
@@ -16,6 +20,7 @@ class StencilConfig implements IStencilConfig {
     stencil: Stencil | undefined = undefined;
     stencilId: string;
     groups: Stencil.Group[];
+    dropNodes: Map<string, Node> = new Map<string, Node>();
 
     /**
      * 构造函数
@@ -62,9 +67,7 @@ class StencilConfig implements IStencilConfig {
                 return false;
             },
             groups: this.groups,
-            getDropNode: (node) => {
-                return this.getDropNode(node);
-            }
+            getDropNode: (node) => this.getDropNode(node)
         });
 
         document.getElementById(this.stencilId)?.appendChild(this.stencil.container);
@@ -74,11 +77,23 @@ class StencilConfig implements IStencilConfig {
         return this.stencil;
     }
 
-    private getDropNode(node) {
+
+    /**
+     * 获取拖拽到画布上的组件
+     * @param node 
+     * @returns 
+     */
+    private getDropNode(node: any) {
         if (!this.graph) return null;
-        console.log('getDropNode', node)
         const { data } = node;
-        return this.graph.createNode({
+        const pluginConfig: IPluginConfig = PluginConfig.getInstance();
+        const cpt = pluginConfig.getComponent(data.name);
+        const dropCpt: Component = getDropComponent(cpt.Main);
+       
+        registerShape(data.name, dropCpt);
+
+        // 创建拖拽到画布上的组件
+        const dropNode = this.graph.createNode({
             shape: data.name,
             x: 100,
             y: 40,
@@ -86,7 +101,19 @@ class StencilConfig implements IStencilConfig {
             height: 200,
             label: data.name
         });
+
+        return dropNode;
     }
 }
+
+const registerShape = (shape: string, component: any) => {
+    register({
+        shape,
+        width: 100,
+        height: 100,
+        component
+      });
+}
+
 
 export { StencilConfig }
