@@ -222,32 +222,51 @@ this.$emit("onChange", {
     }
 });
 ```
+之后，编辑器会自动将style传递到Main.vue中，Main组件的props属性就会接收到传过来的参数
 
 当组件编写完成后需要在tp-plugin/index.ts文件中进行配置
 ```
-name: "PM2.5",   // 组件名称
-description: "",
-group: "官方插件",  // 左侧组件列表的分组名称
-icon: "",    // 左侧列表的组件图标，base64或在线图片地址
-Main: PM25_Main,   // 将要在画布上渲染的组件
-Attribute: PM25_Attribute,   // 点击组件后在右侧属性面板显示的表单
-Data: PM25_Data   // 点击组件后在右侧数据面板显示的表单
+import { PM25_Attribute, PM25_Data, PM25_Main } from "./pm25";
+import { Wenshidu_Main, Wenshidu_Attribute, Wenshidu_Data } from "./wenshidu";
+
+export default {
+    views: [
+        {
+            name: "PM2.5",      // 组件名称, 不可和其他组件重名
+            description: "",
+            group: "官方插件",   // 左侧组件列表的分组名称
+            icon: "",         // 左侧列表的组件图标，base64或在线图片地址
+            Main: PM25_Main,    // 将要在画布上渲染的节点
+            Attribute: PM25_Attribute,   // 点击节点后在右侧属性面板显示的表单
+            Data: PM25_Data    // 点击节点后在右侧数据面板显示的表单
+        },
+        {
+            name: "Wenshidu",
+            description: "",
+            group: "官方插件",
+            icon: "",
+            Main: Wenshidu_Main,
+            Attribute: Wenshidu_Attribute,
+            Data: Wenshidu_Data
+        }
+    ]
+}
 ```
 
-最后，在src/components/index.ts导出该插件
+最后，在src/plugins/index.ts导出该插件
 ```
 export * as tpPlugin from './tp-plugin';
 ```
 
 
 # 参与共建
-欢迎参与到ThingsPanel可视化编辑器的开发中。
+欢迎参与到ThingsPanel可视化编辑器的开发中。  
 <a href="https://github.com/ThingsPanel/visual-editor/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=ThingsPanel/visual-editor" />
 </a>
 
-## 联系我们
-[首页](https://www.thingspanel.cn/)
+# 联系我们
+首页：[首页](https://www.thingspanel.cn/)
 
 论坛：[论坛](http://forum.thingspanel.cn/)
 
