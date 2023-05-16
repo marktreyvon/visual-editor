@@ -110,7 +110,7 @@ pnpm run dev
 
 ## 示例
 ### 主组件： pm25/Main.vue
-```
+```ts
 <template>
   <gauge id="pm25"></gauge>
 </template>
@@ -162,7 +162,7 @@ export default defineComponent({
 ```
 
 ### 属性面板: pm25/Attribute.vue  
-```
+```ts
 <template>
   <el-collapse v-model="activeNames">
     <el-collapse-item title="样式" name="style">
@@ -214,7 +214,7 @@ export default defineComponent({
 当用户改变了右侧属性面板的值后，需要在画布上的节点反映出来。  
 如：修改了属性面板的文字大小或颜色之后，画布上的节点对应的样式也要做出改变。  
 可以使用vue的emit方法，传递onChange事件。
-```
+```ts
 this.$emit("onChange", {
     style: {
         fontSize： 20,
@@ -222,10 +222,10 @@ this.$emit("onChange", {
     }
 });
 ```
-之后，编辑器会自动将style传递到Main.vue中，Main组件的props属性就会接收到传过来的参数
+之后，编辑器会自动将style传递到Main.vue中，Main组件的props属性就会接收到传过来的参数.
 
 当组件编写完成后需要在tp-plugin/index.ts文件中进行配置
-```
+```ts
 import { PM25_Attribute, PM25_Data, PM25_Main } from "./pm25";
 import { Wenshidu_Main, Wenshidu_Attribute, Wenshidu_Data } from "./wenshidu";
 
@@ -254,7 +254,7 @@ export default {
 ```
 
 最后，在src/plugins/index.ts导出该插件
-```
+```ts
 export * as tpPlugin from './tp-plugin';
 ```
 
