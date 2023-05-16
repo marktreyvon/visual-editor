@@ -32,15 +32,15 @@
 ThingsPanel可视化编辑器是用Vue3+TypeScript编写的，支持用户自定义插件，每个插件包含多个组件，插件可一键安装使用。
 
 # 技术栈
-|  名称   | 版本  |
-|  ----  | ----  |
-| Vue  | 3.2.47 |
-| Type Script  | 4.9.3 |
-| pnpm  | 8.1.1 |
-| Vite  | 4.2.0 |
-| Element Plus  | 2.3.3 |
-| Antv-X6  | 2.9.7 |
-| Tailwindcss  | 3.3.1 |
+|  名称                        |   版本  |
+|  --------------------------  | ------ |
+| Vue                          | 3.2.47 |
+| Type Script                  | 4.9.3  |
+| pnpm                         | 8.1.1  |
+| Vite                         | 4.2.0  |
+| Element Plus                 | 2.3.3  |
+| Antv-X6                      | 2.9.7  |
+| Tailwindcss                  | 3.3.1  |
 
 # 目录结构
         ├── index.html                 -- 首页入口
@@ -96,13 +96,16 @@ pnpm run dev
 # 插件开发：
 在src/plugins目录创建自定义的插件目录，例：tp-plugin  
 每个插件由两部分组成:  配置文件和组件    
-        ├── tp-plugin  
-        │   ├── index.ts               -- 配置文件  
-        │   ├── pm25                   -- PM2.5组件  
-        │       ├── Attribute.vue      -- 右侧属性面板  
-        │       ├── Data.vue           -- 右侧数据绑定面板  
-        │       ├── Main.vue           -- 画布上渲染的节点  
-        │       ├── index.ts           -- 导出文件   
+```
+├── tp-plugin  
+│   ├── index.ts               -- 配置文件  
+│   ├── pm25                   -- PM2.5组件  
+│   │   ├── Attribute.vue      -- 右侧属性面板  
+│   │   ├── Data.vue           -- 右侧数据绑定面板  
+│   │   ├── Main.vue           -- 画布上渲染的节点  
+│   │   ├── index.ts           -- 导出文件   
+```
+ 
 
 
 ## 示例
