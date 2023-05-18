@@ -14,6 +14,11 @@ export const DEFAULT_MINI_CONTAINER_ID = 'mini_container';
 export const DEFAULT_STENCIL_CONTAINER_ID = 'stencil_container';
 
 /**
+ * 默认视图容器ID
+ */
+export const DEFAULT_VIEW_CONTAINER_ID = 'view_container';
+
+/**
  * 网格大小
  */
 export const DEFAULT_GRID_SIZE = 10;

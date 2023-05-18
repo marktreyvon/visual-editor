@@ -1,6 +1,6 @@
 import { PM25_Attribute, PM25_Data, PM25_Main } from "./pm25";
 import { Wenshidu_Main, Wenshidu_Attribute, Wenshidu_Data } from "./wenshidu";
-
+import { Curve_Attribute, Curve_Data, Curve_Main } from "./curve";
 export default {
     views: [
         {
@@ -20,6 +20,15 @@ export default {
             Main: Wenshidu_Main,
             Attribute: Wenshidu_Attribute,
             Data: Wenshidu_Data
+        },
+        {
+            name: "曲线图",
+            description: "",
+            group: "官方插件",
+            icon: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNjg0NDAwMzU0MzIzIiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjI0MjIiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+PHBhdGggZD0iTTg5NiA4OTZIOTZhMzIgMzIgMCAwIDEtMzItMzJWMjI0YTMyIDMyIDAgMCAxIDY0IDB2NjA4aDc2OGEzMiAzMiAwIDEgMSAwIDY0eiIgcC1pZD0iMjQyMyI+PC9wYXRoPjxwYXRoIGQ9Ik0yNDcuMDA4IDY0MGEzMiAzMiAwIDAgMS0yMC45OTItNTYuMTkybDIwMC45OTItMTc0LjI0YTMyIDMyIDAgMCAxIDQyLjI3MiAwLjI4OGwxNzIuMTI4IDE1My40NCAyMjkuMDg4LTI0Ni4zMDRhMzIgMzIgMCAwIDEgNDYuODggNDMuNjE2bC0yNTAuNDMyIDI2OS4yMTZhMzEuOTM2IDMxLjkzNiAwIDAgMS00NC43MDQgMi4wOGwtMTc0LjU2LTE1NS41Mi0xNzkuNzQ0IDE1NS44NGEzMS44NzIgMzEuODcyIDAgMCAxLTIwLjkyOCA3Ljc3NnoiIHAtaWQ9IjI0MjQiPjwvcGF0aD48L3N2Zz4=",
+            Main: Curve_Main,
+            Attribute: Curve_Attribute,
+            Data: Curve_Data
         }
     ]
 }

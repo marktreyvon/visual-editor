@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import * as Common from '../../common';
+import * as Common from '@/common';
 import { getTeleport } from "@antv/x6-vue-shape";
 const TeleportContainer = getTeleport();
 </script>

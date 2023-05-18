@@ -6,9 +6,9 @@
         <!-- 顶部end -->
       </el-header>
       <el-container id="layout" class="layout-container relative">
-        <el-aside class="shadow-sm absolute w-64 z-50 h-full bg-white">
+        <el-aside class="shadow-sm absolute w-44 z-50 h-full bg-white">
           <!-- 左侧组件start -->
-          <left-aside class="w-full"/>
+          <left-aside class="w-full h-full"/>
           <!-- 左侧组件end -->
         </el-aside>
         <el-main>

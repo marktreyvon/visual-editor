@@ -6,7 +6,7 @@ import { Transform } from "@antv/x6-plugin-transform";
 import { Export } from "@antv/x6-plugin-export";
 
 import { register } from "@antv/x6-vue-shape";
-import * as Common from "@/editor/common";
+import * as Common from "@/common";
 import { CellEvents } from '../events/CellEvents';
 /**
  * @author cxs
@@ -106,12 +106,12 @@ class CanvasConfig implements ICanvasConfig {
         // 配置节点缩放
         const resizingOptions = {
             enabled: true,
-            minWidth: 1,
-            maxWidth: 200,
-            minHeight: 1,
-            maxHeight: 150,
+            minWidth: 80,
+            maxWidth: 400,
+            minHeight: 80,
+            maxHeight: 400,
             orthogonal: false,
-            restrict: false,
+            restrict: true,
             preserveAspectRatio: false,
         }
 

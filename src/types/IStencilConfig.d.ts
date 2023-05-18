@@ -36,4 +36,6 @@ declare interface IStencilConfig {
          * 获取组件列表
          */
         getStencil(): Stencil | undefined;
+
+        public addGroup(group: string): void;
 }

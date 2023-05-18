@@ -31,7 +31,8 @@
               </el-dropdown>
         </div>
         <div class="absolute inset-y-0 right-0 w-64">
-            <el-button>登录</el-button>
+            <el-button @click="preview">预览</el-button>
+            <el-button >分享</el-button>
             <el-button>保存</el-button>
         </div>
     </div>
@@ -59,6 +60,7 @@ const {
     exportJPEG,
     exportSVG,
     toJSON,
+    preview
 } = tools.value
 
 

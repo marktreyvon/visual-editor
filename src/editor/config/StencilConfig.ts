@@ -1,6 +1,6 @@
 import { Stencil } from "@antv/x6-plugin-stencil";
 import { register } from "@antv/x6-vue-shape";
-import * as Common from "@/editor/common";
+import * as Common from "@/common";
 import { Graph, Node } from "@antv/x6";
 import { PluginConfig } from ".";
 import { getDropComponent } from '@/editor/components/canvas-editor/DropComponent'
@@ -56,6 +56,7 @@ class StencilConfig implements IStencilConfig {
     }
 
     initStencil(): void {
+        const __this = this;
         this.stencil = new Stencil({
             title: '组件列表',
             target: this.graph,
@@ -67,7 +68,14 @@ class StencilConfig implements IStencilConfig {
                 return false;
             },
             groups: this.groups,
-            getDropNode: (node) => this.getDropNode(node)
+            layoutOptions: {    
+                columns: 2,
+                resizeToFit: true,
+            },
+            stencilGraphWidth: 280,
+            getDropNode(draggingNode) {
+                return __this.getDropNode(draggingNode);
+            }
         });
 
         document.getElementById(this.stencilId)?.appendChild(this.stencil.container);
@@ -83,8 +91,9 @@ class StencilConfig implements IStencilConfig {
      * @param node 
      * @returns 
      */
-    private getDropNode(node: any) {
-        if (!this.graph) return null;
+    private getDropNode(node: any): Node {
+        if (!this.graph) 
+            throw new Error('Graph is undefined.'); 
         const { data } = node;
         const pluginConfig: IPluginConfig = PluginConfig.getInstance();
         const cpt = pluginConfig.getComponent(data.name);
@@ -93,7 +102,7 @@ class StencilConfig implements IStencilConfig {
         registerShape(data.name, dropCpt);
 
         // 创建拖拽到画布上的组件
-        const dropNode = this.graph.createNode({
+        const dropNode: Node = this.graph.createNode({
             shape: data.name,
             x: 100,
             y: 40,
@@ -103,6 +112,16 @@ class StencilConfig implements IStencilConfig {
         });
 
         return dropNode;
+    }
+
+    public addGroup(group: string): void {
+        if (!this.stencil) 
+            throw new Error('Stencil is undefined.'); 
+        this.groups.push({
+            name: group,
+            title: group,
+            collapsable: true
+        });
     }
 }
 

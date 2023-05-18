@@ -1,8 +1,7 @@
 import { CanvasConfig, StencilConfig } from '../config';
-import * as Common from '../common';
+import * as Common from '@/common';
 import { Graph } from '@antv/x6';
 import { Stencil } from "@antv/x6-plugin-stencil";
-import { defineComponent } from 'vue';
 
 
 const getGraph = (): Graph => {
@@ -12,56 +11,57 @@ const getGraph = (): Graph => {
 }
 
 
-const getStencilConfig = () : IStencilConfig => {
+const getStencilConfig = (groupList: Stencil.Group[]) : IStencilConfig => {
     const graph = getGraph();
-    const stencilConfig: IStencilConfig = StencilConfig.getInstance(graph, getGroups(), Common.DEFAULT_STENCIL_CONTAINER_ID);
+    const stencilConfig: IStencilConfig = StencilConfig.getInstance(graph, groupList, Common.DEFAULT_STENCIL_CONTAINER_ID);
     return stencilConfig;
 }
 
 function useStencil(plugins: any) {
     const graph: Graph = getGraph();
-    const stencilConfig: IStencilConfig = getStencilConfig();
-    
+    let nodeMap: Map<string, any[]> = new Map<string, any[]>();
+    let groups: string[] = [];
     let nodeList: any[] = [];
-    
     for (const key in plugins) {
         const plugin = plugins[key];
         const { views } = plugin.default;
         views.forEach((view: any) => {
-
+            if (groups.indexOf(view.group) === -1) {
+                groups.push(view.group);
+            }
             const node = graph?.createNode({
                 shape: 'image',
                 x: 40,
                 y: 40,
-                width: 100,
+                width: 40,
                 height: 40,
                 data: {
                     name: view.name
                 },
                 imageUrl: view.icon
             })
-            nodeList.push(node);
+            if (!nodeMap.has(view.group)) {
+                nodeList = [];
+                nodeList.push(node);
+            } else {
+                nodeList.push(node);
+            }
+            nodeMap.set(view.group, nodeList);
         })
     }
-    
-    stencilConfig.getStencil().load(nodeList, "group1");
+    let groupList: Stencil.Group[] = groups.map((group: string) => getGroup(group));
+    const stencilConfig: IStencilConfig = getStencilConfig(groupList);
+    nodeMap.forEach((nodes: any[], key: string) => {
+        stencilConfig.getStencil().load(nodes, key);
+    });
 }
 
-
-function getGroups() {
-    const groups = [
-        {
-            name: "group1",
-            title: '分组1',
-            collapsable: true,
-        },
-        {
-            name: "group2",
-            title: '分组2',
-            collapsable: true,
-        },
-    ]
-    return groups;
+const getGroup = (name: string): Stencil.Group => {
+    return {
+        name: name,
+        title: name,
+        collapsable: true,
+    }
 }
 
 export { useStencil }

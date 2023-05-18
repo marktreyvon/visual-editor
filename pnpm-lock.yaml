@@ -1,6 +1,9 @@
 lockfileVersion: '6.0'
 
 dependencies:
+  '@antv/g2':
+    specifier: ^4.2.10
+    version: 4.2.10
   '@antv/g2plot':
     specifier: ^2.4.29
     version: 2.4.29
@@ -362,7 +365,7 @@ packages:
     dependencies:
       '@antv/x6': 2.9.7
       vue: 3.2.47
-      vue-demi: 0.14.1(vue@3.2.47)
+      vue-demi: 0.14.4(vue@3.2.47)
     dev: false
 
   /@antv/x6@2.9.7:
@@ -1245,7 +1248,7 @@ packages:
   /@vueuse/shared@10.1.2(vue@3.2.47):
     resolution: {integrity: sha512-1uoUTPBlgyscK9v6ScGeVYDDzlPSFXBlxuK7SfrDGyUTBiznb3mNceqhwvZHjtDRELZEN79V5uWPTF1VDV8svA==}
     dependencies:
-      vue-demi: 0.14.1(vue@3.2.47)
+      vue-demi: 0.14.4(vue@3.2.47)
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -1254,7 +1257,7 @@ packages:
   /@vueuse/shared@9.13.0(vue@3.2.47):
     resolution: {integrity: sha512-UrnhU+Cnufu4S6JLCPZnkWh0WwZGUp72ktOF2DFptMlOs3TOdVv8xJN53zhHGARmVOsz5KqOls09+J1NR6sBKw==}
     dependencies:
-      vue-demi: 0.14.1(vue@3.2.47)
+      vue-demi: 0.14.4(vue@3.2.47)
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -2815,6 +2818,21 @@ packages:
 
   /vue-demi@0.14.1(vue@3.2.47):
     resolution: {integrity: sha512-rt+yuCtXvscYot9SQQj3WKZJVSriPNqVkpVBNEHPzSgBv7QIYzsS410VqVgvx8f9AAPgjg+XPKvmV3vOqqkJQQ==}
+    engines: {node: '>=12'}
+    hasBin: true
+    requiresBuild: true
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+    dependencies:
+      vue: 3.2.47
+    dev: false
+
+  /vue-demi@0.14.4(vue@3.2.47):
+    resolution: {integrity: sha512-YR9bCmtIYgsqNVRG3MLLWlhbZ9tTNMuWHPd7yx0pHS3NDX17MeVNHgKTOClYE8pBjsfNe4CMaReP7zQtHDIbiA==}
     engines: {node: '>=12'}
     hasBin: true
     requiresBuild: true

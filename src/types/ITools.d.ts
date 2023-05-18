@@ -69,4 +69,13 @@ declare interface ITools {
      */
     exportJPEG(fileName?: string, options?: Export.ToImageOptions): void;
 
+    /**
+     * 预览
+     */
+    preview(): void;
+
+    /**
+     * 分享
+     */
+    share(): void;
 }
