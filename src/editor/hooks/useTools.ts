@@ -1,6 +1,6 @@
 import { Cell } from '@antv/x6';
 import { CanvasConfig } from '../config'
-
+import { useRouter } from "vue-router";
 /**
  * @author cxs
  * @date 2023-04-20
@@ -10,6 +10,7 @@ import { CanvasConfig } from '../config'
  * @returns 
  */
 export const useTools = (): ITools => {
+    const router = useRouter();
     return {
         zoomToFit: () => {
             CanvasConfig.getInstance().zoomToFit();
@@ -45,7 +46,13 @@ export const useTools = (): ITools => {
             CanvasConfig.getInstance().exportSVG(fileName, options);
         },
         preview() {
-
+            const json = CanvasConfig.getInstance().toJSON();
+            const url = router.resolve({
+                name: 'display',
+                params: { id: '123'},
+                query: { id: "123" }
+            })
+            window.open(url.href);
         },
         share() {
 

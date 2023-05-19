@@ -6,6 +6,7 @@ import { useEvents, usePlugins } from '.';
 const useCanvas = (data: any): void => {
     let canvasConfig: ICanvasConfig = CanvasConfig.getInstance(Common.DEFAULT_CONTAINER_ID);
     canvasConfig.renderJSON(data);
+    canvasConfig.setNodeMovable(true);
     useEvents(canvasConfig);
     usePlugins(Plugins);
 }

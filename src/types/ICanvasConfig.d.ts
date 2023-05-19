@@ -63,6 +63,16 @@ declare interface ICanvasConfig {
     private rotatingGrid: number;
 
     /**
+     * 节点是否可移动
+     */
+    private nodeMovable: boolean;
+
+    /**
+     * 节点是否可缩放
+     */
+    private nodeResizable: boolean;
+
+    /**
      * 初始化画布
      */
     private initGraph(): void;
@@ -74,6 +84,12 @@ declare interface ICanvasConfig {
     getGraph(): Graph | undefined;
 
     getEvents(): CellEvents | undefined;
+
+    /**
+     * 配置节点是否可移动
+     * @param nodeMovable 
+     */
+    setNodeMovable(nodeMovable: boolean): void;
 
     /**
      * 画布自适应
@@ -183,4 +199,34 @@ declare interface ICanvasConfig {
      * @returns Node<Node.Properties>
      */
     addComponent(component: any, name: string, pos: { x: number, y: number }, size: {w: number, h: number}, data: Object): Node<Node.Properties>;
+
+}
+
+
+declare namespace ICanvasConfig {
+    /**
+     * 画布配置
+     * @param autoResize        是否自动调整画布大小
+     * @param gridSize          网格大小
+     * @param selection         是否开启多节点框选
+     * @param history           是否开启历史记录
+     * @param enableMouseWheel  是否开启鼠标滚轮缩放
+     * @param enableMousePan    是否开启鼠标平移画布
+     * @param zoomFactor        缩放因子
+     * @param rotatingGrid      节点每次旋转的角度
+     * @param nodeMovable       节点是否可移动
+     * @param nodeResizable     节点是否可缩放
+     */
+    export interface Options {
+        autoResize?: boolean;
+        gridSize?: number;
+        selection?: boolean;
+        history?: boolean;
+        enableMouseWheel?: boolean;
+        enableMousePan?: boolean;
+        zoomFactor?: number;
+        rotatingGrid?: number;
+        nodeMovable?: boolean;
+        nodeResizable?: boolean;
+    }
 }

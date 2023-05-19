@@ -11,6 +11,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/editor',
     name: 'editor',
     component: () => import('@/editor/index.vue')
+  },
+  {
+    path: '/display',
+    name: 'display',
+    component: () => import('@/display/index.vue')
   }
 ];
 

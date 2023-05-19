@@ -11,7 +11,7 @@ import { CellEvents } from '../events/CellEvents';
 /**
  * @author cxs
  * @date 2023-04-19
- * @update 2023-04-19
+ * @update 2023-05-18 
  * @description 画布配置 
  * @param graph 画布
  * @param containerId 画布容器id
@@ -28,6 +28,7 @@ import { CellEvents } from '../events/CellEvents';
  */
 class CanvasConfig implements ICanvasConfig {
     private static instance: CanvasConfig;
+    private static displayInstance: CanvasConfig;
     graph: Graph | undefined = undefined;
     cellEvents: CellEvents | undefined = undefined;
     containerId: string;
@@ -39,17 +40,38 @@ class CanvasConfig implements ICanvasConfig {
     enableMousePan: boolean = Common.DEFAULT_ENABLE_MOUSE_PAN;
     zoomFactor: number = Common.DEFAULT_ZOOM_FACTOR;
     rotatingGrid: number = Common.DEFAULT_RATATING_GRID;
+    nodeMovable: boolean = Common.DEFAULT_NODE_MOVABLE;
+    nodeResizable: boolean = Common.DEFAULT_NODE_RESIZABLE;
 
-    private constructor(containerId: string) {
+    private constructor(containerId: string, options?: ICanvasConfig.Options) {
         this.containerId = containerId;
+        if (options) {
+            if (options.autoResize !== undefined) this.autoResize = options.autoResize;
+            if (options.gridSize !== undefined) this.gridSize = options.gridSize;
+            if (options.selection !== undefined) this.selection = options.selection;
+            if (options.history !== undefined) this.history = options.history;
+            if (options.enableMouseWheel !== undefined) this.enableMouseWheel = options.enableMouseWheel;
+            if (options.enableMousePan !== undefined) this.enableMousePan = options.enableMousePan;
+            if (options.zoomFactor !== undefined) this.zoomFactor = options.zoomFactor;
+            if (options.rotatingGrid !== undefined) this.rotatingGrid = options.rotatingGrid;
+            if (options.nodeMovable !== undefined) this.nodeMovable = options.nodeMovable;
+            if (options.nodeResizable !== undefined) this.nodeResizable = options.nodeResizable;
+        }
         this.initGraph();
     }
     
-    public static getInstance(containerId: string = Common.DEFAULT_CONTAINER_ID): CanvasConfig {
+    public static getInstance(containerId: string = Common.DEFAULT_CONTAINER_ID, options?: ICanvasConfig.Options): CanvasConfig {
         if (!CanvasConfig.instance) {
-            CanvasConfig.instance = new CanvasConfig(containerId);
+            CanvasConfig.instance = new CanvasConfig(containerId, options);
         }
         return CanvasConfig.instance;
+    }
+
+    public static getDisplayInstance(containerId: string = Common.DEFAULT_DISPLAY_CONTAINER_ID, options?: ICanvasConfig.Options): CanvasConfig {
+        if (!CanvasConfig.displayInstance) {
+            CanvasConfig.displayInstance = new CanvasConfig(containerId, options);
+        }
+        return CanvasConfig.displayInstance;
     }
 
     initGraph(): void {
@@ -59,6 +81,9 @@ class CanvasConfig implements ICanvasConfig {
             panning: {
                 enabled: this.enableMousePan,
                 eventTypes: ["rightMouseDown", "mouseWheel"]
+            },
+            interacting: (cellView) => {
+                return { nodeMovable: false }
             }
         });
         // 配置网格大小
@@ -78,6 +103,7 @@ class CanvasConfig implements ICanvasConfig {
                 })
             );
         }
+        
 
         // 配置撤销重做
         if (this.history) {
@@ -105,10 +131,10 @@ class CanvasConfig implements ICanvasConfig {
 
         // 配置节点缩放
         const resizingOptions = {
-            enabled: true,
+            enabled: this.nodeResizable,
             minWidth: 80,
             maxWidth: 400,
-            minHeight: 80,
+            minHeight: 40,
             maxHeight: 400,
             orthogonal: false,
             restrict: true,
@@ -128,11 +154,15 @@ class CanvasConfig implements ICanvasConfig {
             })
           );
 
+          
+
         // 启用导出
         this.graph.use(new Export());
 
         // 监听节点事件
         this.cellEvents = new CellEvents(this.graph);
+
+        this.setNodeMovable(this.nodeMovable);
     }
 
 
@@ -144,6 +174,12 @@ class CanvasConfig implements ICanvasConfig {
         return this.cellEvents;
     }
 
+    public setNodeMovable(nodeMovable: boolean): void {
+        this.nodeMovable = nodeMovable;
+        if (!this.nodeMovable) {
+            this.graph?.disableSelectionMovable();
+        }
+    }
     
     public zoomToFit(): void {
         if (!this.graph) 
