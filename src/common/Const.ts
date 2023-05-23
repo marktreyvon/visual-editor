@@ -22,6 +22,7 @@ export const DEFAULT_DISPLAY_CONTAINER_ID = 'view_container';
  * 网格大小
  */
 export const DEFAULT_GRID_SIZE = 10;
+
 /**
  * 是否自动调整画布大小
  */

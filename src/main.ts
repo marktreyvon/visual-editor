@@ -11,9 +11,7 @@ import * as Plugins from './dependence';
 
 
 import 'systemjs'
-// @ts-ignore
 System.set('lib:vue', Vue);
-// @ts-ignore
 System.set('lib:element-plus', ElementPlus);
 
 

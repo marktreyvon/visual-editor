@@ -11,7 +11,7 @@ import { CellEvents } from '../events/CellEvents';
 /**
  * @author cxs
  * @date 2023-04-19
- * @update 2023-05-18 
+ * @update 2023-05-19 新增了节点不可拖拽和调整大小的功能 
  * @description 画布配置 
  * @param graph 画布
  * @param containerId 画布容器id
@@ -83,7 +83,7 @@ class CanvasConfig implements ICanvasConfig {
                 eventTypes: ["rightMouseDown", "mouseWheel"]
             },
             interacting: (cellView) => {
-                return { nodeMovable: false }
+                return { nodeMovable: this.nodeMovable }
             }
         });
         // 配置网格大小
@@ -153,8 +153,6 @@ class CanvasConfig implements ICanvasConfig {
               rotating: rotatingOptions
             })
           );
-
-          
 
         // 启用导出
         this.graph.use(new Export());
@@ -233,7 +231,7 @@ class CanvasConfig implements ICanvasConfig {
         this.graph.redo();
     }
 
-    public toJSON(): { cells: Cell.Properties[]; } {
+    public toJSON(): { cells: Cell.Properties[] } {
         if (!this.graph) 
             throw new Error('Graph is undefined.');
         return this.graph.toJSON();

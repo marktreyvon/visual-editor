@@ -11,7 +11,7 @@
 
             </el-tab-pane>
             <el-tab-pane label="数据" name="data">
-                <component :is="dataCpt" />
+                <component :is="dataCpt" @onChange="onChange"/>
             </el-tab-pane>
             <el-tab-pane label="图层" name="layer">
                 <ComponentList />

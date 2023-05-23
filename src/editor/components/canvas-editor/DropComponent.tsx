@@ -6,8 +6,8 @@ export const getDropComponent = (cpt: Component): Component => {
         inject: ["getNode"],
         data() {
             return {
-                value: {},
-                style: {}
+                value: undefined,
+                style: undefined
             }
         },
         mounted() {
@@ -16,8 +16,9 @@ export const getDropComponent = (cpt: Component): Component => {
                 if (current.style) {
                     this.style = { ...current.style }
                 }
+                console.log(current)
                 if (current.value) {
-                    this.value = { ...current.value };
+                    this.value = current.value ;
                 }
             });
         },

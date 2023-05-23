@@ -1,7 +1,7 @@
 /**
  * @author cxs
  * @date 2023-04-19
- * @update 2023-04-19
+ * @update 2023-05-19 增加了ICanvasConfig.Options接口
  * @description 画布配置接口
  * @interface ICanvasConfig
  */

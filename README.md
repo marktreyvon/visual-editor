@@ -127,111 +127,108 @@ pnpm run dev
 
 
 ## 示例
-### 主组件： pm25/Main.vue
+以文本组件为例，我们为官方插件开发一个可以拖拽到画布上的文本组件，可以通过右侧属性面板调整文字的大小、颜色以及背景框。 通过数据面板设置文本显示的值。
+如下图所示：  
+![文本组件](readme_files/text_example.png)    
+
+官方插件所在的目录是tp-plugins文件夹，我们在这个文件夹里创建`text`目录，然后在text目录创建以下4个文件：  
+index.ts、Main.vue、Data.vue、Attribute.vue
+### 主组件： text/Main.vue
 ```ts
 <template>
-  <gauge id="pm25"></gauge>
+    <div :style="myStyle" style="width:100%;height:100%">
+        {{ value }}
+    </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, watch } from "vue";
-import Gauge from "../components/Gauge.vue";
-
-export default defineComponent({
-  components: {
-    Gauge,
-  },
+<script>
+export default {
+  components: {},
   props: {
     value: {
-      type: [Object, String, Number],
-      default: () => {
-        return {};
-      },
-    },
-    style: {
-      type: Object,
-      default: () => {
-        return {};
-      },
-    },
+      type: [String],
+      default: "文本"
+    }
   },
   data() {
-    return {
+    return {}
+  },
+  computed: {
+    myStyle() {
+        if (this.style) {
+            return this.style
+        } else {
+            return {
+                fontSize: '20px',
+                fontColor: '#ffffff',
+                backgroundColor: '#409EFF',
+                border: '1px solid #000'
+            }
+        }
     }
   },
-  watch: {
-    value: {
-      handler(val) {
-        console.log("Main.value", val);
-      },
-      deep: true
-    },
-    style: {
-      handler(val) {
-        console.log("Main.style", val);
-      },
-      deep: true
-    }
-  },
-  methods: {
-  }
-})
+  methods: {}
+}
 </script>
+<style lang="scss" scoped></style>
 ```
 
-### 属性面板: pm25/Attribute.vue  
+
+
+### 属性面板: text/Attribute.vue  
 ```ts
 <template>
-  <el-collapse v-model="activeNames">
-    <el-collapse-item title="样式" name="style">
-      <el-form v-model="formData">
-        <el-form-item label="字体大小">
-          <el-input v-model="formData.fontSize"></el-input>
-        </el-form-item>
+    <el-collapse v-model="activeNames">
+        <el-collapse-item title="样式" name="style">
+            <el-form v-model="formData">
+                <el-form-item label="字体大小">
+                    <el-input v-model="formData.fontSize"></el-input>
+                </el-form-item>
 
-        <el-form-item label="字体颜色">
-          <el-input v-model="formData.fontColor"></el-input>
-        </el-form-item>
+                <el-form-item label="字体颜色">
+                    <el-color-picker v-model="formData.color" />
+                </el-form-item>
 
-        <el-form-item label="背景颜色">
-          <el-input v-modl="formData.bgColor"></el-input>
-        </el-form-item>
-      </el-form>
-    </el-collapse-item>
-  </el-collapse>
+                <el-form-item label="背景颜色">
+                    <el-color-picker v-model="formData.backgroundColor" />
+                </el-form-item>
+            </el-form>
+        </el-collapse-item>
+    </el-collapse>
 </template>
-
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  data() {
-    return {
-      activeNames: 'style',
-      formData: {
-        fontSize: 20,
-        fontColor: '',
-        bgColor: ''
-      }
+  
+<script>
+export default ({
+    data() {
+        return {
+            activeNames: 'style',
+            formData: {
+                fontSize: 20,
+                color: '#ffffff',
+                backgroundColor: '#409EFF'
+            }
+        }
+    },
+    watch: {
+        formData: {
+            handler(val) {
+                // 当自定义属性改变时，传递给Main.vue的style属性
+                this.$emit("onChange", {
+                    style: { ...val, fontSize: val.fontSize + 'px' }
+                });
+            },
+            deep: true
+        }
     }
-  },
-  watch: {
-    formData: {
-      handler(val) {
-        this.$emit("onChange", {
-          style: val
-        });
-      },
-      deep: true
-    }
-  }
 })
 </script>
+  
+<style lang="scss" scoped></style>
 ```
 
 当用户改变了右侧属性面板的值后，需要在画布上的节点反映出来。  
 如：修改了属性面板的文字大小或颜色之后，画布上的节点对应的样式也要做出改变。  
-可以使用vue的emit方法，传递onChange事件。
+使用vue的emit方法，传递onChange事件。
 ```ts
 this.$emit("onChange", {
     style: {
@@ -243,30 +240,75 @@ this.$emit("onChange", {
 之后，编辑器会自动将style传递到Main.vue中，Main组件的props属性就会接收到传过来的参数.  
 目前仅支持传递style和value.
 
-当组件编写完成后需要在tp-plugin/index.ts文件中进行配置
+### 数据面板：text/Data.vue
 ```ts
-import { PM25_Attribute, PM25_Data, PM25_Main } from "./pm25";
-import { Wenshidu_Main, Wenshidu_Attribute, Wenshidu_Data } from "./wenshidu";
+<template>
+  <el-tabs v-model="activeName">
+    <el-tab-pane label="静态数据" name="static">
+      <el-form v-model="formData">
+        <el-form-item label="绑定数据">
+          <el-input v-model="formData.staticValue"></el-input>
+        </el-form-item>
+      </el-form>
+    </el-tab-pane>
+    <el-tab-pane label="动态数据" name="dynamic">
+
+    </el-tab-pane>
+  </el-tabs>
+</template>
+
+<script>
+export default {
+  props: {},
+  data() {
+    return {
+      activeName: 'static',
+      formData: {
+        value: ""
+      }
+    }
+  },
+  watch: {
+    formData: {
+      handler(val) {
+        this.$emit("onChange", {
+          value: { ...val }
+        });
+      },
+      deep: true
+    }
+  },
+  methods: {}
+}
+</script>
+<style lang="scss" scoped></style>
+```
+
+接下来在text/index.ts中导出组件.  
+```ts
+import Text_Attribute from './Attribute.vue';
+import Text_Data from './Data.vue';
+import Text_Main from './Main.vue';
+export { Text_Attribute, Text_Data, Text_Main }
+```
+
+然后在tp-plugin/index.ts文件中进行配置
+```ts
+import { Text_Attribute, Text_Data, Text_Main } from "./text";
 
 export default {
     views: [
         {
-            name: "PM2.5",      // 组件名称, 不可和其他组件重名
+            name: "文本",      // 组件名称, 不可和其他组件重名
             description: "",
             group: "官方插件",   // 左侧组件列表的分组名称
             icon: "",         // 左侧列表的组件图标，base64或在线图片地址
-            Main: PM25_Main,    // 将要在画布上渲染的节点
-            Attribute: PM25_Attribute,   // 点击节点后在右侧属性面板显示的表单
-            Data: PM25_Data    // 点击节点后在右侧数据面板显示的表单
+            Main: Text_Main,    // 将要在画布上渲染的节点
+            Attribute: Text_Attribute,   // 点击节点后在右侧属性面板显示的表单
+            Data: Text_Data    // 点击节点后在右侧数据面板显示的表单
         },
         {
-            name: "Wenshidu",
-            description: "",
-            group: "官方插件",
-            icon: "",
-            Main: Wenshidu_Main,
-            Attribute: Wenshidu_Attribute,
-            Data: Wenshidu_Data
+            ...
         }
     ]
 }
