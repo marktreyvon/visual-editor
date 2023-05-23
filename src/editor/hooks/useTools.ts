@@ -1,5 +1,5 @@
 import { Cell } from '@antv/x6';
-import { CanvasConfig } from '../config'
+import { CanvasConfig,StencilConfig } from '../config'
 import { useRouter } from "vue-router";
 /**
  * @author cxs
@@ -12,6 +12,12 @@ import { useRouter } from "vue-router";
 export const useTools = (): ITools => {
     const router = useRouter();
     return {
+
+        // 测试线条的颜色修改工具;  *@author; 王炳宏  2023-05-23
+        attrColor: () => {
+            CanvasConfig.getInstance().onChangeEdges('attr');
+        },
+
         zoomToFit: () => {
             CanvasConfig.getInstance().zoomToFit();
         },

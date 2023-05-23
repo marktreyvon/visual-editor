@@ -21,7 +21,6 @@ class StencilConfig implements IStencilConfig {
     stencilId: string;
     groups: Stencil.Group[];
     dropNodes: Map<string, Node> = new Map<string, Node>();
-
     /**
      * 构造函数
      * @param graph 
@@ -108,11 +107,36 @@ class StencilConfig implements IStencilConfig {
             y: 40,
             width: 200,
             height: 200,
-            label: data.name
+            label: data.name,
+            //在创建节点时增加连接点属性;  *@author; 王炳宏  2023-05-23
+            ports: {
+                groups: {
+                    link: {
+                        attrs: {
+                            circle: {
+                                r: 6,
+                                magnet: true,
+                                stroke: '#31d0c6',
+                                strokeWidth: 2,
+                                fill: '#fff',
+                            },
+                        },
+                        position: 'top',
+                    }
+                },
+                items: [
+                    {
+                        id: 'port1',
+                        group: 'link',
+                    }
+                ]
+            },
         });
 
         return dropNode;
     }
+
+
 
     public addGroup(group: string): void {
         if (!this.stencil) 
@@ -123,6 +147,8 @@ class StencilConfig implements IStencilConfig {
             collapsable: true
         });
     }
+
+
 }
 
 const registerShape = (shape: string, component: any) => {
