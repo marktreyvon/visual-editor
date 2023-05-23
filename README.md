@@ -319,6 +319,9 @@ export default {
 export * as tpPlugin from './tp-plugin';
 ```
 
+启动项目后，我们刚编写的文本组件就加载出来了。  
+`pnpm run dev`  
+
 
 # 参与共建
 欢迎参与到ThingsPanel可视化编辑器的开发中。  
