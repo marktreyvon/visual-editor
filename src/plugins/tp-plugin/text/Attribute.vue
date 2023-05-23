@@ -19,7 +19,7 @@
 </template>
   
 <script>
-export default ({
+export default {
     data() {
         return {
             activeNames: 'style',
@@ -41,7 +41,7 @@ export default ({
             deep: true
         }
     }
-})
+}
 </script>
   
 <style lang="scss" scoped></style>
