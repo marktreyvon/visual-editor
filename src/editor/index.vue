@@ -33,8 +33,10 @@ import { useTools, useCanvas } from './hooks'
 
 onMounted(() => {
   console.log('editor mounted')
+
   // 加载画布
   useCanvas(data);
+
 })
 
 const data = {

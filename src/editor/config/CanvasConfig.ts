@@ -1,4 +1,4 @@
-import { Cell, Graph, Node } from '@antv/x6';
+import { Cell, Graph, Node,Color } from '@antv/x6';
 import { Selection } from "@antv/x6-plugin-selection";
 import { History } from "@antv/x6-plugin-history";
 import { Snapline } from "@antv/x6-plugin-snapline";
@@ -82,8 +82,19 @@ class CanvasConfig implements ICanvasConfig {
                 enabled: this.enableMousePan,
                 eventTypes: ["rightMouseDown", "mouseWheel"]
             },
+            connecting:{
+                allowBlank: false,  //不允许指向空节点;  *@author 王炳宏  2023-05-23
+                allowMulti: false,  //不允许重复连接;  *@author 王炳宏  2023-05-23
+                allowLoop: false,   //不允许自连;   *@author; 王炳宏  2023-05-23
+                allowNode: false,   //不允许非连接点连接,如需要改为true；  *@author; 王炳宏  2023-05-23
+                allowEdge: false,   //不允许非连接点连接,如需要改为true； *@author; 王炳宏  2023-05-23
+                allowPort: true,    //不允许指向空节点,*@author; 王炳宏  2023-05-23
+            },
             interacting: (cellView) => {
-                return { nodeMovable: this.nodeMovable }
+                return {
+                    nodeMovable: this.nodeMovable,
+                    magnetConnectable:true      // 增加可连接点的交互,magnetConnectable*@author; 王炳宏  2023-05-23
+                }
             }
         });
         // 配置网格大小
@@ -186,6 +197,30 @@ class CanvasConfig implements ICanvasConfig {
         this.graph.centerContent();
     }
 
+    //增加改变边样式的函数， ;  *@author; 王炳宏  2023-05-23
+    //todo 需要完善其他需求
+    onChangeEdges(command: string){
+
+        if (!this.graph)
+            throw new Error('Graph is undefined.');
+        const edges = this.graph.getEdges()
+        switch (command){
+            case 'prop':
+                edges.forEach((edge) => {
+                    const x = Math.floor(Math.random() * 600)
+                    const y = Math.floor(Math.random() * 200)
+                    edge.prop('vertices', [[x, y]])
+                })
+                break
+            case 'attr':
+                edges.forEach((edge) => {
+                    const color = Color.random().toHex()
+                    edge.attr('line/stroke', color)
+                })
+                break
+        }
+
+    }
     
     public renderJSON(json: any): void {
         if (!this.graph) 

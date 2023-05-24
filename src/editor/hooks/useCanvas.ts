@@ -4,6 +4,8 @@ import * as Plugins from '@/plugins'
 import { useEvents, usePlugins } from '.';
 
 const useCanvas = (data: any): void => {
+
+
     let canvasConfig: ICanvasConfig = CanvasConfig.getInstance(Common.DEFAULT_CONTAINER_ID);
     canvasConfig.renderJSON(data);
     useEvents(canvasConfig);

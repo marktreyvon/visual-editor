@@ -7,7 +7,8 @@
             <span class="align-middle pl-6">大屏标题</span>
         </div>
         <div class="mx-64 w-auto">
-
+          <!--        变色测试按钮  *@author; 王炳宏 -->
+          <el-button @click="attrColor">变色</el-button>
             <el-button @click="undo">撤销</el-button>
             <el-button @click="redo">重做</el-button>
             <el-button @click="zoomOut">缩小</el-button>
@@ -41,6 +42,7 @@
 <script setup lang="ts">
 import { ref, reactive, toRefs } from "vue";
 import { House } from "@element-plus/icons-vue";
+import {StencilConfig} from "@/editor/config/StencilConfig"
 const props = defineProps({ 
     tools: {
         type: Object,
@@ -48,7 +50,8 @@ const props = defineProps({
     }
 });
 const { tools } = toRefs(props);
-const { 
+const {
+  attrColor,
     undo,
     redo,
     zoomToFit, 

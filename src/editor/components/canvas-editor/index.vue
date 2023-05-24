@@ -10,6 +10,7 @@
 import * as Common from '@/common';
 import { getTeleport } from "@antv/x6-vue-shape";
 const TeleportContainer = getTeleport();
+
 </script>
 
 <style lang="scss" scoped>
