@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import { createPinia } from 'pinia'
 import * as Vue from 'vue'
 import './style.css'
 import 'element-plus/dist/index.css'
@@ -22,5 +23,6 @@ Plugins.installElementPlus(app);
 // Plugins.installDataV(app);
 
 app.use(router);
+app.use(createPinia());
 
 router.isReady().then(() => app.mount('#app'));

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { parseParams } from '@/utils'
 import {Render} from './Demo'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import en from 'element-plus/dist/locale/en.mjs'
+import { useAuthStore } from '@/store'
 
 const language = ref('zh-cn')
 const locale = computed(() => (language.value === 'zh-cn' ? zhCn : en))
@@ -11,19 +13,11 @@ const toggle = () => {
   language.value = language.value === 'zh-cn' ? 'en' : 'zh-cn'
 }
 
-// 在新窗口中执行      
-const queryString = window.location.search;
-if (queryString) {
-  const queryStringArray = queryString.split("?")[1].split("&");
-  let params:any = {}
-  queryStringArray.forEach((item) => {
-    const [key, value] = item.split("=");
-    params[key] = value;
-  });
-}
-
-
-
+const params = parseParams();
+console.log('parseParams', params)
+let { setTokenInfo, getTokenInfo } = useAuthStore();
+setTokenInfo(params);
+console.log('token', getTokenInfo())
 </script>
 
 <template>

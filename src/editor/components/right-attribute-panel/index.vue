@@ -3,8 +3,11 @@
         <ElTabs v-model="activeName">
             <el-tab-pane label="外观" name="attr">
                 <div>
+                    <!-- 画布样式 -->
                     <CanvasAttr v-if="!isNode" />
+                    <!-- 节点基础样式 -->
                     <BaseAttr v-if="isNode" :data="nodeData"/>
+                    <!-- 自定义样式 -->
                     <component v-if="isNode" :is="attributeCpt" v-on="actionHandlers" 
                         @onChange="onChange" />
                 </div>

@@ -1,7 +1,7 @@
 <template>
     <div>
-        <p><el-link href="/editor">进入编辑器</el-link></p>
-        <p><el-link href="/display">进入预览</el-link></p>
+        <p><el-link href="./editor">进入编辑器</el-link></p>
+        <p><el-link href="./display">进入预览</el-link></p>
     </div>
 </template>
 

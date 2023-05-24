@@ -1,11 +1,11 @@
 <template>
-    <div :id="'container_gauge_' + id" style="width:100%;height:100%"></div>
+    <div :id="id" style="width:100%;height:100%"></div>
 </template>
   
 <script lang="ts">
 import { Gauge } from '@antv/g2plot';
 import { defineComponent } from "vue";
-
+import { randomString } from "@/utils"
 export default defineComponent({
     name: "Gauge",
     components: {
@@ -20,10 +20,11 @@ export default defineComponent({
     },
     data() {
         return {
+            id: "container_gauge_" + randomString(10)
         }
     },
     mounted() {
-        const gauge = new Gauge('container_gauge_' + this.id, {
+        const gauge = new Gauge(this.id, {
             percent: 0.75,
             range: {
                 color: '#5B8FF9',

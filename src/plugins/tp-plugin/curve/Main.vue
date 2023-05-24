@@ -1,10 +1,11 @@
 <template>
-  <div id="container_curve" style="width:100%;height:100%"></div>
+  <div :id="id" style="width:100%;height:100%"></div>
 </template>
 
 <script lang="ts">
 import { defineComponent, watch } from "vue";
 import { Line } from '@antv/g2plot';
+import { randomString } from "@/utils";
 export default defineComponent({
   components: {
   },
@@ -24,7 +25,8 @@ export default defineComponent({
   },
   data() {
     return {
-      formData: ""
+      formData: "",
+      id: "container_curve_" + randomString(10)
     }
   },
   watch: {
@@ -45,7 +47,7 @@ export default defineComponent({
     fetch('https://gw.alipayobjects.com/os/bmw-prod/1d565782-dde4-4bb6-8946-ea6a38ccf184.json')
     .then((res) => res.json())
     .then((data) => {
-      const line = new Line('container_curve', {
+      const line = new Line(this.id, {
         data,
         padding: 'auto',
         xField: 'Date',
