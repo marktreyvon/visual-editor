@@ -199,7 +199,7 @@ class CanvasConfig implements ICanvasConfig {
 
     //增加改变边样式的函数， ;  *@author; 王炳宏  2023-05-23
     //todo 需要完善其他需求
-    onChangeEdges(command: string){
+    public onChangeEdges(command: string): void {
 
         if (!this.graph)
             throw new Error('Graph is undefined.');

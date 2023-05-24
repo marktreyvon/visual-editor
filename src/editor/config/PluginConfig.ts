@@ -1,4 +1,12 @@
 
+/**
+ * @author cxs
+ * @date 2023-05-20
+ * @update 2023-05-20
+ * @description 插件配置接口
+ * @interface IPluginConfig
+ * @export
+ */
 class PluginConfig implements IPluginConfig  {
     private static instance: PluginConfig;
     components: Map<String, any>;

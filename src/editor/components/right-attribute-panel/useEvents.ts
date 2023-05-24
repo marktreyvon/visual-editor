@@ -1,6 +1,13 @@
 import { ref } from "vue";
 import { CanvasConfig, PluginConfig } from "@/editor/config";
 
+/**
+ * @author cxs
+ * @date 2023-05-20
+ * @update 2023-05-20
+ * @description 事件管理
+ * @returns 
+ */
 export const useEvents = () => {
 
     // 当前点击的是节点还是画布
@@ -16,6 +23,10 @@ export const useEvents = () => {
     // 当前节点的数据
     let nodeData = ref<any>({});
 
+    /**
+     * 初始化事件
+     * @returns
+     */
     const initEvents = () => {
         let canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
         const events: ICellEvents = canvasConfig.getEvents();

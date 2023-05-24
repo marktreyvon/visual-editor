@@ -97,6 +97,12 @@ declare interface ICanvasConfig {
     zoomToFit(): void;
 
     /**
+     * 测试线条的颜色修改工具
+     * @param command 
+     */
+    onChangeEdges(command: string): void;
+
+    /**
      * 渲染节点数据
      * @param json 节点数据
      */
