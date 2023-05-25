@@ -100,7 +100,8 @@ let state = reactive<any>({
     flowSpeed: 1,
     flowDirection: 1,
     cycleTimes: 1,
-    lineColor: '#409EFF'
+    lineColor: '#409EFF',
+    vertices:undefined
   }
 })
 
@@ -119,7 +120,8 @@ watchEffect(() => {
       flowSpeed: 1,
       flowDirection: 1,
       cycleTimes: 1,
-      lineColor: '#409EFF'
+      lineColor: '#409EFF',
+      vertices:[]
     }
 
     if (props?.edgeData?.vertices) {
@@ -138,7 +140,7 @@ watchEffect(() => {
       edgeObj.lineType = '1'
     }
 
-
+    edgeObj.vertices=props?.edgeData?.vertices
     edgeObj.lineColor = props?.edgeData?.attrs?.line?.stroke || '#000000'
     edgeObj.lineWidth = props?.edgeData?.attrs?.line?.strokeWidth || 1
     edgeObj.lineStyle = props?.edgeData?.attrs?.line?.strokeDasharray || 0
