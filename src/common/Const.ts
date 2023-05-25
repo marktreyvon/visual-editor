@@ -19,6 +19,11 @@ export const DEFAULT_STENCIL_CONTAINER_ID = 'stencil_container';
 export const DEFAULT_DISPLAY_CONTAINER_ID = 'view_container';
 
 /**
+ * 是否显示网格
+ */
+export const DEFAULT_SHOW_GRID = true;
+
+/**
  * 网格大小
  */
 export const DEFAULT_GRID_SIZE = 10;
@@ -47,6 +52,10 @@ export const DEFAULT_ENABLE_MOUSE_WHEEL = true;
  */
 export const DEFAULT_ENABLE_MOUSE_PAN = true;
 
+/**
+ * 是否开启多节点框选
+ */
+export const DEFAULT_ENABLE_SELECTION = true;
 /**
  * 默认缩放因子
  */
@@ -77,4 +86,8 @@ export const DEFAULT_NODE_RESIZABLE = true;
  */
 export const PREVIEW_JSON_DATA_KEY = 'preview_json_data';
 
+/**
+ * 画布背景颜色
+ */
+export const DEFAULT_BACKGROUND_COLOR = '#F2F7FA';
 

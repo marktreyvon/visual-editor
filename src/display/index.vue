@@ -3,9 +3,7 @@
     <div :id="Common.DEFAULT_DISPLAY_CONTAINER_ID"></div>
     <TeleportContainer />
   </div>
-  <div>
-    
-  </div>
+  <div></div>
 </template>
 
 <script setup lang="ts">

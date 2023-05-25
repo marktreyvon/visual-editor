@@ -6,7 +6,7 @@
               </el-icon>
             <span class="align-middle pl-6">大屏标题</span>
         </div>
-        <div class="mx-64 w-auto">
+        <div class="ml-64 mr-96 w-auto">
           <!--        变色测试按钮  *@author; 王炳宏 -->
           <el-button @click="attrColor">变色</el-button>
             <el-button @click="undo">撤销</el-button>
@@ -30,11 +30,13 @@
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
-        </div>
-        <div class="absolute inset-y-0 right-0 w-64">
             <el-button @click="preview(params.id)">预览</el-button>
+        </div>
+        <div class="absolute inset-y-0 right-0 w-96">
             <el-button >分享</el-button>
             <el-button @click="save(params.id)">保存</el-button>
+            <el-button @click="save(params.id)">保存并退出</el-button>
+            <el-button @click="help">帮助</el-button>
         </div>
     </div>
 </template>
@@ -64,6 +66,7 @@ const {
     exportSVG,
     toJSON,
     preview,
+    help,
     save
 } = tools.value
 
@@ -117,5 +120,6 @@ const handleCommandExport = (command: string) => {
   }
   .el-dropdown {
     margin-left: 12px;
+    margin-right: 12px;
   }
 </style>

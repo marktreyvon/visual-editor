@@ -4,7 +4,7 @@
             <el-tab-pane :label="isEdge?'线条样式':'外观'" name="attr">
                 <div>
                     <!-- 画布样式 -->
-                    <CanvasAttr v-if="!isNode&&!isEdge" />
+                    <CanvasAttr v-if="!isNode&&!isEdge" @onChange="onCanvasAttrChange"/>
                     <!-- 节点基础样式 -->
                     <BaseAttr v-if="isNode" :data="nodeData"/>
                     <!-- 自定义样式 -->
@@ -19,7 +19,7 @@
                 <component :is="dataCpt" @onChange="onChange"/>
             </el-tab-pane>
             <el-tab-pane label="图层" name="layer" v-if="!isEdge">
-                <ComponentList />
+                <LayerAttr />
             </el-tab-pane>
         </ElTabs>
     </div>
@@ -32,8 +32,9 @@ import { ref, onMounted, reactive } from "vue";
 import CanvasAttr from "./components/CanvasAttr.vue";
 import BaseAttr from "./components/BaseAttr.vue";
 import LineAttr from "./components/LineAttr.vue";
-import ComponentList from "./components/ComponentList.vue";
+import LayerAttr from "./components/LayerAttr.vue";
 import { useEvents } from "./useEvents"
+import { useAttribute } from "./useAttribute"
 const activeName = ref("attr");
 let { 
     isNode, attributeCpt, dataCpt, nodeData,edgeData,
@@ -46,6 +47,10 @@ let actionHandlers = reactive({})
 onMounted(() => {
     initEvents();
 });
+
+let {
+    onCanvasAttrChange
+} = useAttribute();
 
 </script>
 

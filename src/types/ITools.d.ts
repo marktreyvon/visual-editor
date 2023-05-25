@@ -48,9 +48,7 @@ declare interface ITools {
     /**
      * 导出JSON
      */
-    toJSON: () => {
-        cells: Cell.Properties[];
-    };
+    toJSON: () => { cells: Cell.Properties[] } | { graph: any };
 
     /**
      * 导出SVG
@@ -83,6 +81,10 @@ declare interface ITools {
      */
     share(): void;
 
+    /**
+     * 帮助
+     */
+    help(): void;
     /**
      * 保存大屏数据
      */

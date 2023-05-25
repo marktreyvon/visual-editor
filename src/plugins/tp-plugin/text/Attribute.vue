@@ -1,7 +1,7 @@
 <template>
     <el-collapse v-model="activeNames">
         <el-collapse-item title="样式" name="style">
-            <el-form v-model="formData">
+            <el-form v-model="formData" label-width="80px" label-position="left">
                 <el-form-item label="字体大小">
                     <el-input v-model="formData.fontSize"></el-input>
                 </el-form-item>

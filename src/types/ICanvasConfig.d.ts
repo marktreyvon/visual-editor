@@ -33,11 +33,6 @@ declare interface ICanvasConfig {
     private gridSize: number;
 
     /**
-     * 是否开启多节点框选
-     */
-    private selection: boolean;
-
-    /**
      * 网格大小
      */
     private history: boolean;
@@ -51,6 +46,11 @@ declare interface ICanvasConfig {
      * 是否开启鼠标平移画布
      */
     private enableMousePan: boolean;
+
+    /**
+     * 是否开启多节点框选
+     */
+    private enableSelection: boolean;
 
     /**
      * 缩放因子
@@ -135,6 +135,28 @@ declare interface ICanvasConfig {
     disableSnapline(): void;
 
     /**
+     * 是否显示网格
+     * @param show 
+     */
+    showGrid(show: boolean): void;
+
+    /**
+     * 配置画布背景
+     * @param options 
+     */
+    setBackground(options: ICanvasConfig.BackgroundOptions): void;
+    /**
+     * 获取网格大小
+     */
+    getGridSize(): number;
+
+    /**
+     * 设置网格大小
+     * @param gridSize 
+     */
+    setGridSize(gridSize: number): void;
+
+    /**
      * 撤销
      */
     undo(): void;
@@ -148,9 +170,7 @@ declare interface ICanvasConfig {
      * 导出JSON
      * @returns { cells: Cell.Properties[] }
      */
-    toJSON(): {
-        cells: Cell.Properties[];
-    };
+    toJSON(): { cells: Cell.Properties[] } | { graph: any };
 
     /**
      * 导出SVG
@@ -216,13 +236,17 @@ declare interface ICanvasConfig {
 
 declare namespace ICanvasConfig {
     /**
-     * 画布配置
+     * @author cxs
+     * @date 2023-05-23
+     * @update 2023-05-23
+     * @description 画布配置
      * @param autoResize        是否自动调整画布大小
      * @param gridSize          网格大小
      * @param selection         是否开启多节点框选
      * @param history           是否开启历史记录
      * @param enableMouseWheel  是否开启鼠标滚轮缩放
      * @param enableMousePan    是否开启鼠标平移画布
+     * @param enableSelection   是否开启多节点框选
      * @param zoomFactor        缩放因子
      * @param enableRotating    节点是否可旋转
      * @param rotatingGrid      节点每次旋转的角度
@@ -236,10 +260,49 @@ declare namespace ICanvasConfig {
         history?: boolean;
         enableMouseWheel?: boolean;
         enableMousePan?: boolean;
+        enableSelection?: boolean;
         zoomFactor?: number;
         enableRotating?: boolean;
         rotatingGrid?: number;
         nodeMovable?: boolean;
         nodeResizable?: boolean;
+    }
+
+    /**
+     * @author cxs
+     * @date 2023-05-25
+     * @update 2023-05-25
+     * @description 背景配置
+     * @param color         背景颜色
+     * @param showImage     是否显示背景图片
+     * @param repeat        背景图片重复方式
+     * @param position      背景图片位置
+     * @param size          背景图片大小
+     * @param opacity       背景图片透明度
+     * @param angle         背景图片角度
+     */
+    export interface BackgroundOptions {
+        color?: string
+        showImage?: boolean
+        repeat?: string
+        position?: string
+        size?: string
+        opacity?: number
+        angle?: number
+      }
+
+    /**
+     * @author cxs
+     * @date 2023-05-25
+     * @update 2023-05-25
+     * @description 画布背景和网格配置
+     * @param background   背景配置
+     * @param grid         网格
+     * @param gridSize     网格大小
+     */
+    export interface GraphOptions {
+        background: BackgroundOptions,
+        showGrid: boolean,
+        gridSize: number
     }
 }

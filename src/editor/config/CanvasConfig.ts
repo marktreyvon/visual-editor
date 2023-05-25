@@ -30,14 +30,15 @@ class CanvasConfig implements ICanvasConfig {
     private static instance: CanvasConfig;
     private static displayInstance: CanvasConfig;
     graph: Graph | undefined = undefined;
+    graphOptions: ICanvasConfig.GraphOptions;
     cellEvents: CellEvents | undefined = undefined;
     containerId: string;
     autoResize: boolean = Common.DEFAULT_AUTO_RESIZE;
     gridSize: number = Common.DEFAULT_GRID_SIZE;
-    selection: boolean = Common.DEFAULT_SELECTION;
     history: boolean = Common.DEFAULT_HISTORY;
     enableMouseWheel: boolean = Common.DEFAULT_ENABLE_MOUSE_WHEEL;
     enableMousePan: boolean = Common.DEFAULT_ENABLE_MOUSE_PAN;
+    enableSelection: boolean = Common.DEFAULT_ENABLE_SELECTION;
     zoomFactor: number = Common.DEFAULT_ZOOM_FACTOR;
     enableRotating: boolean = Common.DEFAULT_ENABLE_ROTATING;
     rotatingGrid: number = Common.DEFAULT_RATATING_GRID;
@@ -49,15 +50,20 @@ class CanvasConfig implements ICanvasConfig {
         if (options) {
             if (options.autoResize !== undefined) this.autoResize = options.autoResize;
             if (options.gridSize !== undefined) this.gridSize = options.gridSize;
-            if (options.selection !== undefined) this.selection = options.selection;
             if (options.history !== undefined) this.history = options.history;
             if (options.enableMouseWheel !== undefined) this.enableMouseWheel = options.enableMouseWheel;
             if (options.enableMousePan !== undefined) this.enableMousePan = options.enableMousePan;
+            if (options.enableSelection !== undefined) this.enableSelection = options.enableSelection;
             if (options.zoomFactor !== undefined) this.zoomFactor = options.zoomFactor;
             if (options.enableRotating !== undefined) this.enableRotating = options.enableRotating;
             if (options.rotatingGrid !== undefined) this.rotatingGrid = options.rotatingGrid;
             if (options.nodeMovable !== undefined) this.nodeMovable = options.nodeMovable;
             if (options.nodeResizable !== undefined) this.nodeResizable = options.nodeResizable;
+        }
+        this.graphOptions = {
+            background: {},
+            showGrid: Common.DEFAULT_SHOW_GRID,
+            gridSize: this.gridSize,
         }
         this.initGraph();
     }
@@ -120,7 +126,7 @@ class CanvasConfig implements ICanvasConfig {
         this.graph.showGrid();
 
         // 配置多节点框选
-        if (this.selection) {
+        if (this.enableSelection) {
             this.graph.use(
                 new Selection({
                     enabled: true,
@@ -161,9 +167,9 @@ class CanvasConfig implements ICanvasConfig {
         const resizingOptions = {
             enabled: this.nodeResizable,
             minWidth: 80,
-            maxWidth: 400,
+            maxWidth: 2000,
             minHeight: 40,
-            maxHeight: 400,
+            maxHeight: 2000,
             orthogonal: false,
             restrict: true,
             preserveAspectRatio: false,
@@ -189,6 +195,8 @@ class CanvasConfig implements ICanvasConfig {
         this.cellEvents = new CellEvents(this.graph);
 
         this.setNodeMovable(this.nodeMovable);
+
+        this.graph.centerContent();
     }
 
 
@@ -317,6 +325,40 @@ class CanvasConfig implements ICanvasConfig {
         this.graph.disableSnapline();
     }
 
+    public showGrid(show: boolean): void {
+        if (!this.graph) 
+            throw new Error('Graph is undefined.');
+        if (show) {
+            this.graph.showGrid();
+        } else {
+            this.graph.hideGrid();
+        }
+        this.graphOptions.showGrid = show;
+    }
+
+    public setBackground(options: ICanvasConfig.BackgroundOptions): void {
+        if (!this.graph) 
+            throw new Error('Graph is undefined.');
+        this.graph.drawBackground(options);
+        this.graphOptions.background = options;
+    }
+
+    public getGrahOptions() {
+        return this.graphOptions;
+    }
+    
+    public getGridSize(): number {
+        return this.gridSize;
+    }
+
+    public setGridSize(gridSize: number): void {
+        if(!this.graph) 
+            throw new Error('Graph is undefined.');
+        this.gridSize = gridSize;
+        this.graph.setGridSize(gridSize);
+        this.graphOptions.gridSize = gridSize;
+    }
+
     public undo(): void {   
         if (!this.graph)
             throw new Error('Graph is undefined.');
@@ -329,10 +371,14 @@ class CanvasConfig implements ICanvasConfig {
         this.graph.redo();
     }
 
-    public toJSON(): { cells: Cell.Properties[] } {
+    public toJSON(): { cells: Cell.Properties[] } | { graph: any } {
         if (!this.graph) 
             throw new Error('Graph is undefined.');
-        return this.graph.toJSON();
+        const json = { 
+            ...this.graph.toJSON(), 
+            graph: this.graphOptions
+        };
+        return json;
     }
 
     public exportSVG(fileName?: string, options?: Export.ToImageOptions): void {
