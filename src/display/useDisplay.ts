@@ -15,10 +15,28 @@ export const useDisplay = (containerId: string) => {
             nodeResizable: false,
             enableRotating: false
         }
-        loadPlugins(Plugins)
-        let canvasConfig: ICanvasConfig = CanvasConfig.getDisplayInstance(containerId, options);
-        if (data) {
-            canvasConfig.renderJSON(JSON.parse(data));
+        loadPlugins(Plugins);
+        console.log('initDisplay', )
+        if (data && JSON.stringify(data) !== '{}') {
+            const jsonObj = JSON.parse(data);
+            let canvasConfig: ICanvasConfig = CanvasConfig.getDisplayInstance(containerId, options);
+            // 渲染节点
+            console.log('jsonObj', jsonObj.cells)
+            jsonObj.cells.forEach((cell: any) => {
+                cell.attrs = {
+                    body: {
+                        stroke: 'none', // 取消边框
+                        fill: '#5F95FF',
+                        rx: 5,
+                        ry: 5,
+                      }
+                }
+            });
+            canvasConfig.renderJSON(jsonObj);
+            // 初始化画布背景
+            canvasConfig.setBackground(jsonObj.graph.background);
+            // 初始化画布网格
+            canvasConfig.showGrid(jsonObj.graph.showGrid);
         }
     }
 

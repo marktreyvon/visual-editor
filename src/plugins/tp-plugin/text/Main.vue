@@ -37,6 +37,14 @@ export default {
         }
     }
   },
+  watch: {
+    style: {
+        handler: function (val, oldVal) {
+            console.log('style', val, oldVal)
+        },
+        deep: true
+    },
+  },
   methods: {
   }
 }

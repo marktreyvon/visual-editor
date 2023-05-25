@@ -42,7 +42,7 @@ export const useTools = (): ITools => {
         redo: () => {
             CanvasConfig.getInstance().redo();
         },
-        toJSON: (): { cells: Cell.Properties[] } => {
+        toJSON: (): { cells: Cell.Properties[] } | { graph: any } => {
             return CanvasConfig.getInstance().toJSON();
         },
         exportJPEG: (fileName?, options?) => {
@@ -64,6 +64,9 @@ export const useTools = (): ITools => {
                 query: { id }
             })
             window.open(url.href);
+        },
+        help() {
+            window.open('http://thingspanel.io/zh-Hans/docs/overview');
         },
         share: () => {
 
