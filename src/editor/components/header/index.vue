@@ -31,18 +31,21 @@
                 </template>
               </el-dropdown>
         </div>
-        <div class="absolute inset-y-0 right-0 w-64">
+        <div class="absolute inset-y-0 right-0 w-96">
             <el-button @click="preview(params.id)">预览</el-button>
             <el-button >分享</el-button>
-            <el-button @click="save(params.id)">保存</el-button>
+          <el-button @click="save(params.id)">保存</el-button>
+          <el-button type="primary" :icon="HomeFilled" @click="data.marketVisible = true">插件市场</el-button>
         </div>
     </div>
+  <Market v-model:visible="data.marketVisible"/>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, toRefs, inject, onMounted } from "vue";
-import { House } from "@element-plus/icons-vue";
+import { HomeFilled, House } from '@element-plus/icons-vue'
 import {StencilConfig} from "@/editor/config/StencilConfig"
+import Market from '@/market/Market.vue'
 const props = defineProps({ 
     tools: {
         type: Object,
@@ -99,15 +102,14 @@ const handleCommandExport = (command: string) => {
     }
 }
 
+const data = reactive({
+  marketVisible: false
+})
 </script>
 
 <style lang="scss" scoped>
 .example-showcase .el-dropdown + .el-dropdown {
     margin-left: 15px;
-  }
-
-  :deep(.el-button--primary) {
-    color: #606266!important;
   }
   .example-showcase .el-dropdown-link {
     cursor: pointer;
