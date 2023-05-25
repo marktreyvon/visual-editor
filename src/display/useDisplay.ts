@@ -13,7 +13,8 @@ export const useDisplay = (containerId: string) => {
             autoResize: true,
             nodeMovable: false,
             nodeResizable: false,
-            enableRotating: false
+            enableRotating: false,
+            enableSelection: false,
         }
         loadPlugins(Plugins);
         console.log('initDisplay', )

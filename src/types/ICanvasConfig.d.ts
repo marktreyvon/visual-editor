@@ -33,11 +33,6 @@ declare interface ICanvasConfig {
     private gridSize: number;
 
     /**
-     * 是否开启多节点框选
-     */
-    private selection: boolean;
-
-    /**
      * 网格大小
      */
     private history: boolean;
@@ -51,6 +46,11 @@ declare interface ICanvasConfig {
      * 是否开启鼠标平移画布
      */
     private enableMousePan: boolean;
+
+    /**
+     * 是否开启多节点框选
+     */
+    private enableSelection: boolean;
 
     /**
      * 缩放因子
@@ -246,6 +246,7 @@ declare namespace ICanvasConfig {
      * @param history           是否开启历史记录
      * @param enableMouseWheel  是否开启鼠标滚轮缩放
      * @param enableMousePan    是否开启鼠标平移画布
+     * @param enableSelection   是否开启多节点框选
      * @param zoomFactor        缩放因子
      * @param enableRotating    节点是否可旋转
      * @param rotatingGrid      节点每次旋转的角度
@@ -259,6 +260,7 @@ declare namespace ICanvasConfig {
         history?: boolean;
         enableMouseWheel?: boolean;
         enableMousePan?: boolean;
+        enableSelection?: boolean;
         zoomFactor?: number;
         enableRotating?: boolean;
         rotatingGrid?: number;

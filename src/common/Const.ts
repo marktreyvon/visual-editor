@@ -53,6 +53,10 @@ export const DEFAULT_ENABLE_MOUSE_WHEEL = true;
 export const DEFAULT_ENABLE_MOUSE_PAN = true;
 
 /**
+ * 是否开启多节点框选
+ */
+export const DEFAULT_ENABLE_SELECTION = true;
+/**
  * 默认缩放因子
  */
 export const DEFAULT_ZOOM_FACTOR = 0.2;

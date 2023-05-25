@@ -35,10 +35,10 @@ class CanvasConfig implements ICanvasConfig {
     containerId: string;
     autoResize: boolean = Common.DEFAULT_AUTO_RESIZE;
     gridSize: number = Common.DEFAULT_GRID_SIZE;
-    selection: boolean = Common.DEFAULT_SELECTION;
     history: boolean = Common.DEFAULT_HISTORY;
     enableMouseWheel: boolean = Common.DEFAULT_ENABLE_MOUSE_WHEEL;
     enableMousePan: boolean = Common.DEFAULT_ENABLE_MOUSE_PAN;
+    enableSelection: boolean = Common.DEFAULT_ENABLE_SELECTION;
     zoomFactor: number = Common.DEFAULT_ZOOM_FACTOR;
     enableRotating: boolean = Common.DEFAULT_ENABLE_ROTATING;
     rotatingGrid: number = Common.DEFAULT_RATATING_GRID;
@@ -50,10 +50,10 @@ class CanvasConfig implements ICanvasConfig {
         if (options) {
             if (options.autoResize !== undefined) this.autoResize = options.autoResize;
             if (options.gridSize !== undefined) this.gridSize = options.gridSize;
-            if (options.selection !== undefined) this.selection = options.selection;
             if (options.history !== undefined) this.history = options.history;
             if (options.enableMouseWheel !== undefined) this.enableMouseWheel = options.enableMouseWheel;
             if (options.enableMousePan !== undefined) this.enableMousePan = options.enableMousePan;
+            if (options.enableSelection !== undefined) this.enableSelection = options.enableSelection;
             if (options.zoomFactor !== undefined) this.zoomFactor = options.zoomFactor;
             if (options.enableRotating !== undefined) this.enableRotating = options.enableRotating;
             if (options.rotatingGrid !== undefined) this.rotatingGrid = options.rotatingGrid;
@@ -111,10 +111,10 @@ class CanvasConfig implements ICanvasConfig {
         this.graph.showGrid();
 
         // 配置多节点框选
-        if (this.selection) {
+        if (this.enableSelection) {
             this.graph.use(
                 new Selection({
-                    enabled: false,
+                    enabled: true,
                     multiple: true,
                     rubberband: true,
                     movable: true,
