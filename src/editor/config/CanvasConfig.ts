@@ -83,6 +83,7 @@ class CanvasConfig implements ICanvasConfig {
     }
 
     initGraph(): void {
+        window.__x6_instances__ = [];
         this.graph = new Graph({
             container: <HTMLDivElement>document.getElementById(this.containerId),
             autoResize: this.autoResize,
@@ -91,12 +92,25 @@ class CanvasConfig implements ICanvasConfig {
                 eventTypes: ["rightMouseDown", "mouseWheel"]
             },
             connecting:{
+                snap: true,
                 allowBlank: false,  //不允许指向空节点;  *@author 王炳宏  2023-05-23
-                allowMulti: false,  //不允许重复连接;  *@author 王炳宏  2023-05-23
+                allowMulti: true,  //不允许重复连接;  *@author 王炳宏  2023-05-23
                 allowLoop: false,   //不允许自连;   *@author; 王炳宏  2023-05-23
                 allowNode: false,   //不允许非连接点连接,如需要改为true；  *@author; 王炳宏  2023-05-23
                 allowEdge: false,   //不允许非连接点连接,如需要改为true； *@author; 王炳宏  2023-05-23
                 allowPort: true,    //不允许指向空节点,*@author; 王炳宏  2023-05-23
+
+                createEdge(){
+                    return this.createEdge({
+                        shape: "edge",
+                        attrs: {
+                            line: {
+                                stroke: "#ff2929",
+                                strokeWidth: 1,
+                            },
+                        },
+                    });
+                }
             },
             interacting: (cellView) => {
                 return {
@@ -105,6 +119,7 @@ class CanvasConfig implements ICanvasConfig {
                 }
             }
         });
+        window.__x6_instances__.push(this.graph);
         // 配置网格大小
         this.graph.setGridSize(this.gridSize);
         // 显示网格
@@ -209,26 +224,72 @@ class CanvasConfig implements ICanvasConfig {
 
     //增加改变边样式的函数， ;  *@author; 王炳宏  2023-05-23
     //todo 需要完善其他需求
-    public onChangeEdges(command: string): void {
+    public onChangeEdges(edgeId: any,nodeId:any,data:any): void {
 
         if (!this.graph)
             throw new Error('Graph is undefined.');
-        const edges = this.graph.getEdges()
-        switch (command){
-            case 'prop':
-                edges.forEach((edge) => {
-                    const x = Math.floor(Math.random() * 600)
-                    const y = Math.floor(Math.random() * 200)
-                    edge.prop('vertices', [[x, y]])
-                })
-                break
-            case 'attr':
-                edges.forEach((edge) => {
-                    const color = Color.random().toHex()
-                    edge.attr('line/stroke', color)
-                })
-                break
+        console.log(edgeId,"4849382590843958439584")
+        console.log(nodeId,"4849382590843958439584")
+
+        const edge = this.graph.getCellById(edgeId)
+        console.log(edge,"4849382590843958439584")
+        let x1,y1,w1,h1,x2,y2,w2,h2
+        let ex,ey, ew,eh
+
+        if(edge?.source?.cell){
+         const  theSource = this.graph.getCellById(edge.source.cell)
+            const  theTarget = this.graph.getCellById(edge.target.cell)
+
+            x1=theSource.position().x
+            y1=theSource.position().y
+            w1=theSource.size().width
+            h1=theSource.size().height
+            x2=theTarget.position().x
+            y2=theTarget.position().y
+            w2=theTarget.size().width
+            h2=theTarget.size().height
+            if(x2>x1){
+                ex=x1
+                ew=w1
+            }else{
+                ex=x2
+                ew=w2
+            }
+            if(h2>h1){
+                ey=y1
+                eh=h1
+            }else{
+                ey=y2
+                eh=h2
+            }
+
+
         }
+
+        switch (data.lineType) {
+
+                    case "1":
+                        edge.prop('connector',  "normal")
+                        edge.prop('vertices', [])
+                        break
+                    case "2":
+                        edge.prop('connector',  "normal")
+                        edge.prop('vertices', [{ x: ex+ew+40, y: ey+eh-40 }])
+                        break
+                    case "3":
+                        edge.prop('connector',  "smooth")
+                        edge.prop('vertices', [{ x: x1+w1+40, y: y1+h1-40 }])
+                        break
+                }
+                edge.attr('line/targetMarker', 'classic')
+                edge.attr('line/stroke', data.lineColor)
+                edge.attr('line/strokeDasharray', data.lineStyle)
+                edge.attr('line/style', {animation:`ant-line 30s infinite linear`})
+                edge.attr('line/strokeWidth', data.lineWidth)
+
+
+
+
 
     }
     

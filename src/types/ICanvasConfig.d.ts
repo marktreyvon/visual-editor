@@ -105,7 +105,7 @@ declare interface ICanvasConfig {
      * 测试线条的颜色修改工具
      * @param command 
      */
-    onChangeEdges(command: string): void;
+    onChangeEdges(edgeId: any,nodeId: any,data:any): void;
 
     /**
      * 渲染节点数据
