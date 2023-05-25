@@ -39,6 +39,7 @@ class CanvasConfig implements ICanvasConfig {
     enableMouseWheel: boolean = Common.DEFAULT_ENABLE_MOUSE_WHEEL;
     enableMousePan: boolean = Common.DEFAULT_ENABLE_MOUSE_PAN;
     zoomFactor: number = Common.DEFAULT_ZOOM_FACTOR;
+    enableRotating: boolean = Common.DEFAULT_ENABLE_ROTATING;
     rotatingGrid: number = Common.DEFAULT_RATATING_GRID;
     nodeMovable: boolean = Common.DEFAULT_NODE_MOVABLE;
     nodeResizable: boolean = Common.DEFAULT_NODE_RESIZABLE;
@@ -53,6 +54,7 @@ class CanvasConfig implements ICanvasConfig {
             if (options.enableMouseWheel !== undefined) this.enableMouseWheel = options.enableMouseWheel;
             if (options.enableMousePan !== undefined) this.enableMousePan = options.enableMousePan;
             if (options.zoomFactor !== undefined) this.zoomFactor = options.zoomFactor;
+            if (options.enableRotating !== undefined) this.enableRotating = options.enableRotating;
             if (options.rotatingGrid !== undefined) this.rotatingGrid = options.rotatingGrid;
             if (options.nodeMovable !== undefined) this.nodeMovable = options.nodeMovable;
             if (options.nodeResizable !== undefined) this.nodeResizable = options.nodeResizable;
@@ -154,7 +156,7 @@ class CanvasConfig implements ICanvasConfig {
 
         // 配置节点旋转
         const rotatingOptions = {
-            enabled: true,
+            enabled: this.enableRotating,
             grid: this.rotatingGrid,
         }
         // 启用缩放和旋转

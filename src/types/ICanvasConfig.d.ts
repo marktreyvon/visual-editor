@@ -58,6 +58,11 @@ declare interface ICanvasConfig {
     private zoomFactor: number;
 
     /**
+     * 节点是否可旋转
+     */
+    private enableRotating: boolean;
+
+    /**
      * 节点每次旋转的角度
      */
     private rotatingGrid: number;
@@ -219,6 +224,7 @@ declare namespace ICanvasConfig {
      * @param enableMouseWheel  是否开启鼠标滚轮缩放
      * @param enableMousePan    是否开启鼠标平移画布
      * @param zoomFactor        缩放因子
+     * @param enableRotating    节点是否可旋转
      * @param rotatingGrid      节点每次旋转的角度
      * @param nodeMovable       节点是否可移动
      * @param nodeResizable     节点是否可缩放
@@ -231,6 +237,7 @@ declare namespace ICanvasConfig {
         enableMouseWheel?: boolean;
         enableMousePan?: boolean;
         zoomFactor?: number;
+        enableRotating?: boolean;
         rotatingGrid?: number;
         nodeMovable?: boolean;
         nodeResizable?: boolean;

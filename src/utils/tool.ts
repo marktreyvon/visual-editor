@@ -1,3 +1,17 @@
+
+import { ElMessage } from 'element-plus'
+
+const message = {
+        success: (msg: string) => {
+            ElMessage({
+                message: msg,
+                type: 'success',
+              })
+        },
+        error: (msg: string) => {
+
+        }
+}
 /**
  * 解析URL参数
  * @returns 
@@ -32,4 +46,4 @@ const randomString = (len?: number) => {
     return pwd;
 }
 
-export { parseParams, randomString }
+export { message, parseParams, randomString }

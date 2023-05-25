@@ -1,6 +1,10 @@
-import { Cell } from '@antv/x6';
-import { CanvasConfig,StencilConfig } from '../config'
+import { Cell } from "@antv/x6";
+import { CanvasConfig,StencilConfig } from "../config"
 import { useRouter } from "vue-router";
+import VisualAPI from "@/api/visual";
+import { inject } from "vue";
+import { message } from "@/utils/tool";
+import * as Common from "@/common"
 /**
  * @author cxs
  * @date 2023-04-20
@@ -12,7 +16,6 @@ import { useRouter } from "vue-router";
 export const useTools = (): ITools => {
     const router = useRouter();
     return {
-
         // 测试线条的颜色修改工具;  *@author; 王炳宏  2023-05-23
         attrColor: () => {
             CanvasConfig.getInstance().onChangeEdges('attr');
@@ -42,26 +45,37 @@ export const useTools = (): ITools => {
         toJSON: (): { cells: Cell.Properties[] } => {
             return CanvasConfig.getInstance().toJSON();
         },
-        exportJPEG(fileName?, options?) {
+        exportJPEG: (fileName?, options?) => {
             CanvasConfig.getInstance().exportJPEG(fileName, options);
         },
-        exportPNG(fileName?, options?) {
+        exportPNG: (fileName?, options?) => {
             CanvasConfig.getInstance().exportPNG(fileName, options);
         },
-        exportSVG(fileName?, options?) {
+        exportSVG: (fileName?, options?) => {
             CanvasConfig.getInstance().exportSVG(fileName, options);
         },
-        preview() {
-            const json = CanvasConfig.getInstance().toJSON();
+        preview: (id: string) => {
+            // 获取大屏数据
+            const jsonData = CanvasConfig.getInstance().toJSON();
+            // 大屏数据存入session
+            sessionStorage.setItem(Common.PREVIEW_JSON_DATA_KEY, JSON.stringify(jsonData));
             const url = router.resolve({
                 name: 'display',
-                params: { id: '123'},
-                query: { id: "123" }
+                query: { id }
             })
             window.open(url.href);
         },
-        share() {
+        share: () => {
 
+        },
+        save: (id: string) => {
+            const json =  CanvasConfig.getInstance().toJSON();
+            VisualAPI.updateJsonDate({id, json_data: JSON.stringify(json)})
+                .then(({ data }) => {
+                    if (data.code === 200) {
+                        message.success('保存成功')
+                    }
+                });
         }
     }
 }

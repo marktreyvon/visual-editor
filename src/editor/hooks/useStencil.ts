@@ -18,6 +18,21 @@ export const useStencil = () => {
      */
     const initStencil = (plugins: any) => {
         const graph: Graph = getGraph();
+        const { groups, nodeMap} = createStencilNode(plugins, graph)
+        let groupList: Stencil.Group[] = groups.map((group: string) => getGroup(group));
+        const stencilConfig: IStencilConfig = getStencilConfig(groupList);
+        nodeMap.forEach((nodes: any[], key: string) => {
+            stencilConfig.getStencil().load(nodes, key);
+        });
+    }
+
+    /**
+     * 创建左侧列表上的图标
+     * @param plugins 
+     * @param graph 
+     * @returns 
+     */
+    const createStencilNode = (plugins: any, graph: Graph) => {
         let nodeMap: Map<string, any[]> = new Map<string, any[]>();
         let groups: string[] = [];
         let nodeList: any[] = [];
@@ -48,11 +63,11 @@ export const useStencil = () => {
                 nodeMap.set(view.group, nodeList);
             })
         }
-        let groupList: Stencil.Group[] = groups.map((group: string) => getGroup(group));
-        const stencilConfig: IStencilConfig = getStencilConfig(groupList);
-        nodeMap.forEach((nodes: any[], key: string) => {
-            stencilConfig.getStencil().load(nodes, key);
-        });
+
+        return {
+            groups,
+            nodeMap
+        }
     }
 
     /**

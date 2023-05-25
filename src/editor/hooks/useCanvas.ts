@@ -1,7 +1,7 @@
 import { CanvasConfig } from '../config';
 import * as Common from '@/common';
 import * as Plugins from '@/plugins'
-import { useEvents, usePlugins } from '.';
+import { useEvents, usePlugins, useStencil } from '.';
 
 /**
  * @author cxs
@@ -12,6 +12,7 @@ import { useEvents, usePlugins } from '.';
  */
 const useCanvas = (): any => {
     const { loadPlugins } = usePlugins();
+    const { initStencil } = useStencil();
 
     const initCanvas = (data?: any) => {
         // 获取画布管理器
@@ -20,6 +21,7 @@ const useCanvas = (): any => {
         // useEvents(canvasConfig);
         // 加载插件
         loadPlugins(Plugins);
+        initStencil(Plugins);
     }
 
     return {

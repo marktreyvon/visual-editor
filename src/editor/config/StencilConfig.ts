@@ -97,7 +97,7 @@ class StencilConfig implements IStencilConfig {
         const pluginConfig: IPluginConfig = PluginConfig.getInstance();
         const cpt = pluginConfig.getComponent(data.name);
         const dropCpt: Component = getDropComponent(cpt.Main);
-       
+        // 注册组件
         registerShape(data.name, dropCpt);
 
         // 创建拖拽到画布上的组件
@@ -151,6 +151,11 @@ class StencilConfig implements IStencilConfig {
 
 }
 
+/**
+ * 注册组件
+ * @param shape 
+ * @param component 
+ */
 const registerShape = (shape: string, component: any) => {
     register({
         shape,

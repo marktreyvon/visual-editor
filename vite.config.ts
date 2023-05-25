@@ -10,6 +10,17 @@ export default ({ mode }: ConfigEnv): UserConfig => {
   return {
     base: env.VITE_BASE_PATH,
     plugins: [vue(), vueJsx()],
+    server: {
+      port: Number(env.VITE_PORT),
+      cors: true,
+      proxy: {
+        '/api': {
+          target: env.VITE_BASE_URL + '/api',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, '')
+        }
+      }
+    },
     resolve: {
       alias: [
         {

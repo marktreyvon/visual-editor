@@ -16,12 +16,24 @@ export const useAuthStore = defineStore('authStore', () => {
         window.localStorage.setItem(TOKEN_EXPIRES_TIME_KEY, tokenInfo.expiresTime);
     }
 
+    const destroyToken = (): void => {
+        setTokenInfo({ token: "", expiresTime: "" });
+    }
+
     return {
-        getTokenInfo, setTokenInfo
+        getTokenInfo, setTokenInfo, destroyToken
     }
 })
 
-interface ITokenInfo {
+export interface ITokenInfo {
+
+    /**
+     * 令牌
+     */
     token: string;
+
+    /**
+     * 过期时间
+     */
     expiresTime: string;
 }

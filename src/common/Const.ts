@@ -53,6 +53,11 @@ export const DEFAULT_ENABLE_MOUSE_PAN = true;
 export const DEFAULT_ZOOM_FACTOR = 0.2;
 
 /**
+ * 节点是否可旋转
+ */
+export const DEFAULT_ENABLE_ROTATING = true;
+
+/**
  * 节点每次旋转的角度
  */
 export const DEFAULT_RATATING_GRID = 15;
@@ -66,3 +71,8 @@ export const DEFAULT_NODE_MOVABLE = true;
  * 节点是否可调整大小
  */
 export const DEFAULT_NODE_RESIZABLE = true;
+
+/**
+ * 预览大屏数据存储key
+ */
+export const PREVIEW_JSON_DATA_KEY = 'preview_json_data';

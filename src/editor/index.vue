@@ -24,15 +24,34 @@
     </el-container>
   </template>
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, inject } from "vue";
 import Header from "./components/header/index.vue";
 import LeftAside from "./components/left-aside/index.vue";
 import CanvasEditor from "./components/canvas-editor/index.vue";
 import RightAttributePanel from "./components/right-attribute-panel/index.vue";
 import { useTools, useCanvas } from './hooks'
+import VisualAPI from '@/api/visual'
 
 onMounted(() => {
-  console.log('editor mounted')
+  console.log('editor mounted', inject('params'))
+  // 从服务器获取大屏数据
+  const params1 = {
+    "current_page": 1,
+    "per_page": 10,
+    "relation_id": "123456"
+  }
+  const params: any = inject('params', null);
+  if (params) {
+    VisualAPI.getJsonDataById({
+      id: params.id,
+      current_page: 1,
+      per_page: 10
+    }).then(res => {
+      console.log('getJsonDataById', res)
+    })
+  }
+
+  
   // 加载画布
   const { initCanvas } = useCanvas();
   initCanvas();

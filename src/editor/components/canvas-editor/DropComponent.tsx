@@ -20,6 +20,12 @@ export const getDropComponent = (cpt: Component): Component => {
                 if (current.value) {
                     this.value = current.value ;
                 }
+
+                // 修改后的属性和值存入节点的data属性中
+                node.setData({
+                    style: this.style,
+                    value: this.value
+                })
             });
         },
         render() {

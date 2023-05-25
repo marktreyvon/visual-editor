@@ -32,15 +32,15 @@
               </el-dropdown>
         </div>
         <div class="absolute inset-y-0 right-0 w-64">
-            <el-button @click="preview">预览</el-button>
+            <el-button @click="preview(params.id)">预览</el-button>
             <el-button >分享</el-button>
-            <el-button>保存</el-button>
+            <el-button @click="save(params.id)">保存</el-button>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, toRefs } from "vue";
+import { ref, reactive, toRefs, inject, onMounted } from "vue";
 import { House } from "@element-plus/icons-vue";
 import {StencilConfig} from "@/editor/config/StencilConfig"
 const props = defineProps({ 
@@ -63,9 +63,16 @@ const {
     exportJPEG,
     exportSVG,
     toJSON,
-    preview
+    preview,
+    save
 } = tools.value
 
+const params: any = inject("params", null)
+  console.log('onMounted', params)
+
+onMounted(() => {
+  
+});
 
 const handleClickExport = () => {
     const json = toJSON();

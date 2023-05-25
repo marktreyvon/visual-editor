@@ -7,7 +7,7 @@ export const Render = defineComponent({
       loaded: false
     })
     console.log('mounted');
-    const path = '/5c44bf6a.system.js'
+    const path = '/cacae890.system.js'
     System.import(path).then((module) => {
       setTimeout(() => {
         data.loaded = true

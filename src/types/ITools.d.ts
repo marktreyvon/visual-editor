@@ -76,10 +76,15 @@ declare interface ITools {
     /**
      * 预览
      */
-    preview(): void;
+    preview(id: string): void;
 
     /**
      * 分享
      */
     share(): void;
+
+    /**
+     * 保存大屏数据
+     */
+    save(id: string): void;
 }

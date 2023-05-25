@@ -9,13 +9,14 @@ declare interface IPluginConfig {
     /**
      * 组件列表
      */
-    private components: Map<String, any>;
+    components: Map<String, any>;
 
     public setComponents(components: Map<String, any>): void;
 
     public getComponents(): Map<String, any>;
 
-    public addComponent(name: string, component: any): void;
+    public addComponent(name: String, component: any): void;
 
-    public getComponent(name: string): any;
+    public getComponent(name: String): any;
+
 }

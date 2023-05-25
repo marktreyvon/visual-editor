@@ -1,4 +1,4 @@
-import  { useStencil }  from ".";
+import { Graph } from "@antv/x6";
 import { PluginConfig } from "../config";
 
 /**
@@ -9,8 +9,11 @@ import { PluginConfig } from "../config";
  * @returns 
  */
 export const usePlugins = (): any => {
-    const { initStencil } = useStencil();
 
+    /**
+     * 加载插件
+     * @param plugins 
+     */
     const loadPlugins = (plugins: any): void => {
         const pluginConfig: IPluginConfig = PluginConfig.getInstance();
         for (const key in plugins) {
@@ -20,7 +23,6 @@ export const usePlugins = (): any => {
                 pluginConfig.addComponent(view.name, view);
             })
         }
-        initStencil(plugins);
     }
 
     return {
