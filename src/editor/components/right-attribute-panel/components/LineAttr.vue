@@ -1,7 +1,7 @@
 <template>
   <el-form v-model="state.formData">
-    <el-form-item label="线条类型">
-      <el-select v-model="state.formData.lineType" placeholder="请选择">
+    <el-form-item label="线条类型" ref="FormRef" >
+      <el-select v-model="state.formData.lineType" placeholder="请选择" @change='validate'>
         <el-option value='1' label='直线'>
         </el-option>
         <el-option value='2' label='线段'>
@@ -11,31 +11,25 @@
       </el-select>
     </el-form-item>
     <el-form-item label="线条样式">
-      <el-select v-model="state.formData.lineStyle" placeholder="请选择">
-
+      <el-select v-model="state.formData.lineStyle" placeholder="请选择" @change='validate'>
         <el-option :value='0' label='实线'>
-
         </el-option>
-
         <el-option :value='5' label='虚线1'>
-
         </el-option>
         <el-option :value='15' label='虚线2'>
-
         </el-option>
         <el-option :value='20' label='虚线3'>
-
         </el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="线条宽度">
-      <el-input v-model="state.formData.lineWidth"></el-input>
+      <el-input v-model="state.formData.lineWidth" @change='validate'></el-input>
     </el-form-item>
     <el-form-item label="线条颜色">
-      <el-color-picker v-model="state.formData.lineColor"/>
+      <el-color-picker v-model="state.formData.lineColor" @change='validate'/>
     </el-form-item>
     <el-form-item label="流动效果">
-      <el-select v-model="state.formData.flowEffect" placeholder="请选择">
+      <el-select v-model="state.formData.flowEffect" placeholder="请选择" @change='validate'>
         <el-option value='无效果' label='无效果'>
         </el-option>
         <el-option value='水流' label='水流'>
@@ -44,16 +38,16 @@
         </el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="流动颜色" v-if="state.formData.flowEffect!=='无效果'">
+    <el-form-item label="流动颜色" v-if="state.formData.flowEffect!=='无效果'" @change='validate'>
       <el-color-picker v-model="state.formData.flowColor"/>
     </el-form-item>
-    <el-form-item label="流动速度" v-if="state.formData.flowEffect!=='无效果'">
+    <el-form-item label="流动速度" v-if="state.formData.flowEffect!=='无效果'" @change='validate'>
 
       <el-input v-model="state.formData.flowSpeed"></el-input>
     </el-form-item>
-    <el-form-item label="流动方向" v-if="state.formData.flowEffect!=='无效果'">
+    <el-form-item label="流动方向" v-if="state.formData.flowEffect!=='无效果'" @change='validate'>
 
-      <el-select v-model="state.formData.flowDirection" placeholder="请选择">
+      <el-select v-model="state.formData.flowDirection" placeholder="请选择" @change='validate'>
         <el-option value='-1' label='正向'>
         </el-option>
         <el-option value='1' label='反向'>
@@ -70,7 +64,7 @@
 
 <script setup lang="ts">
 import {ref, reactive, watch, watchEffect, toRefs} from "vue";
-
+import type { FormInstance, FormRules } from 'element-plus'
 const props = defineProps({
   edgeData: {
     type: Object,
@@ -86,6 +80,12 @@ const props = defineProps({
     }
   }
 })
+const FormRef = ref<FormInstance>()
+
+const validate=(val:any)=>{
+
+  setLineStyle(props.edgeData.id, props.nodeData.id, state.formData)
+}
 const {tools} = toRefs(props);
 const {
   setLineStyle
@@ -144,17 +144,16 @@ watchEffect(() => {
     edgeObj.lineStyle = props?.edgeData?.attrs?.line?.strokeDasharray || 0
     console.log(edgeObj)
 
-    state.formData = {...edgeObj};
+    state.formData = {...state.formData,...edgeObj};
     // state.data.position.x = getFixNumber(state.data.position.x);
     // state.data.position.y = getFixNumber(state.data.position.y);
   }
 
 })
 
-watch(state.formData, () => {
-  console.log("p")
-  setLineStyle(props.edgeData.id, props.nodeData.id, state.formData)
-})
+// watch(state.formData, () => {
+//
+// })
 
 
 </script>

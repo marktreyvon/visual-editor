@@ -83,7 +83,7 @@ export const useEvents = () => {
                     isEdge.value=true;
                     isNode.value=false
                     setEdgeData(data)
-                    currentNode.attr('line/stroke','#7e14ff')
+                    // currentNode.attr('line/stroke','#7e14ff')
                     console.log(isEdge.value)
 
                 }else{
