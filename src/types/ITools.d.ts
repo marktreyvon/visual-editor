@@ -7,7 +7,7 @@
  */
 declare interface ITools {
     // 测试线条的颜色修改  *@author; 王炳宏  2023-05-23
-    attrColor:() => void;
+    setLineStyle:(eid:any,nid:any,data:any) => void;
 
 
     /**
