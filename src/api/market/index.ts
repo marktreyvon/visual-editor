@@ -21,5 +21,15 @@ export const MarketApi = {
   },
   checkManager() {
     return $market.get('/market/checkManager').then(res => !!res.data)
+  },
+  install(storeId: string) {
+    return $market.post('/market/install', {
+      storeId
+    })
+  },
+  uninstall(storeId: string) {
+    return $market.post('/market/uninstall', {
+      storeId
+    })
   }
 }

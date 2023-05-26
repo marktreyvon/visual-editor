@@ -90,11 +90,13 @@
               <el-button
                 size="small" type="primary"
                 v-if="!scope.row.installed"
+                @click="install(scope.row.store.id)"
               >
                 安装
               </el-button>
               <el-button
                 size="small" type="warning"
+                @click="uninstall(scope.row.store.id)"
                 v-if="scope.row.installed"
               >
                 卸载
@@ -119,6 +121,7 @@ import { reactive, watch } from 'vue'
 import { ArrowLeftBold, HelpFilled } from '@element-plus/icons-vue'
 import { MarketApi } from '@/api/market'
 import dayjs from 'dayjs'
+import { ElMessage, ElMessageBox } from 'element-plus'
 const oss = import.meta.env.VITE_OSS
 
 const props = defineProps<{
@@ -160,11 +163,42 @@ const keydown = (e: KeyboardEvent) => {
   data.page = 1
   getPlugins()
 }
+
 watch(() => props.visible, (v) => {
   if (v) {
     getPlugins()
   }
 })
+
+const install = (id: string) => {
+  ElMessageBox.confirm(
+    '点击确认安装该插件',
+    '提示'
+  ).then(() => {
+    MarketApi.install(id).then(res => {
+      ElMessage({
+        message: '安装成功，刷新页面后生效',
+        type: 'success'
+      })
+      getPlugins()
+    })
+  })
+}
+
+const uninstall = (id: string) => {
+  ElMessageBox.confirm(
+    '点击确认卸载该插件',
+    '提示'
+  ).then(() => {
+    MarketApi.uninstall(id).then(res => {
+      ElMessage({
+        message: '卸载成功，刷新页面后生效',
+        type: 'success'
+      })
+      getPlugins()
+    })
+  })
+}
 </script>
 <style lang="scss">
 .market-drawer {
