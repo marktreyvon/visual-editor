@@ -1,22 +1,23 @@
+<!-- 节点基础属性 -->
 <template>
     <el-form>
         <el-form-item label="名称:">
-            <el-input v-model="state.data.shape"></el-input>
+            <el-input disabled v-model="state.data.shape"></el-input>
         </el-form-item>
         <el-form-item label="层级:">
-            <el-input v-model="state.data.zIndex"></el-input>
+            <el-input disabled v-model="state.data.zIndex"></el-input>
         </el-form-item>
         <el-form-item label="尺寸:">
             <el-row :gutter="10">
-                <el-col :span="12" ><el-input v-model="state.data.size.width"></el-input></el-col>
-                <el-col :span="12"><el-input v-model="state.data.size.height"></el-input></el-col>
+                <el-col :span="12" ><el-input disabled v-model="state.data.size.width"></el-input></el-col>
+                <el-col :span="12"><el-input disabled v-model="state.data.size.height"></el-input></el-col>
             </el-row>
         </el-form-item>
 
         <el-form-item label="位置:">
             <el-row :gutter="10">
-                <el-col :span="12" ><el-input v-model="state.data.position.x"></el-input></el-col>
-                <el-col :span="12"><el-input v-model="state.data.position.y"></el-input></el-col>
+                <el-col :span="12" ><el-input disabled v-model="state.data.position.x"></el-input></el-col>
+                <el-col :span="12"><el-input disabled v-model="state.data.position.y"></el-input></el-col>
             </el-row>
         </el-form-item>
         
@@ -52,7 +53,7 @@ const state = reactive<any>({
 watchEffect(() => {
     console.log('BaseAttr watchEffect', props.data)
     if (props.data) {
-        state.data = { ...props.data };
+        state.data = { ...state.data,...props.data };
         // state.data.position.x = getFixNumber(state.data.position.x);
         // state.data.position.y = getFixNumber(state.data.position.y);
     }

@@ -111,7 +111,7 @@ class StencilConfig implements IStencilConfig {
             //在创建节点时增加连接点属性;  *@author; 王炳宏  2023-05-23
             ports: {
                 groups: {
-                    link: {
+                    top: {
                         attrs: {
                             circle: {
                                 r: 6,
@@ -122,12 +122,57 @@ class StencilConfig implements IStencilConfig {
                             },
                         },
                         position: 'top',
+                    },
+                    bottom: {
+                        attrs: {
+                            circle: {
+                                r: 6,
+                                magnet: true,
+                                stroke: '#31d0c6',
+                                strokeWidth: 2,
+                                fill: '#fff',
+                            },
+                        },
+                        position: 'bottom',
+                    },
+                    right: {
+                        attrs: {
+                            circle: {
+                                r: 6,
+                                magnet: true,
+                                stroke: '#31d0c6',
+                                strokeWidth: 2,
+                                fill: '#fff',
+                            },
+                        },
+                        position: 'right',
+                    },
+                    left: {
+                        attrs: {
+                            circle: {
+                                r: 6,
+                                magnet: true,
+                                stroke: '#31d0c6',
+                                strokeWidth: 2,
+                                fill: '#fff',
+                            },
+                        },
+                        position: 'left',
                     }
                 },
                 items: [
                     {
-                        id: 'port1',
-                        group: 'link',
+
+                        group: 'top',
+                    },   {
+
+                        group: 'bottom',
+                    },   {
+
+                        group: 'right',
+                    },   {
+
+                        group: 'left',
                     }
                 ]
             },

@@ -6,7 +6,7 @@
               </el-icon>
             <span class="align-middle pl-6">大屏标题</span>
         </div>
-        <div class="mx-64 w-auto">
+        <div class="ml-64 mr-96 w-auto">
           <!--        变色测试按钮  *@author; 王炳宏 -->
           <el-button @click="attrColor">变色</el-button>
             <el-button @click="undo">撤销</el-button>
@@ -30,15 +30,17 @@
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
+            <el-button @click="preview(params.id)">预览</el-button>
         </div>
         <div class="absolute inset-y-0 right-0 w-96">
-            <el-button @click="preview(params.id)">预览</el-button>
             <el-button >分享</el-button>
           <el-button @click="save(params.id)">保存</el-button>
           <el-button type="primary" :icon="HomeFilled" @click="data.marketVisible = true">插件市场</el-button>
+            <el-button @click="save(params.id)">保存</el-button>
+            <el-button @click="save(params.id)">保存并退出</el-button>
+            <el-button @click="help">帮助</el-button>
         </div>
     </div>
-  <Market v-model:visible="data.marketVisible"/>
 </template>
 
 <script setup lang="ts">
@@ -46,7 +48,7 @@ import { ref, reactive, toRefs, inject, onMounted } from "vue";
 import { HomeFilled, House } from '@element-plus/icons-vue'
 import {StencilConfig} from "@/editor/config/StencilConfig"
 import Market from '@/market/Market.vue'
-const props = defineProps({ 
+const props = defineProps({
     tools: {
         type: Object,
         default: () => {}
@@ -67,6 +69,7 @@ const {
     exportSVG,
     toJSON,
     preview,
+    help,
     save
 } = tools.value
 
@@ -111,6 +114,10 @@ const data = reactive({
 .example-showcase .el-dropdown + .el-dropdown {
     margin-left: 15px;
   }
+
+  :deep(.el-button--primary) {
+    color: #606266!important;
+  }
   .example-showcase .el-dropdown-link {
     cursor: pointer;
     color: #606266;
@@ -119,5 +126,6 @@ const data = reactive({
   }
   .el-dropdown {
     margin-left: 12px;
+    margin-right: 12px;
   }
 </style>

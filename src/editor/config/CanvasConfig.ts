@@ -30,14 +30,15 @@ class CanvasConfig implements ICanvasConfig {
     private static instance: CanvasConfig;
     private static displayInstance: CanvasConfig;
     graph: Graph | undefined = undefined;
+    graphOptions: ICanvasConfig.GraphOptions;
     cellEvents: CellEvents | undefined = undefined;
     containerId: string;
     autoResize: boolean = Common.DEFAULT_AUTO_RESIZE;
     gridSize: number = Common.DEFAULT_GRID_SIZE;
-    selection: boolean = Common.DEFAULT_SELECTION;
     history: boolean = Common.DEFAULT_HISTORY;
     enableMouseWheel: boolean = Common.DEFAULT_ENABLE_MOUSE_WHEEL;
     enableMousePan: boolean = Common.DEFAULT_ENABLE_MOUSE_PAN;
+    enableSelection: boolean = Common.DEFAULT_ENABLE_SELECTION;
     zoomFactor: number = Common.DEFAULT_ZOOM_FACTOR;
     enableRotating: boolean = Common.DEFAULT_ENABLE_ROTATING;
     rotatingGrid: number = Common.DEFAULT_RATATING_GRID;
@@ -49,15 +50,20 @@ class CanvasConfig implements ICanvasConfig {
         if (options) {
             if (options.autoResize !== undefined) this.autoResize = options.autoResize;
             if (options.gridSize !== undefined) this.gridSize = options.gridSize;
-            if (options.selection !== undefined) this.selection = options.selection;
             if (options.history !== undefined) this.history = options.history;
             if (options.enableMouseWheel !== undefined) this.enableMouseWheel = options.enableMouseWheel;
             if (options.enableMousePan !== undefined) this.enableMousePan = options.enableMousePan;
+            if (options.enableSelection !== undefined) this.enableSelection = options.enableSelection;
             if (options.zoomFactor !== undefined) this.zoomFactor = options.zoomFactor;
             if (options.enableRotating !== undefined) this.enableRotating = options.enableRotating;
             if (options.rotatingGrid !== undefined) this.rotatingGrid = options.rotatingGrid;
             if (options.nodeMovable !== undefined) this.nodeMovable = options.nodeMovable;
             if (options.nodeResizable !== undefined) this.nodeResizable = options.nodeResizable;
+        }
+        this.graphOptions = {
+            background: {},
+            showGrid: Common.DEFAULT_SHOW_GRID,
+            gridSize: this.gridSize,
         }
         this.initGraph();
     }
@@ -77,6 +83,7 @@ class CanvasConfig implements ICanvasConfig {
     }
 
     initGraph(): void {
+        window.__x6_instances__ = [];
         this.graph = new Graph({
             container: <HTMLDivElement>document.getElementById(this.containerId),
             autoResize: this.autoResize,
@@ -85,12 +92,25 @@ class CanvasConfig implements ICanvasConfig {
                 eventTypes: ["rightMouseDown", "mouseWheel"]
             },
             connecting:{
+                snap: true,
                 allowBlank: false,  //不允许指向空节点;  *@author 王炳宏  2023-05-23
-                allowMulti: false,  //不允许重复连接;  *@author 王炳宏  2023-05-23
+                allowMulti: true,  //不允许重复连接;  *@author 王炳宏  2023-05-23
                 allowLoop: false,   //不允许自连;   *@author; 王炳宏  2023-05-23
                 allowNode: false,   //不允许非连接点连接,如需要改为true；  *@author; 王炳宏  2023-05-23
                 allowEdge: false,   //不允许非连接点连接,如需要改为true； *@author; 王炳宏  2023-05-23
                 allowPort: true,    //不允许指向空节点,*@author; 王炳宏  2023-05-23
+
+                createEdge(){
+                    return this.createEdge({
+                        shape: "edge",
+                        attrs: {
+                            line: {
+                                stroke: "#ff2929",
+                                strokeWidth: 1,
+                            },
+                        },
+                    });
+                }
             },
             interacting: (cellView) => {
                 return {
@@ -99,13 +119,14 @@ class CanvasConfig implements ICanvasConfig {
                 }
             }
         });
+        window.__x6_instances__.push(this.graph);
         // 配置网格大小
         this.graph.setGridSize(this.gridSize);
         // 显示网格
         this.graph.showGrid();
 
         // 配置多节点框选
-        if (this.selection) {
+        if (this.enableSelection) {
             this.graph.use(
                 new Selection({
                     enabled: true,
@@ -146,9 +167,9 @@ class CanvasConfig implements ICanvasConfig {
         const resizingOptions = {
             enabled: this.nodeResizable,
             minWidth: 80,
-            maxWidth: 400,
+            maxWidth: 2000,
             minHeight: 40,
-            maxHeight: 400,
+            maxHeight: 2000,
             orthogonal: false,
             restrict: true,
             preserveAspectRatio: false,
@@ -174,6 +195,8 @@ class CanvasConfig implements ICanvasConfig {
         this.cellEvents = new CellEvents(this.graph);
 
         this.setNodeMovable(this.nodeMovable);
+
+        this.graph.centerContent();
     }
 
 
@@ -201,26 +224,73 @@ class CanvasConfig implements ICanvasConfig {
 
     //增加改变边样式的函数， ;  *@author; 王炳宏  2023-05-23
     //todo 需要完善其他需求
-    public onChangeEdges(command: string): void {
+    public onChangeEdges(edgeId: any,nodeId:any,data:any): void {
 
         if (!this.graph)
             throw new Error('Graph is undefined.');
-        const edges = this.graph.getEdges()
-        switch (command){
-            case 'prop':
-                edges.forEach((edge) => {
-                    const x = Math.floor(Math.random() * 600)
-                    const y = Math.floor(Math.random() * 200)
-                    edge.prop('vertices', [[x, y]])
-                })
-                break
-            case 'attr':
-                edges.forEach((edge) => {
-                    const color = Color.random().toHex()
-                    edge.attr('line/stroke', color)
-                })
-                break
+        console.log(edgeId,"4849382590843958439584")
+        console.log(nodeId,"4849382590843958439584")
+
+        const edge = this.graph.getCellById(edgeId)
+        console.log(edge,"4849382590843958439584")
+        let x1,y1,w1,h1,x2,y2,w2,h2
+        let ex,ey, ew,eh
+
+        if(edge?.source?.cell){
+         const  theSource = this.graph.getCellById(edge.source.cell)
+            const  theTarget = this.graph.getCellById(edge.target.cell)
+
+            x1=theSource.position().x
+            y1=theSource.position().y
+            w1=theSource.size().width
+            h1=theSource.size().height
+            x2=theTarget.position().x
+            y2=theTarget.position().y
+            w2=theTarget.size().width
+            h2=theTarget.size().height
+            if(x2>x1){
+                ex=x1
+                ew=w1
+            }else{
+                ex=x2
+                ew=w2
+            }
+            if(h2>h1){
+                ey=y1
+                eh=h1
+            }else{
+                ey=y2
+                eh=h2
+            }
+
+
         }
+
+
+        switch (data.lineType) {
+
+                    case "1":
+                        edge.prop('connector',  "normal")
+                        edge.prop('vertices', [])
+                        break
+                    case "2":
+                        edge.prop('connector',  "normal")
+                        edge.prop('vertices', data.vertices?data.vertices:[{ x: ex+ew+40, y: ey+eh-40 }])
+                        break
+                    case "3":
+                        edge.prop('connector',  "smooth")
+                        edge.prop('vertices', data.vertices?data.vertices:[{ x: ex+ew+40, y: ey+eh-40 }])
+                        break
+                }
+                edge.attr('line/targetMarker', 'classic')
+                edge.attr('line/stroke', data.lineColor)
+                edge.attr('line/strokeDasharray', data.lineStyle)
+                edge.attr('line/style', {animation:`ant-line 30s infinite linear`})
+                edge.attr('line/strokeWidth', data.lineWidth)
+
+
+
+
 
     }
     
@@ -256,6 +326,40 @@ class CanvasConfig implements ICanvasConfig {
         this.graph.disableSnapline();
     }
 
+    public showGrid(show: boolean): void {
+        if (!this.graph) 
+            throw new Error('Graph is undefined.');
+        if (show) {
+            this.graph.showGrid();
+        } else {
+            this.graph.hideGrid();
+        }
+        this.graphOptions.showGrid = show;
+    }
+
+    public setBackground(options: ICanvasConfig.BackgroundOptions): void {
+        if (!this.graph) 
+            throw new Error('Graph is undefined.');
+        this.graph.drawBackground(options);
+        this.graphOptions.background = options;
+    }
+
+    public getGrahOptions() {
+        return this.graphOptions;
+    }
+    
+    public getGridSize(): number {
+        return this.gridSize;
+    }
+
+    public setGridSize(gridSize: number): void {
+        if(!this.graph) 
+            throw new Error('Graph is undefined.');
+        this.gridSize = gridSize;
+        this.graph.setGridSize(gridSize);
+        this.graphOptions.gridSize = gridSize;
+    }
+
     public undo(): void {   
         if (!this.graph)
             throw new Error('Graph is undefined.');
@@ -268,10 +372,14 @@ class CanvasConfig implements ICanvasConfig {
         this.graph.redo();
     }
 
-    public toJSON(): { cells: Cell.Properties[] } {
+    public toJSON(): { cells: Cell.Properties[] } | { graph: any } {
         if (!this.graph) 
             throw new Error('Graph is undefined.');
-        return this.graph.toJSON();
+        const json = { 
+            ...this.graph.toJSON(), 
+            graph: this.graphOptions
+        };
+        return json;
     }
 
     public exportSVG(fileName?: string, options?: Export.ToImageOptions): void {

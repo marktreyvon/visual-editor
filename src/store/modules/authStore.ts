@@ -24,7 +24,6 @@ export const useAuthStore = defineStore('authStore', () => {
         getTokenInfo, setTokenInfo, destroyToken
     }
 })
-
 export interface ITokenInfo {
 
     /**
@@ -37,3 +36,6 @@ export interface ITokenInfo {
      */
     expiresTime: string;
 }
+
+
+

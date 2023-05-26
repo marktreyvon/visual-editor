@@ -17,8 +17,8 @@ export const useTools = (): ITools => {
     const router = useRouter();
     return {
         // 测试线条的颜色修改工具;  *@author; 王炳宏  2023-05-23
-        attrColor: () => {
-            CanvasConfig.getInstance().onChangeEdges('attr');
+        setLineStyle: (eid,nid,data) => {
+            CanvasConfig.getInstance().onChangeEdges(eid,nid,data);
         },
 
         zoomToFit: () => {
@@ -42,7 +42,7 @@ export const useTools = (): ITools => {
         redo: () => {
             CanvasConfig.getInstance().redo();
         },
-        toJSON: (): { cells: Cell.Properties[] } => {
+        toJSON: (): { cells: Cell.Properties[] } | { graph: any } => {
             return CanvasConfig.getInstance().toJSON();
         },
         exportJPEG: (fileName?, options?) => {
@@ -64,6 +64,9 @@ export const useTools = (): ITools => {
                 query: { id }
             })
             window.open(url.href);
+        },
+        help() {
+            window.open('http://thingspanel.io/zh-Hans/docs/overview');
         },
         share: () => {
 

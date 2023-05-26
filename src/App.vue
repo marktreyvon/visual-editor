@@ -20,6 +20,8 @@ setTokenInfo(params);
 // 注入参数
 provide('params', params);
 console.log('token', getTokenInfo())
+// 修改页面标题
+document.title = params.title || '大屏编辑器 - ThingsPanel可视化'
 </script>
 
 <template>

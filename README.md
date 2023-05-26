@@ -112,7 +112,7 @@ pnpm run dev
 ```
 
 # 插件开发：
-在src/plugins目录创建自定义的插件目录，例：tp-plugin  
+在src/plugins目录创建自定义的插件目录，例：tp-plugin 
 每个插件由两部分组成:  配置文件和组件    
 ```
 ├── tp-plugin  

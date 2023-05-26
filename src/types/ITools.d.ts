@@ -7,7 +7,7 @@
  */
 declare interface ITools {
     // 测试线条的颜色修改  *@author; 王炳宏  2023-05-23
-    attrColor:() => void;
+    setLineStyle:(eid:any,nid:any,data:any) => void;
 
 
     /**
@@ -48,9 +48,7 @@ declare interface ITools {
     /**
      * 导出JSON
      */
-    toJSON: () => {
-        cells: Cell.Properties[];
-    };
+    toJSON: () => { cells: Cell.Properties[] } | { graph: any };
 
     /**
      * 导出SVG
@@ -83,6 +81,10 @@ declare interface ITools {
      */
     share(): void;
 
+    /**
+     * 帮助
+     */
+    help(): void;
     /**
      * 保存大屏数据
      */
