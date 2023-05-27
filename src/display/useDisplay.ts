@@ -34,15 +34,17 @@ export const useDisplay = (containerId: string) => {
                     cell.ports.groups.left.attrs.circle.r=0
                     cell.ports.groups.right.attrs.circle.r=0
                 }
-
-                cell.attrs = {
-                    body: {
-                        stroke: 'none', // 取消边框
-                        fill: '#5F95FF',
-                        rx: 5,
-                        ry: 5,
-                      }
+                if(cell.shape!=='edge'){
+                    cell.attrs = {
+                        body: {
+                            stroke: 'none', // 取消边框
+                            fill: '#5F95FF',
+                            rx: 5,
+                            ry: 5,
+                        }
+                    }
                 }
+
             });
             canvasConfig.renderJSON(jsonObj);
             // 初始化画布背景
