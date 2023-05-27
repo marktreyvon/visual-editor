@@ -1,5 +1,5 @@
 import { CanvasConfig, PluginConfig } from "@/editor/config";
-import { Graph } from "@antv/x6";
+import { Graph, Node } from '@antv/x6'
 import * as Common from "@/common";
 import * as Plugins from '@/plugins'
 import { usePlugins } from '@/editor/hooks';
@@ -24,6 +24,17 @@ export const useDisplay = (containerId: string) => {
             // 渲染节点
             console.log('jsonObj', jsonObj.cells)
             jsonObj.cells.forEach((cell: any) => {
+
+                /**
+                 如果节点有链接桩，则不显示
+                 **/
+                if(cell.ports){
+                    cell.ports.groups.top.attrs.circle.r=0
+                    cell.ports.groups.bottom.attrs.circle.r=0
+                    cell.ports.groups.left.attrs.circle.r=0
+                    cell.ports.groups.right.attrs.circle.r=0
+                }
+
                 cell.attrs = {
                     body: {
                         stroke: 'none', // 取消边框
