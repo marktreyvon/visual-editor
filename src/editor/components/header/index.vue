@@ -34,13 +34,13 @@
         </div>
         <div class="absolute inset-y-0 right-0 w-96">
             <el-button >分享</el-button>
-          <el-button @click="save(params.id)">保存</el-button>
-          <el-button type="primary" :icon="HomeFilled" @click="data.marketVisible = true">插件市场</el-button>
             <el-button @click="save(params.id)">保存</el-button>
-            <el-button @click="save(params.id)">保存并退出</el-button>
+<!--            <el-button @click="save(params.id)">保存并退出</el-button>-->
             <el-button @click="help">帮助</el-button>
+            <el-button type="primary" :icon="HomeFilled" @click="data.marketVisible = true">插件市场</el-button>
         </div>
     </div>
+    <Market v-model:visible="data.marketVisible"/>
 </template>
 
 <script setup lang="ts">
@@ -113,10 +113,6 @@ const data = reactive({
 <style lang="scss" scoped>
 .example-showcase .el-dropdown + .el-dropdown {
     margin-left: 15px;
-  }
-
-  :deep(.el-button--primary) {
-    color: #606266!important;
   }
   .example-showcase .el-dropdown-link {
     cursor: pointer;

@@ -54,7 +54,7 @@ onMounted(() => {
   
   // 加载画布
   const { initCanvas } = useCanvas();
-  initCanvas();
+  initCanvas()
 })
 
 const data = {
