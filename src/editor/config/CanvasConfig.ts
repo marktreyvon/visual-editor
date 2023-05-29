@@ -1,5 +1,4 @@
 import { Cell, Graph, Node,Color } from '@antv/x6';
-import anime from 'animejs/lib/anime.es.js';
 import { Selection } from "@antv/x6-plugin-selection";
 import { History } from "@antv/x6-plugin-history";
 import { Snapline } from "@antv/x6-plugin-snapline";
@@ -97,7 +96,7 @@ class CanvasConfig implements ICanvasConfig {
     }
 
     initGraph(): void {
-        window.__x6_instances__ = [];
+        // window.__x6_instances__ = [];
         this.graph = new Graph({
             container: <HTMLDivElement>document.getElementById(this.containerId),
             autoResize: this.autoResize,
@@ -133,7 +132,7 @@ class CanvasConfig implements ICanvasConfig {
                 }
             }
         });
-        window.__x6_instances__.push(this.graph);
+        // window.__x6_instances__.push(this.graph);
         // 配置网格大小
         this.graph.setGridSize(this.gridSize);
         // 显示网格
