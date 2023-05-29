@@ -32,9 +32,6 @@
           <el-form-item label="是否显示标签刻度">
             <el-switch v-model="formData.tagCunShow" />
           </el-form-item>
-
-
-  
         </el-form>
       </el-collapse-item>
     </el-collapse>

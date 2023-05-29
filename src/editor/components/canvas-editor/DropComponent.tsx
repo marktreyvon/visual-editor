@@ -16,7 +16,7 @@ export const getDropComponent = (cpt: Component): Component => {
                 if (current.style) {
                     this.style = { ...current.style }
                 }
-                console.log(current)
+                console.log('DropComponent', current)
                 if (current.value) {
                     this.value = current.value ;
                 }

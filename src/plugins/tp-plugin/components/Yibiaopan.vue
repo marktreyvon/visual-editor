@@ -28,7 +28,7 @@ export default defineComponent({
     data() {
         return {
             id: "container_gauge_" + randomString(10),
-            gauge:null,
+            gauge: <any>null,
             range:"",
             pin:"",
             pointer:"",
@@ -96,7 +96,7 @@ export default defineComponent({
                         },
                     },
                     axis: {
-                        label: val.tagShow==true?{ formatter(v) { return Number(v) * 100;},}:null,
+                        label: val.tagShow==true?{ formatter(v: any) { return Number(v) * 100;},}:null,
                         subTickLine: val.tagCunShow==true?{ count: 3,}:{ count: 0,},
                     },
                 });

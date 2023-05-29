@@ -23,7 +23,7 @@ import { ElMessageBox } from 'element-plus'
 
 import DeviceSelector from "./components/DeviceSelector.vue";
 import { useBaseData } from './useBaseData'
-const emit = defineEmits(["change"]);
+const emit = defineEmits(["onChange"]);
 
 const deviceData = ref<any>([
   {
@@ -52,7 +52,7 @@ const addDevice = () => {
 
 const handleChangeDeviceData = (data: any) => {
   deviceData.value.splice(data.id, 1, data)
-  emit('change', { bindType: state.bindType, deviceData: deviceData.value })
+  emit('onChange', { bindType: state.bindType, deviceData: deviceData.value })
 }
 
 /**

@@ -26,7 +26,7 @@ export default defineComponent({
   },
   data() {
     return {
-      formData: ""
+      formData: {}
     }
   },
   watch: {

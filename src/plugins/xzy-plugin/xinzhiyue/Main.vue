@@ -32,10 +32,13 @@
 </template>
 <script setup lang="ts">
 // import { ElButton } from 'element-plus'
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import Menu from './components/menu/index.vue';
 import Index from './components/index/index.vue';
 import {reactive } from 'vue';
+const props = defineProps({
+  value: Object,
+});
 const state = reactive({
   list: [],
   code: 'MAC:D0BAE40FB588',
@@ -51,6 +54,10 @@ const navList = ref([
   { title: "财务室", status: false },
   { title: "娱乐室", status: false },
 ]);
+
+watch(() => props.value, (value) => {
+  console.log('xinzhiyue.watch', value);
+});
 </script>
 <style scoped>
 .bg{

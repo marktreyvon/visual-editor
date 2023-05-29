@@ -20,7 +20,7 @@
             </el-tab-pane>
             <el-tab-pane label="数据" name="data" v-if="!isEdge">
                 <component v-if="isNode" :is="dataCpt" @onChange="onChange">
-                    <BaseData />
+                    <BaseData @onChange="onChange"/>
                 </component>
             </el-tab-pane>
             <el-tab-pane label="图层" name="layer" v-if="!isEdge">
@@ -44,7 +44,7 @@ import { useAttribute } from "./useAttribute"
 const activeName = ref("attr");
 let { 
     isNode, attributeCpt, dataCpt, nodeData,edgeData,
-  isEdge,nodeId,
+    isEdge,nodeId,
     initEvents, onChange 
 } = useEvents();
 

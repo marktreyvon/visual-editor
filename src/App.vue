@@ -5,6 +5,8 @@ import {Render} from './Demo'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import en from 'element-plus/dist/locale/en.mjs'
 import { useAuthStore } from '@/store'
+import { useRouter } from "vue-router";
+import axios from 'axios'
  
 const language = ref('zh-cn')
 const locale = computed(() => (language.value === 'zh-cn' ? zhCn : en))
@@ -16,10 +18,8 @@ const toggle = () => {
 const params = parseParams();
 let { setTokenInfo, getTokenInfo } = useAuthStore();
 // ============================ 临时获取token start==============================================
-import { useRouter } from "vue-router";
 const router = useRouter();
 // import axios from '@/api/interceptor/http';
-import axios from 'axios'
 axios.post('/api/auth/login', {
   email: "admin@thingspanel.cn",
   password: "123456"
