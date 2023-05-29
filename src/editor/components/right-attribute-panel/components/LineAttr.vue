@@ -30,33 +30,31 @@
     </el-form-item>
     <el-form-item label="流动效果">
       <el-select v-model="state.formData.flowEffect" placeholder="请选择" @change='validate'>
-        <el-option value='无效果' label='无效果'>
-        </el-option>
-        <el-option value='水流' label='水流'>
-        </el-option>
-        <el-option value='水珠' label='水珠'>
-        </el-option>
+        <el-option value='无效果' label='无效果'></el-option>
+        <el-option value='水流' label='水流'></el-option>
+        <el-option value='水珠' label='水珠'></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="流动颜色" v-if="state.formData.flowEffect!=='无效果'" @change='validate'>
-      <el-color-picker v-model="state.formData.flowColor"/>
+    <el-form-item label="流动颜色" v-if="state.formData.flowEffect!=='无效果'" >
+      <el-color-picker v-model="state.formData.flowColor" @change='validate'/>
     </el-form-item>
-    <el-form-item label="流动速度" v-if="state.formData.flowEffect!=='无效果'" @change='validate'>
+    <el-form-item label="流动速度" v-if="state.formData.flowEffect!=='无效果'" >
 
-      <el-input v-model="state.formData.flowSpeed"></el-input>
+      <el-slider style='width: 90%' v-model="state.formData.flowSpeed" :step="1" :min='1' :max="4" show-stops @change='validate'/>
+
     </el-form-item>
-    <el-form-item label="流动方向" v-if="state.formData.flowEffect!=='无效果'" @change='validate'>
+    <el-form-item label="流动方向" v-if="state.formData.flowEffect!=='无效果'" >
 
       <el-select v-model="state.formData.flowDirection" placeholder="请选择" @change='validate'>
-        <el-option value='-1' label='正向'>
+        <el-option value='正向' label='正向'>
         </el-option>
-        <el-option value='1' label='反向'>
+        <el-option value='反向' label='反向'>
         </el-option>
       </el-select>
 
     </el-form-item>
     <el-form-item label="循环次数" v-if="state.formData.flowEffect!=='无效果'">
-      <el-input v-model="state.formData.cycleTimes"></el-input>
+      <el-input v-model="state.formData.cycleTimes" @change='validate'></el-input>
     </el-form-item>
   </el-form>
 
@@ -83,6 +81,10 @@ const props = defineProps({
 const FormRef = ref<FormInstance>()
 
 const validate=(val:any)=>{
+  console.log(val,"432432")
+  if(!state.formData.flowColor){
+    state.formData.flowColor= state.formData.lineColor
+  }
 
   setLineStyle(props.edgeData.id, props.nodeData.id, state.formData)
 }
@@ -96,9 +98,9 @@ let state = reactive<any>({
     lineStyle: undefined,
     flowEffect: '无效果',
     lineWidth: 1,
-    flowColor: '#ffffff',
+    flowColor: undefined,
     flowSpeed: 1,
-    flowDirection: 1,
+    flowDirection: '正向',
     cycleTimes: 1,
     lineColor: '#409EFF',
     vertices:undefined
@@ -106,22 +108,22 @@ let state = reactive<any>({
 })
 
 watchEffect(() => {
-
   if (props.edgeData) {
-    console.log(props.edgeData, "43284934")
-
-
     let edgeObj = {
       lineType: '',
       lineStyle: '',
       flowEffect: '无效果',
       lineWidth: 1,
-      flowColor: '#ffffff',
+      flowColor:undefined,
       flowSpeed: 1,
-      flowDirection: 1,
-      cycleTimes: 1,
+      flowDirection: '正向',
+      cycleTimes: -1,
       lineColor: '#409EFF',
       vertices:[]
+    }
+
+    if(props?.edgeData?.attrs?.targetData){
+      edgeObj={...edgeObj,...props?.edgeData?.attrs?.targetData}
     }
 
     if (props?.edgeData?.vertices) {

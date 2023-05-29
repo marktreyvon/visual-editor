@@ -1,4 +1,5 @@
 import { Cell, Graph, Node,Color } from '@antv/x6';
+import anime from 'animejs/lib/anime.es.js';
 import { Selection } from "@antv/x6-plugin-selection";
 import { History } from "@antv/x6-plugin-history";
 import { Snapline } from "@antv/x6-plugin-snapline";
@@ -8,6 +9,7 @@ import { Export } from "@antv/x6-plugin-export";
 import { register } from "@antv/x6-vue-shape";
 import * as Common from "@/common";
 import { CellEvents } from '../events/CellEvents';
+import {message} from "@/utils";
 /**
  * @author cxs
  * @date 2023-04-19
@@ -240,26 +242,25 @@ class CanvasConfig implements ICanvasConfig {
 
         if (!this.graph)
             throw new Error('Graph is undefined.');
-        console.log(edgeId,"4849382590843958439584")
-        console.log(nodeId,"4849382590843958439584")
-
         const edge = this.graph.getCellById(edgeId)
-        console.log(edge,"4849382590843958439584")
         let x1,y1,w1,h1,x2,y2,w2,h2
         let ex,ey, ew,eh
 
-        if(edge?.source?.cell){
-         const  theSource = this.graph.getCellById(edge.source.cell)
-            const  theTarget = this.graph.getCellById(edge.target.cell)
+        if(edge.getProp().source){
+         const  theSource = this.graph.getCellById(edge.getProp().source?.cell)
+            const  theTarget = this.graph.getCellById(edge.getProp().target?.cell)
+            console.log(theSource.getProp(),"4324324")
+            if(theSource&&theTarget){
+                x1=theSource.getProp().position.x
+                y1=theSource.getProp().position.y
+                w1=theSource.getProp().size.width
+                h1=theSource.getProp().size.height
+                x2=theTarget.getProp().position.x
+                y2=theTarget.getProp().position.y
+                w2=theTarget.getProp().size.width
+                h2=theTarget.getProp().size.height
+            }
 
-            x1=theSource.position().x
-            y1=theSource.position().y
-            w1=theSource.size().width
-            h1=theSource.size().height
-            x2=theTarget.position().x
-            y2=theTarget.position().y
-            w2=theTarget.size().width
-            h2=theTarget.size().height
             if(x2>x1){
                 ex=x1
                 ew=w1
@@ -278,9 +279,7 @@ class CanvasConfig implements ICanvasConfig {
 
         }
 
-
         switch (data.lineType) {
-
                     case "1":
                         edge.prop('connector',  "normal")
                         edge.prop('vertices', [])
@@ -297,15 +296,62 @@ class CanvasConfig implements ICanvasConfig {
                 edge.attr('line/targetMarker', 'classic')
                 edge.attr('line/stroke', data.lineColor)
                 edge.attr('line/strokeDasharray', data.lineStyle)
-                edge.attr('line/style', {animation:`ant-line 30s infinite linear`})
                 edge.attr('line/strokeWidth', data.lineWidth)
+        edge.attr('targetMarker', 'classic')
+
+        edge.attr('targetData', {
+            flowEffect:data.flowEffect,
+            flowColor:data.flowColor||edge.attr().line?.stroke||data.lineColor,
+            flowSpeed:data.flowSpeed,
+            flowDirection:data.flowDirection,
+            cycleTimes:data.cycleTimes,
+        })
+        let speed=0
+        switch (data.flowSpeed) {
+
+            case 1:
+                speed=40
+                break
+            case 2:
+                speed=30
+                break
+            case 3:
+                speed=20
+                break
+            case 4:
+                speed=10
+                break
+        }
+
+        if(data.flowEffect!=='无效果'){
+            if(data.flowEffect==='水流') {
+
+            }else{
+                if(data.flowDirection==='正向'){
+                    edge.attr('line/strokeDasharray', 15)
+                    edge.attr('line/style/animation', `running-line-z ${speed}s infinite linear 0s `)
+                    edge.attr('line/stroke', data.flowColor||data.lineColor)
+                }else{
+                    edge.attr('line/strokeDasharray', 15)
+                    edge.attr('line/style/animation', `running-line-f ${speed}s ${data.cycleTimes===-1?'infinite':data.cycleTimes} linear  `)
+                    edge.attr('line/stroke', data.flowColor||data.lineColor)
+                }
+            }
+
+        }else{
+            edge.attr('line/stroke', data.lineColor)
+            edge.attr('line/strokeDasharray', data.lineStyle)
+            edge.attr('line/style/animation', '')
+        }
+
+
 
 
 
 
 
     }
-    
+
     public renderJSON(json: any): void {
         if (!this.graph) 
             throw new Error('Graph is undefined.');
@@ -440,3 +486,8 @@ class CanvasConfig implements ICanvasConfig {
 
 
 export { CanvasConfig };
+
+
+
+
+
