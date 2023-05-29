@@ -9,3 +9,22 @@
   padding: 0;
   text-align: center;
 }
+
+@keyframes running-line-z {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+@keyframes running-line-f {
+  to {
+    stroke-dashoffset: 1000;
+  }
+}
+
+@keyframes running-line-p {
+  0% {
+    stroke-dashoffset: 400px;
+  }
+100% {
+  stroke-dashoffset: 0;
+}}
