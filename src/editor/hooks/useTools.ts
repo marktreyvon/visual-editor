@@ -56,6 +56,7 @@ export const useTools = (): ITools => {
         },
         preview: (id: string) => {
             // 获取大屏数据
+            console.log(id,"999999")
             const jsonData = CanvasConfig.getInstance().toJSON();
             // 大屏数据存入session
             sessionStorage.setItem(Common.PREVIEW_JSON_DATA_KEY, JSON.stringify(jsonData));

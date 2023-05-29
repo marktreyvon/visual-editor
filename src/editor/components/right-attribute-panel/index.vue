@@ -32,6 +32,7 @@
 
 <script setup lang="ts">
 import { useTools } from '@/editor/hooks'
+
 import { ref, onMounted, reactive } from "vue";
 import CanvasAttr from "./components/CanvasAttr.vue";
 import BaseAttr from "./components/BaseAttr.vue";

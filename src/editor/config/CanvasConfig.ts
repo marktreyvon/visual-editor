@@ -278,6 +278,7 @@ class CanvasConfig implements ICanvasConfig {
 
         }
 
+
         switch (data.lineType) {
 
                     case "1":
@@ -286,11 +287,11 @@ class CanvasConfig implements ICanvasConfig {
                         break
                     case "2":
                         edge.prop('connector',  "normal")
-                        edge.prop('vertices', [{ x: ex+ew+40, y: ey+eh-40 }])
+                        edge.prop('vertices', data.vertices?data.vertices:[{ x: ex+ew+40, y: ey+eh-40 }])
                         break
                     case "3":
                         edge.prop('connector',  "smooth")
-                        edge.prop('vertices', [{ x: x1+w1+40, y: y1+h1-40 }])
+                        edge.prop('vertices', data.vertices?data.vertices:[{ x: ex+ew+40, y: ey+eh-40 }])
                         break
                 }
                 edge.attr('line/targetMarker', 'classic')
