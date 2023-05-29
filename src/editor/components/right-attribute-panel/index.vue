@@ -5,18 +5,23 @@
                 <div>
                     <!-- 画布样式 -->
                     <CanvasAttr v-if="!isNode&&!isEdge" @onChange="onCanvasAttrChange"/>
-                    <!-- 节点基础样式 -->
-                    <BaseAttr v-if="isNode" :data="nodeData"/>
-                    <!-- 自定义样式 -->
-                    <component :currentNode='nodeId' v-if="isNode" :is="attributeCpt" v-on="actionHandlers"
-                        @onChange="onChange" />
+                    <div v-if="isNode">
+                        <!-- 节点基础样式 -->
+                        <BaseAttr :data="nodeData"/>
+                        <!-- 自定义样式 -->
+                        <component :currentNode='nodeId' :is="attributeCpt" v-on="actionHandlers"
+                            @onChange="onChange" />
+                    </div>
+                    
                       <!-- 边样式 -->
-                     <LineAttr v-if="isEdge"  :tools="useTools()" :edgeData="edgeData" :nodeData="nodeData"/>
+                    <LineAttr v-if="isEdge"  :tools="useTools()" :edgeData="edgeData" :nodeData="nodeData"/>
                 </div>
 
             </el-tab-pane>
             <el-tab-pane label="数据" name="data" v-if="!isEdge">
-                <component :is="dataCpt" @onChange="onChange"/>
+                <component v-if="isNode" :is="dataCpt" @onChange="onChange">
+                    <BaseData />
+                </component>
             </el-tab-pane>
             <el-tab-pane label="图层" name="layer" v-if="!isEdge">
                 <LayerAttr />
@@ -32,6 +37,7 @@ import CanvasAttr from "./components/CanvasAttr.vue";
 import BaseAttr from "./components/BaseAttr.vue";
 import LineAttr from "./components/LineAttr.vue";
 import LayerAttr from "./components/LayerAttr.vue";
+import BaseData from './components/baseData/index.vue';
 import { useEvents } from "./useEvents"
 import { useAttribute } from "./useAttribute"
 const activeName = ref("attr");

@@ -10,77 +10,77 @@ declare interface ICanvasConfig {
     /**
      * 画布
      */
-    private graph: Graph | undefined;
+    graph: Graph | undefined;
 
     /**
      * 节点事件处理
      */
-    private cellEvents: CellEvents | undefined;
+    cellEvents: CellEvents | undefined;
 
     /**
      * 画布容器ID
      */
-    private containerId: string;
+    containerId: string;
 
     /**
      * 是否自动调整画布大小
      */
-    private autoResize: boolean;
+    autoResize: boolean;
 
     /**
      * 网格大小
      */
-    private gridSize: number;
+    gridSize: number;
 
     /**
      * 网格大小
      */
-    private history: boolean;
+    history: boolean;
 
     /**
      * 是否开启鼠标滚轮缩放
      */
-    private enableMouseWheel: boolean;
+    enableMouseWheel: boolean;
 
     /**
      * 是否开启鼠标平移画布
      */
-    private enableMousePan: boolean;
+    enableMousePan: boolean;
 
     /**
      * 是否开启多节点框选
      */
-    private enableSelection: boolean;
+    enableSelection: boolean;
 
     /**
      * 缩放因子
      */
-    private zoomFactor: number;
+    zoomFactor: number;
 
     /**
      * 节点是否可旋转
      */
-    private enableRotating: boolean;
+    enableRotating: boolean;
 
     /**
      * 节点每次旋转的角度
      */
-    private rotatingGrid: number;
+    rotatingGrid: number;
 
     /**
      * 节点是否可移动
      */
-    private nodeMovable: boolean;
+    nodeMovable: boolean;
 
     /**
      * 节点是否可缩放
      */
-    private nodeResizable: boolean;
+    nodeResizable: boolean;
 
     /**
      * 初始化画布
      */
-    private initGraph(): void;
+    initGraph(): void;
 
     /**
      * 获取画布
@@ -145,6 +145,7 @@ declare interface ICanvasConfig {
      * @param options 
      */
     setBackground(options: ICanvasConfig.BackgroundOptions): void;
+    
     /**
      * 获取网格大小
      */

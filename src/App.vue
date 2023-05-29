@@ -14,12 +14,27 @@ const toggle = () => {
 }
 
 const params = parseParams();
-console.log('parseParams', params)
 let { setTokenInfo, getTokenInfo } = useAuthStore();
-setTokenInfo(params);
-// 注入参数
-provide('params', params);
-console.log('token', getTokenInfo())
+// ============================ 临时获取token start==============================================
+import { useRouter } from "vue-router";
+const router = useRouter();
+// import axios from '@/api/interceptor/http';
+import axios from 'axios'
+axios.post('/api/auth/login', {
+  email: "admin@thingspanel.cn",
+  password: "123456"
+}).then(({ data }) => {
+    if (data.code === 200) {
+      params.token = data.data.access_token;
+      params.expiresTime = data.data.expires_in;
+      setTokenInfo(params);
+      // 注入参数
+      provide('params', params);
+      router.push({ name: 'editor' });
+    }
+})
+// ============================ 临时获取token end==============================================
+
 // 修改页面标题
 document.title = params.title || '大屏编辑器 - ThingsPanel可视化'
 </script>

@@ -13,7 +13,8 @@ export const useAuthStore = defineStore('authStore', () => {
 
     const setTokenInfo = (tokenInfo: ITokenInfo): void => {
         window.localStorage.setItem(TOKEN_KEY, tokenInfo.token);
-        window.localStorage.setItem(TOKEN_EXPIRES_TIME_KEY, tokenInfo.expiresTime);
+        let expires_in = Date.now() + Number(tokenInfo.expiresTime) * 1000;
+        window.localStorage.setItem(TOKEN_EXPIRES_TIME_KEY, expires_in.toString());
     }
 
     const destroyToken = (): void => {

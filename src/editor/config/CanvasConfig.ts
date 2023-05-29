@@ -68,6 +68,12 @@ class CanvasConfig implements ICanvasConfig {
         this.initGraph();
     }
     
+    /**
+     * 获取编辑器单例
+     * @param containerId 
+     * @param options 
+     * @returns 
+     */
     public static getInstance(containerId: string = Common.DEFAULT_CONTAINER_ID, options?: ICanvasConfig.Options): CanvasConfig {
         if (!CanvasConfig.instance) {
             CanvasConfig.instance = new CanvasConfig(containerId, options);
@@ -75,6 +81,12 @@ class CanvasConfig implements ICanvasConfig {
         return CanvasConfig.instance;
     }
 
+    /**
+     * 获取查看单例
+     * @param containerId 
+     * @param options 
+     * @returns 
+     */
     public static getDisplayInstance(containerId: string = Common.DEFAULT_DISPLAY_CONTAINER_ID, options?: ICanvasConfig.Options): CanvasConfig {
         if (!CanvasConfig.displayInstance) {
             CanvasConfig.displayInstance = new CanvasConfig(containerId, options);
@@ -115,7 +127,7 @@ class CanvasConfig implements ICanvasConfig {
             interacting: (cellView) => {
                 return {
                     nodeMovable: this.nodeMovable,
-                    magnetConnectable:true      // 增加可连接点的交互,magnetConnectable*@author; 王炳宏  2023-05-23
+                    magnetConnectable: true      // 增加可连接点的交互,magnetConnectable*@author; 王炳宏  2023-05-23
                 }
             }
         });

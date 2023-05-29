@@ -15,7 +15,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       cors: true,
       proxy: {
         '/api': {
-          target: env.VITE_BASE_URL + '/api',
+          target: env.VITE_BASE_URL + "/api/",
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, '')
         }

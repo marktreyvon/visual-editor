@@ -126,15 +126,18 @@ pnpm run dev
  
 
 
-## 示例
+## 立即上手 开发第一个插件
 以文本组件为例，我们为官方插件开发一个可以拖拽到画布上的文本组件，可以通过右侧属性面板调整文字的大小、颜色以及背景框。 通过数据面板设置文本显示的值。
 如下图所示：  
 ![文本组件](readme_files/text_example.png)    
 
+### 第一步：创建组件所需的文件
 官方插件所在的目录是tp-plugins文件夹，我们在这个文件夹里创建`text`目录，然后在text目录创建以下4个文件：  
 index.ts、Main.vue、Data.vue、Attribute.vue
-### 主组件： text/Main.vue
+
+### 第二步：编写Main.vue
 ```ts
+// text/Main.vue
 <template>
     <div :style="myStyle" style="width:100%;height:100%">
         {{ value }}
@@ -174,9 +177,9 @@ export default {
 ```
 
 
-
-### 属性面板: text/Attribute.vue  
+### 第三步：编写属性面板Attribute.vue
 ```ts
+// text/Attribute.vue  
 <template>
     <el-collapse v-model="activeNames">
         <el-collapse-item title="样式" name="style">
@@ -240,8 +243,9 @@ this.$emit("onChange", {
 之后，编辑器会自动将style传递到Main.vue中，Main组件的props属性就会接收到传过来的参数.  
 目前仅支持传递style和value.
 
-### 数据面板：text/Data.vue
+### 第四步：编写数据面板：Data.vue
 ```ts
+// text/Data.vue
 <template>
   <el-tabs v-model="activeName">
     <el-tab-pane label="静态数据" name="static">
@@ -284,6 +288,7 @@ export default {
 <style lang="scss" scoped></style>
 ```
 
+### 第五步：导出组件
 接下来在text/index.ts中导出组件.  
 ```ts
 import Text_Attribute from './Attribute.vue';
@@ -292,7 +297,8 @@ import Text_Main from './Main.vue';
 export { Text_Attribute, Text_Data, Text_Main }
 ```
 
-然后在tp-plugin/index.ts文件中进行配置
+### 第六步：配置
+在tp-plugin/index.ts文件中进行配置
 ```ts
 import { Text_Attribute, Text_Data, Text_Main } from "./text";
 
@@ -313,7 +319,7 @@ export default {
     ]
 }
 ```
-
+### 第七步：导出插件
 最后，在src/plugins/index.ts导出该插件
 ```ts
 export * as tpPlugin from './tp-plugin';
