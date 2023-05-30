@@ -74,7 +74,7 @@ declare interface ITools {
     /**
      * 预览
      */
-    preview(id: string): void;
+    preview(): void;
 
     /**
      * 分享

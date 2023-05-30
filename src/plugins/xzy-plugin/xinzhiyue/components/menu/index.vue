@@ -12,7 +12,7 @@
               {{ item.title }}
             </div>
             <div class="item_status">
-              <div class="status_text" v-if="item.status">在线{{ obj.a }}</div>
+              <div class="status_text" v-if="item.status">在线</div>
               <div class="status_text" v-else>离线</div>
               <div class="status_icon" :class="item.status ? 'isActive' : 'noActive'"></div>
             </div>
@@ -33,24 +33,27 @@
   // import { ArrowLeft, ArrowRight, Delete, Edit, Share } from '@element-plus/icons-vue';
   // import Descrition from '@/components/Descrition/index.vue';
   
-  import { ref,computed,reactive } from "vue";
+  import { ref,computed,reactive, watch } from "vue";
   
   let obj = reactive({
     a: 1
   })
+  const props = defineProps({
+    navs: Array
+  });
 
-
-  
   const open = ref(true);
   const nowIndex = ref(1);
-  const navList = ref([
-    { title: "前台", status: true },
-    { title: "办公室", status: true },
-    { title: "接待区", status: false },
-    { title: "会议室", status: false },
-    { title: "财务室", status: false },
-    { title: "娱乐室", status: false },
-  ]);
+  const navList = ref<any>([]);
+
+  watch(() => props.navs, (value) => {
+    if (value) {
+      navList.value = value
+      navList.value[0].status = true;
+    }
+    console.log('defineProps',value)
+  })
+
   const change_active = (index: any) => {
     nowIndex.value = index;
     obj.a = 2

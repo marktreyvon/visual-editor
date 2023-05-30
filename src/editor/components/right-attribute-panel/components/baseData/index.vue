@@ -7,7 +7,7 @@
           <el-button style="width:100%" @click="addDevice">新增设备</el-button>
           <div class="device-container overflow-y-auto overflow-x-auto" >
               <div v-for="(device, index) in deviceData" >
-                <DeviceSelector :id="index" @delete="handleDeleteDevice" @change="handleChangeDeviceData"/>
+                <DeviceSelector :index="index" @delete="handleDeleteDevice" @change="handleChangeDeviceData"/>
               </div>
           </div>
           
@@ -51,22 +51,23 @@ const addDevice = () => {
 }
 
 const handleChangeDeviceData = (data: any) => {
-  deviceData.value.splice(data.id, 1, data)
-  emit('onChange', { bindType: state.bindType, deviceData: deviceData.value })
+  deviceData.value.splice(data.index, 1, data);
+  const option = { bindType: 'device', deviceData: deviceData.value };
+  emit('onChange', { option })
 }
 
 /**
  * 删除设备
  * @param id 
  */
-const handleDeleteDevice = (id: number) => {
+const handleDeleteDevice = (index: number) => {
   if (deviceData.value.length === 1) {
     ElMessageBox.alert('至少保留一个设备', '提示', {})
     return
   }
   const callback = (action: any, instance: any) => {
     if (action === 'confirm') {
-      deviceData.value.splice(id, 1)
+      deviceData.value.splice(index, 1)
     }
   }
   ElMessageBox.confirm('是否确认删除该设备？', '确认删除', {callback}, null)

@@ -39,5 +39,18 @@ export default {
             method: 'post',
             data
         })
+    },
+
+    /**
+     * 根据设备Id获取插件
+     * @param data 
+     * @returns 
+     */
+    getPluginByDeviceId: (data: any) => {
+        return axios.request({
+            url: '/device/model/list',
+            method: 'post',
+            data
+        })
     }
 }

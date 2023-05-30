@@ -17,7 +17,7 @@
     </div>
     <div class="content">
       <div class="content-left">
-        <Menu :navList="navList"/>
+        <Menu :navs="navList"/>
         
       </div>
       <div class="content-right">
@@ -36,8 +36,11 @@ import { ref, watch } from 'vue';
 import Menu from './components/menu/index.vue';
 import Index from './components/index/index.vue';
 import {reactive } from 'vue';
+import DeviceAPI from '@/api/device';
 const props = defineProps({
+  style: Object,
   value: Object,
+  option: Object
 });
 const state = reactive({
   list: [],
@@ -46,18 +49,38 @@ const state = reactive({
   skillList: [],
 });
 // 设备列表
-const navList = ref([
-  { title: "前台", status: true },
-  { title: "办公室", status: true },
-  { title: "接待区", status: false },
-  { title: "会议室", status: false },
-  { title: "财务室", status: false },
-  { title: "娱乐室", status: false },
-]);
+const navList = ref([]);
 
-watch(() => props.value, (value) => {
-  console.log('xinzhiyue.watch', value);
+const groupId = ref('');
+
+watch(() => props.option, (value: any) => {
+  console.log('xinzhiyue.watch.value', value);
+  groupId.value = value.deviceData[0].groupId;
+  getDeviceList();
+  console.log('xinzhiyue.watch', value.deviceData[0].groupId);
 });
+
+const getDeviceList = () => {
+  if (!groupId.value) return;
+  const params = {
+    asset_id: groupId.value,
+    current_page: 1, 
+    per_page: 9999
+  };
+  DeviceAPI.getDeviceList(params)
+    .then(({ data }) => {
+      if (data.code === 200) {
+        navList.value = data.data.data.map((item: any) => ({ title: item.device_name, status: false, id: item.device, pluginId: item.type }));
+        console.log('xinzhiyue.getDeviceList', navList.value);
+
+      }
+      // state.list = data;
+    })
+  // getDeviceListApi(params).then((res: any) => {
+  //   console.log('xinzhiyue.getDeviceListApi', res);
+  //   state.list = res.data;
+  // });
+};
 </script>
 <style scoped>
 .bg{

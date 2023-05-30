@@ -13,6 +13,7 @@ import { useDisplay } from "./useDisplay"
 import { getTeleport } from "@antv/x6-vue-shape";
 
 const TeleportContainer = getTeleport();
+document.title = '查看 - ThingsPanel可视化'
 
 let { initDisplay } = useDisplay(Common.DEFAULT_DISPLAY_CONTAINER_ID);
 onMounted(() => {

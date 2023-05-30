@@ -54,15 +54,13 @@ export const useTools = (): ITools => {
         exportSVG: (fileName?, options?) => {
             CanvasConfig.getInstance().exportSVG(fileName, options);
         },
-        preview: (id: string) => {
+        preview: () => {
             // 获取大屏数据
-            console.log(id,"999999")
             const jsonData = CanvasConfig.getInstance().toJSON();
             // 大屏数据存入session
             sessionStorage.setItem(Common.PREVIEW_JSON_DATA_KEY, JSON.stringify(jsonData));
             const url = router.resolve({
-                name: 'display',
-                query: { id }
+                name: 'display'
             })
             window.open(url.href);
         },

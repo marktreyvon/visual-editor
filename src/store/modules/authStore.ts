@@ -5,6 +5,15 @@ const TOKEN_EXPIRES_TIME_KEY = "tokenExpiresTime";
 
 export const useAuthStore = defineStore('authStore', () => {
     
+    /*
+
+    */
+    const login = (tokenInfo: ITokenInfo) => {
+        // 保存token信息
+        setTokenInfo(tokenInfo);
+        
+    }
+
     const getTokenInfo = (): ITokenInfo => {
         const token = window.localStorage.getItem(TOKEN_KEY) || "";
         const expiresTime = window.localStorage.getItem(TOKEN_EXPIRES_TIME_KEY) || "";

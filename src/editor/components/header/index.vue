@@ -30,7 +30,7 @@
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
-            <el-button @click="preview(params.id)">预览</el-button>
+            <el-button @click="preview()">预览</el-button>
         </div>
         <div class="absolute inset-y-0 right-0 w-96">
             <el-button >分享</el-button>

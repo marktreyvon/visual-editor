@@ -127,6 +127,10 @@ export const useEvents = () => {
     }
 
 
+    /**
+     * 样式和绑定的数据改变后，更新画布上的节点数据
+     * @param data 
+     */
     const onChange = (data: any) => {
         console.log("data",data)
         currentNode.setData({

@@ -4,10 +4,11 @@ import * as Common from "@/common";
 import * as Plugins from '@/plugins'
 import { usePlugins } from '@/editor/hooks';
 import { register } from "@antv/x6-vue-shape";
-
+import { getDisplayComponent } from "./components/DisplayComponent";
 
 export const useDisplay = (containerId: string) => {
 
+    let jsonObj: any = {};
     const initDisplay = (data: any) => {
         const options: ICanvasConfig.Options = {
             autoResize: true,
@@ -16,15 +17,14 @@ export const useDisplay = (containerId: string) => {
             enableRotating: false,
             enableSelection: false,
         }
-        loadPlugins(Plugins);
+        loadPlugins(Plugins, data);
         console.log('initDisplay', )
         if (data && JSON.stringify(data) !== '{}') {
-            const jsonObj = JSON.parse(data);
+            jsonObj = JSON.parse(data);
             let canvasConfig: ICanvasConfig = CanvasConfig.getDisplayInstance(containerId, options);
             // 渲染节点
             console.log('jsonObj', jsonObj.cells)
             jsonObj.cells.forEach((cell: any) => {
-
                 /**
                  如果节点有链接桩，则不显示
                  **/
@@ -34,17 +34,6 @@ export const useDisplay = (containerId: string) => {
                     cell.ports.groups.left.attrs.circle.r=0
                     cell.ports.groups.right.attrs.circle.r=0
                 }
-                if(cell.shape!=='edge'){
-                    cell.attrs = {
-                        body: {
-                            stroke: 'none', // 取消边框
-                            fill: '#5F95FF',
-                            rx: 5,
-                            ry: 5,
-                        }
-                    }
-                }
-
             });
             canvasConfig.renderJSON(jsonObj);
             // 初始化画布背景
@@ -57,15 +46,25 @@ export const useDisplay = (containerId: string) => {
     /**
      * 加载插件
      * @param plugins 
+     * @param data { style, value, option }
      */
-    const loadPlugins = (plugins: any): void => {
-        for (const key in plugins) {
-            const plugin = plugins[key];
-            const { views } = plugin.default;
-            views.forEach((view: any) => {
-                registerShape(view.name, view.Main);
-            })
+    const loadPlugins = (plugins: any, data: any): void => {
+        if (data && JSON.stringify(data) !== '{}') {
+            let jsonObj = JSON.parse(data);
+            for (const key in plugins) {
+                const plugin = plugins[key];
+                const { views } = plugin.default;
+                views.forEach((view: any) => {
+                    jsonObj.cells.forEach((cell: any) => {
+                        if (cell.shape === view.name) {
+                            const cpt: any = getDisplayComponent(view.Main, cell.data || null);
+                            registerShape(view.name, cpt);
+                        }
+                    });
+                })
+            }
         }
+        
     }
 
     /**
