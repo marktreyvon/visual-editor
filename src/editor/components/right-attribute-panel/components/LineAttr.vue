@@ -81,10 +81,6 @@ const props = defineProps({
 const FormRef = ref<FormInstance>()
 
 const validate=(val:any)=>{
-  console.log(val,"432432")
-  if(!state.formData.flowColor){
-    state.formData.flowColor= state.formData.lineColor
-  }
 
   setLineStyle(props.edgeData.id, props.nodeData.id, state.formData)
 }
@@ -97,8 +93,8 @@ let state = reactive<any>({
     lineType: undefined,
     lineStyle: undefined,
     flowEffect: '无效果',
-    lineWidth: 1,
-    flowColor: undefined,
+    lineWidth: 2,
+    flowColor: '#409EFF',
     flowSpeed: 1,
     flowDirection: '正向',
     cycleTimes: 1,
@@ -106,15 +102,14 @@ let state = reactive<any>({
     vertices:undefined
   }
 })
-
 watchEffect(() => {
   if (props.edgeData) {
     let edgeObj = {
       lineType: '',
       lineStyle: '',
       flowEffect: '无效果',
-      lineWidth: 1,
-      flowColor:undefined,
+      lineWidth: 2,
+      flowColor: '#409EFF',
       flowSpeed: 1,
       flowDirection: '正向',
       cycleTimes: -1,
@@ -146,7 +141,7 @@ watchEffect(() => {
     edgeObj.lineColor = props?.edgeData?.attrs?.line?.stroke || '#000000'
     edgeObj.lineWidth = props?.edgeData?.attrs?.line?.strokeWidth || 1
     edgeObj.lineStyle = props?.edgeData?.attrs?.line?.strokeDasharray || 0
-    console.log(edgeObj)
+
 
     state.formData = {...state.formData,...edgeObj};
     // state.data.position.x = getFixNumber(state.data.position.x);

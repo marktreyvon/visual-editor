@@ -1,4 +1,4 @@
-import { Cell, Graph, Node,Color } from '@antv/x6';
+import { Cell, Graph, Node,Color,Timing } from '@antv/x6';
 import { Selection } from "@antv/x6-plugin-selection";
 import { History } from "@antv/x6-plugin-history";
 import { Snapline } from "@antv/x6-plugin-snapline";
@@ -238,15 +238,34 @@ class CanvasConfig implements ICanvasConfig {
     //增加改变边样式的函数， ;  *@author; 王炳宏  2023-05-23
     //todo 需要完善其他需求
     public onChangeEdges(edgeId: any,nodeId:any,data:any): void {
+        function extracted(ex:any,ew:any,ey:any,eh:any) {
 
+            switch (data.lineType) {
+                case "1":
+                    edge.prop('connector', "normal")
+                    edge.prop('vertices', [])
+                    break
+                case "2":
+                    edge.prop('connector', "normal")
+                    edge.prop('vertices', data.vertices ? data.vertices : [{x: ex + ew + 40, y: ey + eh - 40}])
+                    break
+                case "3":
+                    edge.prop('connector', "smooth")
+                    edge.prop('vertices', data.vertices ? data.vertices : [{x: ex + ew + 40, y: ey + eh - 40}])
+                    break
+            }
+        }
         if (!this.graph)
             throw new Error('Graph is undefined.');
         const edge = this.graph.getCellById(edgeId)
+        edge.removeMarkup()
+        edge.getTransitions().forEach(
+            (path) => edge.stopTransition(path),
+        )
         let x1,y1,w1,h1,x2,y2,w2,h2
         let ex,ey, ew,eh
-
         if(edge.getProp().source){
-         const  theSource = this.graph.getCellById(edge.getProp().source?.cell)
+            const  theSource = this.graph.getCellById(edge.getProp().source?.cell)
             const  theTarget = this.graph.getCellById(edge.getProp().target?.cell)
             console.log(theSource.getProp(),"4324324")
             if(theSource&&theTarget){
@@ -274,73 +293,145 @@ class CanvasConfig implements ICanvasConfig {
                 ey=y2
                 eh=h2
             }
-
-
         }
-
-        switch (data.lineType) {
-                    case "1":
-                        edge.prop('connector',  "normal")
-                        edge.prop('vertices', [])
-                        break
-                    case "2":
-                        edge.prop('connector',  "normal")
-                        edge.prop('vertices', data.vertices?data.vertices:[{ x: ex+ew+40, y: ey+eh-40 }])
-                        break
-                    case "3":
-                        edge.prop('connector',  "smooth")
-                        edge.prop('vertices', data.vertices?data.vertices:[{ x: ex+ew+40, y: ey+eh-40 }])
-                        break
-                }
-                edge.attr('line/targetMarker', 'classic')
-                edge.attr('line/stroke', data.lineColor)
-                edge.attr('line/strokeDasharray', data.lineStyle)
-                edge.attr('line/strokeWidth', data.lineWidth)
-        edge.attr('targetMarker', 'classic')
-
-        edge.attr('targetData', {
-            flowEffect:data.flowEffect,
-            flowColor:data.flowColor||edge.attr().line?.stroke||data.lineColor,
-            flowSpeed:data.flowSpeed,
-            flowDirection:data.flowDirection,
-            cycleTimes:data.cycleTimes,
-        })
+        extracted(ex,ey, ew,eh)
         let speed=0
+        let speed1=0
         switch (data.flowSpeed) {
-
             case 1:
-                speed=40
+                speed=4000
                 break
             case 2:
-                speed=30
+                speed=3000
                 break
             case 3:
-                speed=20
+                speed=2000
                 break
             case 4:
-                speed=10
+                speed=1000
+                break
+        }
+        switch (data.flowSpeed) {
+            case 1:
+                speed1=180
+                break
+            case 2:
+                speed1=160
+                break
+            case 3:
+                speed1=130
+                break
+            case 4:
+                speed1=100
                 break
         }
 
+        edge.attr('line/stroke', data.lineColor)
+        edge.attr('line/strokeDasharray', data.lineStyle)
+        edge.attr('line/strokeWidth', data.lineWidth)
         if(data.flowEffect!=='无效果'){
-            if(data.flowEffect==='水流') {
-
+            console.log(speed)
+            let count=data.cycleTimes
+            let count1=-1
+            if(data.cycleTimes!=-1){
+                count1=data.cycleTimes*10
             }else{
-                if(data.flowDirection==='正向'){
-                    edge.attr('line/strokeDasharray', 15)
-                    edge.attr('line/style/animation', `running-line-z ${speed}s infinite linear 0s `)
-                    edge.attr('line/stroke', data.flowColor||data.lineColor)
-                }else{
-                    edge.attr('line/strokeDasharray', 15)
-                    edge.attr('line/style/animation', `running-line-f ${speed}s ${data.cycleTimes===-1?'infinite':data.cycleTimes} linear  `)
-                    edge.attr('line/stroke', data.flowColor||data.lineColor)
-                }
+                count1=-1
             }
 
-        }else{
-            edge.attr('line/stroke', data.lineColor)
-            edge.attr('line/strokeDasharray', data.lineStyle)
-            edge.attr('line/style/animation', '')
+            if(data.flowEffect==='水流') {
+                extracted(ex,ey, ew,eh);
+                edge.setMarkup([
+                    {
+                        tagName: 'path',
+                        selector: 'p2',
+                        groupSelector: 'lines',
+                    },
+                    {
+                        tagName: 'path',
+                        selector: 'p1',
+                    },
+
+                ])
+
+                edge.attr('p1', { connection: true, stroke: data.flowColor,
+                    fill: 'none',strokeDasharray:'10 5 10',strokeDashoffset:10})
+                edge.attr('p2', {...edge.attr().line, connection: true,
+                    fill: 'none', cursor: 'pointer',})
+                const t1=data.flowDirection==='正向'?10:-10
+                const options = {
+                    delay:10,
+                    duration: speed1,
+                    timing: Timing.easeInOutBack,
+                    complete:()=>{
+                        if(count1==-1||count1>1){
+                            console.log("执行了")
+                            const t=edge.attr('p1/strokeDashoffset') as number-(t1)
+                            edge.transition('attrs/p1/strokeDashoffset', t, options)
+                            if(count1!==-1){
+                                count1=count1-1
+                            }
+                        }
+
+                    }
+                }
+                edge.transition('attrs/p1/strokeDashoffset', t1, options)
+
+            }else{
+                extracted(ex,ey, ew,eh);
+                edge.setMarkup([
+                    {
+                        tagName: 'circle',
+                        selector: 'c1',
+                    },
+                    {
+                        tagName: 'path',
+                        selector: 'p1',
+                    },
+                ])
+                edge.attr('c1',{
+                    r: 6,
+                    stroke: data.flowColor,
+                    fill: data.flowColor,
+                    atConnectionRatio: data.flowDirection==='正向'?0.01:0.99,
+                    strokeWidth: 1,
+                    event: 'click:circle',
+
+                })
+                edge.attr('p1', {...edge.attr().line, connection: true,
+                    fill: 'none', cursor: 'pointer',})
+                let t = edge.attr<number>('c1/atConnectionRatio') > 0.01 ? 0.01 : 0.99
+                const options1={
+                    delay:10,
+                    duration: 10,
+                    timing: Timing.easeInOutBack,
+                    complete:(args: any)=>{
+                        if(count===-1||count>1){
+                            if(args.path==='attrs/c1/r'){
+                                edge.attr('c1/r',6)
+                                edge.attr('c1/atConnectionRatio',data.flowDirection==='正向'?0.01:0.99)
+                                t = edge.attr<number>('c1/atConnectionRatio') > 0.01 ? 0.01 : 0.99
+                                console.log(t)
+                                edge.transition('attrs/c1/atConnectionRatio', t, options)
+                            }
+                            if(count!==-1){
+                                count=count-1
+                            }
+                        }
+                    }
+                }
+                const options = {
+                    delay:10,
+                    duration: speed,
+                    timing: Timing.easeInOutBack,
+                    complete:(args: any)=>{
+                        if(args.path==='attrs/c1/atConnectionRatio'){
+                            edge.transition('attrs/c1/r', 0, options1)
+                        }
+                    }
+                }
+                edge.transition('attrs/c1/atConnectionRatio', t, options)
+            }
         }
 
 

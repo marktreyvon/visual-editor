@@ -21,10 +21,3 @@
   }
 }
 
-@keyframes running-line-p {
-  0% {
-    stroke-dashoffset: 400px;
-  }
-100% {
-  stroke-dashoffset: 0;
-}}
