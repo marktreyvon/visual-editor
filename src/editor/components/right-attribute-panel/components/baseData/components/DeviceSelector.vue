@@ -59,7 +59,9 @@ const state = reactive({
     groupId: '',
     deviceId: '',
     pluginId: '',
-    property: ''
+    property: '',
+    devices: [],
+    properties: []
 })
 
 const projectOptions = ref<any>([]);
@@ -70,8 +72,36 @@ const tslOptions = ref<any>([]);
     [
         {
             projectId 
-            groupId 
-            deviceId
+            groupId  选择分组后传devices
+            deviceId 选择设备后传properties和pluginId
+            pluginId
+            property  选择属性
+            devices: [
+                {
+                    deviceName: '',
+                    deviceId
+                    pluginId,
+                    properties: [
+                        {
+                            name
+                            value
+                        }
+                    ]
+                },
+                {
+                    ...
+                }
+            ]
+            properties: [
+                {
+                    name
+                    value
+                },
+                {
+                    ...
+                }
+            ]
+            
         }
     ]
 */
@@ -80,6 +110,10 @@ watch(() => state, (value) => {
     emit('change', { index: props.index, ...value})
 }, {deep: true})
 
+/**
+ * 获取项目列表
+ * @returns 
+ */
 const getProjectList = () => {
     DeviceAPI.getProjectList(null)
         .then(({ data: result }) => {
@@ -91,7 +125,11 @@ const getProjectList = () => {
 
         })
 }
-
+/**
+ * 通过项目id获取分组列表
+ * @param projectId
+ * @returns 
+ */
 const getGroupList = (groupId: string) => {
     DeviceAPI.getGroupList({ current_page: 1, per_page: 9999, business_id: groupId })
         .then(({ data: result }) => {
@@ -102,18 +140,29 @@ const getGroupList = (groupId: string) => {
             }
         })
 }
-
+/**
+ * 通过分组id获取设备列表
+ * @param groupId
+ * @returns 
+ */
 const getDeviceList = (groupId: string) => {
     DeviceAPI.getDeviceList({ current_page: 1, per_page: 9999, asset_id: groupId })
         .then(({ data: result }) => {
             if (result.code === 200) {
                 console.log('getDeviceList', result)
                 const { data } = result.data;
-                deviceOptions.value = data.map((item: any) => ({ value: item.device, label: item.device_name, pluginId: item.type }))
+                deviceOptions.value = data.map((item: any) => ({ value: item.device, label: item.device_name, pluginId: item.type }));
+                state.devices = deviceOptions.value.map((item: any) => 
+                    ({ deviceName: item.label, deviceId: item.value, pluginId: item.pluginId, properties: [] }));
             }
         })
 }
 
+/**
+ * 通过设备Id获取插件
+ * @param deviceId
+ * @returns 
+ */
 const getPlugin = (deviceId: string) => {
     const device = deviceOptions.value.find((item: any) => item.value === deviceId);
     state.pluginId = device.pluginId;
@@ -133,31 +182,50 @@ const getPlugin = (deviceId: string) => {
 
 getProjectList();
 
+/**
+ * 选择了项目
+ * @param value 
+ */
 const handleChangeProject = (value: string) => {
     console.log('handleChangeProject', value)
     state.projectId = value;
     getGroupList(value);
 }
 
+/**
+ * 选择了分组
+ * @param value 
+ */
 const handleChangeGroup = (value: string) => {
     console.log('handleChangeGroup', value)
     state.groupId = value;
     getDeviceList(value);
 }
 
+/**
+ * 选择了设备
+ * @param value 
+ */
 const handleChangeDevice = (value: string) => {
     console.log('handleChangeGroup', value)
     state.deviceId = value;
     getPlugin(value);
 }
 
+/**
+ * 选择了属性
+ * @param value 
+ */
 const handleChangeProperty = (value: string) => {
     console.log('handleChangeProperty', value)
     state.property = value;
 }
 
 
-
+/**
+ * 删除设备
+ * @param id 
+ */
 const handleDelete = (e: any) => {
     e.preventDefault();
     console.log('handleDelete', props.index)

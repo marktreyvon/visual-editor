@@ -22,9 +22,14 @@ export const getDisplayComponent = (cpt: Component, data: any): Component => {
                 this.option = { ...data.option }
             }
         },
+        methods: {
+            onChange(value: any) {
+                console.log('display.change', value)
+            }
+        },
         render() {
             return (
-                <cpt value={this.value} style={this.style} option={this.option}/>
+                <cpt value={this.value} style={this.style} option={this.option} onChange={this.onChange}/>
             )
         }
     })

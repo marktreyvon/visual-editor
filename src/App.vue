@@ -40,7 +40,10 @@ if (import.meta.env.MODE === 'development') {
       }
     })
   }
-
+} else {
+  setTokenInfo(params);
+  // 注入参数
+  provide('params', params);
 }
 // ============================ 临时获取token end==============================================
 

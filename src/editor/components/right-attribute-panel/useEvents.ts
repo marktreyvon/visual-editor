@@ -111,15 +111,15 @@ export const useEvents = () => {
         const node = data.node || data.cell || null;
         if (node !== null) {
             nodeData.value = { ...node.store.data };
-            console.log('setNodeData', nodeData.value)
+            // console.log('setNodeData', nodeData.value)
         }
     }
 
     const setEdgeData = (data: any) => {
-        console.log('data', data)
+        // console.log('data', data)
 
         const edge =  data.node || data.cell || null;
-        console.log('edges', edge)
+        // console.log('edges', edge)
         if (edge !== null) {
             edgeData.value = { ...edge.store.data };
             console.log('setEdgeData', edgeData.value)
@@ -132,7 +132,7 @@ export const useEvents = () => {
      * @param data 
      */
     const onChange = (data: any) => {
-        console.log("data",data)
+        // console.log("data",data)
         currentNode.setData({
             ...currentNode.getData(),
             ...data

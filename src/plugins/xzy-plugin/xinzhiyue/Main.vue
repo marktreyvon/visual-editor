@@ -17,7 +17,7 @@
     </div>
     <div class="content">
       <div class="content-left">
-        <Menu :navs="navList"/>
+        <Menu :navs="navList" v-model:deviceIndex="state.deviceIndex"/>
         
       </div>
       <div class="content-right">
@@ -43,6 +43,7 @@ const props = defineProps({
   option: Object
 });
 const state = reactive({
+  deviceIndex: 0,
   list: [],
   code: 'MAC:D0BAE40FB588',
   orderList: [],
@@ -54,11 +55,23 @@ const navList = ref([]);
 const groupId = ref('');
 
 watch(() => props.option, (value: any) => {
-  console.log('xinzhiyue.watch.value', value);
-  groupId.value = value.deviceData[0].groupId;
-  getDeviceList();
-  console.log('xinzhiyue.watch', value.deviceData[0].groupId);
+  console.log('xinzhiyue.watch.props.option', value);
+  initDeviceList(value.deviceData[0].devices || []);
+  // groupId.value = value.deviceData[0].groupId;
+  // getDeviceList();
+  console.log('xinzhiyue.watch.props.option', value.deviceData[0].groupId);
 });
+
+const emit = defineEmits(['change']);
+watch(() => state.deviceIndex, (value: any) => {
+  console.log('Main.watch.state.deviceIndex', value);
+  emit('change', { deviceIndex: value });
+})
+
+const initDeviceList = (devices: any) => {
+  navList.value = devices.map((item: any) => ({ title: item.deviceName, status: false, id: item.deviceId, properties: item.properties }));
+  console.log('xinzhiyue.initDeviceList', navList.value);
+};
 
 const getDeviceList = () => {
   if (!groupId.value) return;
@@ -74,12 +87,7 @@ const getDeviceList = () => {
         console.log('xinzhiyue.getDeviceList', navList.value);
 
       }
-      // state.list = data;
     })
-  // getDeviceListApi(params).then((res: any) => {
-  //   console.log('xinzhiyue.getDeviceListApi', res);
-  //   state.list = res.data;
-  // });
 };
 </script>
 <style scoped>

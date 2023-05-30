@@ -35,28 +35,28 @@
   
   import { ref,computed,reactive, watch } from "vue";
   
-  let obj = reactive({
-    a: 1
-  })
   const props = defineProps({
     navs: Array
   });
+
+ 
 
   const open = ref(true);
   const nowIndex = ref(1);
   const navList = ref<any>([]);
 
   watch(() => props.navs, (value) => {
-    if (value) {
+    if (value && value.length > 0) {
       navList.value = value
       navList.value[0].status = true;
     }
     console.log('defineProps',value)
   })
 
+  const emit = defineEmits(['update:deviceIndex']);
   const change_active = (index: any) => {
     nowIndex.value = index;
-    obj.a = 2
+    emit('update:deviceIndex', index);
     console.log(index, "index")
   };
   
