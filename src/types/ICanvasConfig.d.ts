@@ -107,6 +107,8 @@ declare interface ICanvasConfig {
      */
     onChangeEdges(edgeId: any,nodeId: any,data:any): void;
 
+
+    edgeAnimation(edge:any,data:any): void;
     /**
      * 渲染节点数据
      * @param json 节点数据

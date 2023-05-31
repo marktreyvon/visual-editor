@@ -1,8 +1,9 @@
 import { CanvasConfig, PluginConfig } from "@/editor/config";
-import { Graph, Node } from '@antv/x6'
+import {Graph, Node, Timing} from '@antv/x6'
 import * as Common from "@/common";
 import * as Plugins from '@/plugins'
 import { usePlugins } from '@/editor/hooks';
+import extracted from "@/utils/makeedgevs"
 import { register } from "@antv/x6-vue-shape";
 import { getDisplayComponent } from "./components/DisplayComponent";
 
@@ -23,7 +24,6 @@ export const useDisplay = (containerId: string) => {
             jsonObj = JSON.parse(data);
             let canvasConfig: ICanvasConfig = CanvasConfig.getDisplayInstance(containerId, options);
             // 渲染节点
-            console.log('jsonObj', jsonObj.cells)
             jsonObj.cells.forEach((cell: any) => {
                 /**
                  如果节点有链接桩，则不显示
@@ -34,12 +34,33 @@ export const useDisplay = (containerId: string) => {
                     cell.ports.groups.left.attrs.circle.r=0
                     cell.ports.groups.right.attrs.circle.r=0
                 }
+
             });
             canvasConfig.renderJSON(jsonObj);
             // 初始化画布背景
             canvasConfig.setBackground(jsonObj.graph.background);
             // 初始化画布网格
             canvasConfig.showGrid(jsonObj.graph.showGrid);
+
+            const  theg=canvasConfig.getGraph()
+            const Edges=theg.getEdges()
+            console.log(Edges)
+            Edges.forEach((edge:any)=>{
+                console.log(edge.attr('targetData'))
+                canvasConfig.edgeAnimation(edge,edge.attr('targetData'))
+            })
+
+
+            // jsonObj.cells.forEach((cell: any) => {
+            //     /**
+            //      如果节点有链接桩，则不显示
+            //      **/
+            //     if(cell.shape==='edge'){
+            //         console.log(cell.attrs.targetData)
+            //         canvasConfig.getGraph().gete
+            //         canvasConfig.edgeAnimation(cell,cell.attrs.targetData)
+            //     }
+            // });
         }
     }
 
