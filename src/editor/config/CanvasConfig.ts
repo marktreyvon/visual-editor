@@ -4,7 +4,7 @@ import { History } from "@antv/x6-plugin-history";
 import { Snapline } from "@antv/x6-plugin-snapline";
 import { Transform } from "@antv/x6-plugin-transform";
 import { Export } from "@antv/x6-plugin-export";
-
+import extracted from "@/utils/makeedgevs"
 import { register } from "@antv/x6-vue-shape";
 import * as Common from "@/common";
 import { CellEvents } from '../events/CellEvents';
@@ -238,36 +238,28 @@ class CanvasConfig implements ICanvasConfig {
     //增加改变边样式的函数， ;  *@author; 王炳宏  2023-05-23
     //todo 需要完善其他需求
     public onChangeEdges(edgeId: any,nodeId:any,data:any): void {
-        function extracted(ex:any,ew:any,ey:any,eh:any) {
-
-            switch (data.lineType) {
-                case "1":
-                    edge.prop('connector', "normal")
-                    edge.prop('vertices', [])
-                    break
-                case "2":
-                    edge.prop('connector', "normal")
-                    edge.prop('vertices', data.vertices ? data.vertices : [{x: ex + ew + 40, y: ey + eh - 40}])
-                    break
-                case "3":
-                    edge.prop('connector', "smooth")
-                    edge.prop('vertices', data.vertices ? data.vertices : [{x: ex + ew + 40, y: ey + eh - 40}])
-                    break
-            }
-        }
         if (!this.graph)
             throw new Error('Graph is undefined.');
         const edge = this.graph.getCellById(edgeId)
+        edge.attr('targetData',data)
+        edge.attr('line/stroke', data.lineColor)
+        edge.attr('line/strokeDasharray', data.lineStyle)
+        edge.attr('line/strokeWidth', data.lineWidth)
         edge.removeMarkup()
         edge.getTransitions().forEach(
             (path) => edge.stopTransition(path),
         )
+    this.edgeAnimation(edge,data)
+    }
+
+    public edgeAnimation(edge:any,data:any):void{
+        if (!this.graph)
+            throw new Error('Graph is undefined.');
         let x1,y1,w1,h1,x2,y2,w2,h2
         let ex,ey, ew,eh
         if(edge.getProp().source){
             const  theSource = this.graph.getCellById(edge.getProp().source?.cell)
             const  theTarget = this.graph.getCellById(edge.getProp().target?.cell)
-            console.log(theSource.getProp(),"4324324")
             if(theSource&&theTarget){
                 x1=theSource.getProp().position.x
                 y1=theSource.getProp().position.y
@@ -278,7 +270,6 @@ class CanvasConfig implements ICanvasConfig {
                 w2=theTarget.getProp().size.width
                 h2=theTarget.getProp().size.height
             }
-
             if(x2>x1){
                 ex=x1
                 ew=w1
@@ -294,7 +285,7 @@ class CanvasConfig implements ICanvasConfig {
                 eh=h2
             }
         }
-        extracted(ex,ey, ew,eh)
+
         let speed=0
         let speed1=0
         switch (data.flowSpeed) {
@@ -325,9 +316,8 @@ class CanvasConfig implements ICanvasConfig {
                 speed1=130
                 break
         }
-        edge.attr('line/stroke', data.lineColor)
-        edge.attr('line/strokeDasharray', data.lineStyle)
-        edge.attr('line/strokeWidth', data.lineWidth)
+
+
         if(data.flowEffect!=='无效果'){
             console.log(speed)
             let count=data.cycleTimes
@@ -338,7 +328,6 @@ class CanvasConfig implements ICanvasConfig {
                 count1=-1
             }
             if(data.flowEffect==='水流') {
-                extracted(ex,ey, ew,eh);
                 edge.setMarkup([
                     {
                         tagName: 'path',
@@ -373,7 +362,6 @@ class CanvasConfig implements ICanvasConfig {
                 }
                 edge.transition('attrs/p1/strokeDashoffset', t1, options)
             }else{
-                extracted(ex,ey, ew,eh);
                 edge.setMarkup([
                     {
                         tagName: 'circle',
@@ -394,12 +382,11 @@ class CanvasConfig implements ICanvasConfig {
                 })
                 edge.attr('p1', {...edge.attr().line, connection: true,
                     fill: 'none', cursor: 'pointer',})
-
-               const baseOption1={
-                   delay:1,
-                   timing: Timing.linear,
-                   duration: speed,
-               }
+                const baseOption1={
+                    delay:1,
+                    timing: Timing.linear,
+                    duration: speed,
+                }
                 const baseOption2={
                     delay:1,
                     timing: Timing.linear,
@@ -411,7 +398,6 @@ class CanvasConfig implements ICanvasConfig {
                         edge.transition('attrs/c1/atConnectionRatio', t, options1)
                     }
                 }
-
                 const options3={
                     ...baseOption2,
                     complete:()=>{
@@ -424,20 +410,18 @@ class CanvasConfig implements ICanvasConfig {
                         edge.transition('attrs/c1/atConnectionRatio',data.flowDirection==='正向'?0.01:0.99, options3)
                     }
                 }
-
                 const options1={
-                 ...baseOption1,
-                 complete:()=>{
-                     edge.transition('attrs/c1/r', 0, options2)
-                 }
+                    ...baseOption1,
+                    complete:()=>{
+                        edge.transition('attrs/c1/r', 0, options2)
+                    }
                 }
-                let t = edge.attr<number>('c1/atConnectionRatio') > 0.01 ? 0.01 : 0.99
+                let t = edge.attr('c1/atConnectionRatio') > 0.01 ? 0.01 : 0.99
                 edge.transition('attrs/c1/atConnectionRatio', t, options1)
             }
         }
-
+        extracted(ex,ey, ew,eh,edge,data)
     }
-
     public renderJSON(json: any): void {
         if (!this.graph) 
             throw new Error('Graph is undefined.');

@@ -56,7 +56,9 @@ export const useTools = (): ITools => {
         },
         preview: () => {
             // 获取大屏数据
+
             const jsonData = CanvasConfig.getInstance().toJSON();
+
             // 大屏数据存入session
             sessionStorage.setItem(Common.PREVIEW_JSON_DATA_KEY, JSON.stringify(jsonData));
             const url = router.resolve({
