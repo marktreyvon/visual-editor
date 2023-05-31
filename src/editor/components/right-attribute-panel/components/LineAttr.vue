@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, reactive, watch, watchEffect, toRefs} from "vue";
+import {ref, reactive, watch, watchEffect, toRefs, toRaw} from "vue";
 import type { FormInstance, FormRules } from 'element-plus'
 const props = defineProps({
   edgeData: {
@@ -102,6 +102,9 @@ let state = reactive<any>({
     vertices:undefined
   }
 })
+
+
+
 watchEffect(() => {
   if (props.edgeData) {
     let edgeObj = {
@@ -149,10 +152,11 @@ watchEffect(() => {
   }
 
 })
+const emit = defineEmits(["onChange"]);
+watch(state, () => {
+  emit('onChange', toRaw(state))
 
-// watch(state.formData, () => {
-//
-// })
+})
 
 
 </script>

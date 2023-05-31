@@ -43,7 +43,7 @@
           <div class="main_echartOne">
             <div class="echart_tip">
               <div class="tip_title">室内PM2.5</div>
-              <div class="tip_value">66</div>
+              <div class="tip_value">{{ state.pm25 }}</div>
               <div class="tip_status">良</div>
             </div>
             <RingOne />
@@ -77,7 +77,7 @@
               <div class="echart_tip">
                 <div class="tip_title">温度</div>
                 <div class="tip_value">
-                  <div class="num">24.2</div>
+                  <div class="num">{{ state.temp }}</div>
                   <div class="unit">c</div>
                 </div>
                 <div class="tip_status">良</div>
@@ -88,7 +88,7 @@
               <div class="echart_tip">
                 <div class="tip_title">湿度</div>
                 <div class="tip_value">
-                  <div class="num">80</div>
+                  <div class="num">{{ state.hum }}</div>
                   <div class="unit">%</div>
                 </div>
                 <div class="status_value">良</div>
@@ -101,7 +101,7 @@
               <div class="echart_tip">
                 <div class="tip_title">二氧化碳</div>
                 <div class="tip_value">
-                  <div class="num">5200</div>
+                  <div class="num">{{ state.co2}}</div>
                   <div class="unit">ppm</div>
                 </div>
                 <div class="tip_status">良</div>
@@ -112,7 +112,7 @@
               <div class="echart_tip">
                 <div class="tip_title">甲醛</div>
                 <div class="tip_value">
-                  <div class="num">0.03</div>
+                  <div class="num">{{ state.formaldehyde}}</div>
                   <div class="unit">(mg.m)</div>
                 </div>
                 <div class="tip_status">良</div>
@@ -156,7 +156,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, watch } from "vue";
 import BarEchart from "../echart/barEchart/index.vue";
 import RingOne from "../echart/ringOne/index.vue";
 import RingTwo from "../echart/ringTwo/index.vue";
@@ -169,6 +169,25 @@ const controlIndex = ref(0);
 const controlList = reactive(["PM2.5", "湿度", "甲醛", "温度", "二氧化碳"]);
 const standardNum = reactive(["≥500", "250", "150", "115", "75", "35", "0"]);
 const standardList = reactive(["严重", "重度", "中度", "轻度", "良", "优"]);
+
+const props = defineProps({
+  value: Object,
+});
+const state = reactive({
+  pm25: 0,
+  temp: 0,
+  hum: 0,
+  co2: 0,
+  formaldehyde: 0,
+});
+
+watch(() => props.value, (value: any) => {
+  state.pm25 = value['PM2.5'];
+  state.temp = value['temp'];
+  state.hum = value['humidity'];
+  state.co2 = value['carbon'];
+  state.formaldehyde = value['formaldehyde'];
+})
 </script>
 <style >
 .office_bar {
@@ -286,7 +305,7 @@ const standardList = reactive(["严重", "重度", "中度", "轻度", "良", "�
 .standard_item {
   width: 58px;
   height: 369px;
-  background: url("../../../assets/daping/office/tip.png") center center;
+  background: url("../../assets/daping/office/tip.png") center center;
   background-size: 100% 100%;
   margin-top: 5px;
   display: flex;
@@ -302,7 +321,7 @@ const standardList = reactive(["严重", "重度", "中度", "轻度", "良", "�
   width: 404px;
   height: 404px;
   margin-right: 56px;
-  background: url("../../../assets/daping/office/z.png") center center;
+  background: url("../../assets/daping/office/z.png") center center;
   background-size: 100% 100%;
   position: relative;
 }

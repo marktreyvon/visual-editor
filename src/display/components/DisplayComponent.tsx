@@ -1,6 +1,9 @@
 import { Component, defineComponent } from "vue";
+import { DataConfig } from "../config/DataConfig";
 
 export const getDisplayComponent = (cpt: Component, data: any): Component => {
+    const dataConfig: DataConfig = new DataConfig(data);
+
     return defineComponent({
         data() {
             return {
@@ -10,6 +13,14 @@ export const getDisplayComponent = (cpt: Component, data: any): Component => {
             }
         },
         mounted() {
+            const cb = (value: any) => {
+                console.log('callback', value)
+                this.value = value;
+            }
+            // 设置回调
+            dataConfig.setCallback(cb);
+            // 启动定时器开始刷新数据
+            dataConfig.start();
             console.log('getDisplayComponent', data)
             if (!data) return;
             if (data.style) {
@@ -24,7 +35,13 @@ export const getDisplayComponent = (cpt: Component, data: any): Component => {
         },
         methods: {
             onChange(value: any) {
-                console.log('display.change', value)
+                const { device } = value; 
+                console.log('display.change', device.deviceId)
+                dataConfig.stop();
+                // 改变了数据入口
+                dataConfig.setDeviceId(device.deviceId);
+                // 重启定时器
+                dataConfig.start();
             }
         },
         render() {

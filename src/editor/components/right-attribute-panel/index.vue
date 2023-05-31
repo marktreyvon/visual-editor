@@ -14,7 +14,7 @@
                     </div>
                     
                       <!-- 边样式 -->
-                    <LineAttr v-if="isEdge"  :tools="useTools()" :edgeData="edgeData" :nodeData="nodeData"/>
+                    <LineAttr v-if="isEdge"  :tools="useTools()" :edgeData="edgeData" :nodeData="nodeData" @onChange="onChange"/>
                 </div>
 
             </el-tab-pane>

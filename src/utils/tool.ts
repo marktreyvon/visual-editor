@@ -46,4 +46,19 @@ const randomString = (len?: number) => {
     return pwd;
 }
 
-export { message, parseParams, randomString }
+/**
+ * 判断字符串是否是JSON字符串
+ * @param str 
+ * @returns 
+ */
+const isJSON = (str: string) => {
+    if (typeof str === 'string') {
+        try {
+            let obj = JSON.parse(str);
+            return obj;
+        } catch(e) {
+            return false;
+        }
+    }
+}
+export { message, parseParams, randomString, isJSON }

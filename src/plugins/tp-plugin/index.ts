@@ -3,26 +3,27 @@ import { Wenshidu_Main, Wenshidu_Attribute, Wenshidu_Data, Wenshidu_Icon } from 
 import { Curve_Attribute, Curve_Data, Curve_Icon, Curve_Main } from "./curve";
 import { Text_Attribute, Text_Data, Text_Main, Text_Icon } from "./text";
 import { Yibiaopan_Attribute, Yibiaopan_Data, Yibiaopan_Icon, Yibiaopan_Main } from "./yibiaopan";
+import { Amap_Attribute, Amap_Data, Amap_Icon, Amap_Main } from "./map";
 export default {
     views: [
-        {
-            name: "PM2.5",
-            description: "",
-            group: "官方插件",
-            icon: PM25_Icon,
-            Main: PM25_Main,
-            Attribute: PM25_Attribute,
-            Data: PM25_Data
-        },
-        {
-            name: "Wenshidu",
-            description: "",
-            group: "官方插件",
-            icon: Wenshidu_Icon,
-            Main: Wenshidu_Main,
-            Attribute: Wenshidu_Attribute,
-            Data: Wenshidu_Data
-        },
+        // {
+        //     name: "PM2.5",
+        //     description: "",
+        //     group: "官方插件",
+        //     icon: PM25_Icon,
+        //     Main: PM25_Main,
+        //     Attribute: PM25_Attribute,
+        //     Data: PM25_Data
+        // },
+        // {
+        //     name: "Wenshidu",
+        //     description: "",
+        //     group: "官方插件",
+        //     icon: Wenshidu_Icon,
+        //     Main: Wenshidu_Main,
+        //     Attribute: Wenshidu_Attribute,
+        //     Data: Wenshidu_Data
+        // },
         {
             name: "曲线图",
             description: "",
@@ -50,6 +51,15 @@ export default {
             Main: Yibiaopan_Main,
             Attribute: Yibiaopan_Attribute,
             Data: Yibiaopan_Data
+        },
+        {
+            name: "地图",
+            description: "",
+            group: "官方插件",
+            icon: Amap_Icon,
+            Main: Amap_Main,
+            Attribute: Amap_Attribute,
+            Data: Amap_Data
         }
     ]
 }

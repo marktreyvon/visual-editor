@@ -17,12 +17,12 @@
     </div>
     <div class="content">
       <div class="content-left">
-        <Menu :navs="navList" v-model:deviceIndex="state.deviceIndex"/>
+        <Menu :navs="state.list" v-model:device="state.device"/>
         
       </div>
       <div class="content-right">
         <!-- <router-view></router-view> -->
-        <Index />
+        <Index :value="state.value"/>
       </div>
     </div>
     <div class="content-pic">
@@ -36,59 +36,47 @@ import { ref, watch } from 'vue';
 import Menu from './components/menu/index.vue';
 import Index from './components/index/index.vue';
 import {reactive } from 'vue';
-import DeviceAPI from '@/api/device';
 const props = defineProps({
   style: Object,
   value: Object,
   option: Object
 });
 const state = reactive({
-  deviceIndex: 0,
+  device: {},
   list: [],
+  value: {},
   code: 'MAC:D0BAE40FB588',
   orderList: [],
   skillList: [],
 });
-// 设备列表
-const navList = ref([]);
 
-const groupId = ref('');
+// 从编辑器传递过来的设备的值
+watch(() => props.value, (value: any) => {
+  console.log('xinzhiyue.watch.props.value', value);
+  if (value) {
+    state.value = value;
+  }
+}
+)
 
+// 从编辑器传递过来的配置
 watch(() => props.option, (value: any) => {
   console.log('xinzhiyue.watch.props.option', value);
   initDeviceList(value.deviceData[0].devices || []);
-  // groupId.value = value.deviceData[0].groupId;
-  // getDeviceList();
-  console.log('xinzhiyue.watch.props.option', value.deviceData[0].groupId);
 });
 
 const emit = defineEmits(['change']);
-watch(() => state.deviceIndex, (value: any) => {
-  console.log('Main.watch.state.deviceIndex', value);
-  emit('change', { deviceIndex: value });
+watch(() => state.device, (value: any) => {
+  // 向编辑器发送消息
+  emit('change', { device: value });
 })
 
 const initDeviceList = (devices: any) => {
-  navList.value = devices.map((item: any) => ({ title: item.deviceName, status: false, id: item.deviceId, properties: item.properties }));
-  console.log('xinzhiyue.initDeviceList', navList.value);
+  state.list = devices.map((item: any) => ({ ...item, status: false }));
+  // state.list[0].status = true;
+  console.log('xinzhiyue.initDeviceList', state.list);
 };
 
-const getDeviceList = () => {
-  if (!groupId.value) return;
-  const params = {
-    asset_id: groupId.value,
-    current_page: 1, 
-    per_page: 9999
-  };
-  DeviceAPI.getDeviceList(params)
-    .then(({ data }) => {
-      if (data.code === 200) {
-        navList.value = data.data.data.map((item: any) => ({ title: item.device_name, status: false, id: item.device, pluginId: item.type }));
-        console.log('xinzhiyue.getDeviceList', navList.value);
-
-      }
-    })
-};
 </script>
 <style scoped>
 .bg{
@@ -132,7 +120,8 @@ const getDeviceList = () => {
 .content-left{
     position: relative;
     z-index: 9;
-
+    width: 271px;
+    height: 100%;
 }
 .content-right{
   width: 85%;

@@ -57,6 +57,7 @@ export const useDisplay = (containerId: string) => {
                 views.forEach((view: any) => {
                     jsonObj.cells.forEach((cell: any) => {
                         if (cell.shape === view.name) {
+                            console.log('display.loadPlugins', cell)
                             const cpt: any = getDisplayComponent(view.Main, cell.data || null);
                             registerShape(view.name, cpt);
                         }

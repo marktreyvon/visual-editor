@@ -18,14 +18,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, getCurrentInstance } from "vue";
+import { ref, reactive, onMounted, getCurrentInstance, toRaw } from "vue";
 import { ElMessageBox } from 'element-plus'
 
 import DeviceSelector from "./components/DeviceSelector.vue";
 import { useBaseData } from './useBaseData'
 const emit = defineEmits(["onChange"]);
 
-const deviceData = ref<any>([
+const deviceData = reactive<any>([
   {
     projectId: '',
     groupId: '',
@@ -43,7 +43,7 @@ onMounted(() => {
 })
 
 const addDevice = () => {
-  deviceData.value.push({
+  deviceData.push({
     projectId: '',
     groupId: '',
     deviceId: ''
@@ -51,8 +51,15 @@ const addDevice = () => {
 }
 
 const handleChangeDeviceData = (data: any) => {
-  deviceData.value.splice(data.index, 1, data);
-  const option = { bindType: 'device', deviceData: deviceData.value };
+  // debugger;
+  console.log('handleChangeDeviceData.data', data)
+  console.log('handleChangeDeviceData.deviceData 1', deviceData)
+  deviceData.splice(data.index, 1, data);
+  const _deviceData = toRaw(deviceData);
+  console.log('handleChangeDeviceData.deviceData 2', _deviceData)
+  const option = { bindType: 'device', deviceData: _deviceData  };
+  console.log('handleChangeDeviceData.option', option)
+
   emit('onChange', { option })
 }
 
@@ -61,13 +68,13 @@ const handleChangeDeviceData = (data: any) => {
  * @param id 
  */
 const handleDeleteDevice = (index: number) => {
-  if (deviceData.value.length === 1) {
+  if (deviceData.length === 1) {
     ElMessageBox.alert('至少保留一个设备', '提示', {})
     return
   }
   const callback = (action: any, instance: any) => {
     if (action === 'confirm') {
-      deviceData.value.splice(index, 1)
+      deviceData.splice(index, 1)
     }
   }
   ElMessageBox.confirm('是否确认删除该设备？', '确认删除', {callback}, null)

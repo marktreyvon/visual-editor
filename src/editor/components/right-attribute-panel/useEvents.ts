@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, toRaw } from "vue";
 import { CanvasConfig, PluginConfig } from "@/editor/config";
 /**
  * @author cxs
@@ -35,7 +35,6 @@ export const useEvents = () => {
 
         // 点击node
         events.setClickEventListener((data: any) => {
-
             currentNode = data.node || data.cell || null;
             nodeId=currentNode?.id
             if (currentNode === null) {
@@ -132,10 +131,13 @@ export const useEvents = () => {
      * @param data 
      */
     const onChange = (data: any) => {
-        // console.log("data",data)
+        console.log("useEvents.onChange.data", data)
+        // console.log("useEvents.onChange.currentNode", currentNode.getData())
+        const jsonData = JSON.stringify(data);
+
         currentNode.setData({
-            ...currentNode.getData(),
-            ...data
+            // ...currentNode.getData(),
+            jsonData
         });
     }
 

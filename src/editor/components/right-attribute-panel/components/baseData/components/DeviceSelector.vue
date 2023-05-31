@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from "vue";
+import { ref, reactive, watch, toRaw } from "vue";
 import { Delete } from '@element-plus/icons-vue'
 import DeviceAPI from "@/api/device";
 const props = defineProps({
@@ -107,7 +107,8 @@ const tslOptions = ref<any>([]);
 */
 watch(() => state, (value) => {
     console.log('watch state', value)
-    emit('change', { index: props.index, ...value})
+    // emit('change', { index: props.index, ...value})
+    emit('change', { index: props.index, ...toRaw(value)})
 }, {deep: true})
 
 /**
@@ -151,11 +152,23 @@ const getDeviceList = (groupId: string) => {
             if (result.code === 200) {
                 console.log('getDeviceList', result)
                 const { data } = result.data;
+                if (!data) {
+                    deviceOptions.value = [];
+                    state.devices = [];
+                    return;
+                }
                 deviceOptions.value = data.map((item: any) => ({ value: item.device, label: item.device_name, pluginId: item.type }));
                 state.devices = deviceOptions.value.map((item: any) => 
                     ({ deviceName: item.label, deviceId: item.value, pluginId: item.pluginId, properties: [] }));
+                setData();
             }
         })
+}
+
+const setData = () => {
+    console.log('setData', toRaw(state))
+
+    // emit('change', { index: props.index, ...toRaw(state)})
 }
 
 /**
@@ -210,6 +223,7 @@ const handleChangeDevice = (value: string) => {
     console.log('handleChangeGroup', value)
     state.deviceId = value;
     getPlugin(value);
+    setData();
 }
 
 /**
@@ -219,6 +233,7 @@ const handleChangeDevice = (value: string) => {
 const handleChangeProperty = (value: string) => {
     console.log('handleChangeProperty', value)
     state.property = value;
+    setData();
 }
 
 

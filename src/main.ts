@@ -20,6 +20,8 @@ const app = createApp(App);
 
 // 使用 Element Plus
 Plugins.installElementPlus(app);
+// 使用AMap
+Plugins.installAMap(app);
 // Plugins.installDataV(app);
 
 app.use(router);

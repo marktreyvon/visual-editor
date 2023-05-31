@@ -6,10 +6,10 @@
           :class="nowIndex == index ? 'active' : ''"
           v-for="(item, index) in navList"
           :key="index"
-          @click="change_active(index)"
+          @click="changeDevice({ index, ...item })"
         >
           <div class="item_title">
-              {{ item.title }}
+              {{ item.deviceName }}
             </div>
             <div class="item_status">
               <div class="status_text" v-if="item.status">在线</div>
@@ -33,7 +33,7 @@
   // import { ArrowLeft, ArrowRight, Delete, Edit, Share } from '@element-plus/icons-vue';
   // import Descrition from '@/components/Descrition/index.vue';
   
-  import { ref,computed,reactive, watch } from "vue";
+  import { ref,computed,reactive, watch, onMounted } from "vue";
   
   const props = defineProps({
     navs: Array
@@ -49,18 +49,18 @@
     if (value && value.length > 0) {
       navList.value = value
       navList.value[0].status = true;
+      changeDevice({ index: 0, ...navList.value[0] })
     }
     console.log('defineProps',value)
   })
 
-  const emit = defineEmits(['update:deviceIndex']);
-  const change_active = (index: any) => {
-    nowIndex.value = index;
-    emit('update:deviceIndex', index);
-    console.log(index, "index")
+  const emit = defineEmits(['update:device']);
+  const changeDevice = (params: any) => {
+    nowIndex.value = params.index;
+    emit('update:device', params);
   };
-  
-  // const sideIndex = ref(0);
+
+
   const currentIndex = ref(0);
   const visibleItems = computed(() => {
     const startIndex = currentIndex.value;
@@ -103,7 +103,7 @@
     height: 680px;
   }
   .menu-nav .nav_bar .nav_item {
-    width: 180px;
+    width: 100%;
     height: 115px;
     background: #173268;
     box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.18);
@@ -154,11 +154,11 @@
     margin-left: 10px;
   }
   .menu-nav .nav_bar .nav_item .item_status .isActive {
-    background: url("../../../assets/daping/office/isActive.png") center center;
+    background: url("../../assets/daping/office/isActive.png") center center;
     background-size: 100% 100%;
   }
   .menu-nav .nav_bar .nav_item .item_status .noActive {
-    background: url("../../../assets/daping/office/noActive.png") center center;
+    background: url("../../assets/daping/office/noActive.png") center center;
     background-size: 100% 100%;
   }
   
