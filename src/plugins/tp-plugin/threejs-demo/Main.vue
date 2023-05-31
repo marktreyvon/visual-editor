@@ -5,12 +5,8 @@
 
 <script lang="ts">
 import { defineComponent, watch } from "vue";
-import Gauge from "../components/Gauge.vue";
 import  { SceneBackstage }  from  './scene/lib/engine';
 export default defineComponent({
-  components: {
-    Gauge,
-  },
   props: {
     value: {
       type: [Object, String, Number],
@@ -28,7 +24,7 @@ export default defineComponent({
   data() {
     return {
       formData: "",
-      scene: null,
+      scene: {},
     }
   },
   watch: {
@@ -48,14 +44,16 @@ export default defineComponent({
   mounted() {
     this.$nextTick(() => {
       const containerDiv = this.$refs.scene3d;
-      const scene = new SceneBackstage(containerDiv);	
+      this.scene = new SceneBackstage(containerDiv);	
     })
     
   },
   methods: {
     changeData(data: any) {
       this.formData = JSON.parse(JSON.stringify(data));
-      console.log("Main.data", this.formData);
+      // 解析数据传给SceneBackstage实例 更新标签上的数据
+      // ...
+      // this.scene.updateData(this.formData);
     }
   }
 })
