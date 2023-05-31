@@ -5,6 +5,8 @@ import { Text_Attribute, Text_Data, Text_Main, Text_Icon } from "./text";
 import { Yibiaopan_Attribute, Yibiaopan_Data, Yibiaopan_Icon, Yibiaopan_Main } from "./yibiaopan";
 import { Amap_Attribute, Amap_Data, Amap_Icon, Amap_Main } from "./map";
 import { Three_Attribute, Three_Data, Three_Icon, Three_Main } from "./threejs-demo";
+import { picechart_Attribute, picechart_Data, picechart_Icon, picechart_Main } from "./pie";
+import { TB_Attribute, TB_Data, TB_Icon, TB_Main } from "./table";
 export default {
     views: [
         // {
@@ -26,15 +28,6 @@ export default {
         //     Data: Wenshidu_Data
         // },
         {
-            name: "曲线图",
-            description: "",
-            group: "官方插件",
-            icon: Curve_Icon,
-            Main: Curve_Main,
-            Attribute: Curve_Attribute,
-            Data: Curve_Data
-        },
-        {
             name: "文本",
             description: "",
             group: "官方插件",
@@ -52,6 +45,33 @@ export default {
             Main: Yibiaopan_Main,
             Attribute: Yibiaopan_Attribute,
             Data: Yibiaopan_Data
+        },
+        {
+            name: "饼状图",
+            description: "",
+            group: "官方插件",
+            icon: picechart_Icon,
+            Main: picechart_Main,
+            Attribute: picechart_Attribute,
+            Data: picechart_Data
+        },
+        {
+            name: "曲线图",
+            description: "",
+            group: "官方插件",
+            icon: Curve_Icon,
+            Main: Curve_Main,
+            Attribute: Curve_Attribute,
+            Data: Curve_Data
+        },
+        {
+            name: "滚动列表",
+            description: "",
+            group: "官方插件",
+            icon: TB_Icon,
+            Main: TB_Main,
+            Attribute: TB_Attribute,
+            Data: TB_Data
         },
         {
             name: "地图",
