@@ -4,6 +4,7 @@ import { Curve_Attribute, Curve_Data, Curve_Icon, Curve_Main } from "./curve";
 import { Text_Attribute, Text_Data, Text_Main, Text_Icon } from "./text";
 import { Yibiaopan_Attribute, Yibiaopan_Data, Yibiaopan_Icon, Yibiaopan_Main } from "./yibiaopan";
 import { Amap_Attribute, Amap_Data, Amap_Icon, Amap_Main } from "./map";
+import { Three_Attribute, Three_Data, Three_Icon, Three_Main } from "./threejs-demo";
 export default {
     views: [
         // {
@@ -60,6 +61,15 @@ export default {
             Main: Amap_Main,
             Attribute: Amap_Attribute,
             Data: Amap_Data
+        },
+        {
+            name: "ThreejsDemo",
+            description: "",
+            group: "官方插件",
+            icon: Three_Icon,
+            Main: Three_Main,
+            Attribute: Three_Attribute,
+            Data: Three_Data
         }
     ]
 }
