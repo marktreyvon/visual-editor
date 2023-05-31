@@ -313,19 +313,18 @@ class CanvasConfig implements ICanvasConfig {
         }
         switch (data.flowSpeed) {
             case 1:
-                speed1=180
+                speed1=210
                 break
             case 2:
-                speed1=160
+                speed1=180
                 break
             case 3:
-                speed1=130
+                speed1=160
                 break
             case 4:
-                speed1=100
+                speed1=130
                 break
         }
-
         edge.attr('line/stroke', data.lineColor)
         edge.attr('line/strokeDasharray', data.lineStyle)
         edge.attr('line/strokeWidth', data.lineWidth)
@@ -338,7 +337,6 @@ class CanvasConfig implements ICanvasConfig {
             }else{
                 count1=-1
             }
-
             if(data.flowEffect==='水流') {
                 extracted(ex,ey, ew,eh);
                 edge.setMarkup([
@@ -362,21 +360,18 @@ class CanvasConfig implements ICanvasConfig {
                 const options = {
                     delay:10,
                     duration: speed1,
-                    timing: Timing.easeInOutBack,
+                    timing: Timing.linear,
                     complete:()=>{
                         if(count1==-1||count1>1){
-                            console.log("执行了")
                             const t=edge.attr('p1/strokeDashoffset') as number-(t1)
                             edge.transition('attrs/p1/strokeDashoffset', t, options)
                             if(count1!==-1){
                                 count1=count1-1
                             }
                         }
-
                     }
                 }
                 edge.transition('attrs/p1/strokeDashoffset', t1, options)
-
             }else{
                 extracted(ex,ey, ew,eh);
                 edge.setMarkup([
@@ -396,49 +391,50 @@ class CanvasConfig implements ICanvasConfig {
                     atConnectionRatio: data.flowDirection==='正向'?0.01:0.99,
                     strokeWidth: 1,
                     event: 'click:circle',
-
                 })
                 edge.attr('p1', {...edge.attr().line, connection: true,
                     fill: 'none', cursor: 'pointer',})
-                let t = edge.attr<number>('c1/atConnectionRatio') > 0.01 ? 0.01 : 0.99
+
+               const baseOption1={
+                   delay:1,
+                   timing: Timing.linear,
+                   duration: speed,
+               }
+                const baseOption2={
+                    delay:1,
+                    timing: Timing.linear,
+                    duration: 0,
+                }
+                const options4={
+                    ...baseOption2,
+                    complete:()=>{
+                        edge.transition('attrs/c1/atConnectionRatio', t, options1)
+                    }
+                }
+
+                const options3={
+                    ...baseOption2,
+                    complete:()=>{
+                        edge.transition('attrs/c1/r', 6, options4)
+                    }
+                }
+                const options2={
+                    ...baseOption2,
+                    complete:()=>{
+                        edge.transition('attrs/c1/atConnectionRatio',data.flowDirection==='正向'?0.01:0.99, options3)
+                    }
+                }
+
                 const options1={
-                    delay:10,
-                    duration: 10,
-                    timing: Timing.easeInOutBack,
-                    complete:(args: any)=>{
-                        if(count===-1||count>1){
-                            if(args.path==='attrs/c1/r'){
-                                edge.attr('c1/r',6)
-                                edge.attr('c1/atConnectionRatio',data.flowDirection==='正向'?0.01:0.99)
-                                t = edge.attr<number>('c1/atConnectionRatio') > 0.01 ? 0.01 : 0.99
-                                console.log(t)
-                                edge.transition('attrs/c1/atConnectionRatio', t, options)
-                            }
-                            if(count!==-1){
-                                count=count-1
-                            }
-                        }
-                    }
+                 ...baseOption1,
+                 complete:()=>{
+                     edge.transition('attrs/c1/r', 0, options2)
+                 }
                 }
-                const options = {
-                    delay:10,
-                    duration: speed,
-                    timing: Timing.easeInOutBack,
-                    complete:(args: any)=>{
-                        if(args.path==='attrs/c1/atConnectionRatio'){
-                            edge.transition('attrs/c1/r', 0, options1)
-                        }
-                    }
-                }
-                edge.transition('attrs/c1/atConnectionRatio', t, options)
+                let t = edge.attr<number>('c1/atConnectionRatio') > 0.01 ? 0.01 : 0.99
+                edge.transition('attrs/c1/atConnectionRatio', t, options1)
             }
         }
-
-
-
-
-
-
 
     }
 
