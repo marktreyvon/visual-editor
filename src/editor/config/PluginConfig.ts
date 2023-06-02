@@ -1,3 +1,5 @@
+import { register } from "@antv/x6-vue-shape";
+import * as Plugins from '@/plugins'
 
 /**
  * @author cxs
@@ -11,7 +13,7 @@ class PluginConfig implements IPluginConfig  {
     private static instance: PluginConfig;
     components: Map<String, any>;
 
-    private constructor() {
+    public constructor() {
         this.components = new Map<String, any>();
     }
 
@@ -36,6 +38,35 @@ class PluginConfig implements IPluginConfig  {
 
     public getComponents(): Map<String, any> {
         return this.components;
+    }
+
+    public registerComponents(data: any): void {
+        console.log('============registerComponents===================')
+        console.log(Plugins)
+        const plugins: any = <any>Plugins;
+        for (const key in plugins) {
+            console.log(key)
+            const plugin = plugins[key];
+            const { views } = plugin.default;
+            views.forEach((view: any) => {
+                const cell = data.find((item: any) => item.shape === view.name);
+                if (cell) {
+                    // 注册组件
+                    this.registerComponent(cell, view.Main);
+                }
+            })
+        }
+       
+        console.log('============registerComponents===================')
+    }
+
+    public registerComponent(cell: any, component: any): void {
+        register({
+            shape: cell.shape,
+            width: cell.size.width,
+            height: cell.size.height,
+            component
+          });
     }
    
 }

@@ -51,6 +51,11 @@ declare interface ITools {
     toJSON: () => { cells: Cell.Properties[] } | { graph: any };
 
     /**
+     * 导入文件
+     */
+    importJSON: (jsonData: any) => void;
+
+    /**
      * 导出SVG
      * @param fileName 
      * @param options 

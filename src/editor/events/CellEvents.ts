@@ -11,11 +11,16 @@ class CellEvents implements ICellEvents {
 
     dbClickListener: EventListener<Object> | undefined;
 
+    mouseEnterListener: EventListener<Object> | undefined;
+
+    mouseLeaveListener: EventListener<Object> | undefined;
+
     movedListener: EventListener<Object> | undefined;
 
     contextMenuListener: EventListener<Object> | undefined;
 
     resizeListener: EventListener<Object> | undefined;
+
     resizedListener: EventListener<Object> | undefined;
 
 
@@ -23,6 +28,7 @@ class CellEvents implements ICellEvents {
         this.graph = graph;
         this.initEvents();
     }
+    
     
     initEvents(): void {
         if (!this.graph)
@@ -44,10 +50,12 @@ class CellEvents implements ICellEvents {
 
         // 节点移入事件
         this.graph.on("cell:mouseenter", ({ e, cell, view }) => {
+            this.mouseEnterListener && this.mouseEnterListener({ e, cell, view });
         });
 
         // 节点移出事件
         this.graph.on("cell:mouseleave", ({ e, cell, view }) => {
+            this.mouseLeaveListener && this.mouseLeaveListener({ e, cell, view });
         });
 
         // 节点移动事件
@@ -90,6 +98,14 @@ class CellEvents implements ICellEvents {
 
     public setDBClickEventListener(listener: EventListener<Object>): void {
         this.dbClickListener = listener;
+    }
+
+    public setMouseEnterEventListener(listener: EventListener<Object>): void {
+        this.mouseEnterListener = listener;
+    }
+
+    public setMouseLeaveEventListener(listener: EventListener<Object>): void {
+        this.mouseLeaveListener = listener;
     }
 
     public setMovedEventListener(listener: EventListener<Object>): void {

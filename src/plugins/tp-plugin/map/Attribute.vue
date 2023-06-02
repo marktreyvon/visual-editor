@@ -7,7 +7,7 @@
                 </el-form-item>
 
                 <el-form-item label="透明度">
-                    <el-input v-modl="formData.transparency"></el-input>
+                    <el-input-number v-model="formData.transparency" :min="1" :max="100" />
                 </el-form-item>
 
                 <el-form-item label="区&nbsp;&nbsp;&nbsp;域">
@@ -19,7 +19,7 @@
         <el-collapse-item title="锚点信息" name="anchor">
             <el-form v-model="formData">
                 <el-form-item label="字体大小">
-                    <el-input v-model="formData.fontSize"></el-input>
+                    <el-input-number v-model="formData.fontSize" :min="1" :max="100"></el-input-number>
                 </el-form-item>
             </el-form>
         </el-collapse-item>
@@ -34,38 +34,29 @@ export default {
         return {
             data: area.data,
             activeNames: 'style',
-            value: [],
             formData: {
-                // area: 0,
-                fontSize: 20,
+                fontSize: 10,
                 transparency: 50,
-                backgroundColor: '#409EFF'
+                backgroundColor: '#409EFF',
+                map: null
             }
         }
     },
-
     watch: {
         formData: {
             handler(val) {
-                console.log('---val---', val);
-                // 当自定义属性改变时，传递给Main.vue的style属性
-                // this.$emit("onChange", {
-                //     style: { ...val, fontSize: val.fontSize + 'px' }
-                // });
+                this.$emit("onChange", {
+                    style: { ...val }
+                });
             },
             deep: true
         }
     },
     methods: {
         handleNodeClick() {
-
             let nodesInfo = this.$refs['areaRef'].getCheckedNodes()
             let data = nodesInfo[0].data;
-            // console.log('---handleNodeClick---', nodesInfo[0].data);
-            this.$emit("onChange", {
-                value: data
-            });
-
+            this.formData.map = data;
         }
     },
 }

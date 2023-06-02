@@ -35,7 +35,7 @@ export default defineComponent({
             },
         },
         formData1: {
-            type: [Array, Object] ,
+            type: [Array, Object, String, Number] ,
             default: () => {
                 return {};
             },
@@ -141,8 +141,8 @@ export default defineComponent({
         formData1: {
             handler(val) {
                 let arr2: string | any[] = []
-                console.log(val.inputText)
-                let arr = Array.from(val.inputText)
+                console.log(val)
+                let arr = Array.from(val)
 
                 let jsonStr = arr.join("").replace(/\s+/g, "");
 

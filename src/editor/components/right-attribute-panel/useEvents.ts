@@ -106,6 +106,25 @@ export const useEvents = () => {
             setNodeData(data)
         });
 
+        events.setMouseEnterEventListener((data: any) => {
+            console.log('setMouseEnterEventListener', data)
+            const node = data.cell;
+            node.addTools({
+                name: 'button-remove',
+                args: {
+                  x: '100%',
+                  y: 0,
+                  offset: { x: -10, y: 10 },
+                },
+              })
+        });
+
+        events.setMouseLeaveEventListener((data: any) => {
+            const node = data.cell;
+            // 删除所有的工具
+            node.removeTools(); 
+        });
+
     }
 
     const setNodeData = (data: any) => {

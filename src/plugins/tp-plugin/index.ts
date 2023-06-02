@@ -7,6 +7,7 @@ import { Amap_Attribute, Amap_Data, Amap_Icon, Amap_Main } from "./map";
 import { Three_Attribute, Three_Data, Three_Icon, Three_Main } from "./threejs-demo";
 import { picechart_Attribute, picechart_Data, picechart_Icon, picechart_Main } from "./pie";
 import { TB_Attribute, TB_Data, TB_Icon, TB_Main } from "./table";
+import { histogram_Attribute, histogram_Data, histogram_Icon, histogram_Main } from "./histogram";
 export default {
     views: [
         // {
@@ -56,6 +57,15 @@ export default {
             Data: picechart_Data
         },
         {
+            name: "柱状图",
+            description: "",
+            group: "官方插件",
+            icon: histogram_Icon,
+            Main: histogram_Main,
+            Attribute: histogram_Attribute,
+            Data: histogram_Data
+        },
+        {
             name: "曲线图",
             description: "",
             group: "官方插件",
@@ -82,14 +92,14 @@ export default {
             Attribute: Amap_Attribute,
             Data: Amap_Data
         },
-        // {
-        //     name: "ThreejsDemo",
-        //     description: "",
-        //     group: "官方插件",
-        //     icon: Three_Icon,
-        //     Main: Three_Main,
-        //     Attribute: Three_Attribute,
-        //     Data: Three_Data
-        // }
+        {
+            name: "ThreejsDemo",
+            description: "",
+            group: "官方插件",
+            icon: Three_Icon,
+            Main: Three_Main,
+            Attribute: Three_Attribute,
+            Data: Three_Data
+        }
     ]
 }

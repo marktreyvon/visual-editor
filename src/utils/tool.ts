@@ -78,4 +78,35 @@ const parseJSONData = (str: string) => {
     };
 }
 
-export { message, parseParams, randomString, isJSON, parseJSONData }
+/**
+ * 读取文件
+ * @param raw 
+ */
+const readFile = (raw: any) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        // onload 事件处理程序，在 FileReader 对象读取文件内容后触发      
+        reader.onload = (event: any) => {      
+            const result = event.target.result;
+            const data = decodeURIComponent(escape(result));
+            resolve(data);
+        };
+        // 读取文件内容      
+        reader.readAsBinaryString(raw)
+    })
+    
+}
+
+const exportFile = (fileName: string, content: string) => {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+    element.setAttribute('download', fileName);
+    
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    
+    element.click(); 
+    document.body.removeChild(element);
+}
+
+export { message, parseParams, randomString, isJSON, parseJSONData, readFile, exportFile }

@@ -1,7 +1,6 @@
 import { Component, defineComponent } from "vue";
 import { Node } from "@antv/x6";
 import { isJSON } from "@/utils"
-import { toRaw } from "vue";
 export const getDropComponent = (cpt: Component): Component => {
     return defineComponent({
         inject: ["getNode"],
@@ -48,7 +47,7 @@ export const getDropComponent = (cpt: Component): Component => {
         },
         render() {
             return (
-                <cpt value={this.value} style={this.style} option={this.option} data={this.data}/>
+                <cpt value={this.value} style={this.style} option={this.option} data={this.data} />
             )
         }
     })

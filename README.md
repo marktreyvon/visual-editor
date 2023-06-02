@@ -241,7 +241,7 @@ this.$emit("onChange", {
 });
 ```
 之后，编辑器会自动将style传递到Main.vue中，Main组件的props属性就会接收到传过来的参数.  
-目前仅支持传递style和value.
+目前仅支持传递style和data.
 
 ### 第四步：编写数据面板：Data.vue
 ```ts
@@ -276,7 +276,7 @@ export default {
     formData: {
       handler(val) {
         this.$emit("onChange", {
-          value: { ...val }
+          data: { ...val }
         });
       },
       deep: true

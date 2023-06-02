@@ -16,6 +16,10 @@ declare interface ICellEvents {
 
     dbClickListener: EventListener<Object> | undefined;
 
+    mouseEnterListener: EventListener<Object> | undefined;
+
+    mouseLeaveListener: EventListener<Object> | undefined;
+
     movedListener: EventListener<Object> | undefined;
 
     contextMenuListener: EventListener<Object> | undefined;
@@ -42,6 +46,18 @@ declare interface ICellEvents {
      * @param listener 
      */
     setDBClickEventListener(listener: EventListener<Object>): void;
+
+    /**
+     * 鼠标移入事件
+     * @param listener 
+     */
+    setMouseEnterEventListener(listener: EventListener<Object>): void;
+
+    /**
+     * 鼠标移除事件
+     * @param listener 
+     */
+    setMouseLeaveEventListener(listener: EventListener<Object>): void;
 
     /**
      * 设置右键菜单事件

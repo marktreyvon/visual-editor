@@ -9,6 +9,7 @@ import { register } from "@antv/x6-vue-shape";
 import * as Common from "@/common";
 import { CellEvents } from '../events/CellEvents';
 import {message} from "@/utils";
+import { PluginConfig } from '.';
 /**
  * @author cxs
  * @date 2023-04-19
@@ -288,37 +289,39 @@ class CanvasConfig implements ICanvasConfig {
 
         let speed=0
         let speed1=0
-        switch (data.flowSpeed) {
-            case 1:
-                speed=4000
-                break
-            case 2:
-                speed=3000
-                break
-            case 3:
-                speed=2000
-                break
-            case 4:
-                speed=1000
-                break
-        }
-        switch (data.flowSpeed) {
-            case 1:
-                speed1=210
-                break
-            case 2:
-                speed1=180
-                break
-            case 3:
-                speed1=160
-                break
-            case 4:
-                speed1=130
-                break
+        if (data && data.flowSpeed) {
+            switch (data.flowSpeed) {
+                case 1:
+                    speed=4000
+                    break
+                case 2:
+                    speed=3000
+                    break
+                case 3:
+                    speed=2000
+                    break
+                case 4:
+                    speed=1000
+                    break
+            }
+            switch (data.flowSpeed) {
+                case 1:
+                    speed1=210
+                    break
+                case 2:
+                    speed1=180
+                    break
+                case 3:
+                    speed1=160
+                    break
+                case 4:
+                    speed1=130
+                    break
+            }
         }
 
 
-        if(data.flowEffect!=='无效果'){
+        if(data && data.flowEffect!=='无效果'){
             console.log(speed)
             let count=data.cycleTimes
             let count1=-1
@@ -422,12 +425,6 @@ class CanvasConfig implements ICanvasConfig {
         }
         extracted(ex,ey, ew,eh,edge,data)
     }
-    public renderJSON(json: any): void {
-        if (!this.graph) 
-            throw new Error('Graph is undefined.');
-        this.graph.fromJSON(json);
-    }
-
     
     public zoomIn(): void {
         if (!this.graph) 
@@ -498,6 +495,14 @@ class CanvasConfig implements ICanvasConfig {
         if (!this.graph) 
             throw new Error('Graph is undefined.');
         this.graph.redo();
+    }
+
+    public renderJSON(json: any): void {
+        if (!this.graph) 
+            throw new Error('Graph is undefined.');
+        const pluginConfig: IPluginConfig = new PluginConfig();
+        pluginConfig.registerComponents(json.cells);
+        this.graph.fromJSON(json);
     }
 
     public toJSON(): { cells: Cell.Properties[] } | { graph: any } {

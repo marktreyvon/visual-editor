@@ -1,6 +1,5 @@
 <template>
   <div style="height:100%">
-    <!-- 项目 -> 分组(绑定分组) -->
     <el-row style="margin-bottom: 10px">
         <el-radio-group v-model="formData.bindType">
           <el-radio v-for="item in bindOptions" :label="item.value" size="small">{{ item.label}}</el-radio>
@@ -40,7 +39,7 @@ export default {
         { value: 'static', label: '静态数据' }, 
         { value: 'dynamic', label: '动态数据'}, 
         { value: 'device', label: '设备数据'}
-    ]
+      ]
     }
   },
   watch: {
@@ -54,7 +53,6 @@ export default {
     }
   },
   mounted() {
-    console.log('text.Data.mounted', this.data, this.formData)
     if (JSON.stringify(this.data) !== "{}") {
       this.formData = JSON.parse(JSON.stringify(this.data));
     }

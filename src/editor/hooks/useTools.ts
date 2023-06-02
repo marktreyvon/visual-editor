@@ -2,8 +2,7 @@ import { Cell } from "@antv/x6";
 import { CanvasConfig,StencilConfig } from "../config"
 import { useRouter } from "vue-router";
 import VisualAPI from "@/api/visual";
-import { inject } from "vue";
-import { message } from "@/utils/tool";
+import { exportFile, isJSON, message } from "@/utils/tool";
 import * as Common from "@/common"
 /**
  * @author cxs
@@ -43,7 +42,15 @@ export const useTools = (): ITools => {
             CanvasConfig.getInstance().redo();
         },
         toJSON: (): { cells: Cell.Properties[] } | { graph: any } => {
+            
             return CanvasConfig.getInstance().toJSON();
+        },
+        importJSON: (jsonData: any) => {
+            const jsonObj = isJSON(jsonData);
+            console.log('importJSON', jsonObj)
+            if (jsonObj) {
+                 CanvasConfig.getInstance().renderJSON(jsonObj);
+            }
         },
         exportJPEG: (fileName?, options?) => {
             CanvasConfig.getInstance().exportJPEG(fileName, options);

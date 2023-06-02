@@ -1,11 +1,11 @@
 <template>
   <!-- <gauge id="pm25"></gauge> -->
-  <div id="scene3d" ref="scene3d" style="width:800px;height:800px"></div>
+  <div id="scene3d" ref="scene3d" style="width:100%;height:100%"></div>
 </template>
 
 <script lang="ts">
 import { defineComponent, watch } from "vue";
-import  { SceneBackstage }  from  './scene/lib/engine';
+import  { SceneBackstage }  from  './scene/lib/engine.js';
 export default defineComponent({
   props: {
     value: {

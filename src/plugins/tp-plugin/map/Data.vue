@@ -2,9 +2,9 @@
     <el-tabs v-model="activeName">
         <el-tab-pane label="静态数据" name="static">
             <el-form v-model="formData">
-                <el-form-item label="绑定数据">
-                    <el-input v-model="formData.staticValue"></el-input>
-                </el-form-item>
+                <el-input v-model="formData.staticValue" :autosize="{ minRows: 10, maxRows: 100 }"
+                    type="textarea"></el-input>
+
             </el-form>
         </el-tab-pane>
         <el-tab-pane label="动态数据" name="dynamic">
@@ -14,13 +14,14 @@
 </template>
 
 <script>
+import area from './area'
 export default {
     props: {},
     data() {
         return {
             activeName: 'static',
             formData: {
-                value: ""
+                staticValue: JSON.stringify(area.markers, null, 4)
             }
         }
     },

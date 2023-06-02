@@ -1,22 +1,19 @@
 <template>
   <div style="height:100%">
-    <!-- 项目 -> 分组(绑定分组) -->
-    <el-row>
-      <el-form-item label="绑定类型:">
-        <el-select v-model="bindType" placeholder="绑定类型">
-          <el-option v-for="item in bindOptions" :key="item.value" :label="item.label" :value="item.value"/>
-        </el-select>
-      </el-form-item>
+    <el-row style="margin-bottom: 10px">
+        <el-radio-group v-model="formData.bindType">
+          <el-radio v-for="item in bindOptions" :label="item.value" size="small">{{ item.label}}</el-radio>
+        </el-radio-group>
     </el-row>
     <el-row style="height:100%">
         <!-- 静态数据 -->
-        <el-input v-if="bindType==='static'" :rows="20" type="textarea" v-model="formData.static"></el-input>
+        <el-input v-if="formData.bindType==='static'" :rows="20" type="textarea" v-model="formData.static"></el-input>
         <!-- 动态数据 -->
-        <el-form-item v-else-if="bindType==='dynamic'" style="width:100%">
+        <el-form-item v-else-if="formData.bindType==='dynamic'" style="width:100%">
           <el-input :rows="2" type="textarea" v-model="formData.dynamic"></el-input>
         </el-form-item>
         <!-- 设备数据 -->
-        <div class="w-full" v-else-if="bindType==='device'" >
+        <div class="w-full" v-else-if="formData.bindType==='device'" >
           <slot></slot>
         </div>
         
@@ -25,34 +22,53 @@
 </template>
 
 <script>
+const staticData = {
+  "xAxis": ["周一","周二","周三","周四","周五"],
+  "series": [{"name": "访问量","type": "line","data": [10,20,60,12,4],"symbol": "circle"}]
+}
+
 export default {
-  props: {},
+  props: {
+    data: {
+      type: [String, Object],
+      default: () => ({})
+    }
+  },
   data() {
     return {
       formData: {
-        value: ""
+        bindType: 'static',
+        static: JSON.stringify(staticData, null, 4)
       },
-      bindType: 'static',
       bindOptions: [
         { value: 'static', label: '静态数据' }, 
         { value: 'dynamic', label: '动态数据'}, 
         { value: 'device', label: '设备数据'}
-    ]
+      ]
+
     }
   },
   watch: {
     formData: {
       handler(val) {
         this.$emit("onChange", {
-          value: { ...val }
+          data: { bindType: this.bindType, ...val }
         });
       },
       deep: true
     }
   },
-  methods: {
-    
-  }
+  mounted() {
+    if (JSON.stringify(this.data) !== "{}" && JSON.stringify(this.data) !== "[]") {
+      this.formData = JSON.parse(JSON.stringify(this.data));
+    }
+  },
+
+
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.el-radio.el-radio--small {
+  margin-right: 10px
+}
+</style>

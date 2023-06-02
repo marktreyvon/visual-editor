@@ -35,6 +35,10 @@ export const useDisplay = (containerId: string) => {
                     cell.ports.groups.right.attrs.circle.r=0
                 }
 
+                // 移除删除按钮
+                cell.tools = undefined;
+
+
             });
             canvasConfig.renderJSON(jsonObj);
             // 初始化画布背景

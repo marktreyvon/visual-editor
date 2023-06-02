@@ -27,7 +27,6 @@ export default defineComponent({
   data() {
     return {
       formData: {},
-      formData1: {}
     }
   },
   watch: {
@@ -44,6 +43,15 @@ export default defineComponent({
         this.formData = val
       },
       deep: true
+    }
+  },
+  computed: {
+    formData1() {
+        if (JSON.stringify(this.value) !== "{}"  && JSON.stringify(this.value) !== "[]") {
+            return this.value;
+        } else {
+            return {};
+        }
     }
   },
   methods: {

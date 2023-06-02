@@ -1,4 +1,29 @@
 export default {
+    markers: [
+        {
+            name: "某某地市",
+            value: 10,
+            position: [
+                118.763563, 32.161377
+            ]
+        },
+        {
+            name: "某某地市",
+            value: 15,
+            position: [
+                116.400567,
+                39.908761
+            ]
+        },
+        {
+            name: "某某地市",
+            value: 20,
+            position: [
+                116.200467,
+                39.937761
+            ]
+        }
+    ],
     data: [
         {
             label: "北京市",
@@ -716,7 +741,7 @@ export default {
                 {
                     label: "济南市",
                     value: "370100",
-                    geoCoord:[117, 36.65]
+                    geoCoord: [117, 36.65]
                 },
                 {
                     label: "青岛市",
@@ -726,47 +751,47 @@ export default {
                 {
                     label: "淄博市",
                     value: "370300",
-                    geoCoord:[118.05, 36.78]
+                    geoCoord: [118.05, 36.78]
                 },
                 {
                     label: "枣庄市",
                     value: "370400",
-                    geoCoord:[117.57, 34.86]
+                    geoCoord: [117.57, 34.86]
                 },
                 {
                     label: "东营市",
                     value: "370500",
-                    geoCoord:[118.49, 37.46]
+                    geoCoord: [118.49, 37.46]
                 },
                 {
                     label: "烟台市",
                     value: "370600",
-                    geoCoord:[121.39, 37.52]
+                    geoCoord: [121.39, 37.52]
                 },
                 {
                     label: "潍坊市",
                     value: "370700",
-                    geoCoord:[119.1, 36.62]
+                    geoCoord: [119.1, 36.62]
                 },
                 {
                     label: "济宁市",
                     value: "370800",
-                    geoCoord:[116.59, 35.38]
+                    geoCoord: [116.59, 35.38]
                 },
                 {
                     label: "泰安市",
                     value: "370900",
-                    geoCoord:[117.13, 36.18]
+                    geoCoord: [117.13, 36.18]
                 },
                 {
                     label: "威海市",
                     value: "371000",
-                    geoCoord:[122.1, 37.5]
+                    geoCoord: [122.1, 37.5]
                 },
                 {
                     label: "日照市",
                     value: "371100",
-                    geoCoord:[119.46, 35.42]
+                    geoCoord: [119.46, 35.42]
                 },
                 {
                     label: "莱芜市",
@@ -776,22 +801,22 @@ export default {
                 {
                     label: "临沂市",
                     value: "371300",
-                    geoCoord:[118.35, 35.05]
+                    geoCoord: [118.35, 35.05]
                 },
                 {
                     label: "德州市",
                     value: "371400",
-                    geoCoord:[116.29, 37.45]
+                    geoCoord: [116.29, 37.45]
                 },
                 {
                     label: "聊城市",
                     value: "371500",
-                    geoCoord:[115.97, 36.45]
+                    geoCoord: [115.97, 36.45]
                 },
                 {
                     label: "滨州市",
                     value: "371600",
-                    geoCoord:[118.03, 37.36]
+                    geoCoord: [118.03, 37.36]
                 },
                 {
                     label: "菏泽市",
@@ -808,12 +833,12 @@ export default {
                 {
                     label: "郑州市",
                     value: "410100",
-                    geoCoord:[113.65, 34.76]
+                    geoCoord: [113.65, 34.76]
                 },
                 {
                     label: "开封市",
                     value: "410200",
-                    geoCoord:[114.35, 34.79]
+                    geoCoord: [114.35, 34.79]
                 },
                 {
                     label: "洛阳市",
@@ -823,12 +848,12 @@ export default {
                 {
                     label: "平顶山市",
                     value: "410400",
-                    geoCoord:[113.29, 33.75]
+                    geoCoord: [113.29, 33.75]
                 },
                 {
                     label: "安阳市",
                     value: "410500",
-                    geoCoord:[114.35, 36.1]
+                    geoCoord: [114.35, 36.1]
                 },
                 {
                     label: "鹤壁市",
@@ -843,7 +868,7 @@ export default {
                 {
                     label: "焦作市",
                     value: "410800",
-                    geoCoord:[113.21, 35.24]
+                    geoCoord: [113.21, 35.24]
                 },
                 {
                     label: "濮阳市",
@@ -863,7 +888,7 @@ export default {
                 {
                     label: "三门峡市",
                     value: "411200",
-                    geoCoord:[111.19, 34.76]
+                    geoCoord: [111.19, 34.76]
                 },
                 {
                     label: "南阳市",
@@ -945,7 +970,7 @@ export default {
                 {
                     label: "荆州市",
                     value: "421000",
-                    geoCoord:[112.239741, 30.335165]
+                    geoCoord: [112.239741, 30.335165]
                 },
                 {
                     label: "黄冈市",
@@ -1032,7 +1057,7 @@ export default {
                 {
                     label: "张家界市",
                     value: "430800",
-                    geoCoord:[110.479191, 29.117096]
+                    geoCoord: [110.479191, 29.117096]
                 },
                 {
                     label: "益阳市",
@@ -1074,107 +1099,107 @@ export default {
                 {
                     label: "广州市",
                     value: "440100",
-                    geoCoord:[113.23, 23.16]
+                    geoCoord: [113.23, 23.16]
                 },
                 {
                     label: "韶关市",
                     value: "440200",
-                    geoCoord:[113.62, 24.84]
+                    geoCoord: [113.62, 24.84]
                 },
                 {
                     label: "深圳市",
                     value: "440300",
-                    geoCoord:[114.07, 22.62]
+                    geoCoord: [114.07, 22.62]
                 },
                 {
                     label: "珠海市",
                     value: "440400",
-                    geoCoord:[113.52, 22.3]
+                    geoCoord: [113.52, 22.3]
                 },
                 {
                     label: "汕头市",
                     value: "440500",
-                    geoCoord:[116.69, 23.39]
+                    geoCoord: [116.69, 23.39]
                 },
                 {
                     label: "佛山市",
                     value: "440600",
-                    geoCoord:[113.11, 23.05]
+                    geoCoord: [113.11, 23.05]
                 },
                 {
                     label: "江门市",
                     value: "440700",
-                    geoCoord:[113.06, 22.61]
+                    geoCoord: [113.06, 22.61]
                 },
                 {
                     label: "湛江市",
                     value: "440800",
-                    geoCoord:[110.359377, 21.270708]
+                    geoCoord: [110.359377, 21.270708]
                 },
                 {
                     label: "茂名市",
                     value: "440900",
-                    geoCoord:[110.88, 21.68]
+                    geoCoord: [110.88, 21.68]
                 },
                 {
                     label: "肇庆市",
                     value: "441200",
-                    geoCoord:[112.44, 23.05]
+                    geoCoord: [112.44, 23.05]
                 },
                 {
                     label: "惠州市",
                     value: "441300",
-                    geoCoord:[114.4, 23.09]
+                    geoCoord: [114.4, 23.09]
                 },
                 {
                     label: "梅州市",
                     value: "441400",
-                    geoCoord:[116.1, 24.55]
+                    geoCoord: [116.1, 24.55]
                 },
                 {
                     label: "汕尾市",
                     value: "441500",
-                    geoCoord:[115.375279, 22.786211]
+                    geoCoord: [115.375279, 22.786211]
                 },
                 {
                     label: "河源市",
                     value: "441600",
-                    geoCoord:[114.68, 23.73]
+                    geoCoord: [114.68, 23.73]
                 },
                 {
                     label: "阳江市",
                     value: "441700",
-                    geoCoord:[111.95, 21.85]
+                    geoCoord: [111.95, 21.85]
                 },
                 {
                     label: "清远市",
                     value: "441800",
-                    geoCoord:[113.01, 23.7]
+                    geoCoord: [113.01, 23.7]
                 },
                 {
                     label: "东莞市",
                     value: "441900",
-                    geoCoord:[113.75, 23.04]
+                    geoCoord: [113.75, 23.04]
                 },
                 {
                     label: "中山市",
                     value: "442000",
-                    geoCoord:[113.38, 22.52]
+                    geoCoord: [113.38, 22.52]
                 },
                 {
                     label: "潮州市",
                     value: "445100",
-                    geoCoord:[116.63, 23.68]
+                    geoCoord: [116.63, 23.68]
                 },
                 {
                     label: "揭阳市",
                     value: "445200",
-                    geoCoord:[116.35, 23.55]
+                    geoCoord: [116.35, 23.55]
                 },
                 {
                     label: "云浮市",
                     value: "445300",
-                    geoCoord:[112.02, 22.93]
+                    geoCoord: [112.02, 22.93]
                 }
             ]
         },
@@ -1186,17 +1211,17 @@ export default {
                 {
                     label: "南宁市",
                     value: "450100",
-                    geoCoord:[108.33, 22.84]
+                    geoCoord: [108.33, 22.84]
                 },
                 {
                     label: "柳州市",
                     value: "450200",
-                    geoCoord:[109.4, 24.33]
+                    geoCoord: [109.4, 24.33]
                 },
                 {
                     label: "桂林市",
                     value: "450300",
-                    geoCoord:[110.28, 25.29]
+                    geoCoord: [110.28, 25.29]
                 },
                 {
                     label: "梧州市",
@@ -1263,12 +1288,12 @@ export default {
                 {
                     label: "海口市",
                     value: "460100",
-                    geoCoord:[110.35, 20.02]
+                    geoCoord: [110.35, 20.02]
                 },
                 {
                     label: "三亚市",
                     value: "460200",
-                    geoCoord:[109.511909, 18.252847]
+                    geoCoord: [109.511909, 18.252847]
                 },
                 {
                     label: "三沙市",
@@ -1370,32 +1395,32 @@ export default {
                 {
                     label: "成都市",
                     value: "510100",
-                    geoCoord:[104.06, 30.67]
+                    geoCoord: [104.06, 30.67]
                 },
                 {
                     label: "自贡市",
                     value: "510300",
-                    geoCoord:[104.778442, 29.33903]
+                    geoCoord: [104.778442, 29.33903]
                 },
                 {
                     label: "攀枝花市",
                     value: "510400",
-                    geoCoord:[101.718637, 26.582347]
+                    geoCoord: [101.718637, 26.582347]
                 },
                 {
                     label: "泸州市",
                     value: "510500",
-                    geoCoord:[105.39, 28.91]
+                    geoCoord: [105.39, 28.91]
                 },
                 {
                     label: "德阳市",
                     value: "510600",
-                    geoCoord:[104.37, 31.13]
+                    geoCoord: [104.37, 31.13]
                 },
                 {
                     label: "绵阳市",
                     value: "510700",
-                    geoCoord:[104.73, 31.48]
+                    geoCoord: [104.73, 31.48]
                 },
                 {
                     label: "广元市",
@@ -1420,7 +1445,7 @@ export default {
                 {
                     label: "南充市",
                     value: "511300",
-                    geoCoord:[106.110698, 30.837793]
+                    geoCoord: [106.110698, 30.837793]
                 },
                 {
                     label: "眉山市",
@@ -1430,7 +1455,7 @@ export default {
                 {
                     label: "宜宾市",
                     value: "511500",
-                    geoCoord:[104.56, 29.77]
+                    geoCoord: [104.56, 29.77]
                 },
                 {
                     label: "广安市",
@@ -1482,7 +1507,7 @@ export default {
                 {
                     label: "贵阳市",
                     value: "520100",
-                    geoCoord:[106.71, 26.57]
+                    geoCoord: [106.71, 26.57]
                 },
                 {
                     label: "六盘水市",
@@ -1492,7 +1517,7 @@ export default {
                 {
                     label: "遵义市",
                     value: "520300",
-                    geoCoord:[106.9, 27.7]
+                    geoCoord: [106.9, 27.7]
                 },
                 {
                     label: "安顺市",
@@ -1534,17 +1559,17 @@ export default {
                 {
                     label: "昆明市",
                     value: "530100",
-                    geoCoord:[102.73, 25.04]
+                    geoCoord: [102.73, 25.04]
                 },
                 {
                     label: "曲靖市",
                     value: "530300",
-                    geoCoord:[103.79, 25.51]
+                    geoCoord: [103.79, 25.51]
                 },
                 {
                     label: "玉溪市",
                     value: "530400",
-                    geoCoord:[102.52, 24.35]
+                    geoCoord: [102.52, 24.35]
                 },
                 {
                     label: "保山市",
@@ -1621,7 +1646,7 @@ export default {
                 {
                     label: "拉萨市",
                     value: "540100",
-                    geoCoord:[91.11, 29.97]
+                    geoCoord: [91.11, 29.97]
                 },
                 {
                     label: "日喀则市",
@@ -1668,27 +1693,27 @@ export default {
                 {
                     label: "铜川市",
                     value: "610200",
-                    geoCoord:[109.11, 35.09]
+                    geoCoord: [109.11, 35.09]
                 },
                 {
                     label: "宝鸡市",
                     value: "610300",
-                    geoCoord:[107.15, 34.38]
+                    geoCoord: [107.15, 34.38]
                 },
                 {
                     label: "咸阳市",
                     value: "610400",
-                    geoCoord:[108.72, 34.36]
+                    geoCoord: [108.72, 34.36]
                 },
                 {
                     label: "渭南市",
                     value: "610500",
-                    geoCoord:[109.5, 34.52]
+                    geoCoord: [109.5, 34.52]
                 },
                 {
                     label: "延安市",
                     value: "610600",
-                    geoCoord:[109.47, 36.6]
+                    geoCoord: [109.47, 36.6]
                 },
                 {
                     label: "汉中市",
@@ -1720,12 +1745,12 @@ export default {
                 {
                     label: "兰州市",
                     value: "620100",
-                    geoCoord:[103.73, 36.03]
+                    geoCoord: [103.73, 36.03]
                 },
                 {
                     label: "嘉峪关市",
                     value: "620200",
-                    geoCoord:[98.289152, 39.77313]
+                    geoCoord: [98.289152, 39.77313]
                 },
                 {
                     label: "金昌市",
@@ -1797,7 +1822,7 @@ export default {
                 {
                     label: "西宁市",
                     value: "630100",
-                    geoCoord:[101.74, 36.56]
+                    geoCoord: [101.74, 36.56]
                 },
                 {
                     label: "海东市",
@@ -1844,12 +1869,12 @@ export default {
                 {
                     label: "银川市",
                     value: "640100",
-                    geoCoord:[106.27, 38.47]
+                    geoCoord: [106.27, 38.47]
                 },
                 {
                     label: "石嘴山市",
                     value: "640200",
-                    geoCoord:[106.39, 39.04]
+                    geoCoord: [106.39, 39.04]
                 },
                 {
                     label: "吴忠市",
@@ -1876,12 +1901,12 @@ export default {
                 {
                     label: "乌鲁木齐市",
                     value: "650100",
-                    geoCoord:[87.68, 43.77]
+                    geoCoord: [87.68, 43.77]
                 },
                 {
                     label: "克拉玛依市",
                     value: "650200",
-                    geoCoord:[84.77, 45.59]
+                    geoCoord: [84.77, 45.59]
                 },
                 {
                     label: "吐鲁番市",

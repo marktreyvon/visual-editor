@@ -1,5 +1,5 @@
 <template>
-  <Yibiaopan id="yibiaopan" :formData="formData"></Yibiaopan>
+  <Yibiaopan id="yibiaopan" :formData="formData" :value="textValue"></Yibiaopan>
 </template>
 
 <script lang="ts">
@@ -42,6 +42,15 @@ export default defineComponent({
         this.formData=val
       },
       deep: true
+    }
+  },
+  computed: {
+    textValue() {
+        if (JSON.stringify(this.value) !== "{}") {
+            return this.value;
+        } else {
+            return "文本";
+        }
     }
   },
   methods: {

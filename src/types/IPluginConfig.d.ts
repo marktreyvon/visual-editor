@@ -19,4 +19,6 @@ declare interface IPluginConfig {
 
     getComponent(name: String): any;
 
+    registerComponents(data: any): void;
+
 }
