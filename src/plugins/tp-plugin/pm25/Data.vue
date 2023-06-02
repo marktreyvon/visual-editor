@@ -37,7 +37,7 @@ export default {
         { value: 'static', label: '静态数据' }, 
         { value: 'dynamic', label: '动态数据'}, 
         { value: 'device', label: '设备数据'}
-    ]
+      ]
     }
   },
   watch: {

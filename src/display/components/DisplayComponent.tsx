@@ -1,36 +1,49 @@
+import { parseJSONData } from "@/utils";
 import { Component, defineComponent } from "vue";
 import { DataConfig } from "../config/DataConfig";
 
-export const getDisplayComponent = (cpt: Component, data: any): Component => {
-    const dataConfig: DataConfig = new DataConfig(data);
+export const getDisplayComponent = (cpt: Component, nodeData: any): Component => {
+    const dataConfig: DataConfig = new DataConfig(nodeData);
 
     return defineComponent({
         data() {
             return {
                 value: undefined,
                 style: undefined,
-                option: undefined
+                option: undefined,
+                data: undefined
             }
         },
         mounted() {
-            const cb = (value: any) => {
-                console.log('callback', value)
-                this.value = value;
+            
+            // 从节点的附加数据中获取样式和绑定数据
+            const jsonData = parseJSONData(nodeData.jsonData);
+            if (!jsonData) return;
+            if (jsonData.style) {
+                this.style = { ...jsonData.style }
             }
-            // 设置回调
-            dataConfig.setCallback(cb);
-            // 启动定时器开始刷新数据
-            dataConfig.start();
-            console.log('getDisplayComponent', data)
-            if (!data) return;
-            if (data.style) {
-                this.style = { ...data.style }
+            if (jsonData.data) {
+                this.data = { ...jsonData.data } ;
+                if (jsonData.data.bindType === "static") {
+                    // 静态数据
+                    this.value = jsonData.data.static;
+                } else if (jsonData.data.bindType === "dynamic") {
+                    // 动态数据
+                    // this.value = jsonData.data.dynamic;
+                } else if (jsonData.data.bindType === "device") {
+                    // 设备数据
+                    const cb = (value: any) => {
+                        console.log('callback', value)
+                        this.value = value;
+                    }
+                    // 设置回调
+                    dataConfig.setCallback(cb);
+                    // 启动定时器开始刷新数据
+                    dataConfig.start();
+                }
             }
-            if (data.value) {
-                this.value = { ...data.value } ;
-            }
-            if (data.option) {
-                this.option = { ...data.option }
+            if (jsonData.option) {
+                this.option = { ...jsonData.option }
             }
         },
         methods: {
@@ -46,7 +59,7 @@ export const getDisplayComponent = (cpt: Component, data: any): Component => {
         },
         render() {
             return (
-                <cpt value={this.value} style={this.style} option={this.option} onChange={this.onChange}/>
+                <cpt value={this.value} style={this.style} data={this.data} option={this.option} onChange={this.onChange}/>
             )
         }
     })

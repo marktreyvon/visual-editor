@@ -9,7 +9,7 @@
                         <!-- 节点基础样式 -->
                         <BaseAttr :data="nodeData"/>
                         <!-- 自定义样式 -->
-                        <component :currentNode='nodeId' :is="attributeCpt" v-on="actionHandlers"
+                        <component :currentNode='nodeId' :data="attrData" :is="attributeCpt" v-on="actionHandlers"
                             @onChange="onChange" />
                     </div>
                     
@@ -19,7 +19,7 @@
 
             </el-tab-pane>
             <el-tab-pane label="数据" name="data" v-if="!isEdge">
-                <component v-if="isNode" :is="dataCpt" @onChange="onChange">
+                <component v-if="isNode" :is="dataCpt" :data="bindData"  @onChange="onChange">
                     <BaseData @onChange="onChange"/>
                 </component>
             </el-tab-pane>
@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import { useTools } from '@/editor/hooks'
 
-import { ref, onMounted, reactive } from "vue";
+import { ref, onMounted, reactive, watch, toRaw, computed, shallowRef } from "vue";
 import CanvasAttr from "./components/CanvasAttr.vue";
 import BaseAttr from "./components/BaseAttr.vue";
 import LineAttr from "./components/LineAttr.vue";
@@ -41,6 +41,7 @@ import LayerAttr from "./components/LayerAttr.vue";
 import BaseData from './components/baseData/index.vue';
 import { useEvents } from "./useEvents"
 import { useAttribute } from "./useAttribute"
+import { parseJSONData } from '@/utils';
 const activeName = ref("attr");
 let { 
     isNode, attributeCpt, dataCpt, nodeData,edgeData,
@@ -48,6 +49,17 @@ let {
     initEvents, onChange 
 } = useEvents();
 
+// 自定义样式
+const attrData = shallowRef<any>({});
+// 数据绑定
+const bindData = shallowRef<any>({});
+watch(nodeData, (value) => {
+    console.log('right-attribute-panel.nodeData', value)
+    if (!value || !value.data) return;
+    const jsonObj = parseJSONData(value.data.jsonData);
+    attrData.value = jsonObj.style;
+    bindData.value = jsonObj.data;
+})
 
 let actionHandlers = reactive({})
 onMounted(() => {

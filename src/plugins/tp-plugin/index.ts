@@ -82,14 +82,14 @@ export default {
             Attribute: Amap_Attribute,
             Data: Amap_Data
         },
-        {
-            name: "ThreejsDemo",
-            description: "",
-            group: "官方插件",
-            icon: Three_Icon,
-            Main: Three_Main,
-            Attribute: Three_Attribute,
-            Data: Three_Data
-        }
+        // {
+        //     name: "ThreejsDemo",
+        //     description: "",
+        //     group: "官方插件",
+        //     icon: Three_Icon,
+        //     Main: Three_Main,
+        //     Attribute: Three_Attribute,
+        //     Data: Three_Data
+        // }
     ]
 }

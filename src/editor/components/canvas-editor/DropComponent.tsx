@@ -1,6 +1,7 @@
 import { Component, defineComponent } from "vue";
 import { Node } from "@antv/x6";
 import { isJSON } from "@/utils"
+import { toRaw } from "vue";
 export const getDropComponent = (cpt: Component): Component => {
     return defineComponent({
         inject: ["getNode"],
@@ -8,16 +9,17 @@ export const getDropComponent = (cpt: Component): Component => {
             return {
                 value: undefined,
                 style: undefined,
-                option: undefined
+                option: {},
+                data: {}
             }
         },
         mounted() {
             const node: Node = (this as any).getNode() as Node;
+            // 监听节点的附加数据变化
             node.on("change:data", ({ current }) => {
-                console.log('change:data', current.jsonData)
+                // 判断是否为json字符串
                 const jsonObj = isJSON(current.jsonData);
                 if (!current.jsonData || !jsonObj) return;
-                console.log('change:data', jsonObj)
 
                 if (jsonObj.style) {
                     this.style = { ...jsonObj.style }
@@ -28,17 +30,25 @@ export const getDropComponent = (cpt: Component): Component => {
                 if (jsonObj.option) {
                     this.option = { ...jsonObj.option }
                 }
+                if (jsonObj.data) {
+                    this.data = { ...jsonObj.data }
+                    if (jsonObj.data.bindType === "static") {
+                        this.value = jsonObj.data.static;
+                    }
+                }
+
                 // 修改后的属性和值存入节点的data属性中
-                node.setData({
-                    style: this.style,
-                    value: this.value,
-                    option: this.option
-                })
+                // node.setData({
+                //     style: this.style,
+                //     value: this.value,
+                //     option: this.option,
+                //     data: this.data
+                // })
             });
         },
         render() {
             return (
-                <cpt value={this.value} style={this.style} option={this.option}/>
+                <cpt value={this.value} style={this.style} option={this.option} data={this.data}/>
             )
         }
     })

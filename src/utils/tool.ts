@@ -49,7 +49,7 @@ const randomString = (len?: number) => {
 /**
  * 判断字符串是否是JSON字符串
  * @param str 
- * @returns 
+ * @returns 返回JSON对象或者false
  */
 const isJSON = (str: string) => {
     if (typeof str === 'string') {
@@ -61,4 +61,21 @@ const isJSON = (str: string) => {
         }
     }
 }
-export { message, parseParams, randomString, isJSON }
+
+/**
+ * 解析JSON数据
+ * @param str 
+ * @returns 
+ */
+const parseJSONData = (str: string) => {
+    const jsonObj = isJSON(str);
+    if (jsonObj) {
+        return jsonObj;
+    }
+    return {
+        style: {},
+        data: {}
+    };
+}
+
+export { message, parseParams, randomString, isJSON, parseJSONData }

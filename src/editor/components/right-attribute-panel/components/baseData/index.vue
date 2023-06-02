@@ -51,15 +51,9 @@ const addDevice = () => {
 }
 
 const handleChangeDeviceData = (data: any) => {
-  // debugger;
-  console.log('handleChangeDeviceData.data', data)
-  console.log('handleChangeDeviceData.deviceData 1', deviceData)
   deviceData.splice(data.index, 1, data);
   const _deviceData = toRaw(deviceData);
-  console.log('handleChangeDeviceData.deviceData 2', _deviceData)
   const option = { bindType: 'device', deviceData: _deviceData  };
-  console.log('handleChangeDeviceData.option', option)
-
   emit('onChange', { option })
 }
 

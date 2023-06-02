@@ -1,5 +1,6 @@
-import { ref, toRaw } from "vue";
+import { ref, shallowRef, toRaw } from "vue";
 import { CanvasConfig, PluginConfig } from "@/editor/config";
+import { isJSON } from "@/utils";
 /**
  * @author cxs
  * @date 2023-05-20
@@ -41,6 +42,7 @@ export const useEvents = () => {
                 // 如果点击的是画布
                 isNode.value = false;
                 isEdge.value=false;
+                nodeData.value = {};
                 return;
             }
 
@@ -107,10 +109,11 @@ export const useEvents = () => {
     }
 
     const setNodeData = (data: any) => {
+        console.log('setNodeData.data', data)
         const node = data.node || data.cell || null;
         if (node !== null) {
             nodeData.value = { ...node.store.data };
-            // console.log('setNodeData', nodeData.value)
+            console.log('setNodeData.nodeData.value', nodeData.value)
         }
     }
 
@@ -127,14 +130,27 @@ export const useEvents = () => {
 
 
     /**
-     * 样式和绑定的数据改变后，更新画布上的节点数据
+     * 用户自定义组件的样式和绑定的数据改变后，会调用这个方法，更新画布上的节点数据
      * @param data 
      */
     const onChange = (data: any) => {
-        console.log("useEvents.onChange.data", data)
-        // console.log("useEvents.onChange.currentNode", currentNode.getData())
-        const jsonData = JSON.stringify(data);
-
+        console.log('useEvents.onChange.data', data)
+        let jsonStr = "{}";
+        if (currentNode.getData()) {
+            // 从节点的附加数据中获取JSON字符串
+            jsonStr = currentNode.getData()?.jsonData || "{}";
+        }
+        const jsonObj = isJSON(jsonStr);
+        if (data.style) {
+            jsonObj.style = { ...data.style };
+        }
+        if (data.data) {
+            jsonObj.data = { ...data.data };
+        }
+        // 因为antv-x6的setData暂不支持Array，所以这里只能用JSON字符串来存储数据
+        const jsonData = JSON.stringify(jsonObj);
+        console.log('useEvents.onChange.jsonData', jsonData)
+        // 更新节点的附加数据，写入JSON字符串
         currentNode.setData({
             // ...currentNode.getData(),
             jsonData

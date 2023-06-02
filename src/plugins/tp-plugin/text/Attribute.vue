@@ -13,6 +13,14 @@
                 <el-form-item label="背景颜色">
                     <el-color-picker v-model="formData.backgroundColor" />
                 </el-form-item>
+
+                <el-form-item label="边框宽度">
+                    <el-input v-model="formData.borderWidth"></el-input>
+                </el-form-item>
+
+                <el-form-item label="边框颜色">
+                    <el-color-picker v-model="formData.borderColor" />
+                </el-form-item>
             </el-form>
         </el-collapse-item>
     </el-collapse>
@@ -20,13 +28,21 @@
   
 <script>
 export default {
+    props: {
+        data: {
+            type: Object,
+            default: () => ({})
+        }
+    },
     data() {
         return {
             activeNames: 'style',
             formData: {
                 fontSize: 20,
-                color: '#ffffff',
-                backgroundColor: '#409EFF'
+                color: '#000',
+                backgroundColor: '#409EFF',
+                borderWidth: 1,
+                borderColor: '#000'
             }
         }
     },
@@ -34,12 +50,24 @@ export default {
         formData: {
             handler(val) {
                 // 当自定义属性改变时，传递给Main.vue的style属性
+                console.log('text.Attribute.watch.formData', val)
                 this.$emit("onChange", {
-                    style: { ...val, fontSize: val.fontSize + 'px' }
+                    style: { ...val, fontSize: val.fontSize + 'px', borderWidth: val.borderWidth + 'px' }
                 });
             },
             deep: true
         }
+    },
+    mounted() {
+        if (this.data) {
+            const jsonStr = JSON.stringify(this.data);
+            if (jsonStr === '{}') return;
+            const jsonObj = JSON.parse(jsonStr);
+            jsonObj.fontSize = jsonObj.fontSize.replace("px", "")
+            jsonObj.borderWidth = jsonObj.borderWidth.replace("px", "")
+            this.formData = jsonObj;
+        }
+        
     }
 }
 </script>

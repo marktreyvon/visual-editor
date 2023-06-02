@@ -51,7 +51,6 @@ const state = reactive<any>({
     }
 })
 watchEffect(() => {
-    console.log('BaseAttr watchEffect', props.data)
     if (props.data) {
         state.data = { ...state.data,...props.data };
         // state.data.position.x = getFixNumber(state.data.position.x);
