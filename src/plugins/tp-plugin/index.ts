@@ -84,7 +84,7 @@ export default {
             description: "",
             group: "官方插件",
             icon: TB_Icon,
-            size: { width: 200, height: 200 },
+            size: { width: 500, height: 300 },
             Main: TB_Main,
             Attribute: TB_Attribute,
             Data: TB_Data
@@ -104,7 +104,7 @@ export default {
             description: "",
             group: "官方插件",
             icon: Three_Icon,
-            size: { width: 200, height: 200 },
+            size: { width: 800, height: 600 },
             Main: Three_Main,
             Attribute: Three_Attribute,
             Data: Three_Data
