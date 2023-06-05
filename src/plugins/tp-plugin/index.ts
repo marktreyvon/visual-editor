@@ -33,9 +33,10 @@ export default {
             description: "",
             group: "官方插件",
             icon: Text_Icon,
+            size: { width: 120, height: 40 },
             Main: Text_Main,
             Attribute: Text_Attribute,
-            Data: Text_Data
+            Data: Text_Data,
         },
        
         {
@@ -43,6 +44,7 @@ export default {
             description: "",
             group: "官方插件",
             icon: Yibiaopan_Icon,
+            size: { width: 200, height: 200 },
             Main: Yibiaopan_Main,
             Attribute: Yibiaopan_Attribute,
             Data: Yibiaopan_Data
@@ -52,6 +54,7 @@ export default {
             description: "",
             group: "官方插件",
             icon: picechart_Icon,
+            size: { width: 200, height: 200 },
             Main: picechart_Main,
             Attribute: picechart_Attribute,
             Data: picechart_Data
@@ -61,6 +64,7 @@ export default {
             description: "",
             group: "官方插件",
             icon: histogram_Icon,
+            size: { width: 200, height: 200 },
             Main: histogram_Main,
             Attribute: histogram_Attribute,
             Data: histogram_Data
@@ -70,6 +74,7 @@ export default {
             description: "",
             group: "官方插件",
             icon: Curve_Icon,
+            size: { width: 200, height: 200 },
             Main: Curve_Main,
             Attribute: Curve_Attribute,
             Data: Curve_Data
@@ -79,6 +84,7 @@ export default {
             description: "",
             group: "官方插件",
             icon: TB_Icon,
+            size: { width: 200, height: 200 },
             Main: TB_Main,
             Attribute: TB_Attribute,
             Data: TB_Data
@@ -88,6 +94,7 @@ export default {
             description: "",
             group: "官方插件",
             icon: Amap_Icon,
+            size: { width: 200, height: 200 },
             Main: Amap_Main,
             Attribute: Amap_Attribute,
             Data: Amap_Data
@@ -97,6 +104,7 @@ export default {
             description: "",
             group: "官方插件",
             icon: Three_Icon,
+            size: { width: 200, height: 200 },
             Main: Three_Main,
             Attribute: Three_Attribute,
             Data: Three_Data
