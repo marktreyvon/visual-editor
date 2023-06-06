@@ -14,14 +14,14 @@ const useCanvas = (): any => {
     const { loadPlugins } = usePlugins();
     const { initStencil } = useStencil();
 
-    const initCanvas = (data?: any) => {
+    const initCanvas = (picPlugins?: any) => {
         // 获取画布管理器
         let canvasConfig: ICanvasConfig = CanvasConfig.getInstance(Common.DEFAULT_CONTAINER_ID);
         // 初始化事件
         // useEvents(canvasConfig);
         // 加载插件
         loadPlugins(Plugins);
-        initStencil(Plugins);
+        initStencil(Plugins, picPlugins);
     }
 
     return {

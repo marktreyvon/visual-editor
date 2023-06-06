@@ -54,7 +54,7 @@ const handleChangeDeviceData = (data: any) => {
   deviceData.splice(data.index, 1, data);
   const _deviceData = toRaw(deviceData);
   const option = { bindType: 'device', deviceData: _deviceData  };
-  emit('onChange', { option })
+  emit('onChange', { data: option })
 }
 
 /**

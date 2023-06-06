@@ -1,7 +1,7 @@
 import { Component, defineComponent } from "vue";
 import { Node } from "@antv/x6";
 import { isJSON } from "@/utils"
-export const getDropComponent = (cpt: Component): Component => {
+export const getDropPicComponent = (url: String): Component => {
     return defineComponent({
         inject: ["getNode"],
         data() {
@@ -16,11 +16,8 @@ export const getDropComponent = (cpt: Component): Component => {
             const node: Node = (this as any).getNode() as Node;
             // 监听节点的附加数据变化
             node.on("change:data", ({ current }) => {
-
                 // 判断是否为json字符串
                 const jsonObj = isJSON(current.jsonData);
-                console.log('DropComponent.jsonObj', jsonObj)
-
                 if (!current.jsonData || !jsonObj) return;
 
                 if (jsonObj.style) {
@@ -39,18 +36,11 @@ export const getDropComponent = (cpt: Component): Component => {
                     }
                 }
 
-                // 修改后的属性和值存入节点的data属性中
-                // node.setData({
-                //     style: this.style,
-                //     value: this.value,
-                //     option: this.option,
-                //     data: this.data
-                // })
             });
         },
         render() {
             return (
-                <cpt value={this.value} style={this.style} option={this.option} data={this.data} />
+                <el-image style="width: 100px; height: 100px" src={url}/>
             )
         }
     })

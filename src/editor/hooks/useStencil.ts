@@ -2,7 +2,7 @@ import { CanvasConfig, StencilConfig } from '../config';
 import * as Common from '@/common';
 import { Graph } from '@antv/x6';
 import { Stencil } from "@antv/x6-plugin-stencil";
-
+import { getDropPicComponent } from '../components/canvas-editor/DropPicComponent';
 /**
  * @author cxs
  * @date 2023-04-28
@@ -16,9 +16,15 @@ export const useStencil = () => {
      * 初始化左侧组件列表
      * @param plugins 
      */
-    const initStencil = (plugins: any) => {
+    const initStencil = (plugins: any, picPlugins?: any) => {
+        let pluginsClone = JSON.parse(JSON.stringify(plugins));
         const graph: Graph = getGraph();
-        const { groups, nodeMap} = createStencilNode(plugins, graph)
+        console.log('=================initStencil===================');
+        if (picPlugins) {
+            pluginsClone = createPicPlugin(pluginsClone, picPlugins);
+        }
+        console.log('=================initStencil===================');
+        const { groups, nodeMap} = createStencilNode(pluginsClone, graph);
         let groupList: Stencil.Group[] = groups.map((group: string) => getGroup(group));
         const stencilConfig: IStencilConfig = getStencilConfig(groupList);
         nodeMap.forEach((nodes: any[], key: string) => {
@@ -70,6 +76,31 @@ export const useStencil = () => {
         }
     }
 
+    const createPicPlugin = (plugins: any, picPlugins: any) => {
+        console.log('=================createPicPlugin===================');
+        console.log('plugins', picPlugins)
+        let customPlugins: {default: { views: any[]}} = {default: {views: []}}
+        picPlugins.forEach((plugin: any) => {
+            plugin.files.forEach((file: any) => {
+                const item = { 
+                    name: file, 
+                    description: "", 
+                    group: plugin.plugin_name, 
+                    icon: plugin.icon, 
+                    size: { width: 500, height: 300 }, 
+                    Main: getDropPicComponent(file), 
+                    Attribute: null, 
+                    Data: null
+                };
+                customPlugins.default.views.push(item);
+
+            })
+        });
+        plugins.customPlugins = customPlugins;
+        console.log('=================createPicPlugin===================');
+        return plugins;
+    }
+
     /**
      * 获取画布上下文
      * @returns 
@@ -96,6 +127,7 @@ export const useStencil = () => {
             name: name,
             title: name,
             collapsable: true,
+            collapsed: true
         }
     }
 

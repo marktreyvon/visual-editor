@@ -8,7 +8,10 @@
       <el-container id="layout" class="layout-container relative">
         <el-aside class="shadow-sm absolute w-44 z-50 h-full bg-white">
           <!-- 左侧组件start -->
-          <left-aside class="w-full h-full"/>
+          <left-aside class="left-aside w-full"/>
+          <div class="custom-component">
+            <el-button class="custom-button" @click="showCustomPlugins">自定义插件</el-button>
+          </div>
           <!-- 左侧组件end -->
         </el-aside>
         <el-main>
@@ -22,17 +25,19 @@
         </el-main>
       </el-container>
     </el-container>
+    <CustomPlugins v-model:visible="customPluginsDialogVisible" @submit="customPluginSubmit"/>
   </template>
 <script setup lang="ts">
-import { onMounted, inject } from "vue";
+import { onMounted, inject, ref } from "vue";
 import Header from "./components/header/index.vue";
 import LeftAside from "./components/left-aside/index.vue";
 import CanvasEditor from "./components/canvas-editor/index.vue";
 import RightAttributePanel from "./components/right-attribute-panel/index.vue";
-import { useTools, useCanvas } from './hooks'
+import { useTools, useCanvas, usePlugins } from './hooks'
 import VisualAPI from '@/api/visual'
-
-onMounted(() => {
+import PluginAPI from '@/api/plugin'
+import CustomPlugins from "./components/left-aside/CustomPlugins.vue";
+onMounted(async () => {
   console.log('editor mounted', inject('params'))
   // 从服务器获取大屏数据
   const params1 = {
@@ -42,53 +47,35 @@ onMounted(() => {
   }
   const params: any = inject('params', null);
   if (params) {
-    VisualAPI.getJsonDataById({
-      id: params.id,
-      current_page: 1,
-      per_page: 10
-    }).then(res => {
+    VisualAPI.getJsonDataById({ id: params.id,current_page: 1,per_page: 10 }).then(res => {
       console.log('getJsonDataById', res)
     })
   }
-
-  
   // 加载画布
   const { initCanvas } = useCanvas();
-  initCanvas();
+  // 加载自定义图片插件
+  const picPlugins = await getPicPlugins();
+  initCanvas(picPlugins);
+
+  // let { loadPicPlugins } = usePlugins();
+  // loadPicPlugins(picPlugins);
 })
 
-const data = {
-    // 节点
-    nodes: [
-      {
-        id: 'node1', // String，可选，节点的唯一标识
-        shape: 'rect',  // 图形，默认是rect
-        x: 40,       // Number，必选，节点位置的 x 值
-        y: 40,       // Number，必选，节点位置的 y 值
-        width: 80,   // Number，可选，节点大小的 width 值
-        height: 40,  // Number，可选，节点大小的 height 值
-        label: 'hello', // String，节点标签,
-        data: {
-          msg: 'hello world'
-        }
-      },
-      {
-        id: 'node2', // String，节点的唯一标识
-        x: 160,      // Number，必选，节点位置的 x 值
-        y: 180,      // Number，必选，节点位置的 y 值
-        width: 80,   // Number，可选，节点大小的 width 值
-        height: 40,  // Number，可选，节点大小的 height 值
-        label: 'world', // String，节点标签
-      },
-    ],
-    // 边
-    edges: [
-      {
-        source: 'node1', // String，必须，起始节点 id
-        target: 'node2', // String，必须，目标节点 id
-      },
-    ],
-  };
+// ========================================自定义插件=============================================
+const customPluginsDialogVisible = ref(false);
+const showCustomPlugins = () => {
+  customPluginsDialogVisible.value = true;
+}
+const customPluginSubmit = () => {
+  getPicPlugins();
+}
+const getPicPlugins = async () => {
+  let { data: result } = await PluginAPI.getPicPlugins({"current_page": 1,"per_page": 9999})
+  if (result.code === 200) {
+    return result.data.data;
+  }
+}
+  // ========================================自定义插件=============================================
 </script>
 
 <style lang="scss">
@@ -106,6 +93,25 @@ const data = {
 
   .el-aside {
     background-color: white;
+    overflow:hidden;
+    height: calc(100% - 4px);
+    
+    .custom-component {
+      position: absolute;
+      left: 0px;
+      bottom: 0px;
+      width: 100%;
+      z-index: 999;
+      background-color: #fff;
+      overflow:hidden;
+      padding:4px 4px 0 4px;;
+      .el-button {
+        overflow: hidden;
+        width: calc(100% - 10px);
+        margin-left: 4px;
+        margin-right: 80px;;
+      }
+    }
   }
 
   .layout-container {
@@ -118,5 +124,8 @@ const data = {
     @media (min-width: 1111px) {
       overflow-x: hidden;
     }
+  }
+  .x6-widget-stencil-content {
+    height: 100%;
   }
 </style>

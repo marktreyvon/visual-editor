@@ -23,6 +23,12 @@ export default defineComponent({
         return {};
       },
     },
+    data: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    }
   },
   data() {
     return {
@@ -41,6 +47,13 @@ export default defineComponent({
       handler(val) {
         console.log("Main.style", val);
         this.formData = val
+      },
+      deep: true
+    },
+    data: {
+      handler(val) {
+        console.log("Main.data", val);
+        // this.formData = val
       },
       deep: true
     }
