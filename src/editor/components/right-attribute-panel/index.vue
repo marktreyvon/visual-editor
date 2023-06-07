@@ -2,14 +2,14 @@
     <div class="">
         <ElTabs v-model="activeName">
             <el-tab-pane :label="isEdge?'线条样式':'外观'" name="attr">
-                <div>
+                <div style="height: 100%;overflow-y:auto">
                     <!-- 画布样式 -->
                     <CanvasAttr v-if="!isNode&&!isEdge" @onChange="onCanvasAttrChange"/>
                     <div v-if="isNode">
                         <!-- 节点基础样式 -->
                         <BaseAttr :data="nodeData"/>
                         <!-- 自定义样式 -->
-                        <component :currentNode='nodeId' :data="attrData" :is="attributeCpt" v-on="actionHandlers"
+                        <component  :currentNode='nodeId' :data="attrData" :is="attributeCpt" v-on="actionHandlers"
                             @onChange="onChange" />
                     </div>
                     

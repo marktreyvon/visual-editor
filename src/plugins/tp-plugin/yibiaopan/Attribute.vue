@@ -43,9 +43,7 @@
             <el-form-item label="显示标签">
               <el-switch v-model="formData.dashboard.tagShow" />
             </el-form-item>
-            <el-form-item label="显示标签刻度">
-              <el-switch v-model="formData.dashboard.tagCunShow" />
-            </el-form-item>
+      
         </el-form>
         
       </el-collapse-item>
