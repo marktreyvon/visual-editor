@@ -107,20 +107,22 @@ class CanvasConfig implements ICanvasConfig {
             },
             connecting:{
                 snap: true,
-                allowBlank: false,  //不允许指向空节点;  *@author 王炳宏  2023-05-23
+                allowBlank: true,  //不允许指向空节点;  *@author 王炳宏  2023-05-23
                 allowMulti: true,  //不允许重复连接;  *@author 王炳宏  2023-05-23
                 allowLoop: false,   //不允许自连;   *@author; 王炳宏  2023-05-23
-                allowNode: false,   //不允许非连接点连接,如需要改为true；  *@author; 王炳宏  2023-05-23
+                allowNode: true,   //不允许非连接点连接,如需要改为true；  *@author; 王炳宏  2023-05-23
                 allowEdge: false,   //不允许非连接点连接,如需要改为true； *@author; 王炳宏  2023-05-23
                 allowPort: true,    //不允许指向空节点,*@author; 王炳宏  2023-05-23
-
+                highlight:true,
                 createEdge(){
                     return this.createEdge({
                         shape: "edge",
+                        zIndex: 0,
                         attrs: {
                             line: {
                                 stroke: "#ff2929",
                                 strokeWidth: 1,
+                                targetMarker: null,
                             },
                         },
                     });
@@ -138,7 +140,6 @@ class CanvasConfig implements ICanvasConfig {
         this.graph.setGridSize(this.gridSize);
         // 显示网格
         this.graph.showGrid();
-
         // 配置多节点框选
         if (this.enableSelection) {
             this.graph.use(
@@ -149,7 +150,15 @@ class CanvasConfig implements ICanvasConfig {
                     movable: true,
                     showNodeSelectionBox: true,
                 })
-            );
+            ).use(
+                new Selection({
+                    multiple: true,
+                    rubberEdge: true,
+                    rubberNode: true,
+                    modifiers: 'shift',
+                    rubberband: true,
+                }),
+            )
         }
         
 

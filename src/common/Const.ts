@@ -13,6 +13,12 @@ export const DEFAULT_MINI_CONTAINER_ID = 'mini_container';
  */
 export const DEFAULT_STENCIL_CONTAINER_ID = 'stencil_container';
 
+
+/**
+ * 默认组件列表容器ID
+ */
+export const LAYER_STENCIL_CONTAINER_ID = 'layer_container';
+
 /**
  * 默认视图容器ID
  */

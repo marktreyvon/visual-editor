@@ -82,6 +82,16 @@ declare interface ICellEvents {
      * @param listener 
      */
     setResizedEventListener(listener: EventListener<Object>): void;
+    /**
+     * 设置节点挂载事件
+     * @param listener
+     */
+    setMountedEventListener(listener: EventListener<Object>): void;
+    /**
+     * 设置节点卸载载事件
+     * @param listener
+     */
+    setUnmountedEventListener(listener: EventListener<Object>): void;
 }
 
 declare interface EventListener<E> {

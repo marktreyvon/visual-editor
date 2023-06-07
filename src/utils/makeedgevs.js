@@ -1,4 +1,7 @@
 const extracted=(ex,ew,ey,eh,edge,data)=>{
+    console.log(4)
+    if(!data?.lineType) return
+    console.log(5)
     switch (data.lineType) {
         case "1":
             edge.prop('connector', "normal")
