@@ -23,8 +23,8 @@
                     <BaseData @onChange="onChange"/>
                 </component>
             </el-tab-pane>
-            <el-tab-pane label="图层" name="layer" v-if="!isEdge">
-                <LayerAttr />
+            <el-tab-pane label="图层" name="layer" >
+                <LayerAttr :cellList='cellList' :initEvents='initEvents'/>
             </el-tab-pane>
         </ElTabs>
     </div>
@@ -43,23 +43,27 @@ import { useEvents } from "./useEvents"
 import { useAttribute } from "./useAttribute"
 import { parseJSONData } from '@/utils';
 const activeName = ref("attr");
-let { 
+let {
     isNode, attributeCpt, dataCpt, nodeData,edgeData,
     isEdge,nodeId,
-    initEvents, onChange 
+    initEvents, onChange ,
+    cellList
 } = useEvents();
 
 // 自定义样式
 const attrData = shallowRef<any>({});
 // 数据绑定
 const bindData = shallowRef<any>({});
-watch(nodeData, (value) => {
-    console.log('right-attribute-panel.nodeData', value)
-    if (!value || !value.data) return;
-    const jsonObj = parseJSONData(value.data.jsonData);
-    attrData.value = jsonObj.style;
-    bindData.value = jsonObj.data;
-})
+
+
+
+// watch(nodeData, (value) => {
+//     console.log('right-attribute-panel.nodeData', value)
+//     if (!value || !value.data) return;
+//     const jsonObj = parseJSONData(value.data.jsonData);
+//     attrData.value = jsonObj.style;
+//     bindData.value = jsonObj.data;
+// })
 
 let actionHandlers = reactive({})
 onMounted(() => {

@@ -62,7 +62,7 @@ const handleChange = (file: any, uploadFiles: any) => {
 
 /**
  * 提交上传
- */ 
+ */
 const submit = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   await formEl.validate((valid, fields) => {

@@ -1,6 +1,8 @@
 import { ref, shallowRef, toRaw } from "vue";
 import { CanvasConfig, PluginConfig } from "@/editor/config";
 import { isJSON } from "@/utils";
+import {uniqWith,isEqual,filter}  from "lodash"
+import {Graph} from "@antv/x6";
 /**
  * @author cxs
  * @date 2023-05-20
@@ -25,6 +27,7 @@ export const useEvents = () => {
     let nodeData = ref<any>({});
     let edgeData = ref<any>({});
     let nodeId = ref<any>(null)
+    let cellList =  ref<any>([])
 
     /**
      * 初始化事件
@@ -33,7 +36,6 @@ export const useEvents = () => {
     const initEvents = () => {
         let canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
         const events: ICellEvents = canvasConfig.getEvents();
-
         // 点击node
         events.setClickEventListener((data: any) => {
             currentNode = data.node || data.cell || null;
@@ -53,9 +55,6 @@ export const useEvents = () => {
             component = pluginConfig.getComponent(currentNode.shape);
             // 节点的附加数据
             nodeData.value = currentNode.store.data ;
-            console.log('currentNode', nodeData.value)
-
-
 
             if (component) {
                 setNodeData(data);
@@ -80,6 +79,7 @@ export const useEvents = () => {
                 if(currentNode.shape==='edge'){
                     //如果点击的是边 ;  *@author; 王炳宏  2023-05-23
                     console.log(currentNode.shape,"这是边：",currentNode.id,)
+                   graph.clearTransformWidgets();
                     dataCpt.value = null;
                     isEdge.value=true;
                     isNode.value=false
@@ -91,8 +91,6 @@ export const useEvents = () => {
                     attributeCpt.value = null;
                     dataCpt.value = null;
                 }
-
-
             }
 
 
@@ -105,9 +103,18 @@ export const useEvents = () => {
         events.setMovedEventListener((data: any) => {
             setNodeData(data)
         });
+        const graph= canvasConfig.getGraph()
 
+        events.setMountedEventListener((view) => {
+            setCellList(view,true)
+        });
+
+        events.setUnmountedEventListener((view) => {
+            setCellList(view,false)
+        });
         events.setMouseEnterEventListener((data: any) => {
             console.log('setMouseEnterEventListener', data)
+
             const node = data.cell;
             node.addTools({
                 name: 'button-remove',
@@ -128,17 +135,25 @@ export const useEvents = () => {
     }
 
     const setNodeData = (data: any) => {
-        console.log('setNodeData.data', data)
         const node = data.node || data.cell || null;
         if (node !== null) {
             nodeData.value = { ...node.store.data };
-            console.log('setNodeData.nodeData.value', nodeData.value)
         }
     }
 
-    const setEdgeData = (data: any) => {
-        // console.log('data', data)
+    const setCellList = (data: any,flag:boolean) => {
+        if(flag){
+            cellList.value=uniqWith([...cellList.value,data],isEqual)
+        }else{
+            cellList.value= filter(cellList.value,(n:any)=>{
+                return n.view.cid!==data.view.cid
+            })
+        }
 
+    }
+
+    const setEdgeData = (data: any) => {
+   
         const edge =  data.node || data.cell || null;
         // console.log('edges', edge)
         if (edge !== null) {
@@ -153,7 +168,6 @@ export const useEvents = () => {
      * @param data 
      */
     const onChange = (data: any) => {
-        console.log('useEvents.onChange.data', data)
         let jsonStr = "{}";
         if (currentNode.getData()) {
             // 从节点的附加数据中获取JSON字符串
@@ -178,7 +192,7 @@ export const useEvents = () => {
 
     return {
         isNode, attributeCpt, dataCpt, nodeData,isEdge,nodeId,edgeData,
-        initEvents, onChange
+        initEvents, onChange,cellList
     }
 }
 

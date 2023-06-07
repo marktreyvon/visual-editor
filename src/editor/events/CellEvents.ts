@@ -23,6 +23,9 @@ class CellEvents implements ICellEvents {
 
     resizedListener: EventListener<Object> | undefined;
 
+    mountedListener: EventListener<Object> | undefined;
+
+    unmountedListener: EventListener<Object> | undefined;
 
     constructor(graph: Graph) {
         this.graph = graph;
@@ -35,11 +38,13 @@ class CellEvents implements ICellEvents {
             throw new Error('Graph is undefined.');
 
         this.graph.on("blank:click", ({ e, x, y }) => {
+            console.log("pppppp")
             this.clickListener && this.clickListener({ e, x, y });
-        });    
+        });
 
         // 单击事件 
         this.graph.on("cell:click", ({ e, x, y, cell, view }) => {
+            console.log("ooooooooooo")
             this.clickListener && this.clickListener({ e, x, y, cell, view });
         });
 
@@ -51,6 +56,18 @@ class CellEvents implements ICellEvents {
         // 节点移入事件
         this.graph.on("cell:mouseenter", ({ e, cell, view }) => {
             this.mouseEnterListener && this.mouseEnterListener({ e, cell, view });
+        });
+        //节点被挂载到画布上时触发。
+        this.graph.on("view:mounted", ({ view }) => {
+
+            this.mountedListener&& this.mountedListener({  view });
+        });
+
+
+        //节点从画布上卸载时触发。
+        this.graph.on("view:unmounted", ({ view }) => {
+            this.unmountedListener&& this.unmountedListener({  view });
+
         });
 
         // 节点移出事件
@@ -122,6 +139,12 @@ class CellEvents implements ICellEvents {
 
     public setResizedEventListener(listener: EventListener<Object>): void {
         this.resizedListener = listener;
+    }
+    public setMountedEventListener(listener: EventListener<Object>): void {
+        this.mountedListener = listener;
+    }
+    public  setUnmountedEventListener(listener: EventListener<Object>): void {
+        this.unmountedListener = listener;
     }
 }
 
