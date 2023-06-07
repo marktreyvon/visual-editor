@@ -1,10 +1,13 @@
 <template>
-  <Yibiaopan id="yibiaopan" :formData="formData" :value="textValue"></Yibiaopan>
+  <div style="width: 100%;height: 100%" :style="myStyle.background">
+    <Yibiaopan id="yibiaopan" :style="myStyle.dashboard" :formData="myStyle.dashboard" :value="value"></Yibiaopan>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, watch } from "vue";
-import Yibiaopan from "../components/Yibiaopan.vue";
+import Yibiaopan from "./components/Yibiaopan.vue";
+import { styleData } from "./default";
 
 export default defineComponent({
   components: {
@@ -26,38 +29,28 @@ export default defineComponent({
   },
   data() {
     return {
-      formData: {}
+      formData: styleData
     }
   },
   watch: {
-    value: {
+    myStyle: {
       handler(val) {
-        console.log("Main.value", val);
-      },
-      deep: true
-    },
-    style: {
-      handler(val) {
-        console.log("Main.style", val);
-        this.formData=val
+        console.log("Yibiaopan.Main.style", val);
       },
       deep: true
     }
   },
   computed: {
-    textValue() {
-        if (JSON.stringify(this.value) !== "{}") {
-            return this.value;
-        } else {
-            return "文本";
-        }
-    }
+    myStyle() {
+      if (JSON.stringify(this.style) !== "{}") {
+        return this.style;
+      } else {
+        return styleData;
+      }
+    },
   },
   methods: {
-    changeData(data: any) {
-      this.formData = JSON.parse(JSON.stringify(data));
-      console.log("Main.data", this.formData);
-    }
+   
   }
 })
 

@@ -7,40 +7,37 @@ export const getDropPicComponent = (url: String): Component => {
         data() {
             return {
                 value: undefined,
-                style: undefined,
+                style: {
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: undefined,
+                },
                 option: {},
                 data: {}
             }
         },
         mounted() {
             const node: Node = (this as any).getNode() as Node;
+            node.setData({
+                pic: url
+            })
             // 监听节点的附加数据变化
             node.on("change:data", ({ current }) => {
                 // 判断是否为json字符串
                 const jsonObj = isJSON(current.jsonData);
-                if (!current.jsonData || !jsonObj) return;
+                // if (!current.jsonData || !jsonObj) return;
 
                 if (jsonObj.style) {
-                    this.style = { ...jsonObj.style }
+                    this.style = { ...jsonObj.style, width: '100%', height: '100%' }
                 }
-                if (jsonObj.value) {
-                    this.value = { ...jsonObj.value } ;
-                }
-                if (jsonObj.option) {
-                    this.option = { ...jsonObj.option }
-                }
-                if (jsonObj.data) {
-                    this.data = { ...jsonObj.data }
-                    if (jsonObj.data.bindType === "static") {
-                        this.value = jsonObj.data.static;
-                    }
-                }
-
+                console.log("getDropPicComponent.this.style", this.style)
             });
         },
         render() {
             return (
-                <el-image style="width: 100px; height: 100px" src={url}/>
+                <div style={this.style}>
+                    <el-image style="width: 100%; height: 100%" src={url}/>
+                </div>
             )
         }
     })

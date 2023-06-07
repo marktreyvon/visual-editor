@@ -10,7 +10,7 @@
           <!-- 左侧组件start -->
           <left-aside class="left-aside w-full"/>
           <div class="custom-component">
-            <el-button class="custom-button" @click="showCustomPlugins">自定义插件</el-button>
+            <el-button class="custom-button" @click="showCustomPlugins">自定义图形</el-button>
           </div>
           <!-- 左侧组件end -->
         </el-aside>

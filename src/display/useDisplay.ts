@@ -6,11 +6,13 @@ import { usePlugins } from '@/editor/hooks';
 import extracted from "@/utils/makeedgevs"
 import { register } from "@antv/x6-vue-shape";
 import { getDisplayComponent } from "./components/DisplayComponent";
+import PluginAPI from '@/api/plugin'
+import { getDisplayPicComponent } from "./components/DisplayPicComponent";
 
 export const useDisplay = (containerId: string) => {
 
     let jsonObj: any = {};
-    const initDisplay = (data: any) => {
+    const initDisplay = async (data: any) => {
         const options: ICanvasConfig.Options = {
             autoResize: true,
             nodeMovable: false,
@@ -18,10 +20,12 @@ export const useDisplay = (containerId: string) => {
             enableRotating: false,
             enableSelection: false,
         }
+        // let picPlugins = await getPicPlugins();
+        // console.log(picPlugins)
         loadPlugins(Plugins, data);
-        console.log('initDisplay', )
         if (data && JSON.stringify(data) !== '{}') {
             jsonObj = JSON.parse(data);
+            console.log('initDisplay.jsonObj', jsonObj)
             let canvasConfig: ICanvasConfig = CanvasConfig.getDisplayInstance(containerId, options);
             // 渲染节点
             jsonObj.cells.forEach((cell: any) => {
@@ -37,7 +41,6 @@ export const useDisplay = (containerId: string) => {
 
                 // 移除删除按钮
                 cell.tools = undefined;
-
 
             });
             canvasConfig.renderJSON(jsonObj);
@@ -82,15 +85,18 @@ export const useDisplay = (containerId: string) => {
                 views.forEach((view: any) => {
                     jsonObj.cells.forEach((cell: any) => {
                         if (cell.shape === view.name) {
-                            console.log('display.loadPlugins', cell)
+                            // console.log('display.loadPlugins', cell)
                             const cpt: any = getDisplayComponent(view.Main, cell.data || null);
                             registerShape(view.name, cpt);
+                        } else if (cell.data && cell.data.pic) {
+                            console.log('display.loadPlugins', cell.data)
+                            const cpt: any = getDisplayPicComponent(cell.data);
+                            registerShape(cell.shape, cpt);
                         }
                     });
                 })
             }
         }
-        
     }
 
     /**

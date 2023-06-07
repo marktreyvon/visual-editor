@@ -17,5 +17,9 @@ interface ImportMeta {
   readonly env: ImportMetaEnv
 }
 
+interface Date<T> {
+  format(fmt : any) : any
+}
+
 
 

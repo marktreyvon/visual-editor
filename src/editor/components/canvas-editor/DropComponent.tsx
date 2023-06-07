@@ -16,11 +16,8 @@ export const getDropComponent = (cpt: Component): Component => {
             const node: Node = (this as any).getNode() as Node;
             // 监听节点的附加数据变化
             node.on("change:data", ({ current }) => {
-
                 // 判断是否为json字符串
                 const jsonObj = isJSON(current.jsonData);
-                console.log('DropComponent.jsonObj', jsonObj)
-
                 if (!current.jsonData || !jsonObj) return;
 
                 if (jsonObj.style) {
@@ -38,14 +35,6 @@ export const getDropComponent = (cpt: Component): Component => {
                         this.value = jsonObj.data.static;
                     }
                 }
-
-                // 修改后的属性和值存入节点的data属性中
-                // node.setData({
-                //     style: this.style,
-                //     value: this.value,
-                //     option: this.option,
-                //     data: this.data
-                // })
             });
         },
         render() {

@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { styleData } from './default'
+
 export default {
   components: {},
   props: {
@@ -22,12 +24,7 @@ export default {
         if (this.style) {
             return this.style
         } else {
-            return {
-                fontSize: '20px',
-                color: '#000',
-                backgroundColor: '#409EFF',
-                border: '1px solid #000'
-            }
+            return styleData
         }
     },
     textValue() {

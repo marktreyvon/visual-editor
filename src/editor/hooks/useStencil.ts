@@ -17,14 +17,10 @@ export const useStencil = () => {
      * @param plugins 
      */
     const initStencil = (plugins: any, picPlugins?: any) => {
-        let pluginsClone = JSON.parse(JSON.stringify(plugins));
         const graph: Graph = getGraph();
         console.log('=================initStencil===================');
-        if (picPlugins) {
-            pluginsClone = createPicPlugin(pluginsClone, picPlugins);
-        }
         console.log('=================initStencil===================');
-        const { groups, nodeMap} = createStencilNode(pluginsClone, graph);
+        const { groups, nodeMap} = createStencilNode(plugins, graph);
         let groupList: Stencil.Group[] = groups.map((group: string) => getGroup(group));
         const stencilConfig: IStencilConfig = getStencilConfig(groupList);
         nodeMap.forEach((nodes: any[], key: string) => {
@@ -76,30 +72,6 @@ export const useStencil = () => {
         }
     }
 
-    const createPicPlugin = (plugins: any, picPlugins: any) => {
-        console.log('=================createPicPlugin===================');
-        console.log('plugins', picPlugins)
-        let customPlugins: {default: { views: any[]}} = {default: {views: []}}
-        picPlugins.forEach((plugin: any) => {
-            plugin.files.forEach((file: any) => {
-                const item = { 
-                    name: file, 
-                    description: "", 
-                    group: plugin.plugin_name, 
-                    icon: plugin.icon, 
-                    size: { width: 500, height: 300 }, 
-                    Main: getDropPicComponent(file), 
-                    Attribute: null, 
-                    Data: null
-                };
-                customPlugins.default.views.push(item);
-
-            })
-        });
-        plugins.customPlugins = customPlugins;
-        console.log('=================createPicPlugin===================');
-        return plugins;
-    }
 
     /**
      * 获取画布上下文

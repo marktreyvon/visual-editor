@@ -8,6 +8,7 @@ import { Three_Attribute, Three_Data, Three_Icon, Three_Main } from "./threejs-d
 import { picechart_Attribute, picechart_Data, picechart_Icon, picechart_Main } from "./pie";
 import { TB_Attribute, TB_Data, TB_Icon, TB_Main } from "./table";
 import { histogram_Attribute, histogram_Data, histogram_Icon, histogram_Main } from "./histogram";
+import { Timer_Attribute, Timer_Data, Timer_Icon, Timer_Main } from "./timer";
 export default {
     views: [
         // {
@@ -38,7 +39,16 @@ export default {
             Attribute: Text_Attribute,
             Data: Text_Data,
         },
-       
+        {
+            name: "时间",
+            description: "",
+            group: "官方插件",
+            icon: Timer_Icon,
+            size: { width: 160, height: 80 },
+            Main: Timer_Main,
+            Attribute: Timer_Attribute,
+            Data: Timer_Data,
+        },
         {
             name: "仪表盘",
             description: "",
@@ -102,7 +112,7 @@ export default {
         {
             name: "ThreejsDemo",
             description: "",
-            group: "官方插件",
+            group: "3D",
             icon: Three_Icon,
             size: { width: 800, height: 600 },
             Main: Three_Main,

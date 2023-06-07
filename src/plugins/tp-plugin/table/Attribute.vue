@@ -17,7 +17,7 @@
     </el-collapse-item> -->
 
     <el-collapse-item title="属性" name="attribute">
-      <el-form v-model="table">
+      <el-form>
         <el-form-item label="轮播">
           <el-switch v-model="table.carousel"></el-switch>
         </el-form-item>
@@ -28,7 +28,7 @@
     </el-collapse-item>
 
     <el-collapse-item title="背景和边框" name="bgandbd">
-      <el-form v-model="table">
+      <el-form>
         <el-form-item label="背景颜色">
           <el-color-picker v-model="table.table.bgColor"></el-color-picker>
         </el-form-item>
@@ -45,7 +45,7 @@
     </el-collapse-item>
 
     <el-collapse-item title="表格边框" name="bgbk">
-      <el-form v-model="table">
+      <el-form>
         <el-form-item label="显示边框">
           <el-switch v-model="table.border.showBorder"></el-switch>
         </el-form-item>
@@ -63,8 +63,7 @@
     </el-collapse-item>
 
     <el-collapse-item title="表头" name="btou">
-      <el-form v-model="table">
-
+      <el-form>
         <el-form-item label="背景颜色">
           <el-color-picker v-model="table.header.bgColor"></el-color-picker>
         </el-form-item>
@@ -79,12 +78,59 @@
       </el-form>
     </el-collapse-item>
 
+    <el-collapse-item name="zdylie">
+      <template #title>
+        <div class="flex justify-between w-full items-center">
+          <span>自定义列</span>
+          <el-icon class="header-icon mr-3" @click.stop="addRow">
+            <Plus /> +
+          </el-icon>
+        </div>
+      </template>
 
+      <el-collapse>
+        <el-collapse-item v-if="table.newRows[0]" v-for="(item, index) in table.newRows" :name="'zdylie-' + index">
+
+          <template #title>
+            <div class="flex justify-between w-full items-center">
+              <span>{{ item.name }}</span>
+              <el-icon class="header-icon mr-3" @click.stop="removeRow(index)">
+                <Minus /> -
+              </el-icon>
+            </div>
+          </template>
+
+          <el-form>
+            <el-form-item label="是否显示">
+              <el-switch v-model="table.newRows[index].show"></el-switch>
+            </el-form-item>
+            <el-form-item label="字段名">
+              <el-input v-model="table.newRows[index].filed"></el-input>
+            </el-form-item>
+            <el-form-item label="列名">
+              <el-input v-model="table.newRows[index].name"></el-input>
+            </el-form-item>
+            <el-form-item label="文本颜色">
+              <el-color-picker v-model="table.newRows[index].color"></el-color-picker>
+            </el-form-item>
+            <el-form-item label="列宽">
+              <el-input v-model="table.newRows[index].width"></el-input>
+            </el-form-item>
+            <el-form-item label="文本大小">
+              <el-input-number v-model="table.newRows[index].size"></el-input-number>
+            </el-form-item>
+          </el-form>
+
+        </el-collapse-item>
+      </el-collapse>
+    </el-collapse-item>
   </el-collapse>
 </template>
 
-<script lang="ts">
+<script  lang="ts">
 import { defineComponent } from "vue";
+import { Plus, Minus } from '@element-plus/icons-vue'
+import data from "./data"
 
 export default defineComponent({
   data() {
@@ -98,24 +144,11 @@ export default defineComponent({
       table: {
         carousel: false, //轮播
         plimit: 3, //每页行数
-        table: {
-          bgColor: '#FFFFFF',
-          showBorder: false,
-          borderWidth: 1,
-          borderColor: '#333'
-        },
-        border: {
-          showBorder: false,
-          borderColor: '#333',
-          showZebrastripe: false,
-          zebrastripeColor: '#666666'
-        },
-        header: {
-          bgColor: '#11223344',
-          fontSize: 10,
-          fontColor: '#fff'
-        }
-      }
+        table: data.table,
+        border: data.border,
+        header: data.header,
+        newRows: data.newRows
+      },
     }
   },
   watch: {
@@ -125,16 +158,43 @@ export default defineComponent({
       },
       immediate: true
     },
+    'table.border.borderColor': {
+      handler(val) {
+        this.table.border.showZebrastripe = false
+      },
+      immediate: true
+    },
     table: {
       handler(val) {
         this.$emit("onChange", {
-          value: val
+          style: val
         });
       },
       deep: true
+    }
+  },
+  methods: {
+    addRow() {
+      this.table.newRows.push({
+        show: true,
+        filed: 'test',
+        name: 'AAA',
+        width: 100,
+        color: '#000000',
+        size: 10
+      })
+    },
+    removeRow(index: number) {
+      this.table.newRows.splice(index, 1);
     }
   }
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.header-icon {
+  font-size: 16px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+</style>

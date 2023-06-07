@@ -8,7 +8,9 @@ import 'element-plus/dist/index.css'
 import * as ElementPlus from 'element-plus'
 // 第三方插件
 import * as Plugins from './dependence';
-
+import * as Global from '@/utils/global'
+// 全局方法
+Global.install();
 
 import 'systemjs'
 System.set('lib:vue', Vue);

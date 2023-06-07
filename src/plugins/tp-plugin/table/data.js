@@ -1,4 +1,57 @@
 export default {
+    table: {
+        bgColor: "#FFFFFF",
+        borderColor: "#000000",
+        borderWidth: 1,
+        showBorder: false
+    },
+    header: {
+        bgColor: "#333333",
+        fontColor: "#135939",
+        fontSize: 10
+    },
+    border: {
+        borderColor: "#000000",
+        showBorder: false,
+        showZebrastripe: false,
+        zebrastripeColor: "#666666"
+    },
+    newRows: [{
+        show: true,
+        filed: 'seqNo',
+        name: 'No.',
+        width: 100,
+        color: '#000000',
+        size: 10
+    }, {
+        show: true,
+        filed: 'deviceName',
+        name: 'Name',
+        width: 100,
+        color: '#000000',
+        size: 10
+    }, {
+        show: true,
+        filed: 'propA',
+        name: 'propA.',
+        width: 100,
+        color: '#000000',
+        size: 10
+    }, {
+        show: true,
+        filed: 'propB',
+        name: 'propB.',
+        width: 100,
+        color: '#000000',
+        size: 10
+    }, {
+        show: true,
+        filed: 'status',
+        name: '状态',
+        width: 100,
+        color: '#000000',
+        size: 10
+    }],
     orgNameData: [
         {
             "seqNo": 1,

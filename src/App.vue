@@ -6,7 +6,7 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import en from 'element-plus/dist/locale/en.mjs'
 import { useAuthStore } from '@/store'
 import { useRouter } from "vue-router";
-import axios from 'axios'
+import http from 'axios'
 
 const language = ref('zh-cn')
 const locale = computed(() => (language.value === 'zh-cn' ? zhCn : en))
@@ -19,32 +19,37 @@ const params = parseParams();
 let { setTokenInfo, getTokenInfo } = useAuthStore();
 
 // ============================ 临时获取token start==============================================
+const getTokenInfoByAPI = async () => {
+  const router = useRouter();
+  let { data: result } = await http.post('/api/auth/login', {
+    email: "admin@thingspanel.cn",
+    password: "123456"
+  })
+  if (result.code === 200) {
+    params.token = result.data.access_token;
+    params.expiresTime = result.data.expires_in;
+    setTokenInfo(params);
+    // 注入参数
+    provide('params', params);
+    router.push({ name: 'editor', query: { id: params.id } });
+  }
+}
+
 if (import.meta.env.MODE === 'development') {
   const tokenInfo = getTokenInfo();
   if (tokenInfo.token) {
     // 注入参数
     provide('params', params);
   } else {
-    const router = useRouter();
-    axios.post('/api/auth/login', {
-      email: "admin@thingspanel.cn",
-      password: "123456"
-    }).then(({ data }) => {
-      if (data.code === 200) {
-        params.token = data.data.access_token;
-        params.expiresTime = data.data.expires_in;
-        setTokenInfo(params);
-        // 注入参数
-        provide('params', params);
-        router.push({ name: 'editor', query: { id: params.id } });
-      }
-    })
+    getTokenInfoByAPI();
   }
 } else {
   setTokenInfo(params);
   // 注入参数
   provide('params', params);
 }
+
+
 // ============================ 临时获取token end==============================================
 
 // 修改页面标题

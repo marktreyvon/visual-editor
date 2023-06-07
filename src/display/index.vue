@@ -11,12 +11,16 @@ import { ref, onMounted } from "vue";
 import * as Common from "@/common";
 import { useDisplay } from "./useDisplay"
 import { getTeleport } from "@antv/x6-vue-shape";
+import PluginAPI from '@/api/plugin'
 
 const TeleportContainer = getTeleport();
 document.title = '查看 - ThingsPanel可视化'
 
 let { initDisplay } = useDisplay(Common.DEFAULT_DISPLAY_CONTAINER_ID);
 onMounted(() => {
+  let data = getPicPlugins();
+  console.log('onMounted.data', data)
+
   const jsonData = sessionStorage.getItem(Common.PREVIEW_JSON_DATA_KEY);
   initDisplay(jsonData);
 });
@@ -36,7 +40,18 @@ onMounted(() => {
   })
   const displayContainer: HTMLElement = <HTMLElement>document.getElementById(Common.DEFAULT_DISPLAY_CONTAINER_ID);
   resizeObserver.observe(displayContainer);
+
+  
 })
+
+const getPicPlugins = async () => {
+  let { data: result } = await PluginAPI.getPicPlugins({"current_page": 1,"per_page": 9999})
+  if (result.code === 200) {
+    console.log('onMounted.data', result.data.data)
+
+    return result.data.data;
+  }
+}
 
 </script>
 

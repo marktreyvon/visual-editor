@@ -2,7 +2,8 @@
   <div class="table-wrap">
     <el-table :height="tableHeight" width="100%" :data="orgNameData" :cellStyle="cellStyle"
       :header-cell-style="headerCellStyle" :cell-class-name="tableCellClassName" ref="sdangerTable" :style="tableStyle">
-      <el-table-column prop="seqNo" label="seqNo">
+
+      <!-- <el-table-column prop="seqNo" label="seqNo">
       </el-table-column>
       <el-table-column prop="deviceName" label="deviceName">
       </el-table-column>
@@ -11,7 +12,17 @@
       <el-table-column prop="propB" label="propB">
       </el-table-column>
       <el-table-column prop="status" label="status">
-      </el-table-column>
+      </el-table-column> -->
+
+      <template v-if="newRows" v-for="(item, index) in newRows">
+        <el-table-column v-if="item.show" :width="item.width" :prop="item.filed" :label="item.name">
+
+          <template #default="scope">
+            <span :style="'color:' + item.color + '; font-size:' + item.size + ';'">{{ scope.row[item.filed] }}</span>
+          </template>
+        </el-table-column>
+      </template>
+
     </el-table>
   </div>
 </template>
@@ -28,23 +39,10 @@ export default defineComponent({
       type: [Object, String, Number],
       default: () => {
         return {
-          table: {
-            bgColor: "#FFFFFF",
-            borderColor: "#000000",
-            borderWidth: 1,
-            showBorder: false
-          },
-          header: {
-            bgColor: "#333333",
-            fontColor: "#135939",
-            fontSize: 10
-          },
-          border: {
-            borderColor: "#000000",
-            showBorder: false,
-            showZebrastripe: false,
-            zebrastripeColor: "#666666"
-          }
+          table: data.table,
+          border: data.border,
+          header: data.header,
+          newRows: data.newRows
         };
       },
     },
@@ -58,11 +56,12 @@ export default defineComponent({
   data() {
     return {
       tableStyle: { background: '#ffffff', border: 'none', margin: "1px" },
-      cellStyle: { color: "#000000", background: '#fff', border: "none", height: '45px' },
-      headerCellStyle: { background: '#11223344', color: '#fff', fontSize: '10px', border: "none" },
+      cellStyle: { color: "#000000", background: data.table.bgColor, border: "none", height: '45px' },
+      headerCellStyle: { background: data.header.bgColor, color: data.header.fontColor, fontSize: data.header.fontSize + 'px', border: "none" },
       interval: ref<any>(null),
       tableHeight: 200,
-      orgNameData: data.orgNameData
+      orgNameData: data.orgNameData,
+      newRows: data.newRows,
     }
   },
   mounted() {
@@ -70,19 +69,24 @@ export default defineComponent({
   watch: {
     value: {
       handler(val) {
-        this.tableChange(val)
+        // console.log("Main.Value", val);
       },
       deep: true
     },
     style: {
       handler(val) {
         console.log("Main.style", val);
+        this.tableChange(val)
       },
       deep: true
     }
   },
   methods: {
     tableChange(data: any) {
+
+      //新数据
+      this.newRows = data.newRows;
+
       //表格外边框
       this.tableStyle.background = data.table.bgColor
       if (data.table.showBorder) {
@@ -167,4 +171,6 @@ export default defineComponent({
 // td.stripe {
 //   background: #f00606 !important;
 // }
+
+.el-table__header{margin:0 auto;}
 </style>

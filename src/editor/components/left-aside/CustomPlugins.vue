@@ -1,7 +1,7 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="自定义插件" width="560" draggable>
-    <el-form ref="ruleFormRef" :model="formData" :rules="formRules">
-      <el-form-item label="插件名称" prop="plugin_name">
+  <el-dialog v-model="dialogVisible" title="上传图形" width="560" draggable>
+    <el-form ref="ruleFormRef" :model="formData" :rules="formRules" label-width="120">
+      <el-form-item label="输入分类名称" prop="plugin_name">
         <el-input v-model="formData.plugin_name"></el-input>
       </el-form-item>
       <el-form-item label="上传图片" prop="files">
@@ -49,7 +49,7 @@ const formData = reactive({
 const ruleFormRef = ref<FormInstance>()
 const formRules = reactive({
   plugin_name: [
-    { required: true, message: '请输入插件名称', trigger: 'blur' }
+    { required: true, message: '请输入分类名称', trigger: 'blur' }
   ],
   files: [
     { required: true, message: '请选择图片', trigger: 'blur' }

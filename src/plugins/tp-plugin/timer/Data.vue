@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import { bindData } from "./default"
 export default {
   props: {
     data: {
@@ -32,7 +31,10 @@ export default {
   },
   data() {
     return {
-      formData: bindData,
+      formData: {
+        bindType: 'static',
+        static: "文本"
+      },
       bindOptions: [
         { value: 'static', label: '静态数据' }, 
         { value: 'dynamic', label: '动态数据'}, 
