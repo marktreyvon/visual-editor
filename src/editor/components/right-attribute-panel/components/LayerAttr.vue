@@ -18,15 +18,15 @@
               active-text="显示"
               inactive-text="影藏"
           />
-          <el-switch
-              v-model="layerList[index].isE"
-              @change='editCell($event,index,i)'
-              class="ml-2"
-              inline-prompt
-              style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
-              active-text="可编辑"
-              inactive-text="禁用编辑"
-          />
+<!--          <el-switch-->
+<!--              v-model="layerList[index].isE"-->
+<!--              @change='editCell($event,index,i)'-->
+<!--              class="ml-2"-->
+<!--              inline-prompt-->
+<!--              style="&#45;&#45;el-switch-on-color: #13ce66; &#45;&#45;el-switch-off-color: #ff4949"-->
+<!--              active-text="可编辑"-->
+<!--              inactive-text="禁用编辑"-->
+<!--          />-->
         </div>
       </el-card>
     </el-col>
