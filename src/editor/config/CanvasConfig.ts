@@ -117,12 +117,10 @@ class CanvasConfig implements ICanvasConfig {
                 createEdge(){
                     return this.createEdge({
                         shape: "edge",
-                        zIndex: 0,
                         attrs: {
                             line: {
                                 stroke: "#ff2929",
                                 strokeWidth: 1,
-                                targetMarker: null,
                             },
                         },
                     });
@@ -140,6 +138,7 @@ class CanvasConfig implements ICanvasConfig {
         this.graph.setGridSize(this.gridSize);
         // 显示网格
         this.graph.showGrid();
+
         // 配置多节点框选
         if (this.enableSelection) {
             this.graph.use(
@@ -150,15 +149,7 @@ class CanvasConfig implements ICanvasConfig {
                     movable: true,
                     showNodeSelectionBox: true,
                 })
-            ).use(
-                new Selection({
-                    multiple: true,
-                    rubberEdge: true,
-                    rubberNode: true,
-                    modifiers: 'shift',
-                    rubberband: true,
-                }),
-            )
+            );
         }
         
 
