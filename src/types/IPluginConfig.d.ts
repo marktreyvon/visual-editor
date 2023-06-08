@@ -19,6 +19,6 @@ declare interface IPluginConfig {
 
     getComponent(name: String): any;
 
-    registerComponents(data: any): void;
+    registerComponents(mode: "editor" | "display", data: any): void;
 
 }

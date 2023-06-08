@@ -1,5 +1,9 @@
 import { register } from "@antv/x6-vue-shape";
 import * as Plugins from '@/plugins'
+import { getDropComponent } from "../components/canvas-editor/DropComponent";
+import { getDisplayComponent } from "@/display/components/DisplayComponent";
+import { getDisplayPicComponent } from "@/display/components/DisplayPicComponent";
+import { getDropPicComponent } from "../components/canvas-editor/DropPicComponent";
 
 /**
  * @author cxs
@@ -40,20 +44,33 @@ class PluginConfig implements IPluginConfig  {
         return this.components;
     }
 
-    public registerComponents(data: any): void {
+    public registerComponents(mode: "editor" | "display", data: any): void {
         console.log('============registerComponents===================')
-        console.log(Plugins)
         const plugins: any = <any>Plugins;
         for (const key in plugins) {
             console.log(key)
             const plugin = plugins[key];
             const { views } = plugin.default;
             views.forEach((view: any) => {
-                const cell = data.find((item: any) => item.shape === view.name);
-                if (cell) {
-                    // 注册组件
-                    this.registerComponent(cell, view.Main);
-                }
+                data.forEach((cell: any) => {
+                    if (cell.shape === view.name) {
+                        if (mode === 'editor') {
+                            const cpt: any = getDropComponent(view.Main);
+                            this.registerComponent(cell, cpt);
+                        } else if (mode === 'display') {
+                            const cpt: any = getDisplayComponent(view.Main, cell.data || null);
+                            this.registerComponent(cell, cpt);
+                        }
+                    } else if (cell.data && cell.data.pic) {
+                        if (mode === 'editor') {
+                            const cpt: any = getDropPicComponent(view.Main);
+                            this.registerComponent(cell, cpt);
+                        } else if (mode === 'display') {
+                            const cpt: any = getDisplayPicComponent(cell.data);
+                            this.registerComponent(cell, cpt);
+                        }
+                    }
+                })
             })
         }
        

@@ -17,15 +17,18 @@ export const useStencil = () => {
      * @param plugins 
      */
     const initStencil = (plugins: any, picPlugins?: any) => {
+        console.log('=================initStencil===================');
         const graph: Graph = getGraph();
-        console.log('=================initStencil===================');
-        console.log('=================initStencil===================');
-        const { groups, nodeMap} = createStencilNode(plugins, graph);
+        const { groups, nodeMap } = createStencilNode(plugins, graph);
+        // 基础图形
+        createStencilBaseNode(groups, nodeMap, graph);
+        console.log('initStencil.nodeMap', groups, nodeMap)
         let groupList: Stencil.Group[] = groups.map((group: string) => getGroup(group));
         const stencilConfig: IStencilConfig = getStencilConfig(groupList);
         nodeMap.forEach((nodes: any[], key: string) => {
             stencilConfig.getStencil().load(nodes, key);
         });
+        console.log('=================initStencil===================');
     }
 
     /**
@@ -72,6 +75,68 @@ export const useStencil = () => {
         }
     }
 
+    const commonAttrs = {
+        body: {
+            fill: '#fff',
+            stroke: '#000',
+            strokeWidth: 2,
+        },
+        label: {
+            text: '',
+            refX: 0.5,
+            refY: '100%',
+            refY2: 4,
+            textAnchor: 'middle',
+            textVerticalAnchor: 'top',
+        },
+    }
+
+    const baseNode = [
+        {
+            shape: "rect",
+            width: 40,
+            height: 40,
+            label: "矩形",
+            attrs: commonAttrs
+        },
+        {
+            shape: "circle",
+            width: 40,
+            height: 40,
+            label: "圆形",
+            attrs: commonAttrs
+        },
+        {
+            shape: "ellipse",
+            width: 40,
+            height: 40,
+            label: "椭圆",
+            attrs: commonAttrs
+        },
+        {
+            shape: 'polygon',
+            width: 40,
+            height: 40,
+            points: '100,10 40,198 190,78 10,78 160,198',
+            label: '多边形',
+            attrs: commonAttrs
+        }
+    ]
+
+    const createStencilBaseNode = (groups: any, nodeMap: any, graph: any) => {
+        console.log('createStencilBaseNode.nodeMap', groups, nodeMap)
+        const groupName = '基础图形';
+        groups.unshift(groupName);
+        const nodeList: any[] = [];
+        baseNode.forEach((item: any) => {
+            const node = graph.createNode(item);
+            nodeList.push(node);
+        });
+
+        nodeMap.set(groupName, nodeList);
+
+    }
+
 
     /**
      * 获取画布上下文
@@ -82,13 +147,13 @@ export const useStencil = () => {
         const graph: Graph = canvasConfig.getGraph();
         return graph;
     }
-    
+
     /**
      * 获取Stencil管理器
      * @param groupList 
      * @returns 
      */
-    const getStencilConfig = (groupList: Stencil.Group[]) : IStencilConfig => {
+    const getStencilConfig = (groupList: Stencil.Group[]): IStencilConfig => {
         const graph = getGraph();
         const stencilConfig: IStencilConfig = StencilConfig.getInstance(graph, groupList, Common.DEFAULT_STENCIL_CONTAINER_ID);
         return stencilConfig;
@@ -106,7 +171,7 @@ export const useStencil = () => {
     return {
         initStencil
     }
-    
+
 }
 
 

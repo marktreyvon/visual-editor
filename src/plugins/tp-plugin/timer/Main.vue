@@ -32,6 +32,7 @@ export default {
   watch: {
     style: {
         handler: function (val, oldVal) {
+          console.log('timer.Main.style', val)
             if (!val) return;
             this.format = val.format
             if (this.timer && val.format !== oldVal.format) {

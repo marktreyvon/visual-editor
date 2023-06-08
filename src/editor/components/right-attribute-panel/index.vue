@@ -2,7 +2,7 @@
     <div class="">
         <ElTabs v-model="activeName">
             <el-tab-pane :label="isEdge?'线条样式':'外观'" name="attr">
-                <div style="height: 100%;overflow-y:auto">
+                <div style="height: 100%;">
                     <!-- 画布样式 -->
                     <CanvasAttr v-if="!isNode&&!isEdge" @onChange="onCanvasAttrChange"/>
                     <div v-if="isNode">

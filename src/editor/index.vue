@@ -1,12 +1,12 @@
 <template>
-    <el-container>
+    <el-container id="containerId">
       <el-header id="header" height="50px" class="flex items-center shadow-md w-full">
         <!-- 顶部start -->
         <Header :tools="useTools()"/>
         <!-- 顶部end -->
       </el-header>
       <el-container id="layout" class="layout-container relative">
-        <el-aside class="shadow-sm absolute w-44 z-50 h-full bg-white">
+        <el-aside class="shadow-sm absolute w-44 z-50 h-full bg-white" style="width:300px">
           <!-- 左侧组件start -->
           <left-aside class="left-aside w-full"/>
           <div class="custom-component">
@@ -16,11 +16,11 @@
         </el-aside>
         <el-main>
           <!-- 中间编辑区域start -->
-          <canvas-editor class="mx-64 w-auto h-full"/>
+          <canvas-editor class="w-full h-full" style="width: 100%;margin-left:300px;margin-right:300px"/>
           <!-- 中间编辑区域end -->
   
           <!-- 右侧属性面板start -->
-          <RightAttributePanel class="absolute inset-y-0 p-2 right-0 w-64 z-50 h-full bg-white"/>
+          <RightAttributePanel class="absolute inset-y-0 p-2 right-0 w-64 z-50 h-full bg-white" style="width:300px"/>
           <!-- 右侧属性面板end -->
         </el-main>
       </el-container>
@@ -76,6 +76,23 @@ const getPicPlugins = async () => {
   }
 }
   // ========================================自定义插件=============================================
+
+const containerRect = ref({
+  width: 0,
+  height: 0
+});
+onMounted(() => {
+  const resizeObserver = new ResizeObserver(entries => {
+    console.log("监听变化", entries[0].contentRect.width, entries[0].contentRect.height)
+    containerRect.value = {
+      width: entries[0].contentRect.width,
+      height: entries[0].contentRect.height
+    }
+  })
+  const displayContainer: HTMLElement = <HTMLElement>document.getElementById("containerId");
+  resizeObserver.observe(displayContainer);
+
+})
 </script>
 
 <style lang="scss">
@@ -124,6 +141,15 @@ const getPicPlugins = async () => {
     @media (min-width: 1111px) {
       overflow-x: hidden;
     }
+    @media (min-width: 1920px) {
+      width: 1920px;
+    }
+    @media (min-width: 1920px) {
+      .container {
+        max-width: calc(100vw - 600px);
+      }
+    }
+      
   }
   .x6-widget-stencil-content {
     height: 100%;

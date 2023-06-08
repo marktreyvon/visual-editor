@@ -1,5 +1,5 @@
 <template>
-    <el-collapse v-model="activeNames">
+    <el-collapse v-model="activeNames" accordion>
         <el-collapse-item title="样式" name="style">
             <el-form v-model="formData" label-width="80px" label-position="left" class="px-2">
                 <el-form-item label="字体大小">

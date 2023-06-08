@@ -8,7 +8,6 @@
 import { styleData } from './default'
 
 export default {
-  components: {},
   props: {
     value: {
       type: [String, Object],

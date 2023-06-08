@@ -1,5 +1,5 @@
 <template>
-    <el-collapse v-model="activeNames">
+    <el-collapse v-model="activeNames" accordion>
       <el-collapse-item title="背景与边框" name="background">
         <el-form v-model="formData.background" label-width="140px" label-position="left">
   
@@ -20,16 +20,23 @@
 
       <el-collapse-item title="图表设置" name="dashboard">
         <el-form v-model="formData.dashboard" label-width="140px" label-position="left">
+
+          <el-form-item label="文本">
+            <el-input v-model="formData.dashboard.text"></el-input>
+          </el-form-item>
+  
           <el-form-item label="字体大小">
             <el-input type="number" min="1" v-model="formData.dashboard.fontSize"></el-input>
           </el-form-item>
   
           <el-form-item label="字体颜色">
-            <el-color-picker v-model="formData.dashboard.color" />
+            <el-color-picker v-model="formData.dashboard.fontColor" />
           </el-form-item>
   
             <el-form-item label="进度条颜色">
-              <el-color-picker v-model="formData.dashboard.ProgressColor" />
+              <el-color-picker v-model="formData.dashboard.progressColor1" />
+              <el-color-picker v-model="formData.dashboard.progressColor2" />
+
             </el-form-item>
             <el-form-item label="显示指针">
               <el-switch v-model="formData.dashboard.pointerShow" />
@@ -63,7 +70,7 @@
     },
     data() {
       return {
-        activeNames: 'background',
+        activeNames: '',
         formData: styleData
       }
     },

@@ -28,7 +28,7 @@ class StencilConfig implements IStencilConfig {
      * @param stencilId 
      */
     private constructor(
-        graph: Graph, 
+        graph: Graph,
         groups: Stencil.Group[],
         stencilId: string) {
         this.graph = graph;
@@ -44,9 +44,9 @@ class StencilConfig implements IStencilConfig {
      * @param stencilId 
      * @returns 
      */
-    public static getInstance (
-        graph: Graph, 
-        groups: Stencil.Group[], 
+    public static getInstance(
+        graph: Graph,
+        groups: Stencil.Group[],
         stencilId: string = Common.DEFAULT_STENCIL_CONTAINER_ID): StencilConfig {
         if (!StencilConfig.instance) {
             StencilConfig.instance = new StencilConfig(graph, groups, stencilId);
@@ -67,11 +67,12 @@ class StencilConfig implements IStencilConfig {
                 return false;
             },
             groups: this.groups,
-            layoutOptions: {    
+            layoutOptions: {
                 columns: 2,
                 resizeToFit: true,
             },
             stencilGraphWidth: 280,
+            stencilGraphHeight: 0,
             getDropNode(draggingNode) {
                 return __this.getDropNode(draggingNode);
             }
@@ -91,9 +92,26 @@ class StencilConfig implements IStencilConfig {
      * @returns 
      */
     private getDropNode(node: any): Node {
-        if (!this.graph) 
-            throw new Error('Graph is undefined.'); 
+        if (!this.graph)
+            throw new Error('Graph is undefined.');
         const { data } = node;
+        console.log('getDropNode.node', node, node.data)
+        if (!node.data) {
+            return this.graph.createNode({
+                width: 100,
+                height: 100,
+                shape: node.shape,
+                label: node.label || node.shape,
+                points: '100,10 40,198 190,78 10,78 160,198',
+                attrs: {
+                    body: {
+                        fill: "#fff",
+                    },
+                },
+                ports: this.getPorts()
+            });
+        }
+
         const pluginConfig: IPluginConfig = PluginConfig.getInstance();
         const cpt = pluginConfig.getComponent(data.name);
         console.log('getDropNode.cpt', cpt)
@@ -165,13 +183,13 @@ class StencilConfig implements IStencilConfig {
                     {
 
                         group: 'top',
-                    },   {
+                    }, {
 
                         group: 'bottom',
-                    },   {
+                    }, {
 
                         group: 'right',
-                    },   {
+                    }, {
 
                         group: 'left',
                     }
@@ -183,13 +201,83 @@ class StencilConfig implements IStencilConfig {
     }
 
     public addGroup(group: string): void {
-        if (!this.stencil) 
-            throw new Error('Stencil is undefined.'); 
+        if (!this.stencil)
+            throw new Error('Stencil is undefined.');
         this.groups.push({
             name: group,
             title: group,
             collapsable: true
         });
+    }
+
+    private getPorts(): any {
+        return {
+            groups: {
+                top: {
+                    attrs: {
+                        circle: {
+                            r: 6,
+                            magnet: true,
+                            stroke: '#31d0c6',
+                            strokeWidth: 2,
+                            fill: '#fff',
+                        },
+                    },
+                    position: 'top',
+                },
+                bottom: {
+                    attrs: {
+                        circle: {
+                            r: 6,
+                            magnet: true,
+                            stroke: '#31d0c6',
+                            strokeWidth: 2,
+                            fill: '#fff',
+                        },
+                    },
+                    position: 'bottom',
+                },
+                right: {
+                    attrs: {
+                        circle: {
+                            r: 6,
+                            magnet: true,
+                            stroke: '#31d0c6',
+                            strokeWidth: 2,
+                            fill: '#fff',
+                        },
+                    },
+                    position: 'right',
+                },
+                left: {
+                    attrs: {
+                        circle: {
+                            r: 6,
+                            magnet: true,
+                            stroke: '#31d0c6',
+                            strokeWidth: 2,
+                            fill: '#fff',
+                        },
+                    },
+                    position: 'left',
+                }
+            },
+            items: [
+                {
+
+                    group: 'top',
+                }, {
+
+                    group: 'bottom',
+                }, {
+
+                    group: 'right',
+                }, {
+
+                    group: 'left',
+                }
+            ]
+        }
     }
 }
 
@@ -204,7 +292,7 @@ const registerShape = (shape: string, component: any) => {
         width: 100,
         height: 100,
         component
-      });
+    });
 }
 
 

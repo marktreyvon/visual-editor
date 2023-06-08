@@ -11,6 +11,8 @@
 <script setup lang="ts">
 import {onMounted, ref, watch} from "vue";
 import {PluginConfig} from "@/editor/config";
+import { useEvents } from "../useEvents"
+
 const pluginConfig: IPluginConfig = PluginConfig.getInstance();
 
 const props = defineProps({
@@ -22,7 +24,6 @@ const props = defineProps({
     default: () => {}
   }
 })
-import { useEvents } from "../useEvents"
 let {
   initEvents, onChange ,
 } = useEvents();

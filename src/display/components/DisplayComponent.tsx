@@ -15,9 +15,11 @@ export const getDisplayComponent = (cpt: Component, nodeData: any): Component =>
             }
         },
         mounted() {
-            
+            console.log('display.mounted.nodeData', nodeData)
             // 从节点的附加数据中获取样式和绑定数据
             const jsonData = parseJSONData(nodeData.jsonData);
+            console.log('display.mounted.jsonData', jsonData)
+
             if (!jsonData) return;
             if (jsonData.style) {
                 this.style = { ...jsonData.style }
@@ -59,7 +61,9 @@ export const getDisplayComponent = (cpt: Component, nodeData: any): Component =>
         },
         render() {
             return (
-                <cpt value={this.value} style={this.style} data={this.data} option={this.option} onChange={this.onChange}/>
+                <div style="width:100%;height:100%">
+                    <cpt value={this.value} style={this.style} data={this.data} option={this.option} onChange={this.onChange}/>
+                </div>
             )
         }
     })

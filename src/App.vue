@@ -53,7 +53,7 @@ if (import.meta.env.MODE === 'development') {
 // ============================ 临时获取token end==============================================
 
 // 修改页面标题
-document.title = params.title || '大屏编辑器 - ThingsPanel可视化'
+document.title = params.title || '可视化编辑器 - ThingsPanel'
 </script>
 
 <template>

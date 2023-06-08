@@ -42,6 +42,7 @@ export default defineComponent({
   },
   computed: {
     myStyle() {
+      console.log("Yibiaopan.Main.style", this.style)
       if (JSON.stringify(this.style) !== "{}") {
         return this.style;
       } else {

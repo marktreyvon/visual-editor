@@ -57,6 +57,7 @@ class CellEvents implements ICellEvents {
         this.graph.on("cell:mouseenter", ({ e, cell, view }) => {
             this.mouseEnterListener && this.mouseEnterListener({ e, cell, view });
         });
+        
         //节点被挂载到画布上时触发。
         this.graph.on("view:mounted", ({ view }) => {
 

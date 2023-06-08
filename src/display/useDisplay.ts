@@ -49,7 +49,7 @@ export const useDisplay = (containerId: string) => {
             // 初始化画布网格
             canvasConfig.showGrid(jsonObj.graph.showGrid);
 
-            const  theg=canvasConfig.getGraph()
+            const  theg = canvasConfig.getGraph()
             const Edges=theg.getEdges()
             console.log(Edges)
             Edges.forEach((edge:any)=>{
@@ -85,14 +85,15 @@ export const useDisplay = (containerId: string) => {
                 views.forEach((view: any) => {
                     jsonObj.cells.forEach((cell: any) => {
                         if (cell.shape === view.name) {
-                            // console.log('display.loadPlugins', cell)
+                            console.log('display.loadPlugins', cell)
                             const cpt: any = getDisplayComponent(view.Main, cell.data || null);
                             registerShape(view.name, cpt);
-                        } else if (cell.data && cell.data.pic) {
-                            console.log('display.loadPlugins', cell.data)
-                            const cpt: any = getDisplayPicComponent(cell.data);
-                            registerShape(cell.shape, cpt);
                         }
+                        //  else if (cell.data && cell.data.pic) {
+                        //     console.log('display.loadPlugins', cell.data)
+                        //     const cpt: any = getDisplayPicComponent(cell.data);
+                        //     registerShape(cell.shape, cpt);
+                        // }
                     });
                 })
             }
