@@ -29,9 +29,7 @@ let {
 } = useEvents();
 const layerList=ref<any>([])
 const layerClick=(e:any,d:any)=> {
-  console.log(d)
-  console.log(e)
-  // d.graph.trigger('node:click',{ e:e, node: d.cell })
+
   if(d.cell.shape!=='edge'){
     console.log(d.cell.shape,"00000000000")
     d.graph.trigger('node:click',{ e:e, node: d.cell })
@@ -44,7 +42,6 @@ const layerClick=(e:any,d:any)=> {
 onMounted(()=>{
   initEvents()
 })
-console.log(layerList.value)
 watch(props,(v)=>{
   layerList.value=v.cellList
 })
