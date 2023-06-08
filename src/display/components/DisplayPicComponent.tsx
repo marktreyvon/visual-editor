@@ -8,6 +8,7 @@ export const getDisplayPicComponent = (data: any): Component => {
                     backgroundColor: undefined,
                     width: '100%',
                     height: '100%',
+                    fit: 'contain'
                 }
             }
         },
@@ -22,7 +23,7 @@ export const getDisplayPicComponent = (data: any): Component => {
         render() {
             return (
                 <div style={this.style}>
-                    <el-image style="width: 100%; height: 100%" src={data.pic}/>
+                    <el-image style="width: 100%; height: 100%" src={data.pic} fit={this.style.fit}/>
                 </div>
             )
         }

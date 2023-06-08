@@ -102,12 +102,8 @@ class StencilConfig implements IStencilConfig {
                 height: 100,
                 shape: node.shape,
                 label: node.label || node.shape,
-                points: '100,10 40,198 190,78 10,78 160,198',
-                attrs: {
-                    body: {
-                        fill: "#fff",
-                    },
-                },
+                points: node.points,
+                attrs: node.attrs,
                 ports: this.getPorts()
             });
         }
@@ -128,73 +124,7 @@ class StencilConfig implements IStencilConfig {
             height: cpt.size.height || 200,
             label: data.name,
             //在创建节点时增加连接点属性;  *@author; 王炳宏  2023-05-23
-            ports: {
-                groups: {
-                    top: {
-                        attrs: {
-                            circle: {
-                                r: 6,
-                                magnet: true,
-                                stroke: '#31d0c6',
-                                strokeWidth: 2,
-                                fill: '#fff',
-                            },
-                        },
-                        position: 'top',
-                    },
-                    bottom: {
-                        attrs: {
-                            circle: {
-                                r: 6,
-                                magnet: true,
-                                stroke: '#31d0c6',
-                                strokeWidth: 2,
-                                fill: '#fff',
-                            },
-                        },
-                        position: 'bottom',
-                    },
-                    right: {
-                        attrs: {
-                            circle: {
-                                r: 6,
-                                magnet: true,
-                                stroke: '#31d0c6',
-                                strokeWidth: 2,
-                                fill: '#fff',
-                            },
-                        },
-                        position: 'right',
-                    },
-                    left: {
-                        attrs: {
-                            circle: {
-                                r: 6,
-                                magnet: true,
-                                stroke: '#31d0c6',
-                                strokeWidth: 2,
-                                fill: '#fff',
-                            },
-                        },
-                        position: 'left',
-                    }
-                },
-                items: [
-                    {
-
-                        group: 'top',
-                    }, {
-
-                        group: 'bottom',
-                    }, {
-
-                        group: 'right',
-                    }, {
-
-                        group: 'left',
-                    }
-                ]
-            },
+            ports: this.getPorts(),
         });
 
         return dropNode;
@@ -210,6 +140,12 @@ class StencilConfig implements IStencilConfig {
         });
     }
 
+    /**
+     * @author cxs
+     * @date 2023-06-08
+     * @description 获取连接桩
+     * @returns 
+     */
     private getPorts(): any {
         return {
             groups: {

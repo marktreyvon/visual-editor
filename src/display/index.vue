@@ -3,7 +3,7 @@
     <div :id="Common.DEFAULT_DISPLAY_CONTAINER_ID"></div>
     <TeleportContainer />
   </div>
-  <div class="" style="position: absolute">
+  <div class="display-tools-container" style="position: absolute">
     <el-button>全屏</el-button>
   </div>
 </template>
@@ -50,5 +50,10 @@ onMounted(() => {
 :deep(.x6-port.x6-port-link) {
   // 隐藏连接桩
   display:none;
+}
+.display-tools-container {
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
 </style>
