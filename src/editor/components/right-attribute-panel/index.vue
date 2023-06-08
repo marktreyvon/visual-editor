@@ -7,10 +7,11 @@
                     <CanvasAttr v-if="!isNode&&!isEdge" @onChange="onCanvasAttrChange"/>
                     <div v-if="isNode">
                         <!-- 节点基础样式 -->
-                        <BaseAttr :data="nodeData"/>
+                        <BaseAttr :data="nodeData" @onChange="onChange"/>
                         <!-- 自定义样式 -->
-                        <component  :currentNode='nodeId' :data="attrData" :is="attributeCpt" v-on="actionHandlers"
+                        <component  v-if="attributeCpt" :currentNode='nodeId' :data="attrData" :is="attributeCpt" v-on="actionHandlers"
                             @onChange="onChange" />
+                        <BaseNodeAttr v-if="!attributeCpt"  @onChange="onChange"/>
                     </div>
                     
                       <!-- 边样式 -->
@@ -39,6 +40,7 @@ import BaseAttr from "./components/BaseAttr.vue";
 import LineAttr from "./components/LineAttr.vue";
 import LayerAttr from "./components/LayerAttr.vue";
 import BaseData from './components/baseData/index.vue';
+import BaseNodeAttr from "./components/BaseNodeAttr.vue"
 import { useEvents } from "./useEvents"
 import { useAttribute } from "./useAttribute"
 import { parseJSONData } from '@/utils';

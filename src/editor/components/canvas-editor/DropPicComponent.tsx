@@ -11,6 +11,7 @@ export const getDropPicComponent = (url: String): Component => {
                     width: '100%',
                     height: '100%',
                     backgroundColor: undefined,
+                    fit: 'contain'
                 },
                 option: {},
                 data: {}
@@ -36,7 +37,7 @@ export const getDropPicComponent = (url: String): Component => {
         render() {
             return (
                 <div style={this.style}>
-                    <el-image style="width: 100%; height: 100%" src={url}/>
+                    <el-image style="width: 100%; height: 100%" src={url} fit={this.style.fit}/>
                 </div>
             )
         }

@@ -12,7 +12,9 @@ export const getPicAttrComponent = (): Component => {
                 activeNames: ['style'],
                 formData: {
                     backgroundColor: undefined,
-                }
+                    fit: "contain"
+                },
+                fits: ['fill', 'contain', 'cover', 'none', 'scale-down']
             }
         },
         mounted() {
@@ -40,6 +42,16 @@ export const getPicAttrComponent = (): Component => {
                             <el-form-item label="背景颜色">
                                 <el-color-picker  v-model={this.formData.backgroundColor}/>
                             </el-form-item>
+
+                            <el-form-item label="适应类型">
+                                <el-select v-model={this.formData.fit}>
+                                    {
+                                        this.fits.map((item: string) => {
+                                            return <el-option label={item} value={item} key={item} />
+                                        })
+                                    }
+                                </el-select>
+                            </el-form-item>    
 
                         </el-form>
                     </el-collapse-item>

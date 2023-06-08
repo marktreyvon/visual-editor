@@ -58,8 +58,8 @@ export default {
             const jsonStr = JSON.stringify(this.data);
             if (jsonStr === '{}') return;
             const jsonObj = JSON.parse(jsonStr);
-            jsonObj.fontSize = jsonObj.fontSize?.replace("px", "") || styleData.fontSize
-            jsonObj.borderWidth = jsonObj.borderWidth?.replace("px", "") || styleData.borderWidth
+            jsonObj.fontSize = jsonObj.fontSize?.toString().replace("px", "") || styleData.fontSize
+            jsonObj.borderWidth = jsonObj.borderWidth?.toString().replace("px", "") || styleData.borderWidth
             this.formData = jsonObj;
         }
         

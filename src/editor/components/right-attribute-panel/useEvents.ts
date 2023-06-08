@@ -18,9 +18,9 @@ export const useEvents = () => {
     // 当前点击的节点
     let currentNode = ref<any>(null);
     // 当前节点的Attribute组件
-    let attributeCpt = ref<any>(null);
+    let attributeCpt = shallowRef<any>(null);
     // 当前节点的Data组件
-    let dataCpt = ref<any>(null);
+    let dataCpt = shallowRef<any>(null);
     // 当前节点的组件
     let component: any = {};
     // 当前节点的数据
@@ -39,7 +39,7 @@ export const useEvents = () => {
         // 点击node
         events.setClickEventListener((data: any) => {
             currentNode = data.node || data.cell || null;
-            nodeId=currentNode?.id
+            nodeId = currentNode?.id
             if (currentNode === null) {
                 // 如果点击的是画布
                 isNode.value = false;
@@ -47,16 +47,16 @@ export const useEvents = () => {
                 nodeData.value = {};
                 return;
             }
-
-
             // 获取插件管理器
             const pluginConfig: IPluginConfig = PluginConfig.getInstance();
             // 通过节点名称获取组件
             component = pluginConfig.getComponent(currentNode.shape);
+            console.log('initEvents.component', component)
             // 节点的附加数据
             nodeData.value = currentNode.store.data ;
 
             if (component) {
+                // 自定义组件
                 setNodeData(data);
                 isNode.value = true;
                 isEdge.value=false;
@@ -76,10 +76,11 @@ export const useEvents = () => {
                     }
                 }
             } else {
+                // 连线或基础节点
                 if(currentNode.shape==='edge'){
                     //如果点击的是边 ;  *@author; 王炳宏  2023-05-23
                     console.log(currentNode.shape,"这是边：",currentNode.id,)
-                   graph.clearTransformWidgets();
+                    graph.clearTransformWidgets();
                     dataCpt.value = null;
                     isEdge.value=true;
                     isNode.value=false
@@ -87,9 +88,12 @@ export const useEvents = () => {
                     // currentNode.attr('line/stroke','#7e14ff')
                     console.log(isEdge.value)
 
-                }else{
+                } else {
+                    // 基础节点
+                    isNode.value = true;
                     attributeCpt.value = null;
                     dataCpt.value = null;
+
                 }
             }
 
@@ -168,6 +172,7 @@ export const useEvents = () => {
      * @param data 
      */
     const onChange = (data: any) => {
+        console.log('useEvents.onChange.data', currentNode, data)
         let jsonStr = "{}";
         if (currentNode.getData()) {
             // 从节点的附加数据中获取JSON字符串
@@ -188,6 +193,19 @@ export const useEvents = () => {
             // ...currentNode.getData(),
             jsonData
         });
+
+        console.log('useEvents.onChange.data.zIndex', {...data.style});
+        currentNode.resize(Number(data.style.size.width), Number(data.style.size.height));
+        currentNode.position(Number(data.style.position.x), Number(data.style.position.y));
+        currentNode.setZIndex(data.style.zIndex);
+
+        const baseNodes = ["rect", "circle", "ellipse", "polygon", "polyline", "line"];
+        const index = baseNodes.findIndex((item: string) => item === currentNode.shape)
+        if (index !== -1) {
+            currentNode.attr('body', { ...data.style.body })
+        }
+        console.log('useEvents.onChange.data', currentNode, data)
+
     }
 
     return {
