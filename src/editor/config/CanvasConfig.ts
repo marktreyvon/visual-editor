@@ -101,6 +101,7 @@ class CanvasConfig implements ICanvasConfig {
         this.graph = new Graph({
             container: <HTMLDivElement>document.getElementById(this.containerId),
             autoResize: this.autoResize,
+            magnetThreshold:5,
             panning: {
                 enabled: this.enableMousePan,
                 eventTypes: ["rightMouseDown", "mouseWheel"]
