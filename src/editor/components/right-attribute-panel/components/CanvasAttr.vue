@@ -5,9 +5,9 @@
             <el-color-picker v-model="formData.backgroundColor" />
         </el-form-item>
         
-        <el-form-item label="背景图片:">
-            <el-input></el-input>
-        </el-form-item>
+<!--        <el-form-item label="背景图片:">-->
+<!--            <el-input  v-model="formData.backgroundImage"></el-input>-->
+<!--        </el-form-item>-->
 
         <el-form-item label="显示网格:">
             <el-switch v-model="formData.showGrid" />
