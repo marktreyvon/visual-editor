@@ -4,7 +4,7 @@
     <TeleportContainer />
   </div>
   <div class="display-tools-container" style="position: absolute">
-    <el-button>全屏</el-button>
+    <!-- <el-button>全屏</el-button> -->
   </div>
 </template>
 
@@ -13,24 +13,20 @@ import { ref, onMounted, inject } from "vue";
 import * as Common from "@/common";
 import { useDisplay } from "./useDisplay"
 import { getTeleport } from "@antv/x6-vue-shape";
+import { parseParams } from "@/utils";
 
 const TeleportContainer = getTeleport();
-document.title = '可视化查看 - ThingsPanel'
 
-console.log('editor mounted', inject('params'))
-const params: any = inject('params');
-
-
-let { initDisplay } = useDisplay(Common.DEFAULT_DISPLAY_CONTAINER_ID);
+let { initDisplay, screenName } = useDisplay(Common.DEFAULT_DISPLAY_CONTAINER_ID);
+document.title = '可视化查看 - ThingsPanel - ' + screenName.value;
+const params = parseParams();
 onMounted(() => {
   let jsonData: any = "";
-  console.log('editor mounted', params.mode)
 
-  if (params.mode === 'preview') {
+  if (params?.mode === 'preview') {
     jsonData = sessionStorage.getItem(Common.PREVIEW_JSON_DATA_KEY);
     initDisplay(jsonData);
   } else {
-    console.log('editor mounted', params.id)
     initDisplay(jsonData, params.id);
   }
 });

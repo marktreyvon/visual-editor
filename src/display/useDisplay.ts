@@ -9,10 +9,11 @@ import { getDisplayComponent } from "./components/DisplayComponent";
 import PluginAPI from '@/api/plugin';
 import VisualAPI from '@/api/visual';
 import { getDisplayPicComponent } from "./components/DisplayPicComponent";
-import { nextTick } from "vue";
+import { nextTick, ref } from "vue";
 export const useDisplay = (containerId: string) => {
 
     let jsonObj: any = {};
+    const screenName = ref<string>("")
     const initDisplay = async (data: any, id?: string) => {
         let jsonData = data;
         const options: ICanvasConfig.Options = {
@@ -25,6 +26,7 @@ export const useDisplay = (containerId: string) => {
         if (id) {
             let { data: result } = await VisualAPI.getJsonDataById({current_page: 1, per_page: 10, id});
             if (result.code === 200) {
+                screenName.value = result.data?.data?.[0]?.dashboard_name;
                 jsonData = result.data?.data?.[0]?.json_data;
             }
         }
@@ -52,7 +54,7 @@ export const useDisplay = (containerId: string) => {
             // 初始化画布背景
             canvasConfig.setBackground(jsonObj.graph.background);
             // 初始化画布网格
-            canvasConfig.showGrid(jsonObj.graph.showGrid);
+            canvasConfig.showGrid(false);
 
             setTimeout(() => {
                 canvasConfig.zoomToFit();
@@ -124,11 +126,7 @@ export const useDisplay = (containerId: string) => {
           });
     }
 
-    const getJSONData = (id: string) => {
-        
-    }
-
     return {
-        initDisplay
+        initDisplay, screenName
     }
 }

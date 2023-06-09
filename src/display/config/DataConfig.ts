@@ -118,7 +118,8 @@ class DataConfig {
             this.devicesData.forEach((device: any) => {
                 deviceList.push({
                     deviceId: device.deviceId,
-                    property: device.property
+                    property: device.property,
+                    propertyTitle: device.propertyTitle
                 })
             });
             if (this.refType === 'text' || this.refType === 'dashboard') {
@@ -143,7 +144,7 @@ class DataConfig {
                         const { data } = result;
                         if (data && data.length !== 0) {
                             let value = data[0][deviceList[0].property];
-                            values.push({ type: device.property, value});
+                            values.push({ type: device.propertyTitle, value});
                         }
                     }
                 }
@@ -159,7 +160,7 @@ class DataConfig {
                         const { data } = result;
                         if (data && data.length !== 0) {
                             let value = data[0][deviceList[0].property];
-                            values.push({ type: device.property, sales: value});
+                            values.push({ type: device.propertyTitle, sales: value});
                         }
                     }
                 }

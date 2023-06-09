@@ -60,6 +60,7 @@ const state = reactive({
     deviceId: '',
     pluginId: '',
     property: '',
+    propertyTitle: '',
     devices: [],
     properties: []
 })
@@ -231,8 +232,13 @@ const handleChangeDevice = (value: string) => {
  * @param value 
  */
 const handleChangeProperty = (value: string) => {
-    console.log('handleChangeProperty', value)
+    tslOptions.value.forEach((item: any) => {
+    console.log('handleChangeProperty', item)
+        
+    });
     state.property = value;
+    const index = tslOptions.value.findIndex((item: any) => item.name === value);
+    state.propertyTitle = tslOptions.value[index].title;
     setData();
 }
 

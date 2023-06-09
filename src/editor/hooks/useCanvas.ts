@@ -46,6 +46,7 @@ const useCanvas = (id?: any): any => {
             console.log('importJSON', jsonObj)
             if (jsonObj) {
                 canvasConfig.renderJSON(jsonObj);
+                canvasConfig.zoomToFit();
             }
         }
     }
