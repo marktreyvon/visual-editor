@@ -8,13 +8,14 @@ export const getDisplayComponent = (cpt: Component, nodeData: any): Component =>
     return defineComponent({
         data() {
             return {
-                value: undefined,
+                value: "",
                 style: undefined,
                 option: undefined,
                 data: undefined
             }
         },
         mounted() {
+            if (!nodeData) return;
             console.log('display.mounted.nodeData', nodeData)
             // 从节点的附加数据中获取样式和绑定数据
             const jsonData = parseJSONData(nodeData.jsonData);
@@ -37,10 +38,13 @@ export const getDisplayComponent = (cpt: Component, nodeData: any): Component =>
                     // 设备数据
                     const cb = (value: any) => {
                         console.log('callback', value)
-                        this.value = value;
+                        this.value = value + "";
                     }
                     // 设置回调
                     dataConfig.setCallback(cb);
+                    // 设置设备ID
+                    dataConfig.setDeviceId(jsonData.data.deviceData[0].deviceId);
+                    dataConfig.setProperty(jsonData.data.deviceData[0].property);
                     // 启动定时器开始刷新数据
                     dataConfig.start();
                 }

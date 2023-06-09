@@ -22,7 +22,7 @@ export const useDisplay = (containerId: string) => {
         }
         // let picPlugins = await getPicPlugins();
         // console.log(picPlugins)
-        loadPlugins(Plugins, data);
+        // loadPlugins(Plugins, data);
         if (data && JSON.stringify(data) !== '{}') {
             jsonObj = JSON.parse(data);
             console.log('initDisplay.jsonObj', jsonObj)

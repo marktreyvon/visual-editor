@@ -11,6 +11,8 @@ class DataConfig {
 
     private deviceId: string = "";
 
+    private property: string = "";
+
     /**
      * 节点数据
      */
@@ -33,6 +35,10 @@ class DataConfig {
         this.deviceId = deviceId;
     }
 
+    public setProperty(property: string) {
+        this.property = property;
+    }
+
     public setCallback(callback: Function) {
         this.callback = callback;
     }
@@ -47,8 +53,12 @@ class DataConfig {
                     isRunning = false;
                     if (res.code === 200) {
                         const { data } = res;
-                        if (!data || data.length === 0) return;
-                        this.callback(data[0]);
+                        console.log('start', data)
+                        let value = "无数据";
+                        if (data && data.length !== 0) {
+                            value = data[0][this.property];
+                        }
+                        this.callback(value);
                     }
                 })
         }
