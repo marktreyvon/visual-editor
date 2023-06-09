@@ -119,7 +119,7 @@ class CanvasConfig implements ICanvasConfig {
                         shape: "edge",
                         attrs: {
                             line: {
-                                stroke: "#ff2929",
+                                stroke: "#333",
                                 strokeWidth: 1,
                             },
                         },
