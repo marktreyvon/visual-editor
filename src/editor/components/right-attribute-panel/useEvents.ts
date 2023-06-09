@@ -215,6 +215,17 @@ export const useEvents = () => {
             jsonData
         });
 
+        // console.log('useEvents.onChange.data.zIndex', {...data.style});
+        // if(currentNode?.resize){
+        //     currentNode.resize(Number(data?.style?.size?.width), Number(data?.style?.size?.height));
+        // }
+        // if(currentNode?.position){
+        //     currentNode.position(Number(data?.style?.position?.x), Number(data?.style?.position?.y));
+        // }
+        // if(currentNode?.setZIndex){
+        //     currentNode.setZIndex(data?.style?.zIndex);
+        // }
+
         const baseNodes = ["rect", "circle", "ellipse", "polygon", "polyline", "line"];
         const index = baseNodes.findIndex((item: string) => item === currentNode.shape)
         if (index !== -1) {
