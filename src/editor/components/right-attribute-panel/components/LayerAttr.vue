@@ -3,7 +3,7 @@
 
 <div style='height:700px;overflow-y: auto;overflow-x: hidden;padding: 0 6px'>
   <el-row :gutter="20">
-    <el-col style='margin-top:6px' :span="24" v-for="(data, tIndex) in layerList" key='i.view.cell.id' @click='layerClick($event,data.view)'>
+    <el-col style='margin-top:6px' :span="24" v-for="(data, tIndex) in layerList" key='data.view.cell.id' @click='layerClick($event,data.view)'>
       <el-card :body-style="{padding: '0px 12px',height:'60px',display:'flex',justifyContent:'space-between',alignItems:'center' }">
         <img v-if="pluginConfig.getComponent(data.view
         .cell.shape)?.icon" width='50' height='50' :src="pluginConfig.getComponent(data.view
