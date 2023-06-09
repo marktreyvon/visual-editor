@@ -24,7 +24,7 @@
                     <BaseData @onChange="onChange"/>
                 </component>
             </el-tab-pane>
-            <el-tab-pane label="图层" name="layer" >
+            <el-tab-pane label="图层" name="layer">
                 <LayerAttr :cellList='cellList' :initEvents='initEvents'/>
             </el-tab-pane>
         </ElTabs>

@@ -8,7 +8,7 @@ import {Graph} from "@antv/x6";
  * @date 2023-05-20
  * @update 2023-05-20
  * @description 事件管理
- * @returns 
+ * @returns
  */
 export const useEvents = () => {
     // 当前点击的是节点还是画布
@@ -37,6 +37,8 @@ export const useEvents = () => {
     const initEvents = () => {
         let canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
         const events: ICellEvents = canvasConfig.getEvents();
+        const graph= canvasConfig.getGraph()
+
         // 点击node
         events.setClickEventListener((data: any) => {
             const temp = data.node || data.cell || null;
@@ -112,7 +114,6 @@ export const useEvents = () => {
         events.setMovedEventListener((data: any) => {
             setNodeData(data)
         });
-        const graph= canvasConfig.getGraph()
 
         events.setMountedEventListener((view) => {
             setCellList(view,true)
@@ -125,6 +126,14 @@ export const useEvents = () => {
             console.log('setMouseEnterEventListener', data)
 
             const node = data.cell;
+            if(node.shape!=='edge'){
+                const ports=node.getPorts()
+                ports.forEach((port:any) => {
+                    node.portProp(port.id, "attrs/circle/style/visibility", "visible");
+                })
+            }
+
+
             node.addTools({
                 name: 'button-remove',
                 args: {
@@ -137,8 +146,16 @@ export const useEvents = () => {
 
         events.setMouseLeaveEventListener((data: any) => {
             const node = data.cell;
+            if(node.shape!=='edge'){
+                const ports=node.getPorts()
+                ports.forEach((port:any) => {
+                    node.portProp(port.id, "attrs/circle/style/visibility", "hidden");
+                })
+            }
+
+
             // 删除所有的工具
-            node.removeTools(); 
+            node.removeTools();
         });
 
     }
@@ -162,7 +179,7 @@ export const useEvents = () => {
     }
 
     const setEdgeData = (data: any) => {
-   
+
         const edge =  data.node || data.cell || null;
         // console.log('edges', edge)
         if (edge !== null) {
@@ -174,7 +191,7 @@ export const useEvents = () => {
 
     /**
      * 用户自定义组件的样式和绑定的数据改变后，会调用这个方法，更新画布上的节点数据
-     * @param data 
+     * @param data
      */
     const onChange = (data: any) => {
         let jsonStr = "{}";
@@ -217,4 +234,3 @@ export const useEvents = () => {
         initEvents, onChange, onBaseChange, cellList
     }
 }
-
