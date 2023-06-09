@@ -3,10 +3,10 @@
 
 <div style='height:700px;overflow-y: auto;overflow-x: hidden;padding: 0 6px'>
   <el-row :gutter="20">
-    <el-col style='margin-top:6px' :span="24" v-for='(data,index) in layerList' key='i.view.cell.id' @click='layerClick($event,data.view)'>
+    <el-col style='margin-top:6px' :span="24" v-for='(data,tIndex) in layerList' key='i.view.cell.id' @click='layerClick($event,data.view)'>
       <el-card :body-style="{padding: '0px 12px',height:'60px',display:'flex',justifyContent:'space-between',alignItems:'center' }">
         <img v-if="pluginConfig.getComponent(data.view
-        .cell.shape)?.icon" width='50' height='50' :src="pluginConfig.getComponent(i.view
+        .cell.shape)?.icon" width='50' height='50' :src="pluginConfig.getComponent(data.view
         .cell.shape)?.icon" alt=''>
         <img v-else-if="data.view.cell.shape==='edge'" width='50' height='50' :src="edgeLayerIcon" alt=''>
         <img v-else width='50' height='50' :src="defaultIcon" alt=''>
@@ -15,9 +15,11 @@
         </div>
 
         <div style="padding: 14px">
+          <span>顺序：</span>
+          <el-input style='width: 40px;' v-model="statList[tIndex].zIndex"   @change='zIndexChange($event,data)' />
           <el-switch
-              @change='showCell($event,index,data)'
-              v-model="statList[index].isShow"
+              @change='showCell($event,tIndex,data)'
+              v-model="statList[tIndex].isShow"
               class="ml-2"
               inline-prompt
               style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
@@ -61,13 +63,11 @@ const props = defineProps({
   }
 })
 const showCell= (v: any, index: any, i: any)=>{
-  console.log(statList,"0000")
-  layerList.value.forEach((i:any)=>{
-    console.log(i.view.cell.isVisible(),"1111")
-  })
    i.view.cell.setVisible(v)
 }
-
+const zIndexChange=(val:any,d:any)=>{
+   d.view.cell.zIndex=val
+}
 const editCell= (v: any, index: any, i: any)=>{
 
 //Todo 未完成
@@ -85,8 +85,8 @@ const layerClick=(e:any,d:any)=> {
 
 watch(props,(v)=>{
   layerList.value=v.cellList
-  layerList.value.forEach((i:any)=>{
-    statList.value.push({isShow:i.view.cell.isVisible(),isEdit:true})
+  layerList.value.forEach((data:any)=>{
+    statList.value.push({isShow:data.view.cell.isVisible(),isEdit:true,zIndex:data.view.cell.zIndex})
   })
 })
 
