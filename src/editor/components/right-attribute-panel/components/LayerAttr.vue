@@ -11,7 +11,7 @@
         <div style="padding: 14px">
           <el-switch
               @change='showCell($event,index,i)'
-              v-model="layerList[index].isV"
+              v-model="statList[index].isShow"
               class="ml-2"
               inline-prompt
               style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
@@ -39,10 +39,12 @@
 
 <script setup lang="ts">
 import {onMounted, ref, watch} from "vue";
+import {uniqWith,isEqual}  from "lodash"
 import {PluginConfig} from "@/editor/config";
 import defaultIcon from "@/assets/defaultIcon.svg";
 import edgeLayerIcon from "@/assets/edgeLayerIcon.svg";
 const pluginConfig: IPluginConfig = PluginConfig.getInstance();
+const statList=ref<any>([])
 const props = defineProps({
   cellList: {
     type: Array,
@@ -54,8 +56,7 @@ const props = defineProps({
 })
 const showCell= (v: any, index: any, i: any)=>{
 
-   i.view.cell.setVisible(!v)
-
+   i.view.cell.setVisible(v)
 }
 const editCell= (v: any, index: any, i: any)=>{
 
@@ -74,7 +75,9 @@ const layerClick=(e:any,d:any)=> {
 
 watch(props,(v)=>{
   layerList.value=v.cellList
-
+  layerList.value.forEach((i:any)=>{
+    statList.value.push({isShow:true,isEdit:true})
+  })
 })
 
 </script>

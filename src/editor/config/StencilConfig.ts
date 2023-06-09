@@ -157,6 +157,9 @@ class StencilConfig implements IStencilConfig {
                             stroke: '#31d0c6',
                             strokeWidth: 2,
                             fill: '#fff',
+                            style:{
+                                visibility:'hidden'
+                            }
                         },
                     },
                     position: 'top',
@@ -169,6 +172,9 @@ class StencilConfig implements IStencilConfig {
                             stroke: '#31d0c6',
                             strokeWidth: 2,
                             fill: '#fff',
+                            style:{
+                                visibility:'hidden'
+                            }
                         },
                     },
                     position: 'bottom',
@@ -181,6 +187,9 @@ class StencilConfig implements IStencilConfig {
                             stroke: '#31d0c6',
                             strokeWidth: 2,
                             fill: '#fff',
+                            style:{
+                                visibility:'hidden'
+                            }
                         },
                     },
                     position: 'right',
@@ -193,6 +202,9 @@ class StencilConfig implements IStencilConfig {
                             stroke: '#31d0c6',
                             strokeWidth: 2,
                             fill: '#fff',
+                            style:{
+                                visibility:'hidden'
+                            }
                         },
                     },
                     position: 'left',
