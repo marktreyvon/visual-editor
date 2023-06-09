@@ -103,8 +103,8 @@ class StencilConfig implements IStencilConfig {
                 shape: node.shape,
                 label: node.label || node.shape,
                 points: node.points,
-                attrs: node.attrs,
-                ports: this.getPorts()
+                attrs: {...node.attrs,body:{...node.attrs.body,magnet: true}},
+                // ports: this.getPorts()
             });
         }
 
@@ -123,8 +123,10 @@ class StencilConfig implements IStencilConfig {
             width: cpt.size.width || 200,
             height: cpt.size.height || 200,
             label: data.name,
+            attrs: {
+                body: {magnet: true},},
             //在创建节点时增加连接点属性;  *@author; 王炳宏  2023-05-23
-            ports: this.getPorts(),
+            // ports: this.getPorts(),
         });
 
         return dropNode;

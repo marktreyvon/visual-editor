@@ -4,8 +4,8 @@
       <el-select v-model="state.formData.lineType" placeholder="请选择" @change='validate'>
         <el-option value='1' label='直线'>
         </el-option>
-        <el-option value='2' label='线段'>
-        </el-option>
+<!--        <el-option value='2' label='线段'>-->
+<!--        </el-option>-->
         <el-option value='3' label='曲线'>
         </el-option>
       </el-select>
