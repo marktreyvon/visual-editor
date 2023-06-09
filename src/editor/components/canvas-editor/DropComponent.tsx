@@ -35,6 +35,7 @@ export const getDropComponent = (cpt: Component): Component => {
                         this.value = jsonObj.data.static;
                     }
                 }
+                console.log('DropComponent.jsonObj', jsonObj)
             });
         },
         render() {

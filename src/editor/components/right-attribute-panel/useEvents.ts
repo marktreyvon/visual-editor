@@ -16,7 +16,8 @@ export const useEvents = () => {
     // 当前点击的是否是边
     let isEdge = ref<any>(false);
     // 当前点击的节点
-    let currentNode = ref<any>(null);
+    // let currentNode = ref<any>(null);
+    let currentNode: any = null;
     // 当前节点的Attribute组件
     let attributeCpt = shallowRef<any>(null);
     // 当前节点的Data组件
@@ -38,15 +39,18 @@ export const useEvents = () => {
         const events: ICellEvents = canvasConfig.getEvents();
         // 点击node
         events.setClickEventListener((data: any) => {
-            currentNode = data.node || data.cell || null;
-            nodeId = currentNode?.id
-            if (currentNode === null) {
+            const temp = data.node || data.cell || null;
+            currentNode = temp;
+            if (temp === null) {
                 // 如果点击的是画布
                 isNode.value = false;
                 isEdge.value=false;
                 nodeData.value = {};
                 return;
             }
+
+            console.log('initEvents.currentNode', currentNode)
+            nodeId = currentNode?.id
             // 获取插件管理器
             const pluginConfig: IPluginConfig = PluginConfig.getInstance();
             // 通过节点名称获取组件
@@ -101,6 +105,7 @@ export const useEvents = () => {
         });
 
         events.setResizedEventListener((data: any) => {
+            console.log('setResizedEventListener', data)
             setNodeData(data)
         });
 
@@ -172,7 +177,6 @@ export const useEvents = () => {
      * @param data 
      */
     const onChange = (data: any) => {
-        console.log('useEvents.onChange.data', currentNode, data)
         let jsonStr = "{}";
         if (currentNode.getData()) {
             // 从节点的附加数据中获取JSON字符串
@@ -187,30 +191,30 @@ export const useEvents = () => {
         }
         // 因为antv-x6的setData暂不支持Array，所以这里只能用JSON字符串来存储数据
         const jsonData = JSON.stringify(jsonObj);
-        console.log('useEvents.onChange.jsonData', jsonData)
+        console.log('useEvents.onChange', jsonData)
         // 更新节点的附加数据，写入JSON字符串
         currentNode.setData({
             // ...currentNode.getData(),
             jsonData
         });
 
-        console.log('useEvents.onChange.data.zIndex', {...data.style});
-        currentNode.resize(Number(data.style.size.width), Number(data.style.size.height));
-        currentNode.position(Number(data.style.position.x), Number(data.style.position.y));
-        currentNode.setZIndex(data.style.zIndex);
-
         const baseNodes = ["rect", "circle", "ellipse", "polygon", "polyline", "line"];
         const index = baseNodes.findIndex((item: string) => item === currentNode.shape)
         if (index !== -1) {
             currentNode.attr('body', { ...data.style.body })
         }
-        console.log('useEvents.onChange.data', currentNode, data)
+    }
 
+    const onBaseChange = (data: any) => {
+        console.log('onBaseChange', data)
+        data.style.size && currentNode.resize(Number(data.style.size.width), Number(data.style.size.height));
+        data.style.position && currentNode.position(Number(data.style.position.x), Number(data.style.position.y));
+        data.style.zIndex && currentNode.setZIndex(data.style.zIndex);
     }
 
     return {
         isNode, attributeCpt, dataCpt, nodeData,isEdge,nodeId,edgeData,
-        initEvents, onChange,cellList
+        initEvents, onChange, onBaseChange, cellList
     }
 }
 

@@ -33,6 +33,7 @@ export const getDisplayComponent = (cpt: Component, nodeData: any): Component =>
                     // 动态数据
                     // this.value = jsonData.data.dynamic;
                 } else if (jsonData.data.bindType === "device") {
+                    console.log('display.mounted.device', jsonData.data.deviceData)
                     // 设备数据
                     const cb = (value: any) => {
                         console.log('callback', value)

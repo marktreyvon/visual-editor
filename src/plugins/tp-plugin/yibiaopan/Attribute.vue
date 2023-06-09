@@ -90,6 +90,7 @@
     mounted() {
       if (this.data) {
           const jsonStr = JSON.stringify(this.data);
+          console.log('yibiaopan.jsonStr', jsonStr)
           if (jsonStr === '{}') return;
           const jsonObj = JSON.parse(jsonStr);
           jsonObj.fontSize = jsonObj.dashboard?.fontSize.toString().replace("px", "") || styleData.dashboard.fontSize

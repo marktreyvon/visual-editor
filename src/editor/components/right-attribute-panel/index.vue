@@ -7,7 +7,7 @@
                     <CanvasAttr v-if="!isNode&&!isEdge" @onChange="onCanvasAttrChange"/>
                     <div v-if="isNode">
                         <!-- 节点基础样式 -->
-                        <BaseAttr :data="nodeData" @onChange="onChange"/>
+                        <BaseAttr :data="nodeData" @onChange="onBaseChange"/>
                         <!-- 自定义样式 -->
                         <component  v-if="attributeCpt" :currentNode='nodeId' :data="attrData" :is="attributeCpt" v-on="actionHandlers"
                             @onChange="onChange" />
@@ -48,7 +48,7 @@ const activeName = ref("attr");
 let {
     isNode, attributeCpt, dataCpt, nodeData,edgeData,
     isEdge,nodeId,
-    initEvents, onChange ,
+    initEvents, onChange, onBaseChange,
     cellList
 } = useEvents();
 

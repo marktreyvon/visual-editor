@@ -90,7 +90,7 @@ export const useStencil = () => {
             textVerticalAnchor: 'top',
         },
     }
-
+    
     const baseNode = [
         {
             shape: "rect",
@@ -109,7 +109,7 @@ export const useStencil = () => {
         {
             shape: "ellipse",
             width: 40,
-            height: 40,
+            height: 20,
             label: "椭圆",
             attrs: commonAttrs
         },
@@ -120,9 +120,32 @@ export const useStencil = () => {
             points: '100,10 40,198 190,78 10,78 160,198',
             label: '多边形',
             attrs: commonAttrs
+        },
+        {
+            shape: 'polygon',
+            width: 40,
+            height: 40,
+            points: '17,182 109,23 199,182',
+            label: '三角形',
+            attrs: commonAttrs
+        },
+        {
+            shape: 'polygon',
+            width: 40,
+            height: 40,
+            points: '80,0 80,60 200,60 200,140 80,140 80,200 0,100',
+            label: '左箭头',
+            attrs: commonAttrs
+        },
+        {
+            shape: 'polygon',
+            width: 40,
+            height: 40,
+            points: '0,20 60,20 60,0 100,50 60,100 60,80 0,80',
+            label: '右箭头',
+            attrs: commonAttrs
         }
     ]
-
     const createStencilBaseNode = (groups: any, nodeMap: any, graph: any) => {
         console.log('createStencilBaseNode.nodeMap', groups, nodeMap)
         const groupName = '基础图形';
