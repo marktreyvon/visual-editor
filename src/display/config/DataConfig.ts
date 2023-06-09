@@ -95,23 +95,15 @@ class DataConfig {
     }
 
     public start() {
-        this.parseData();
         console.log('DataConfig.start', this.devicesData)
         let isRunning: boolean = false;
         const intervalFunc: Function = () => {
             if (isRunning) return;
             isRunning = true;
-            DataAPI.getCurrentValue({ entity_id: this.deviceId })
-                .then(({ data: res }) => {
-                    isRunning = false;
-                    if (res.code === 200) {
-                        const { data } = res;
-                        console.log('start', data)
-                        let value = "无数据";
-                        if (data && data.length !== 0) {
-                            value = data[0][this.property];
-                        }
-                        this.callback(value);
+            this.parseData()
+                .then((result) => {
+                    if (result) {
+                        isRunning = false;
                     }
                 })
         }
@@ -121,19 +113,101 @@ class DataConfig {
     }
 
     private parseData() {
-        let deviceList: any[] = [];
-        this.devicesData.forEach((device: any) => {
-            deviceList.push({
-                deviceId: device.deviceId,
-                property: device.property
-            })
-        });
-        deviceList.forEach(async (device: any) => {
-            let { data: result } = await DataAPI.getCurrentValue({ entity_id: device.deviceId });
-            if (result.code === 200) {
-                console.log('parseData.result', result)
+        return new Promise(async (resolve, reject) => {
+            let deviceList: any[] = [];
+            this.devicesData.forEach((device: any) => {
+                deviceList.push({
+                    deviceId: device.deviceId,
+                    property: device.property
+                })
+            });
+            if (this.refType === 'text' || this.refType === 'dashboard') {
+                let { data: result } = await DataAPI.getCurrentValue({ entity_id: deviceList[0].deviceId });
+                if (result.code === 200) {
+                    const { data } = result;
+                    console.log('start', data)
+                    let value = "无数据";
+                    if (data && data.length !== 0) {
+                        value = data[0][deviceList[0].property];
+                    }
+                    this.callback(value);
+                    resolve(true);
+                }
+            } else if (this.refType === 'pie') {
+                let values = [];
+                for(let i = 0; i < deviceList.length; i++) {
+                    const device = deviceList[i];
+                    let { data: result } = await DataAPI.getCurrentValue({ entity_id: device.deviceId });
+                    console.log('parseData.result', result)
+                    if (result.code === 200) {
+                        const { data } = result;
+                        if (data && data.length !== 0) {
+                            let value = data[0][deviceList[0].property];
+                            values.push({ type: device.property, value});
+                        }
+                    }
+                }
+                this.callback(JSON.stringify(values));
+                resolve(true);
+            } else if (this.refType === 'histogram') {
+                let values = [];
+                for(let i = 0; i < deviceList.length; i++) {
+                    const device = deviceList[i];
+                    let { data: result } = await DataAPI.getCurrentValue({ entity_id: device.deviceId });
+                    console.log('parseData.result', result)
+                    if (result.code === 200) {
+                        const { data } = result;
+                        if (data && data.length !== 0) {
+                            let value = data[0][deviceList[0].property];
+                            values.push({ type: device.property, sales: value});
+                        }
+                    }
+                }
+                this.callback(JSON.stringify(values));
+                resolve(true);
+            } else if (this.refType === 'curve') {
+                let endTime = (new Date()).getTime();
+                let startTime = endTime - (Number(24*60*60*10) * 1000);
+                let rate = 5 * 60 * 1000 * 1000;
+                const params = {
+                    device_id: deviceList[0].deviceId,
+                    "attribute": ["systime", deviceList[0].property],
+                    "start_ts": startTime,
+                    "end_ts": endTime,
+                    "rate": rate + ""
+                }
+                let { data: result } = await DataAPI.getHistory(params);
+                if (result.code === 200) {
+                    const { data } = result;
+                    console.log('start', data)
+                    let values = {};
+                    const length = data.systime.length;
+                    if (length > 5) {
+                        let xAxis = data.systime.slice(length - 5);
+                        let series = [
+                            {
+                                type: "line",
+                                data: data[deviceList[0].property].slice(length - 5),
+                                symbol: "circle"
+                            }
+                        ]
+                        values = { xAxis, series}
+                    } else {
+                        let xAxis = data.systime;
+                        let series = [
+                            {
+                                type: "line",
+                                data: data[deviceList[0].property],
+                                symbol: "circle"
+                            }
+                        ]
+                        values = { xAxis, series}
+                    }
+                    this.callback(JSON.stringify(values));
+                }
+                resolve(true);
             }
-        });
+        })
 
     }
 

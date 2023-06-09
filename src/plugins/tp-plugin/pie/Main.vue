@@ -38,7 +38,7 @@ export default defineComponent({
   watch: {
     value: {
       handler(val) {
-        console.log("Main.value", val);
+        console.log("Main.value", JSON.stringify(val));
         this.formData1=val
       },
       deep: true

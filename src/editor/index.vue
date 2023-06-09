@@ -2,7 +2,7 @@
     <el-container id="containerId">
       <el-header id="header" height="50px" class="flex items-center shadow-md w-full">
         <!-- 顶部start -->
-        <Header :tools="useTools()"/>
+        <Header :name="screenName" :tools="useTools()"/>
         <!-- 顶部end -->
       </el-header>
       <el-container id="layout" class="layout-container relative">
@@ -37,12 +37,15 @@ import { useTools, useCanvas, usePlugins } from './hooks'
 import VisualAPI from '@/api/visual'
 import PluginAPI from '@/api/plugin'
 import CustomPlugins from "./components/left-aside/CustomPlugins.vue";
+
+const params: any = inject('params', null);
+console.log('====editor mounted', params) 
+const { initCanvas, screenName } = useCanvas(params.id || null);
+
 onMounted(async () => {
   console.log('editor mounted', inject('params'))
   // 从服务器获取大屏数据
-  const params: any = inject('params', null);
-  console.log('====editor mounted', params) 
-  const { initCanvas } = useCanvas(params.id || null);
+  console.log("====", screenName.value)
 
   // 加载自定义图片插件
   const picPlugins = await getPicPlugins();

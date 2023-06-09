@@ -7,6 +7,7 @@ import { isFunction } from 'element-plus/es/utils';
 import { getPicAttrComponent } from '../components/right-attribute-panel/components/PicAttr';
 import VisualAPI from '@/api/visual';
 import { isJSON } from '@/utils';
+import { ref } from 'vue';
 
 const localUrl = import.meta.env.VITE_BASE_URL  || document.location.origin;
 /**
@@ -19,6 +20,8 @@ const localUrl = import.meta.env.VITE_BASE_URL  || document.location.origin;
 const useCanvas = (id?: any): any => {
     const { loadPlugins } = usePlugins();
     const { initStencil } = useStencil();
+
+    const screenName = ref<string>("");
 
     const initCanvas = async (picPlugins?: any) => {
         // 获取画布管理器
@@ -37,6 +40,7 @@ const useCanvas = (id?: any): any => {
         initStencil(pluginsClone, picPlugins);
         let { data: result } = await VisualAPI.getJsonDataById({ id, current_page: 1, per_page: 10 })
         if (result.code === 200) {
+            screenName.value = result.data?.data?.[0].dashboard_name;
             let jsonData = result.data?.data?.[0]?.json_data;
             const jsonObj = isJSON(jsonData);
             console.log('importJSON', jsonObj)
@@ -80,7 +84,7 @@ const useCanvas = (id?: any): any => {
     }
 
     return {
-        initCanvas
+        initCanvas, screenName
     }
 }
 

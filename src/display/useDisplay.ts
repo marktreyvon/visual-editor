@@ -9,6 +9,7 @@ import { getDisplayComponent } from "./components/DisplayComponent";
 import PluginAPI from '@/api/plugin';
 import VisualAPI from '@/api/visual';
 import { getDisplayPicComponent } from "./components/DisplayPicComponent";
+import { nextTick } from "vue";
 export const useDisplay = (containerId: string) => {
 
     let jsonObj: any = {};
@@ -53,6 +54,10 @@ export const useDisplay = (containerId: string) => {
             // 初始化画布网格
             canvasConfig.showGrid(jsonObj.graph.showGrid);
 
+            setTimeout(() => {
+                canvasConfig.zoomToFit();
+            }, 500)
+
             const  theg = canvasConfig.getGraph()
             const Edges=theg.getEdges()
             console.log(Edges)
@@ -60,6 +65,7 @@ export const useDisplay = (containerId: string) => {
                 console.log(edge.attr('targetData'))
                 canvasConfig.edgeAnimation(edge,edge.attr('targetData'))
             })
+
 
 
             // jsonObj.cells.forEach((cell: any) => {

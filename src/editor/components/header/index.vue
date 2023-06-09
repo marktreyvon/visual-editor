@@ -4,7 +4,7 @@
             <el-icon class="align-middle" :size="20">
                 <House />
               </el-icon>
-            <span class="align-middle pl-6">大屏标题</span>
+            <span class="align-middle pl-6">{{name}}</span>
         </div>
         <div class="ml-64 mr-96 w-auto">
           <div class="inline-flex">
@@ -67,6 +67,10 @@ const props = defineProps({
     tools: {
         type: Object,
         default: () => {}
+    },
+    name: {
+      type: String,
+      default: ''
     }
 });
 const { tools } = toRefs(props);
