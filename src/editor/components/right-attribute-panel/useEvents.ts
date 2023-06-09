@@ -139,12 +139,13 @@ export const useEvents = () => {
                 args: {
                   x: '100%',
                   y: 0,
-                  offset: { x: -10, y: 10 },
+                  offset: { x: 10, y: -10 },
                 },
               })
         });
 
         events.setMouseLeaveEventListener((data: any) => {
+            console.log('setMouseLeaveEventListener', data)
             const node = data.cell;
             if(node.shape!=='edge'){
                 const ports=node.getPorts()
@@ -155,7 +156,7 @@ export const useEvents = () => {
 
 
             // 删除所有的工具
-            node.removeTools();
+            // node.removeTools();
         });
 
     }

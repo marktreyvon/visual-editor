@@ -58,7 +58,8 @@ class PluginConfig implements IPluginConfig  {
                             const cpt: any = getDropComponent(view.Main);
                             this.registerComponent(cell, cpt);
                         } else if (mode === 'display') {
-                            const cpt: any = getDisplayComponent(view.Main, cell.data || null);
+                            console.log('registerComponents.view.Data', view.Data.data())
+                            const cpt: any = getDisplayComponent(view.Main, cell.data || null, view.Data.data());
                             this.registerComponent(cell, cpt);
                         }
                     } else if (cell.data && cell.data.pic) {

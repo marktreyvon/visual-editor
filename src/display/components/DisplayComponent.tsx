@@ -2,8 +2,8 @@ import { parseJSONData } from "@/utils";
 import { Component, defineComponent } from "vue";
 import { DataConfig } from "../config/DataConfig";
 
-export const getDisplayComponent = (cpt: Component, nodeData: any): Component => {
-    const dataConfig: DataConfig = new DataConfig(nodeData);
+export const getDisplayComponent = (cpt: Component, nodeData: any, refData: any): Component => {
+    const dataConfig: DataConfig = new DataConfig(nodeData, refData);
 
     return defineComponent({
         data() {
@@ -43,6 +43,7 @@ export const getDisplayComponent = (cpt: Component, nodeData: any): Component =>
                     // 设置回调
                     dataConfig.setCallback(cb);
                     // 设置设备ID
+                    dataConfig.setDevicesData(jsonData.data.deviceData)
                     dataConfig.setDeviceId(jsonData.data.deviceData[0].deviceId);
                     dataConfig.setProperty(jsonData.data.deviceData[0].property);
                     // 启动定时器开始刷新数据

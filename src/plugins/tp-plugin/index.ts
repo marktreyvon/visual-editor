@@ -14,7 +14,7 @@ export default {
         // {
         //     name: "PM2.5",
         //     description: "",
-        //     group: "官方插件",
+        //     group: "常用组件",
         //     icon: PM25_Icon,
         //     Main: PM25_Main,
         //     Attribute: PM25_Attribute,
@@ -23,7 +23,7 @@ export default {
         // {
         //     name: "Wenshidu",
         //     description: "",
-        //     group: "官方插件",
+        //     group: "常用组件",
         //     icon: Wenshidu_Icon,
         //     Main: Wenshidu_Main,
         //     Attribute: Wenshidu_Attribute,
@@ -32,7 +32,7 @@ export default {
         {
             name: "文本",
             description: "",
-            group: "官方插件",
+            group: "常用组件",
             icon: Text_Icon,
             size: { width: 120, height: 40 },
             Main: Text_Main,
@@ -42,7 +42,7 @@ export default {
         {
             name: "时间",
             description: "",
-            group: "官方插件",
+            group: "常用组件",
             icon: Timer_Icon,
             size: { width: 160, height: 80 },
             Main: Timer_Main,
@@ -52,7 +52,7 @@ export default {
         {
             name: "仪表盘",
             description: "",
-            group: "官方插件",
+            group: "常用组件",
             icon: Yibiaopan_Icon,
             size: { width: 200, height: 200 },
             Main: Yibiaopan_Main,
@@ -62,7 +62,7 @@ export default {
         {
             name: "饼状图",
             description: "",
-            group: "官方插件",
+            group: "常用组件",
             icon: picechart_Icon,
             size: { width: 200, height: 200 },
             Main: picechart_Main,
@@ -72,7 +72,7 @@ export default {
         {
             name: "柱状图",
             description: "",
-            group: "官方插件",
+            group: "常用组件",
             icon: histogram_Icon,
             size: { width: 200, height: 200 },
             Main: histogram_Main,
@@ -82,7 +82,7 @@ export default {
         {
             name: "曲线图",
             description: "",
-            group: "官方插件",
+            group: "常用组件",
             icon: Curve_Icon,
             size: { width: 200, height: 200 },
             Main: Curve_Main,
@@ -92,7 +92,7 @@ export default {
         {
             name: "滚动列表",
             description: "",
-            group: "官方插件",
+            group: "常用组件",
             icon: TB_Icon,
             size: { width: 500, height: 300 },
             Main: TB_Main,
@@ -102,7 +102,7 @@ export default {
         {
             name: "地图",
             description: "",
-            group: "官方插件",
+            group: "常用组件",
             icon: Amap_Icon,
             size: { width: 200, height: 200 },
             Main: Amap_Main,

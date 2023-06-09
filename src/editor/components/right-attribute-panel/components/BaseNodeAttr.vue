@@ -9,7 +9,7 @@
                 </el-form-item>
 
                 <el-form-item label="边框宽度">
-                    <el-input v-model="formData.body.strokeWidth"></el-input>
+                    <el-input type="number" v-model="formData.body.strokeWidth"></el-input>
                 </el-form-item>
 
                 <el-form-item label="边框颜色">
@@ -25,8 +25,8 @@ import { ref, reactive, watch } from "vue";
 const activeNames = ref("style");
 const formData = reactive({
     body: {
-        fill: "#ffffff",
-        strokeWidth: 1,
+        fill: "",
+        strokeWidth: 2,
         stroke: "#000000",
     }
 })
@@ -35,8 +35,12 @@ const emit = defineEmits(["onChange"]);
 watch(formData, (val) => {
     // 当自定义属性改变时，传递给Main.vue的style属性
     console.log('BaseNode.Attribute.watch.formData', val)
+    const temp = JSON.parse(JSON.stringify(val));
+    if (!temp.body.fill) {
+        temp.body.fill = "transparent";
+    }
     emit("onChange", {
-        style: { ...val }
+        style: { ...temp }
     });
 }, { deep: true })
 

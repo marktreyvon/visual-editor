@@ -77,7 +77,7 @@ export const useStencil = () => {
 
     const commonAttrs = {
         body: {
-            fill: '#fff',
+            fill: 'transparent',
             stroke: '#000',
             strokeWidth: 2,
         },

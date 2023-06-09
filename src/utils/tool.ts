@@ -63,6 +63,15 @@ const isJSON = (str: string) => {
 }
 
 /**
+ * 判断对象是否是数组
+ * @param obj 
+ * @returns 
+ */
+const isArray = (obj: any) => {
+    return Object.prototype.toString.call(obj) === '[object Array]';
+}
+
+/**
  * 解析JSON数据
  * @param str 
  * @returns 
@@ -110,4 +119,4 @@ const exportFile = (fileName: string, content: string) => {
 }
 
 
-export { message, parseParams, randomString, isJSON, parseJSONData, readFile, exportFile }
+export { message, parseParams, randomString, isJSON, parseJSONData, readFile, exportFile, isArray }
