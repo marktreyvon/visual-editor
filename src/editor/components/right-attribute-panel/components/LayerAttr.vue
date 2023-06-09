@@ -3,22 +3,20 @@
 
 <div style='height:700px;overflow-y: auto;overflow-x: hidden;padding: 0 6px'>
   <el-row :gutter="20">
-    <el-col style='margin-top:6px' :span="24" v-for='(i,index) in layerList' key='i.view.cell.id' @click='layerClick($event,i.view)'>
-
+    <el-col style='margin-top:6px' :span="24" v-for='(data,index) in layerList' key='i.view.cell.id' @click='layerClick($event,data.view)'>
       <el-card :body-style="{padding: '0px 12px',height:'60px',display:'flex',justifyContent:'space-between',alignItems:'center' }">
-        <img v-if="pluginConfig.getComponent(i.view
+        <img v-if="pluginConfig.getComponent(data.view
         .cell.shape)?.icon" width='50' height='50' :src="pluginConfig.getComponent(i.view
         .cell.shape)?.icon" alt=''>
-
-        <img v-else-if="i.view.cell.shape==='edge'" width='50' height='50' :src="edgeLayerIcon" alt=''>
+        <img v-else-if="data.view.cell.shape==='edge'" width='50' height='50' :src="edgeLayerIcon" alt=''>
         <img v-else width='50' height='50' :src="defaultIcon" alt=''>
         <div  v-else style='width: 50px;height: 50px;background-color: #409EFF;color: white;text-align:center;line-height: 50px'>
-          {{i.view.cell.label}}
+          {{data.view.cell.label}}
         </div>
 
         <div style="padding: 14px">
           <el-switch
-              @change='showCell($event,index,i)'
+              @change='showCell($event,index,data)'
               v-model="statList[index].isShow"
               class="ml-2"
               inline-prompt
