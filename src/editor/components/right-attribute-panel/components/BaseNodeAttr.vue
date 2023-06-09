@@ -5,7 +5,7 @@
 
                 
                 <el-form-item label="填充颜色">
-                    <el-color-picker v-model="formData.body.fill" />
+                    <el-color-picker v-model="formData.body.fill" show-alpha/>
                 </el-form-item>
 
                 <el-form-item label="边框宽度">
@@ -35,6 +35,9 @@ const emit = defineEmits(["onChange"]);
 watch(formData, (val) => {
     // 当自定义属性改变时，传递给Main.vue的style属性
     console.log('BaseNode.Attribute.watch.formData', val)
+  if(!val.body.fill){
+    val.body.fill="#00000000"
+  }
     emit("onChange", {
         style: { ...val }
     });
