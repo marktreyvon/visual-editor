@@ -5,6 +5,8 @@ import { useEvents, usePlugins, useStencil } from '.';
 import { getDropPicComponent } from '../components/canvas-editor/DropPicComponent';
 import { isFunction } from 'element-plus/es/utils';
 import { getPicAttrComponent } from '../components/right-attribute-panel/components/PicAttr';
+import VisualAPI from '@/api/visual';
+import { isJSON } from '@/utils';
 
 const localUrl = import.meta.env.VITE_BASE_URL  || document.location.origin;
 /**
@@ -14,11 +16,11 @@ const localUrl = import.meta.env.VITE_BASE_URL  || document.location.origin;
  * @description 初始化画布
  * @param data 
  */
-const useCanvas = (): any => {
+const useCanvas = (id?: any): any => {
     const { loadPlugins } = usePlugins();
     const { initStencil } = useStencil();
 
-    const initCanvas = (picPlugins?: any) => {
+    const initCanvas = async (picPlugins?: any) => {
         // 获取画布管理器
         let canvasConfig: ICanvasConfig = CanvasConfig.getInstance(Common.DEFAULT_CONTAINER_ID);
 
@@ -33,6 +35,15 @@ const useCanvas = (): any => {
         // 加载插件
         loadPlugins(pluginsClone);
         initStencil(pluginsClone, picPlugins);
+        let { data: result } = await VisualAPI.getJsonDataById({ id, current_page: 1, per_page: 10 })
+        if (result.code === 200) {
+            let jsonData = result.data?.data?.[0]?.json_data;
+            const jsonObj = isJSON(jsonData);
+            console.log('importJSON', jsonObj)
+            if (jsonObj) {
+                canvasConfig.renderJSON(jsonObj);
+            }
+        }
     }
 
     const createPicPlugin = (plugins: any, picPlugins: any) => {

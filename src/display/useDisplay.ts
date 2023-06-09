@@ -3,16 +3,17 @@ import {Graph, Node, Timing} from '@antv/x6'
 import * as Common from "@/common";
 import * as Plugins from '@/plugins'
 import { usePlugins } from '@/editor/hooks';
-import extracted from "@/utils/makeedgevs"
+import extracted from "@/utils/makeedgevs";
 import { register } from "@antv/x6-vue-shape";
 import { getDisplayComponent } from "./components/DisplayComponent";
-import PluginAPI from '@/api/plugin'
+import PluginAPI from '@/api/plugin';
+import VisualAPI from '@/api/visual';
 import { getDisplayPicComponent } from "./components/DisplayPicComponent";
-
 export const useDisplay = (containerId: string) => {
 
     let jsonObj: any = {};
-    const initDisplay = async (data: any) => {
+    const initDisplay = async (data: any, id?: string) => {
+        let jsonData = data;
         const options: ICanvasConfig.Options = {
             autoResize: true,
             nodeMovable: false,
@@ -20,11 +21,14 @@ export const useDisplay = (containerId: string) => {
             enableRotating: false,
             enableSelection: false,
         }
-        // let picPlugins = await getPicPlugins();
-        // console.log(picPlugins)
-        // loadPlugins(Plugins, data);
-        if (data && JSON.stringify(data) !== '{}') {
-            jsonObj = JSON.parse(data);
+        if (id) {
+            let { data: result } = await VisualAPI.getJsonDataById({current_page: 1, per_page: 10, id});
+            if (result.code === 200) {
+                jsonData = result.data?.data?.[0]?.json_data;
+            }
+        }
+        if (jsonData && JSON.stringify(jsonData) !== '{}') {
+            jsonObj = JSON.parse(jsonData);
             console.log('initDisplay.jsonObj', jsonObj)
             let canvasConfig: ICanvasConfig = CanvasConfig.getDisplayInstance(containerId, options);
             // 渲染节点
@@ -86,8 +90,8 @@ export const useDisplay = (containerId: string) => {
                     jsonObj.cells.forEach((cell: any) => {
                         if (cell.shape === view.name) {
                             console.log('display.loadPlugins', cell)
-                            const cpt: any = getDisplayComponent(view.Main, cell.data || null);
-                            registerShape(view.name, cpt);
+                            // const cpt: any = getDisplayComponent(view.Main, cell.data || null);
+                            // registerShape(view.name, cpt);
                         }
                         //  else if (cell.data && cell.data.pic) {
                         //     console.log('display.loadPlugins', cell.data)
@@ -112,6 +116,10 @@ export const useDisplay = (containerId: string) => {
             height: 100,
             component
           });
+    }
+
+    const getJSONData = (id: string) => {
+        
     }
 
     return {

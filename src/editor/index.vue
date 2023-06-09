@@ -40,19 +40,10 @@ import CustomPlugins from "./components/left-aside/CustomPlugins.vue";
 onMounted(async () => {
   console.log('editor mounted', inject('params'))
   // 从服务器获取大屏数据
-  const params1 = {
-    "current_page": 1,
-    "per_page": 10,
-    "relation_id": "123456"
-  }
   const params: any = inject('params', null);
-  if (params) {
-    VisualAPI.getJsonDataById({ id: params.id,current_page: 1,per_page: 10 }).then(res => {
-      console.log('getJsonDataById', res)
-    })
-  }
-  // 加载画布
-  const { initCanvas } = useCanvas();
+  console.log('====editor mounted', params) 
+  const { initCanvas } = useCanvas(params.id || null);
+
   // 加载自定义图片插件
   const picPlugins = await getPicPlugins();
   initCanvas(picPlugins);

@@ -69,7 +69,10 @@ export const useTools = (): ITools => {
             // 大屏数据存入session
             sessionStorage.setItem(Common.PREVIEW_JSON_DATA_KEY, JSON.stringify(jsonData));
             const url = router.resolve({
-                name: 'display'
+                name: 'display',
+                query: {
+                    mode: 'preview'
+                }
             })
             window.open(url.href);
         },
