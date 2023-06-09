@@ -17,6 +17,7 @@ export const useAttribute = () => {
         canvasConfig.setGridSize(data.gridSize);
         const background = {
             color: data.backgroundColor,
+            image:data.backgroundImage,
             showImage: false,
             repeat: 'no-repeat',
             position: 'center',
