@@ -6,8 +6,16 @@
     <el-col style='margin-top:6px' :span="24" v-for='(i,index) in layerList' key='i.view.cell.id' @click='layerClick($event,i.view)'>
 
       <el-card :body-style="{padding: '0px 12px',height:'60px',display:'flex',justifyContent:'space-between',alignItems:'center' }">
-        <img width='50' height='50' :src="pluginConfig.getComponent(i.view
-        .cell.shape)?.icon||(i.view.cell.shape==='edge'?edgeLayerIcon:defaultIcon)" alt=''>
+        <img v-if="pluginConfig.getComponent(i.view
+        .cell.shape)?.icon" width='50' height='50' :src="pluginConfig.getComponent(i.view
+        .cell.shape)?.icon" alt=''>
+
+        <img v-else-if="i.view.cell.shape==='edge'" width='50' height='50' :src="edgeLayerIcon" alt=''>
+        <img v-else width='50' height='50' :src="defaultIcon" alt=''>
+        <div  v-else style='width: 50px;height: 50px;background-color: #409EFF;color: white;text-align:center;line-height: 50px'>
+          {{i.view.cell.label}}
+        </div>
+
         <div style="padding: 14px">
           <el-switch
               @change='showCell($event,index,i)'
@@ -39,7 +47,7 @@
 
 <script setup lang="ts">
 import {onMounted, ref, watch} from "vue";
-import {uniqWith,isEqual}  from "lodash"
+import {uniqWith, isEqual, forEach} from "lodash"
 import {PluginConfig} from "@/editor/config";
 import defaultIcon from "@/assets/defaultIcon.svg";
 import edgeLayerIcon from "@/assets/edgeLayerIcon.svg";
@@ -55,9 +63,13 @@ const props = defineProps({
   }
 })
 const showCell= (v: any, index: any, i: any)=>{
-
+  console.log(statList,"0000")
+  layerList.value.forEach((i:any)=>{
+    console.log(i.view.cell.isVisible(),"1111")
+  })
    i.view.cell.setVisible(v)
 }
+
 const editCell= (v: any, index: any, i: any)=>{
 
 //Todo 未完成
@@ -76,7 +88,7 @@ const layerClick=(e:any,d:any)=> {
 watch(props,(v)=>{
   layerList.value=v.cellList
   layerList.value.forEach((i:any)=>{
-    statList.value.push({isShow:true,isEdit:true})
+    statList.value.push({isShow:i.view.cell.isVisible(),isEdit:true})
   })
 })
 
