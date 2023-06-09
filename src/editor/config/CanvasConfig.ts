@@ -106,17 +106,18 @@ class CanvasConfig implements ICanvasConfig {
                 eventTypes: ["rightMouseDown", "mouseWheel"]
             },
             connecting:{
-                snap: true,
+                snap: false,
                 allowBlank: true,  //不允许指向空节点;  *@author 王炳宏  2023-05-23
                 allowMulti: true,  //不允许重复连接;  *@author 王炳宏  2023-05-23
                 allowLoop: false,   //不允许自连;   *@author; 王炳宏  2023-05-23
-                allowNode: true,   //不允许非连接点连接,如需要改为true；  *@author; 王炳宏  2023-05-23
+                allowNode: false,   //不允许非连接点连接,如需要改为true；  *@author; 王炳宏  2023-05-23
                 allowEdge: false,   //不允许非连接点连接,如需要改为true； *@author; 王炳宏  2023-05-23
                 allowPort: true,    //不允许指向空节点,*@author; 王炳宏  2023-05-23
                 highlight:true,
                 createEdge(){
                     return this.createEdge({
                         shape: "edge",
+                        router:"orth",
                         attrs: {
                             line: {
                                 stroke: "#333",
@@ -256,36 +257,36 @@ class CanvasConfig implements ICanvasConfig {
     public edgeAnimation(edge:any,data:any):void{
         if (!this.graph)
             throw new Error('Graph is undefined.');
-        let x1,y1,w1,h1,x2,y2,w2,h2
-        let ex,ey, ew,eh
-        if(edge.getProp().source){
-            const  theSource = this.graph.getCellById(edge.getProp().source?.cell)
-            const  theTarget = this.graph.getCellById(edge.getProp().target?.cell)
-            if(theSource&&theTarget){
-                x1=theSource.getProp().position.x
-                y1=theSource.getProp().position.y
-                w1=theSource.getProp().size.width
-                h1=theSource.getProp().size.height
-                x2=theTarget.getProp().position.x
-                y2=theTarget.getProp().position.y
-                w2=theTarget.getProp().size.width
-                h2=theTarget.getProp().size.height
-            }
-            if(x2>x1){
-                ex=x1
-                ew=w1
-            }else{
-                ex=x2
-                ew=w2
-            }
-            if(h2>h1){
-                ey=y1
-                eh=h1
-            }else{
-                ey=y2
-                eh=h2
-            }
-        }
+        // let x1,y1,w1,h1,x2,y2,w2,h2
+        // let ex,ey, ew,eh
+        // if(edge.getProp().source){
+        //     const  theSource = this.graph.getCellById(edge.getProp().source?.cell)
+        //     const  theTarget = this.graph.getCellById(edge.getProp().target?.cell)
+        //     if(theSource&&theTarget){
+        //         x1=theSource.getProp().position.x
+        //         y1=theSource.getProp().position.y
+        //         w1=theSource.getProp().size.width
+        //         h1=theSource.getProp().size.height
+        //         x2=theTarget.getProp().position.x
+        //         y2=theTarget.getProp().position.y
+        //         w2=theTarget.getProp().size.width
+        //         h2=theTarget.getProp().size.height
+        //     }
+        //     if(x2>x1){
+        //         ex=x1
+        //         ew=w1
+        //     }else{
+        //         ex=x2
+        //         ew=w2
+        //     }
+        //     if(h2>h1){
+        //         ey=y1
+        //         eh=h1
+        //     }else{
+        //         ey=y2
+        //         eh=h2
+        //     }
+        // }
 
         let speed=0
         let speed1=0
@@ -320,7 +321,7 @@ class CanvasConfig implements ICanvasConfig {
             }
         }
 
-
+        extracted(edge,data)
         if(data && data.flowEffect!=='无效果'){
             console.log(speed)
             let count=data.cycleTimes
@@ -343,11 +344,13 @@ class CanvasConfig implements ICanvasConfig {
                     },
 
                 ])
-
-                edge.attr('p1', { connection: true, stroke: data.flowColor,
-                    fill: 'none',strokeDasharray:'10 5 10',strokeDashoffset:10})
                 edge.attr('p2', {...edge.attr().line, connection: true,
                     fill: 'none', cursor: 'pointer',})
+                console.log(edge.attr('p2/strokeWidth'))
+                const flowWidth=Math.ceil(edge.attr('p2/strokeWidth')/4)
+                edge.attr('p1', { connection: true, stroke: data.flowColor,
+                    fill: 'none',strokeDasharray:'10 5 10',strokeDashoffset:10,strokeWidth: flowWidth})
+
                 const t1=data.flowDirection==='正向'?10:-10
                 const options = {
                     delay:10,
@@ -366,13 +369,14 @@ class CanvasConfig implements ICanvasConfig {
                 edge.transition('attrs/p1/strokeDashoffset', t1, options)
             }else{
                 edge.setMarkup([
-                    {
-                        tagName: 'circle',
-                        selector: 'c1',
-                    },
+
                     {
                         tagName: 'path',
                         selector: 'p1',
+                    },
+                    {
+                        tagName: 'circle',
+                        selector: 'c1',
                     },
                 ])
                 edge.attr('c1',{
@@ -423,7 +427,7 @@ class CanvasConfig implements ICanvasConfig {
                 edge.transition('attrs/c1/atConnectionRatio', t, options1)
             }
         }
-        extracted(ex,ey, ew,eh,edge,data)
+
     }
     
     public zoomIn(): void {

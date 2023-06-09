@@ -108,6 +108,16 @@ class CellEvents implements ICellEvents {
 
         this.graph.on("cell:changed", ({ cell, options }) => {
         });
+
+        this.graph.on('edge:mouseenter', ({ edge }) => {
+
+            edge.addTools([ 'target-arrowhead','source-arrowhead'])
+
+        })
+
+        this.graph.on('edge:mouseleave', ({ edge }) => {
+            edge.removeTools()
+        })
     }
 
     public setClickEventListener(listener: EventListener<Object>): void {
