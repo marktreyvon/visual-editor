@@ -2,8 +2,8 @@ import { parseJSONData } from "@/utils";
 import { Component, defineComponent } from "vue";
 import { DataConfig } from "../config/DataConfig";
 
-export const getDisplayComponent = (cpt: Component, nodeData: any, refData: any): Component => {
-    const dataConfig: DataConfig = new DataConfig(nodeData, refData);
+export const getDisplayComponent = (cpt: Component, nodeData: any, refType: any): Component => {
+    const dataConfig: DataConfig = new DataConfig(nodeData, refType);
 
     return defineComponent({
         data() {

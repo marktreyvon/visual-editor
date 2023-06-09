@@ -16,6 +16,8 @@ class DataConfig {
 
     private devicesData: any[] = [];
 
+    private refType: string = "";
+
     /**
      * 节点数据
      */
@@ -27,10 +29,10 @@ class DataConfig {
      */
     private timer: any = null;
 
-    constructor(nodeData: any, refData: any) {
+    constructor(nodeData: any, refType: any) {
         this.nodeData = nodeData;
-        console.log('DataConfig.constructor',  refData)
-        this.getComponentType(refData);
+        this.refType = refType;
+        console.log('DataConfig.constructor',  refType)
     }
 
     private getComponentType(refData: any) {
@@ -133,11 +135,6 @@ class DataConfig {
             }
         });
 
-    }
-
-    private async getCurrentValue(deviceId: string, property: string) {
-        let { data } = await DataAPI.getCurrentValue({ entity_id: deviceId })
-        console.log('getCurrentValue', data)
     }
 
     public restart() {
