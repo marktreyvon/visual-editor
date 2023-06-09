@@ -143,7 +143,7 @@ class DataConfig {
                     if (result.code === 200) {
                         const { data } = result;
                         if (data && data.length !== 0) {
-                            let value = data[0][deviceList[0].property];
+                            let value = data[0][device.property];
                             values.push({ type: device.propertyTitle, value});
                         }
                     }
@@ -159,7 +159,7 @@ class DataConfig {
                     if (result.code === 200) {
                         const { data } = result;
                         if (data && data.length !== 0) {
-                            let value = data[0][deviceList[0].property];
+                            let value = data[0][device.property];
                             values.push({ type: device.propertyTitle, sales: value});
                         }
                     }
