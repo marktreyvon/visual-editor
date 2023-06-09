@@ -10,6 +10,8 @@ import * as Common from "@/common";
 import { CellEvents } from '../events/CellEvents';
 import {message} from "@/utils";
 import { PluginConfig } from '.';
+import { Keyboard } from '@antv/x6-plugin-keyboard';
+
 /**
  * @author cxs
  * @date 2023-04-19
@@ -141,18 +143,7 @@ class CanvasConfig implements ICanvasConfig {
         // 显示网格
         this.graph.showGrid();
 
-        // 配置多节点框选
-        if (this.enableSelection) {
-            this.graph.use(
-                new Selection({
-                    enabled: true,
-                    multiple: true,
-                    rubberband: true,
-                    movable: true,
-                    showNodeSelectionBox: true,
-                })
-            );
-        }
+
         
 
         // 配置撤销重做
@@ -203,7 +194,24 @@ class CanvasConfig implements ICanvasConfig {
               rotating: rotatingOptions
             })
           );
-
+        // 启用快捷键
+        this.graph.use(
+            new Keyboard({
+                enabled: true,
+            })
+        );
+        // 配置多节点框选
+        if (this.enableSelection) {
+            this.graph.use(
+                new Selection({
+                    enabled: true,
+                    multiple: true,
+                    rubberband: true,
+                    movable: true,
+                    showNodeSelectionBox: true,
+                })
+            );
+        }
         // 启用导出
         this.graph.use(new Export());
 
@@ -213,6 +221,18 @@ class CanvasConfig implements ICanvasConfig {
         this.setNodeMovable(this.nodeMovable);
 
         this.graph.centerContent();
+        // delete
+        const  that=this
+        this.graph.bindKey('backspace', () => {
+            console.log(that.graph)
+            if (!that.graph)
+                throw new Error('Graph is undefined.');
+            const cells = that.graph.getSelectedCells()
+            console.log(cells)
+            if (cells.length) {
+                that.graph.removeCells(cells)
+            }
+        })
     }
 
 
