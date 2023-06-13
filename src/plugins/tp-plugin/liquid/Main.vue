@@ -4,14 +4,14 @@
 
 <script>
 import Liquid from './components/Liquid.vue'
-import { defaultOption } from './default'
+import { defaultData } from './default'
 
 export default {
     components: { Liquid },
     props: {
         value: {
-            type: [String, Object],
-            default: '25'
+            type: [String, Object, Number],
+            default: defaultData.static
         }
     },
     data() {
@@ -19,20 +19,6 @@ export default {
         }
     },
     computed: {
-        myStyle() {
-            if (this.style) {
-                return this.style
-            } else {
-                return defaultOption
-            }
-        },
-        textValue() {
-            if (JSON.stringify(this.value) !== "{}") {
-                return this.value;
-            } else {
-                return "文本";
-            }
-        }
     },
     methods: {
     }

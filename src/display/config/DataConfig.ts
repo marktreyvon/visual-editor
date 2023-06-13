@@ -124,7 +124,7 @@ class DataConfig {
                     propertyTitle: device.propertyTitle
                 })
             });
-            if (this.refType === 'text' || this.refType === 'dashboard') {
+            if (!this.refType || this.refType === 'text' || this.refType === 'dashboard') {
                 let { data: result } = await DataAPI.getCurrentValue({ entity_id: deviceList[0].deviceId });
                 if (result.code === 200) {
                     const { data } = result;

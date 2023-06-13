@@ -10,7 +10,7 @@ const id = "liquid" + Math.random().toString(36).substr(2);
 const props = defineProps({
     value: {
         type: [String, Number],
-        default: 25
+        default: 1
     },
     style: {
         type: Object,
@@ -27,11 +27,21 @@ onMounted(() => {
 
 let timer: any = null;
 watch(() => props.style, (val) => {
-    console.log('liquid.watch.style', val)
-    if (!liquidPlot) return;
+    console.log('Liquid.style', val)
+    if (!liquidPlot || !val.shape) return;
     liquidPlot.update(getOptionData(val));
     loop(val.isLoop);
 })
+
+watch(() => props.value, (val) => {
+    console.log('Liquid.value1', val)
+    if (!liquidPlot || !val) return;
+
+    let num = (Number(val) / 100).toFixed(2);
+    console.log('Liquid.value2', num)
+
+    liquidPlot.changeData(Number(num));
+});
 
 const loop = (isLoop: boolean) => {
     if (!isLoop) {

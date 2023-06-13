@@ -66,7 +66,6 @@ export default {
             name: "水波图",
             description: "",
             group: "常用组件",
-            type: "wave",
             icon: Liquid_Icon,
             size: { width: 200, height: 200 },
             Main: Liquid_Main,

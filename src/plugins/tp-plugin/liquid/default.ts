@@ -26,10 +26,16 @@ export const defaultOption = {
   backgroundColor: ''
 }
 
-export const getOptionData = (option?: any) => {
+export const defaultData = {
+  bindType: 'static',
+  static: 1
+}
+
+export const getOptionData = (option?: any, value?: any) => {
   if (!option) option = defaultOption;
+  if (!value) value = Number(defaultData.static / 100).toFixed(2);
   return {
-    percent: 0.01,
+    percent: value,
     shape: option.shape,
     outline: {
       border: option.borderWidth,
