@@ -9,6 +9,7 @@ import { picechart_Attribute, picechart_Data, picechart_Icon, picechart_Main } f
 import { TB_Attribute, TB_Data, TB_Icon, TB_Main } from "./table";
 import { histogram_Attribute, histogram_Data, histogram_Icon, histogram_Main } from "./histogram";
 import { Timer_Attribute, Timer_Data, Timer_Icon, Timer_Main } from "./timer";
+import { Liquid_Icon, Liquid_Main, Liquid_Attribute, Liquid_Data } from "./liquid";
 export default {
     views: [
         // {
@@ -45,7 +46,7 @@ export default {
             description: "",
             group: "常用组件",
             icon: Timer_Icon,
-            size: { width: 160, height: 80 },
+            size: { width: 200, height: 40 },
             Main: Timer_Main,
             Attribute: Timer_Attribute,
             Data: Timer_Data,
@@ -60,6 +61,17 @@ export default {
             Main: Yibiaopan_Main,
             Attribute: Yibiaopan_Attribute,
             Data: Yibiaopan_Data
+        },
+        {
+            name: "水波图",
+            description: "",
+            group: "常用组件",
+            type: "wave",
+            icon: Liquid_Icon,
+            size: { width: 200, height: 200 },
+            Main: Liquid_Main,
+            Attribute: Liquid_Attribute,
+            Data: Liquid_Data
         },
         {
             name: "饼状图",

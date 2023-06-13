@@ -16,42 +16,48 @@ export default {
         showZebrastripe: false,
         zebrastripeColor: "#666666"
     },
-    newRows: [{
-        show: true,
-        filed: 'seqNo',
-        name: 'No.',
-        width: 100,
-        color: '#000000',
-        size: 10
-    }, {
-        show: true,
-        filed: 'deviceName',
-        name: 'Name',
-        width: 100,
-        color: '#000000',
-        size: 10
-    }, {
-        show: true,
-        filed: 'propA',
-        name: 'propA.',
-        width: 100,
-        color: '#000000',
-        size: 10
-    }, {
-        show: true,
-        filed: 'propB',
-        name: 'propB.',
-        width: 100,
-        color: '#000000',
-        size: 10
-    }, {
-        show: true,
-        filed: 'status',
-        name: '状态',
-        width: 100,
-        color: '#000000',
-        size: 10
-    }],
+    newRows: [
+        {
+            show: true,
+            filed: 'seqNo',
+            name: 'No.',
+            width: 100,
+            color: '#000000',
+            size: 10
+        },
+        {
+            show: true,
+            filed: 'deviceName',
+            name: 'Name',
+            width: 100,
+            color: '#000000',
+            size: 10
+        },
+        {
+            show: true,
+            filed: 'propA',
+            name: 'propA.',
+            width: 100,
+            color: '#000000',
+            size: 10
+        },
+        {
+            show: true,
+            filed: 'propB',
+            name: 'propB.',
+            width: 100,
+            color: '#000000',
+            size: 10
+        },
+        {
+            show: true,
+            filed: 'status',
+            name: '状态',
+            width: 100,
+            color: '#000000',
+            size: 10
+        }
+    ],
     orgNameData: [
         {
             "seqNo": 1,

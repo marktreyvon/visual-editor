@@ -1,10 +1,10 @@
 export const styleData = {
     fontSize: '20px',
     color: '#000',
-    backgroundColor: '#fff',
+    backgroundColor: '',
     border: '1px solid #000',
     borderWidth: 1,
-    borderColor: '#000',
+    borderColor: '',
     format: 'yyyy-MM-dd HH:mm:ss',
 }
 

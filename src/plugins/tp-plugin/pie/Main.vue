@@ -5,7 +5,7 @@
 <script lang="ts">
 import { defineComponent, watch } from "vue";
 import piechart from "./components/piechart.vue";
-
+import { staticData } from "./default";
 export default defineComponent({
   components: {
     piechart,
@@ -38,14 +38,12 @@ export default defineComponent({
   watch: {
     value: {
       handler(val) {
-        console.log("Main.value", JSON.stringify(val));
-        this.formData1=val
+        console.log("Main.value", val);
       },
       deep: true
     },
     style: {
       handler(val) {
-        console.log("Main.style", val);
         this.formData = val
       },
       deep: true
@@ -63,7 +61,7 @@ export default defineComponent({
         if (JSON.stringify(this.value) !== "{}"  && JSON.stringify(this.value) !== "[]") {
             return this.value;
         } else {
-            return {};
+            return staticData;
         }
     }
   },

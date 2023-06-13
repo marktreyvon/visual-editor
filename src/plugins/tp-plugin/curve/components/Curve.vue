@@ -180,17 +180,17 @@ export default defineComponent({
                     let jsonStr = arr.join("").replace(/\s+/g, "");
                     let obj = JSON.parse(jsonStr)
                     let newArr: any[] = []
-                    console.log(obj.xAxis);
+                    console.log('curve.obj.xAxis', obj.xAxis);
 
                     obj.xAxis.map((item: any, index: number) => {
                         let newObj = {
-                            xAxis: item,
-                            scales: obj.series[0].data[Number(index)]
+                            xAxis: item.slice(11, 16),
+                            scales: Number(obj.series[0].data[Number(index)])
                         }
                         newArr.push(newObj)
                     });
                     // this.data
-                    console.log(newArr);
+                    console.log('curve.newArr', newArr);
                     // this.data = newArr;
                     if (jsonStr.length > 1) {
                         (this.line as any).options.data = newArr;

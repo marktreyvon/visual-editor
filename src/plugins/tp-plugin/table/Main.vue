@@ -69,7 +69,15 @@ export default defineComponent({
   watch: {
     value: {
       handler(val) {
-        // console.log("Main.Value", val);
+        console.log("table.Main.value", val);
+        try {
+            let obj = JSON.parse(val);
+            console.log("table.Main.value.obj", obj);
+
+            this.orgNameData = obj;
+        } catch(e) {
+          console.log('传入的数据不是JSON格式');
+        }
       },
       deep: true
     },

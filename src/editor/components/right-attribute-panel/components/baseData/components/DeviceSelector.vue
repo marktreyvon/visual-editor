@@ -13,19 +13,19 @@
               </template>
             <el-form>
                 <el-form-item label="选择项目">
-                    <el-select v-model="state.projectId" placeholder="选择项目" @change="handleChangeProject">
+                    <el-select filterable v-model="state.projectId" placeholder="选择项目" @change="handleChangeProject">
                         <el-option v-for="item in projectOptions" :key="item.value" :label="item.label" :value="item.value" />
                     </el-select>
                 </el-form-item>
 
                 <el-form-item v-if="state.projectId" label="选择分组">
-                    <el-select v-model="state.groupId" placeholder="选择分组" @change="handleChangeGroup">
+                    <el-select filterable v-model="state.groupId" placeholder="选择分组" @change="handleChangeGroup">
                         <el-option v-for="item in groupOptions" :key="item.value" :label="item.label" :value="item.value" />
                     </el-select>
                 </el-form-item>
 
                 <el-form-item v-if="state.groupId" label="选择设备">
-                    <el-select v-model="state.deviceId" placeholder="选择设备" @change="handleChangeDevice">
+                    <el-select filterable v-model="state.deviceId" placeholder="选择设备" @change="handleChangeDevice">
                         <el-option v-for="item in deviceOptions" :key="item.value" 
                         :label="item.label + (item.pluginId ? ' [已绑定]' : '')" 
                         :value="item.value" />

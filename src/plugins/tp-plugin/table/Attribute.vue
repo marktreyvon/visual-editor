@@ -17,7 +17,7 @@
     </el-collapse-item> -->
 
     <el-collapse-item title="属性" name="attribute">
-      <el-form>
+      <el-form class="ml-4">
         <el-form-item label="轮播">
           <el-switch v-model="table.carousel"></el-switch>
         </el-form-item>
@@ -28,7 +28,7 @@
     </el-collapse-item>
 
     <el-collapse-item title="背景和边框" name="bgandbd">
-      <el-form>
+      <el-form class="ml-4">
         <el-form-item label="背景颜色">
           <el-color-picker v-model="table.table.bgColor"></el-color-picker>
         </el-form-item>
@@ -45,7 +45,7 @@
     </el-collapse-item>
 
     <el-collapse-item title="表格边框" name="bgbk">
-      <el-form>
+      <el-form class="ml-4">
         <el-form-item label="显示边框">
           <el-switch v-model="table.border.showBorder"></el-switch>
         </el-form-item>
@@ -63,7 +63,7 @@
     </el-collapse-item>
 
     <el-collapse-item title="表头" name="btou">
-      <el-form>
+      <el-form class="ml-4">
         <el-form-item label="背景颜色">
           <el-color-picker v-model="table.header.bgColor"></el-color-picker>
         </el-form-item>
@@ -88,7 +88,7 @@
         </div>
       </template>
 
-      <el-collapse>
+      <el-collapse class="ml-4">
         <el-collapse-item v-if="table.newRows[0]" v-for="(item, index) in table.newRows" :name="'zdylie-' + index">
 
           <template #title>
@@ -100,7 +100,7 @@
             </div>
           </template>
 
-          <el-form>
+          <el-form class="ml-4">
             <el-form-item label="是否显示">
               <el-switch v-model="table.newRows[index].show"></el-switch>
             </el-form-item>

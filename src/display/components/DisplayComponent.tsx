@@ -37,7 +37,7 @@ export const getDisplayComponent = (cpt: Component, nodeData: any, refType: any)
                     console.log('display.mounted.device', jsonData.data.deviceData)
                     // 设备数据
                     const cb = (value: any) => {
-                        console.log('callback', value)
+                        console.log('callback', value, typeof value, JSON.parse(value))
                         this.value = value;
                     }
                     // 设置回调

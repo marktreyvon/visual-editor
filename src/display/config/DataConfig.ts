@@ -137,6 +137,7 @@ class DataConfig {
                 }
                 resolve(true);
             } else if (this.refType === 'pie') {
+                // ===================================饼图=========================================
                 let values = [];
                 for(let i = 0; i < deviceList.length; i++) {
                     const device = deviceList[i];
@@ -145,14 +146,15 @@ class DataConfig {
                     if (result.code === 200) {
                         const { data } = result;
                         if (data && data.length !== 0) {
-                            let value = data[0][device.property];
-                            values.push({ type: device.propertyTitle, value});
+                            let value: any = data[0][device.property] || 0;
+                            values.push({ type: device.propertyTitle, value: Number(value)});
                         }
                     }
                 }
                 this.callback(JSON.stringify(values));
                 resolve(true);
             } else if (this.refType === 'histogram') {
+                // ===================================柱状图=========================================
                 let values = [];
                 for(let i = 0; i < deviceList.length; i++) {
                     const device = deviceList[i];
@@ -161,14 +163,15 @@ class DataConfig {
                     if (result.code === 200) {
                         const { data } = result;
                         if (data && data.length !== 0) {
-                            let value = data[0][device.property];
-                            values.push({ type: device.propertyTitle, sales: value});
+                            let value: any = data[0][device.property] || 0;
+                            values.push({ type: device.propertyTitle, sales: Number(value)});
                         }
                     }
                 }
                 this.callback(JSON.stringify(values));
                 resolve(true);
             } else if (this.refType === 'curve') {
+                // ===================================曲线图=========================================
                 let endTime = (new Date()).getTime();
                 let startTime = endTime - (Number(24*60*60*10) * 1000);
                 let rate = 5 * 60 * 1000 * 1000;
@@ -240,6 +243,25 @@ class DataConfig {
                     console.log('DataConfig.parseData.xzy.historyResult', historyResult)
                     this.callback({ history: historyResult.data })
                 }
+                resolve(true);
+            } else if (this.refType === 'table') {
+                // ===================================表格=========================================
+                let values = [];
+                for(let i = 0; i < deviceList.length; i++) {
+                    const device = deviceList[i];
+                    let { data: result } = await DataAPI.getCurrentValue({ entity_id: device.deviceId });
+                    console.log('parseData.result', result)
+                    if (result.code === 200) {
+                        const { data } = result;
+                        if (data && data.length !== 0) {
+                            let value: any = data[0][device.property] || 0;
+                            let obj: any = {};
+                            obj[device.property] = value;
+                            values.push(obj);
+                        }
+                    }
+                }
+                this.callback(JSON.stringify(values));
                 resolve(true);
             }
         })

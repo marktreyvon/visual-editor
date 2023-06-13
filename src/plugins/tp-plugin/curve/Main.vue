@@ -11,7 +11,7 @@ export default defineComponent({
   },
   props: {
     value: {
-      type: [String, Object],
+      type: [Object],
       default: () => ({})
     },
     data: {

@@ -1,10 +1,9 @@
 <template>
-  <!-- 标题 -->
-  <el-collapse v-model="activeNames">
+  <el-collapse v-model="activeNames" accordion>
+    <!-- 标题 -->
+    <el-collapse-item title="标题" name="title">
 
-    <el-collapse-item title="标题" name="style">
-
-      <el-form v-model="formData" label-width="140px" label-position="left">
+      <el-form class="ml-4" v-model="formData" label-width="140px" label-position="left">
 
         <el-form-item label="标题">
           <el-input v-model="formData.header"></el-input>
@@ -24,14 +23,10 @@
 
     </el-collapse-item>
 
-  </el-collapse>
+    <!-- 背景与边框 -->
+    <el-collapse-item title="背景与边框" name="background">
 
-  <!-- 背景与边框 -->
-  <el-collapse v-model="activeNames">
-
-    <el-collapse-item title="背景与边框" name="style1">
-
-      <el-form v-model="formData" label-width="140px" label-position="left">
+      <el-form class="ml-4" v-model="formData" label-width="140px" label-position="left">
 
         <el-form-item label="背景颜色">
           <el-color-picker v-model="formData.color" />
@@ -61,15 +56,10 @@
 
     </el-collapse-item>
 
-  </el-collapse>
+    <!-- 图例 -->
+    <el-collapse-item title="图例" name="legend">
 
-
-  <!-- 图例 -->
-  <el-collapse v-model="activeNames">
-
-    <el-collapse-item title="图例" name="style2">
-
-      <el-form v-model="formData" label-width="140px" label-position="left">
+      <el-form class="ml-4" v-model="formData" label-width="140px" label-position="left">
 
 
         <el-form-item label="文字位置">
@@ -94,8 +84,7 @@ import { defineComponent } from "vue";
 export default defineComponent({
   data() {
     return {
-      activeNames: 'style',
-      activeNames1: 'style1',
+      activeNames: '',
       formData: {
         pointerShow: true,
         sizeborder: '',

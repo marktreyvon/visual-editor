@@ -1,0 +1,59 @@
+<template>
+    <div :id="id" style="width:100%;height: 100%"></div>
+</template>
+
+<script setup lang="ts">
+import { ref, reactive, onMounted, watch, onUnmounted } from "vue"
+import { Liquid } from '@antv/g2plot';
+import { defaultOption, getOptionData } from '../default'
+const id = "liquid" + Math.random().toString(36).substr(2);
+const props = defineProps({
+    value: {
+        type: [String, Number],
+        default: 25
+    },
+    style: {
+        type: Object,
+        default: () => ({})
+    }
+})
+let liquidPlot: any = null;
+onMounted(() => {
+    const option: any = getOptionData(defaultOption);
+    liquidPlot = new Liquid(id, option);
+    liquidPlot.render();
+    loop(defaultOption.isLoop)
+})
+
+let timer: any = null;
+watch(() => props.style, (val) => {
+    console.log('liquid.watch.style', val)
+    if (!liquidPlot) return;
+    liquidPlot.update(getOptionData(val));
+    loop(val.isLoop);
+})
+
+const loop = (isLoop: boolean) => {
+    if (!isLoop) {
+        clearInterval(timer);
+        timer = null;
+        return;
+    }
+    if (timer) return;
+    let percent = 0.01;
+    timer = setInterval(() => {
+        if (percent >= 1) {
+            percent = 0;
+        }
+        percent += 0.01;
+        liquidPlot.changeData(percent)
+    }, 100)
+}
+
+onUnmounted(() => {
+    clearInterval(timer);
+})
+
+</script>
+
+<style lang="scss" scoped></style>
