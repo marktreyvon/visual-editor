@@ -12,18 +12,18 @@
     </el-form-item>
     <el-form-item label="线条样式">
       <el-select v-model="state.formData.lineStyle" placeholder="请选择" @change='validate'>
-        <el-option :value='0' label='实线'>
+        <el-option :value='0' label='————'>
         </el-option>
-        <el-option :value='5' label='虚线1'>
+        <el-option :value='1' label='----------'>
         </el-option>
-        <el-option :value='15' label='虚线2'>
+        <el-option :value='2' label='- - - - - -'>
         </el-option>
-        <el-option :value='20' label='虚线3'>
+        <el-option :value='3' label='- · - · - · -'>
         </el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="线条宽度">
-      <el-input v-model="state.formData.lineWidth" @change='validate'></el-input>
+      <el-input-number :min="1" :max="99" v-model="state.formData.lineWidth" @change='validate' ></el-input-number>
     </el-form-item>
     <el-form-item label="线条颜色">
       <el-color-picker v-model="state.formData.lineColor" @change='validate'/>
@@ -35,9 +35,19 @@
         <el-option value='水珠' label='水珠'></el-option>
       </el-select>
     </el-form-item>
+
+    <el-form-item label="水流宽度"  v-if="state.formData.flowEffect==='水流'">
+      <el-input-number :min="1" :max="99" v-model="state.formData.waters" @change='validate'></el-input-number>
+    </el-form-item>
+
+    <el-form-item label="水珠大小" v-if="state.formData.flowEffect==='水珠'">
+      <el-input-number :min="1" :max="99" v-model="state.formData.droplet" @change='validate'></el-input-number>
+    </el-form-item>
+
     <el-form-item label="流动颜色" v-if="state.formData.flowEffect!=='无效果'" >
       <el-color-picker v-model="state.formData.flowColor" @change='validate'/>
     </el-form-item>
+
     <el-form-item label="流动速度" v-if="state.formData.flowEffect!=='无效果'" >
 
       <el-slider style='width: 90%' v-model="state.formData.flowSpeed" :step="1" :min='1' :max="4" show-stops @change='validate'/>
@@ -90,8 +100,8 @@ const {
 } = tools.value
 let state = reactive<any>({
   formData: {
-    lineType: undefined,
-    lineStyle: undefined,
+    lineType: '1',
+    lineStyle: 1,
     flowEffect: '无效果',
     lineWidth: 2,
     flowColor: '#409EFF',
@@ -99,7 +109,8 @@ let state = reactive<any>({
     flowDirection: '正向',
     cycleTimes: 1,
     lineColor: '#409EFF',
-    vertices:undefined
+    waters:1,
+    droplet:6,
   }
 })
 
@@ -108,8 +119,8 @@ let state = reactive<any>({
 watchEffect(() => {
   if (props.edgeData) {
     let edgeObj = {
-      lineType: '',
-      lineStyle: '',
+      lineType: '1',
+      lineStyle: 1,
       flowEffect: '无效果',
       lineWidth: 2,
       flowColor: '#409EFF',
@@ -117,34 +128,13 @@ watchEffect(() => {
       flowDirection: '正向',
       cycleTimes: -1,
       lineColor: '#409EFF',
-      vertices:[]
+      waters:1,
+      droplet:6,
     }
 
     if(props?.edgeData?.attrs?.targetData){
       edgeObj={...edgeObj,...props?.edgeData?.attrs?.targetData}
     }
-
-    if (props?.edgeData?.vertices) {
-      if (props?.edgeData?.vertices.length === 1) {
-        if (props?.edgeData?.connector === 'normal') {
-          edgeObj.lineType = '2'
-        } else {
-          edgeObj.lineType = '3'
-        }
-
-      } else {
-        edgeObj.lineType = '1'
-      }
-
-    } else {
-      edgeObj.lineType = '1'
-    }
-
-    edgeObj.vertices=props?.edgeData?.vertices
-    edgeObj.lineColor = props?.edgeData?.attrs?.line?.stroke || '#000000'
-    edgeObj.lineWidth = props?.edgeData?.attrs?.line?.strokeWidth || 1
-    edgeObj.lineStyle = props?.edgeData?.attrs?.line?.strokeDasharray || 0
-
 
     state.formData = {...state.formData,...edgeObj};
     // state.data.position.x = getFixNumber(state.data.position.x);

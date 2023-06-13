@@ -8,7 +8,14 @@
 
 <script setup lang="ts">
 import * as Common from '@/common';
-import { getTeleport } from "@antv/x6-vue-shape";
+import { register,getTeleport } from "@antv/x6-vue-shape";
+import RightClickMenu from '@/editor/RightClickMenu.vue'
+register({
+  shape: "right-click-menu",
+  width: 100,
+  height: 100,
+  component: RightClickMenu,
+});
 const TeleportContainer = getTeleport();
 
 </script>

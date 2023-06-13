@@ -1,11 +1,15 @@
-import { Graph } from "@antv/x6";
-
+import { Graph,Edge,Node,ToolsView } from "@antv/x6";
+import * as Common from "@/common";
+import { h } from 'vue';
+import {DEFAULT_CONTAINER_ID} from "@/common";
 /**
  * 事件处理
  */
 class CellEvents implements ICellEvents {
 
     graph: Graph | undefined;
+
+    container: HTMLElement | SVGElement| undefined;
 
     clickListener: EventListener<Object> | undefined;
 
@@ -29,22 +33,108 @@ class CellEvents implements ICellEvents {
 
     constructor(graph: Graph) {
         this.graph = graph;
+        this.container = <HTMLDivElement>document.getElementById(Common.DEFAULT_CONTAINER_ID);
         this.initEvents();
     }
-    
-    
+
     initEvents(): void {
         if (!this.graph)
             throw new Error('Graph is undefined.');
 
+        let edge: Edge | null = null
+        let node: Node | null = null
+
+        const init = (pos: { x: number; y: number }) => {
+            if (!this.graph)
+                throw new Error('Graph is undefined.');
+            edge = this.graph.addEdge({
+                source: {x:pos.x-100,y:pos.y},
+                target: pos,
+                attrs: {
+                    line: {
+                        stroke: '#343434',
+                        strokeWidth: 2,
+                    },
+                },
+            })
+            finish(true)
+        }
+
+        const finish = (closed: boolean) => {
+            if (!this.graph)
+                throw new Error('Graph is undefined.');
+            if (node && edge) {
+                const vertices = edge.getVertices()
+                if (closed) {
+                    if (vertices.length >= 2) {
+                        const center = node.getBBox().center
+                        edge.setSource(center)
+                        edge.setTarget(center)
+                        this.graph.removeNode(node)
+                        node = null
+                        print()
+                    } else {
+                        this.graph.removeCells([node, edge])
+                        node = null
+                        edge = null
+                    }
+                } else {
+                    if (vertices.length >= 1) {
+                        const center = node.getBBox().center
+                        edge.setSource(center)
+                        edge.setTarget(vertices[vertices.length - 1])
+                        this.graph.removeNode(node)
+                        node = null
+                        print()
+                    } else {
+                        this.graph.removeCells([node, edge])
+                        node = null
+                        edge = null
+                    }
+                }
+
+            }
+        }
+
+
+
         this.graph.on("blank:click", ({ e, x, y }) => {
-            console.log("pppppp")
+            this.clickListener && this.clickListener({ e, x, y });
+        });
+
+        this.graph.on("blank:contextmenu", ({ e, x, y }) => {
+
+            if (!this.graph)
+                throw new Error('Graph is undefined.');
+            if (!this.container)
+                throw new Error('container is undefined.');
+            const pos = this.graph.clientToGraph(e.clientX, e.clientY)
+            const item = ToolsView.createElement('div',false) as HTMLDivElement
+
+            item.className='menu-show'
+            item.innerHTML="<div id='add-line'>添加直线</div>"
+
+            const addLine=item.children[0] as HTMLDivElement
+            addLine.onclick=()=>{
+                init({x,y})
+                item.className='menu-close'
+            }
+
+
+            item.style.left = `${pos.x-10}px`
+            item.style.top = `${pos.y-10}px`
+        item.onmouseleave=(e)=>{
+            item.className='menu-close'
+        }
+            // item.style.bottom=y+'px'
+            // item.style.right=x+'px'
+            this.container.appendChild(item)
+            // init({ x, y })
             this.clickListener && this.clickListener({ e, x, y });
         });
 
         // 单击事件 
         this.graph.on("cell:click", ({ e, x, y, cell, view }) => {
-            console.log("ooooooooooo")
             this.clickListener && this.clickListener({ e, x, y, cell, view });
         });
 
@@ -109,15 +199,27 @@ class CellEvents implements ICellEvents {
         this.graph.on("cell:changed", ({ cell, options }) => {
         });
 
-        this.graph.on('edge:mouseenter', ({ edge }) => {
-
-            edge.addTools([ 'target-arrowhead','source-arrowhead'])
-
+        this.graph.on('edge:selected', ({ edge }) => {
+            edge.addTools([ { name: "segments" ,args:{stopPropagation:false,}},{ name: "vertices" ,args:{stopPropagation:false,}}, { name: "target-arrowhead" ,args:{stopPropagation:false}},  { name: "source-arrowhead" ,args:{
+                    attrs: {
+                        d: `
+                        M 0,0
+                        m -8,0
+                        a4,4 0 1,0 8,0
+                        a4,4 0 1,0 -8,0
+                        `,
+                        fill: 'rgba(0,0,0,0)',
+                        stroke: '#282828',
+                        'stroke-width':2,
+                        cursor: 'move',
+                    },
+                }}])
         })
 
-        this.graph.on('edge:mouseleave', ({ edge }) => {
+        this.graph.on('edge:unselected', ({ edge }) => {
             edge.removeTools()
         })
+
     }
 
     public setClickEventListener(listener: EventListener<Object>): void {

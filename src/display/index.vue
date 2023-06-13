@@ -23,7 +23,6 @@ document.title = '可视化查看 - ThingsPanel - ' + screenName.value;
 const params = parseParams();
 onMounted(() => {
   let jsonData: any = "";
-
   if (params?.mode === 'preview') {
     jsonData = sessionStorage.getItem(Common.PREVIEW_JSON_DATA_KEY);
     initDisplay(jsonData);

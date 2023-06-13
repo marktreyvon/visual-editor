@@ -92,6 +92,7 @@ export const useStencil = () => {
     }
     
     const baseNode = [
+
         {
             shape: "rect",
             width: 40,
