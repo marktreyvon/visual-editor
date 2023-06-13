@@ -34,13 +34,12 @@ import LeftAside from "./components/left-aside/index.vue";
 import CanvasEditor from "./components/canvas-editor/index.vue";
 import RightAttributePanel from "./components/right-attribute-panel/index.vue";
 import { useTools, useCanvas, usePlugins } from './hooks'
-import VisualAPI from '@/api/visual'
 import PluginAPI from '@/api/plugin'
 import CustomPlugins from "./components/left-aside/CustomPlugins.vue";
 
 const params: any = inject('params', null);
 console.log('====editor mounted', params) 
-const { initCanvas, screenName } = useCanvas(params.id || null);
+const { initCanvas, screenName } = useCanvas(params?.id || null);
 
 onMounted(async () => {
   console.log('editor mounted', inject('params'))
@@ -85,7 +84,6 @@ onMounted(() => {
   })
   const displayContainer: HTMLElement = <HTMLElement>document.getElementById("containerId");
   resizeObserver.observe(displayContainer);
-
 })
 </script>
 

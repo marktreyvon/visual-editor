@@ -52,26 +52,29 @@ class PluginConfig implements IPluginConfig  {
             const plugin = plugins[key];
             const { views } = plugin.default;
             views.forEach((view: any) => {
-                data.forEach((cell: any) => {
-                    if (cell.shape === view.name) {
-                        if (mode === 'editor') {
-                            const cpt: any = getDropComponent(view.Main);
-                            this.registerComponent(cell, cpt);
-                        } else if (mode === 'display') {
-                            console.log('registerComponents.view.Data', view.Data.data())
-                            const cpt: any = getDisplayComponent(view.Main, cell.data || null, view.type);
-                            this.registerComponent(cell, cpt);
+                if (data) {
+                    data.forEach((cell: any) => {
+                        if (cell.shape === view.name) {
+                            if (mode === 'editor') {
+                                const cpt: any = getDropComponent(view.Main);
+                                this.registerComponent(cell, cpt);
+                            } else if (mode === 'display') {
+                                console.log('registerComponents.view.Data', view.Data.data())
+                                const cpt: any = getDisplayComponent(view.Main, cell.data || null, view.type);
+                                this.registerComponent(cell, cpt);
+                            }
+                        } else if (cell.data && cell.data.pic) {
+                            if (mode === 'editor') {
+                                const cpt: any = getDropPicComponent(view.Main);
+                                this.registerComponent(cell, cpt);
+                            } else if (mode === 'display') {
+                                const cpt: any = getDisplayPicComponent(cell.data);
+                                this.registerComponent(cell, cpt);
+                            }
                         }
-                    } else if (cell.data && cell.data.pic) {
-                        if (mode === 'editor') {
-                            const cpt: any = getDropPicComponent(view.Main);
-                            this.registerComponent(cell, cpt);
-                        } else if (mode === 'display') {
-                            const cpt: any = getDisplayPicComponent(cell.data);
-                            this.registerComponent(cell, cpt);
-                        }
-                    }
-                })
+                    })
+                }
+
             })
         }
        

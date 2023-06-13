@@ -12,7 +12,7 @@ class DataConfig {
 
     private deviceId: string = "";
 
-    private property: string = "";
+    private property: any = {};
 
     private devicesData: any[] = [];
 
@@ -86,7 +86,7 @@ class DataConfig {
         this.deviceId = deviceId;
     }
 
-    public setProperty(property: string) {
+    public setProperty(property: any) {
         this.property = property;
     }
 
@@ -100,6 +100,7 @@ class DataConfig {
         const intervalFunc: Function = () => {
             if (isRunning) return;
             isRunning = true;
+            console.log('DataConfig.start', this.devicesData);
             this.parseData()
                 .then((result) => {
                     if (result) {
@@ -113,6 +114,7 @@ class DataConfig {
     }
 
     private parseData() {
+        console.log('DataConfig.parseData', this.devicesData)
         return new Promise(async (resolve, reject) => {
             let deviceList: any[] = [];
             this.devicesData.forEach((device: any) => {
@@ -132,8 +134,8 @@ class DataConfig {
                         value = data[0][deviceList[0].property];
                     }
                     this.callback(value);
-                    resolve(true);
                 }
+                resolve(true);
             } else if (this.refType === 'pie') {
                 let values = [];
                 for(let i = 0; i < deviceList.length; i++) {
@@ -205,6 +207,38 @@ class DataConfig {
                         values = { xAxis, series}
                     }
                     this.callback(JSON.stringify(values));
+                }
+                resolve(true);
+            } else if (this.refType === 'xzy') {
+                console.log('DataConfig.parseData.xzy', this.deviceId, this.property)
+                if (!this.deviceId) {
+                    resolve(true);
+                    return;
+                }
+                let { data: result } = await DataAPI.getCurrentValue({ entity_id: this.deviceId });
+                if (result.code === 200) {
+                    const { data } = result;
+                    console.log('start', data)
+                    let value = {};
+                    if (data && data.length !== 0) {
+                        value = data[0];
+                    }
+                    this.callback({ current: value});
+                }
+                let endTime = (new Date()).getTime();
+                let startTime = endTime - (Number(24*60*60*10) * 1000);
+                let rate = 5 * 1000 * 1000;
+                const params = {
+                    device_id: this.deviceId,
+                    attribute: ["systime", this.property.field, this.property.outField],
+                    start_ts: startTime,
+                    end_ts: endTime,
+                    rate: rate + ""
+                }
+                let { data: historyResult } = await DataAPI.getHistory(params);
+                if (historyResult.code === 200) {
+                    console.log('DataConfig.parseData.xzy.historyResult', historyResult)
+                    this.callback({ history: historyResult.data })
                 }
                 resolve(true);
             }

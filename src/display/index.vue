@@ -14,6 +14,7 @@ import * as Common from "@/common";
 import { useDisplay } from "./useDisplay"
 import { getTeleport } from "@antv/x6-vue-shape";
 import { parseParams } from "@/utils";
+import { CanvasConfig } from "@/editor/config";
 
 const TeleportContainer = getTeleport();
 
@@ -43,14 +44,13 @@ onMounted(() => {
       width: entries[0].contentRect.width,
       height: entries[0].contentRect.height
     }
+    CanvasConfig.getDisplayInstance().zoomToFit();
   })
   const displayContainer: HTMLElement = <HTMLElement>document.getElementById(Common.DEFAULT_DISPLAY_CONTAINER_ID);
   resizeObserver.observe(displayContainer);
 
 })
-/*
-http://127.0.0.1:5173/display?id=61ac9ff6-8b94-b0bb-bf32-e80ca4ad735d&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMzYjIzMzZjLTllOWEtODZlNS0xMDFlLTQ4NjRlNmI3NzI0YiIsIm5hbWUiOiJ0ZW5hbnQtYUB0cC5jbiIsImNyZWF0ZV90aW1lIjoiMjAyMy0wNi0wOVQxNjoyNToyNC42MzQ1NjQ2MDUrMDg6MDAiLCJleHAiOjE2ODYzMDI3MjR9.4cytmMTPdbbk2F7oFE_W_wefv6SHu1ZEXXRwHHfndwI&expiresTime=1686302725017
-*/
+
 </script>
 
 <style lang="scss" scoped>

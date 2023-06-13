@@ -38,7 +38,7 @@ export const getDisplayComponent = (cpt: Component, nodeData: any, refType: any)
                     // 设备数据
                     const cb = (value: any) => {
                         console.log('callback', value)
-                        this.value = value + "";
+                        this.value = value;
                     }
                     // 设置回调
                     dataConfig.setCallback(cb);
@@ -56,11 +56,13 @@ export const getDisplayComponent = (cpt: Component, nodeData: any, refType: any)
         },
         methods: {
             onChange(value: any) {
-                const { device } = value; 
-                console.log('display.change', device.deviceId)
+                const { device, property } = value; 
+                console.log('display.change', device, property)
+                if (!device || !property) return;
                 dataConfig.stop();
                 // 改变了数据入口
-                dataConfig.setDeviceId(device.deviceId);
+                device && dataConfig.setDeviceId(device.deviceId);
+                property && dataConfig.setProperty(property);
                 // 重启定时器
                 dataConfig.start();
             }

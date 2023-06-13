@@ -57,7 +57,7 @@ export const useDisplay = (containerId: string) => {
             canvasConfig.showGrid(false);
 
             setTimeout(() => {
-                canvasConfig.zoomToFit();
+                // canvasConfig.zoomToFit();
             }, 500)
 
             const  theg = canvasConfig.getGraph()
