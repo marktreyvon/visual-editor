@@ -41,7 +41,7 @@ if (import.meta.env.MODE === 'development') {
     // 注入参数
     provide('params', params);
   } else {
-    // getTokenInfoByAPI();
+    getTokenInfoByAPI();
   }
 } else if (!params.mode) {
   console.log('App.params', params)
