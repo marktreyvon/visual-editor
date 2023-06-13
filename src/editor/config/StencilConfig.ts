@@ -97,15 +97,17 @@ class StencilConfig implements IStencilConfig {
         const { data } = node;
         console.log('getDropNode.node', node, node.data)
         if (!node.data) {
-            return this.graph.createNode({
-                width: 100,
-                height: 100,
-                shape: node.shape,
-                label: node.label || node.shape,
-                points: node.points,
-                attrs: {...node.attrs,body:{...node.attrs.body,magnet: false}},
-                ports: this.getPorts()
-            });
+                return this.graph.createNode({
+                    width: 100,
+                    height: 100,
+                    shape: node.shape,
+                    label: node.label || node.shape,
+                    points: node.points,
+                    attrs: {...node.attrs,body:{...node.attrs.body}},
+                    ports: this.getPorts()
+                });
+
+
         }
 
         const pluginConfig: IPluginConfig = PluginConfig.getInstance();
@@ -123,8 +125,6 @@ class StencilConfig implements IStencilConfig {
             width: cpt.size.width || 200,
             height: cpt.size.height || 200,
             label: data.name,
-            attrs: {
-                body: {magnet: false},},
             //在创建节点时增加连接点属性;  *@author; 王炳宏  2023-05-23
             ports: this.getPorts(),
         });
@@ -154,7 +154,7 @@ class StencilConfig implements IStencilConfig {
                 top: {
                     attrs: {
                         circle: {
-                            r: 6,
+                            r: 4,
                             magnet: true,
                             stroke: '#31d0c6',
                             strokeWidth: 2,
@@ -166,10 +166,25 @@ class StencilConfig implements IStencilConfig {
                     },
                     position: 'top',
                 },
+                absolute: {
+                    attrs: {
+                        circle: {
+                            r:4,
+                            magnet: true,
+                            stroke: '#31d0c6',
+                            strokeWidth: 2,
+                            fill: '#fff',
+                            style:{
+                                visibility:'hidden'
+                            }
+                        },
+                    },
+                    position: {name: 'absolute'}
+                },
                 bottom: {
                     attrs: {
                         circle: {
-                            r: 6,
+                            r: 4,
                             magnet: true,
                             stroke: '#31d0c6',
                             strokeWidth: 2,
@@ -184,7 +199,7 @@ class StencilConfig implements IStencilConfig {
                 right: {
                     attrs: {
                         circle: {
-                            r: 6,
+                            r: 4,
                             magnet: true,
                             stroke: '#31d0c6',
                             strokeWidth: 2,
@@ -199,7 +214,7 @@ class StencilConfig implements IStencilConfig {
                 left: {
                     attrs: {
                         circle: {
-                            r: 6,
+                            r: 4,
                             magnet: true,
                             stroke: '#31d0c6',
                             strokeWidth: 2,
@@ -213,6 +228,13 @@ class StencilConfig implements IStencilConfig {
                 }
             },
             items: [
+                {
+                    group: 'absolute',
+                    args: {
+                        x: '50%',
+                        y: '50%',
+                    },
+                },
                 {
 
                     group: 'top',

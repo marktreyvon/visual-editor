@@ -41,8 +41,10 @@ export const useEvents = () => {
 
         // 点击node
         events.setClickEventListener((data: any) => {
+
             const temp = data.node || data.cell || null;
             currentNode = temp;
+
             if (temp === null) {
                 // 如果点击的是画布
                 isNode.value = false;
@@ -62,6 +64,7 @@ export const useEvents = () => {
             nodeData.value = currentNode.store.data ;
 
             if (component) {
+
                 // 自定义组件
                 setNodeData(data);
                 isNode.value = true;
@@ -83,6 +86,7 @@ export const useEvents = () => {
                 }
             } else {
                 // 连线或基础节点
+
                 if(currentNode.shape==='edge'){
                     //如果点击的是边 ;  *@author; 王炳宏  2023-05-23
                     console.log(currentNode.shape,"这是边：",currentNode.id,)

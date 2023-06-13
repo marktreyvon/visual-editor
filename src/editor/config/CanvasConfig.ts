@@ -37,6 +37,7 @@ class CanvasConfig implements ICanvasConfig {
     graphOptions: ICanvasConfig.GraphOptions;
     cellEvents: CellEvents | undefined = undefined;
     containerId: string;
+    container: HTMLElement | SVGElement| undefined;
     autoResize: boolean = Common.DEFAULT_AUTO_RESIZE;
     gridSize: number = Common.DEFAULT_GRID_SIZE;
     history: boolean = Common.DEFAULT_HISTORY;
@@ -51,6 +52,7 @@ class CanvasConfig implements ICanvasConfig {
 
     private constructor(containerId: string, options?: ICanvasConfig.Options) {
         this.containerId = containerId;
+        this.container = <HTMLDivElement>document.getElementById(this.containerId);
         if (options) {
             if (options.autoResize !== undefined) this.autoResize = options.autoResize;
             if (options.gridSize !== undefined) this.gridSize = options.gridSize;
@@ -101,7 +103,7 @@ class CanvasConfig implements ICanvasConfig {
     initGraph(): void {
         // window.__x6_instances__ = [];
         this.graph = new Graph({
-            container: <HTMLDivElement>document.getElementById(this.containerId),
+            container:  <HTMLDivElement>document.getElementById(this.containerId),
             autoResize: this.autoResize,
             magnetThreshold:5,
             panning: {
@@ -132,8 +134,9 @@ class CanvasConfig implements ICanvasConfig {
             },
             interacting: (cellView) => {
                 return {
+                    magnetConnectable: true,      // 增加可连接点的交互,magnetConnectable*@author; 王炳宏  2023-05-23
                     nodeMovable: this.nodeMovable,
-                    magnetConnectable: true      // 增加可连接点的交互,magnetConnectable*@author; 王炳宏  2023-05-23
+                    edgeMovable: true      // 边是否可以被移动。
                 }
             }
         });
@@ -264,51 +267,38 @@ class CanvasConfig implements ICanvasConfig {
         if (!this.graph)
             throw new Error('Graph is undefined.');
         const edge = this.graph.getCellById(edgeId)
-        edge.attr('targetData',data)
+
         edge.attr('line/stroke', data.lineColor)
-        edge.attr('line/strokeDasharray', data.lineStyle)
+        let strokeD
+        switch (data.lineStyle) {
+            case 0:
+                strokeD='0'
+                break
+            case 1:
+                strokeD='5 5'
+                break
+            case 2:
+                strokeD='10 10'
+                break
+            case 3:
+                strokeD='10 10 2 10'
+                break
+        }
+        console.log(typeof data.lineStyle)
+        console.log(strokeD)
+        edge.attr('line/strokeDasharray', strokeD)
         edge.attr('line/strokeWidth', data.lineWidth)
         edge.removeMarkup()
         edge.getTransitions().forEach(
             (path) => edge.stopTransition(path),
         )
-    this.edgeAnimation(edge,data)
+        this.edgeAnimation(edge,data)
+        edge.attr('targetData',data)
     }
 
     public edgeAnimation(edge:any,data:any):void{
         if (!this.graph)
             throw new Error('Graph is undefined.');
-        // let x1,y1,w1,h1,x2,y2,w2,h2
-        // let ex,ey, ew,eh
-        // if(edge.getProp().source){
-        //     const  theSource = this.graph.getCellById(edge.getProp().source?.cell)
-        //     const  theTarget = this.graph.getCellById(edge.getProp().target?.cell)
-        //     if(theSource&&theTarget){
-        //         x1=theSource.getProp().position.x
-        //         y1=theSource.getProp().position.y
-        //         w1=theSource.getProp().size.width
-        //         h1=theSource.getProp().size.height
-        //         x2=theTarget.getProp().position.x
-        //         y2=theTarget.getProp().position.y
-        //         w2=theTarget.getProp().size.width
-        //         h2=theTarget.getProp().size.height
-        //     }
-        //     if(x2>x1){
-        //         ex=x1
-        //         ew=w1
-        //     }else{
-        //         ex=x2
-        //         ew=w2
-        //     }
-        //     if(h2>h1){
-        //         ey=y1
-        //         eh=h1
-        //     }else{
-        //         ey=y2
-        //         eh=h2
-        //     }
-        // }
-
         let speed=0
         let speed1=0
         if (data && data.flowSpeed) {
@@ -344,7 +334,6 @@ class CanvasConfig implements ICanvasConfig {
 
         extracted(edge,data)
         if(data && data.flowEffect!=='无效果'){
-            console.log(speed)
             let count=data.cycleTimes
             let count1=-1
             if(data.cycleTimes!=-1){
@@ -365,12 +354,16 @@ class CanvasConfig implements ICanvasConfig {
                     },
 
                 ])
+                edge.setAttrs({
+                    ...edge.attr()
+                })
                 edge.attr('p2', {...edge.attr().line, connection: true,
                     fill: 'none', cursor: 'pointer',})
                 console.log(edge.attr('p2/strokeWidth'))
-                const flowWidth=Math.ceil(edge.attr('p2/strokeWidth')/4)
+
+                edge.attr('p2/')
                 edge.attr('p1', { connection: true, stroke: data.flowColor,
-                    fill: 'none',strokeDasharray:'10 5 10',strokeDashoffset:10,strokeWidth: flowWidth})
+                    fill: 'none',strokeDasharray:'10 5 10',strokeDashoffset:10,strokeWidth: data.waters})
 
                 const t1=data.flowDirection==='正向'?10:-10
                 const options = {
@@ -401,7 +394,7 @@ class CanvasConfig implements ICanvasConfig {
                     },
                 ])
                 edge.attr('c1',{
-                    r: 6,
+                    r: data.droplet-0,
                     stroke: data.flowColor,
                     fill: data.flowColor,
                     atConnectionRatio: data.flowDirection==='正向'?0.01:0.99,
@@ -429,7 +422,7 @@ class CanvasConfig implements ICanvasConfig {
                 const options3={
                     ...baseOption2,
                     complete:()=>{
-                        edge.transition('attrs/c1/r', 6, options4)
+                        edge.transition('attrs/c1/r', data.droplet-0, options4)
                     }
                 }
                 const options2={
