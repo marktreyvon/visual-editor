@@ -10,11 +10,12 @@
           <div class="inline-flex">
             <!--        变色测试按钮  *@author; 王炳宏 -->
             <!-- <el-button @click="attrColor">变色</el-button> -->
-            <el-button @click="undo" :icon="RefreshLeft">撤销</el-button>
-            <el-button @click="redo" :icon="RefreshRight">重做</el-button>
-            <el-button @click="zoomOut" :icon="ZoomOut">缩小</el-button>
-            <el-button @click="zoomToFit" :icon="Crop">自适应</el-button>
-            <el-button @click="zoomIn" :icon="ZoomIn">放大</el-button>
+            <el-button text @click="undo" :icon="RefreshLeft">撤销</el-button>
+            <el-button text @click="redo" :icon="RefreshRight">重做</el-button>
+            <el-button text @click="zoomToFit" :icon="Crop">自适应</el-button>
+            <el-button text @click="zoomOut" :icon="ZoomOut">缩小</el-button>
+            <el-button text>{{ scaling + '%' }}</el-button>
+            <el-button text @click="zoomIn" :icon="ZoomIn">放大</el-button>
             <!-- <el-button @click="disableSnapline">关闭对齐线</el-button> -->
             <!-- <el-button @click="enableSnapline">开启对齐线</el-button> -->
             <!-- 选择文件 -->
@@ -28,11 +29,11 @@
               :on-change="handleChange"
             >
               <template #trigger>
-                <el-button style="margin-left: 12px;" :icon="Download">导入</el-button>
+                <el-button text style="margin-left: 12px;" :icon="Download">导入</el-button>
               </template>
             </el-upload>
 
-            <el-dropdown class="el-dropdown" split-button
+            <el-dropdown class="el-dropdown" split-button text 
                 @click="handleClickExport"
                 @command="handleCommandExport"
                 >
@@ -46,7 +47,7 @@
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
-            <el-button @click="preview()" :icon="View">预览</el-button>
+            <el-button text @click="preview()" :icon="View">预览</el-button>
           </div>
         </div>
         <div class="absolute inset-y-0 right-0 w-auto">
@@ -81,6 +82,8 @@ const {
     zoomToFit, 
     zoomOut, 
     zoomIn,
+    getZoom,
+    scaling,
     disableSnapline,
     enableSnapline,
     importJSON,

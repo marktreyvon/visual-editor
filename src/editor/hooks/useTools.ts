@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import VisualAPI from "@/api/visual";
 import { exportFile, isJSON, message } from "@/utils/tool";
 import * as Common from "@/common"
+import { ref } from "vue";
 /**
  * @author cxs
  * @date 2023-04-20
@@ -14,20 +15,25 @@ import * as Common from "@/common"
  */
 export const useTools = (): ITools => {
     const router = useRouter();
+    const scaling = ref<Number>(100);
     return {
+        scaling,
         // 测试线条的颜色修改工具;  *@author; 王炳宏  2023-05-23
         setLineStyle: (eid,nid,data) => {
             CanvasConfig.getInstance().onChangeEdges(eid,nid,data);
         },
 
         zoomToFit: () => {
-            CanvasConfig.getInstance().zoomToFit();
+            scaling.value = CanvasConfig.getInstance().zoomToFit();
+        },
+        getZoom: () => {
+            return scaling.value;
         },
         zoomOut: () => {
-            CanvasConfig.getInstance().zoomOut();
+            scaling.value = CanvasConfig.getInstance().zoomOut();
         },
         zoomIn: () => {
-            CanvasConfig.getInstance().zoomIn();
+            scaling.value = CanvasConfig.getInstance().zoomIn();
         },
         enableSnapline: () => {
             CanvasConfig.getInstance().enableSnapline();

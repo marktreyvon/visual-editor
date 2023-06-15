@@ -96,10 +96,7 @@ declare interface ICanvasConfig {
      */
     setNodeMovable(nodeMovable: boolean): void;
 
-    /**
-     * 画布自适应
-     */
-    zoomToFit(): void;
+    
 
     /**
      * 测试线条的颜色修改工具
@@ -116,15 +113,25 @@ declare interface ICanvasConfig {
     renderJSON(json: any): void;
 
     /**
+     * 画布自适应
+     */
+    zoomToFit(): Number;
+
+    /**
      * 放大
      */
-    zoomIn(): void;
+    zoomIn(): Number;
 
     /**
      * 缩小
      * @param factor 
      */
-    zoomOut(): void;
+    zoomOut(): Number;
+
+    /**
+     * 获取当前缩放比例
+     */
+    getZoom(): Number;
 
     /**
      * 开启对齐线

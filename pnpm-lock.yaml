@@ -10,6 +10,9 @@ dependencies:
   '@antv/x6':
     specifier: ^2.9.7
     version: 2.9.7
+  '@antv/x6-plugin-clipboard':
+    specifier: ^2.1.6
+    version: 2.1.6(@antv/x6@2.9.7)
   '@antv/x6-plugin-dnd':
     specifier: ^2.0.5
     version: 2.0.5(@antv/x6@2.9.7)
@@ -324,6 +327,14 @@ packages:
 
   /@antv/x6-geometry@2.0.5:
     resolution: {integrity: sha512-MId6riEQkxphBpVeTcL4ZNXL4lScyvDEPLyIafvWMcWNTGK0jgkK7N20XSzqt8ltJb0mGUso5s56mrk8ysHu2A==}
+    dev: false
+
+  /@antv/x6-plugin-clipboard@2.1.6(@antv/x6@2.9.7):
+    resolution: {integrity: sha512-roZPLnZx6PK8MBvee0QMo90fz/TXeF0WNe4EGin2NBq5M1I5XTWrYvA6N2XVIiWAAI67gjQeEE8TpkL7f8QdqA==}
+    peerDependencies:
+      '@antv/x6': ^2.x
+    dependencies:
+      '@antv/x6': 2.9.7
     dev: false
 
   /@antv/x6-plugin-dnd@2.0.5(@antv/x6@2.9.7):

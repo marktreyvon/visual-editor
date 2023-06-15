@@ -389,13 +389,6 @@ class CanvasConfig implements ICanvasConfig {
             this.graph?.disableSelectionMovable();
         }
     }
-    
-    public zoomToFit(): void {
-        if (!this.graph) 
-            throw new Error('Graph is undefined.');
-        this.graph.zoomToFit({ maxScale: 1 });
-        this.graph.centerContent();
-    }
 
     //增加改变边样式的函数， ;  *@author; 王炳宏  2023-05-23
     //todo 需要完善其他需求
@@ -576,18 +569,33 @@ class CanvasConfig implements ICanvasConfig {
         }
 
     }
+
+    public zoomToFit(): Number {
+        if (!this.graph) 
+            throw new Error('Graph is undefined.');
+        this.graph.zoomToFit({ maxScale: 1 });
+        this.graph.centerContent();
+        return Number((this.graph.zoom() * 100).toFixed(0));
+    }
     
-    public zoomIn(): void {
+    public zoomIn(): Number {
         if (!this.graph) 
             throw new Error('Graph is undefined.');
         this.graph.zoom(this.zoomFactor);
+        return Number((this.graph.zoom() * 100).toFixed(0));
     }
 
+    public getZoom(): number {
+        if (!this.graph) 
+            throw new Error('Graph is undefined.');
+        return this.graph.zoom();
+    }
     
-    public zoomOut(): void {
+    public zoomOut(): Number {
         if (!this.graph) 
             throw new Error('Graph is undefined.');
         this.graph.zoom(-this.zoomFactor);
+        return Number((this.graph.zoom() * 100).toFixed(0));
     }
 
     public enableSnapline(): void {

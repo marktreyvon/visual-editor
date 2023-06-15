@@ -241,7 +241,8 @@ class DataConfig {
                 let { data: historyResult } = await DataAPI.getHistory(params);
                 if (historyResult.code === 200) {
                     console.log('DataConfig.parseData.xzy.historyResult', historyResult)
-                    this.callback({ history: historyResult.data })
+                    const history = historyResult.data || {};
+                    this.callback({ history })
                 }
                 resolve(true);
             } else if (this.refType === 'table') {
