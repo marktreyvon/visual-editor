@@ -108,10 +108,14 @@ export const useEvents = () => {
         });
 
         events.setResizedEventListener((data: any) => {
+            const temp = data.node || data.cell || null;
+            currentNode = temp;
             setNodeData(data)
         });
 
         events.setMovedEventListener((data: any) => {
+            const temp = data.node || data.cell || null;
+            currentNode = temp;
             setNodeData(data)
         });
 
@@ -233,9 +237,9 @@ export const useEvents = () => {
 
     const onBaseChange = (data: any) => {
         console.log('onBaseChange', data)
-        data.style.size && currentNode.resize(Number(data.style.size.width), Number(data.style.size.height));
-        data.style.position && currentNode.position(Number(data.style.position.x), Number(data.style.position.y));
-        data.style.zIndex && currentNode.setZIndex(data.style.zIndex);
+        data.baseStyle.size && currentNode.resize(Number(data.baseStyle.size.width), Number(data.baseStyle.size.height));
+        data.baseStyle.position && currentNode.position(Number(data.baseStyle.position.x), Number(data.baseStyle.position.y));
+        data.baseStyle.zIndex && currentNode.setZIndex(data.baseStyle.zIndex);
     }
 
     return {

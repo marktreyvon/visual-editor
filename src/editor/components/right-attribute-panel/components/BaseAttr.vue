@@ -7,20 +7,20 @@
 
         <el-form-item label="位置:">
             <el-row :gutter="10">
-                <el-col :span="12" ><el-input disabled  type="number" v-model="formData.position.x"></el-input></el-col>
-                <el-col :span="12"><el-input  disabled type="number" v-model="formData.position.y"></el-input></el-col>
+                <el-col :span="12" ><el-input type="number" v-model="formData.position.x"></el-input></el-col>
+                <el-col :span="12"><el-input type="number" v-model="formData.position.y"></el-input></el-col>
             </el-row>
         </el-form-item>
 
         <el-form-item label="尺寸:">
             <el-row :gutter="10">
-                <el-col :span="12" ><el-input disabled type="number" v-model="formData.size.width"></el-input></el-col>
-                <el-col :span="12"><el-input disabled type="number" v-model="formData.size.height"></el-input></el-col>
+                <el-col :span="12" ><el-input type="number" v-model="formData.size.width"></el-input></el-col>
+                <el-col :span="12"><el-input type="number" v-model="formData.size.height"></el-input></el-col>
             </el-row>
         </el-form-item>
 
         <el-form-item label="层级:">
-            <el-input type="number" disabled v-model="formData.zIndex"></el-input>
+            <el-input type="number" v-model="formData.zIndex"></el-input>
         </el-form-item>
         
         <!-- <el-form-item label="对齐:">
@@ -68,14 +68,13 @@ watchEffect(() => {
     }
 })
 
-// const emit = defineEmits(["onChange"]);
-// watch(formData, (val) => {
-//     // 当自定义属性改变时，传递给Main.vue的style属性
-//     console.log('BaseNode.Attribute.watch.formData', {...val})
-//     emit("onChange", {
-//         style: { ...val }
-//     });
-// }, { deep: true })
+const emit = defineEmits(["onChange"]);
+watch(formData, (val) => {
+    // 当自定义属性改变时，传递给Main.vue的style属性
+    console.log('BaseNode.Attribute.watch.formData', {...val})
+    const style = JSON.parse(JSON.stringify(val))
+    emit("onChange", { baseStyle: style });
+}, { deep: true })
 
 
 </script>
