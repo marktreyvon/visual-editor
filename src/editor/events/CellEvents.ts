@@ -97,7 +97,6 @@ class CellEvents implements ICellEvents {
         }
 
 
-
         this.graph.on("blank:click", ({ e, x, y }) => {
             this.clickListener && this.clickListener({ e, x, y });
         });
