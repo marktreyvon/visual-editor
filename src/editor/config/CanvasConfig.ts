@@ -221,6 +221,7 @@ class CanvasConfig implements ICanvasConfig {
                 enabled: true,
                 multiple: true,
                 rubberband: true,
+                rubberEdge: true,
                 movable: true,
                 showNodeSelectionBox: true,
             })
@@ -235,11 +236,11 @@ class CanvasConfig implements ICanvasConfig {
         this.setNodeMovable(this.nodeMovable);
 
         this.graph.centerContent();
-        // delete
-        const  that=this
 
+        //键盘 绑定事件
+        const  that=this
         this.graph.bindKey('backspace', () => {
-            console.log(that.graph)
+            // delete
             if (!that.graph)
                 throw new Error('Graph is undefined.');
             that.graph.removeCells(this.selection.getSelectedCells())
@@ -269,8 +270,23 @@ class CanvasConfig implements ICanvasConfig {
             if (!that.graph)
                 throw new Error('Graph is undefined.');
            const Cells = this.selection.getSelectedCells()
+
             if(Cells.length>0){
                 Cells.forEach((cell:any)=>{
+                    if(cell.shape==='edge'){
+                        const source=cell.getSource()
+                        const target=cell.getTarget()
+                        if(source.cell||target.cell) return
+                        const vertices=   cell.getVertices()
+                        if(vertices.length>0){
+                            vertices.forEach((vertica:any)=>{
+                                vertica.y=vertica.y-1
+                            })
+                        }
+                        cell.setSource({x:source.x,y:source.y-1})
+                        cell.setTarget({x:target.x,y:target.y-1})
+                        return
+                    }
                     const pos = cell.position();
                     cell.position(pos.x,pos.y-1);
                 })
@@ -284,6 +300,20 @@ class CanvasConfig implements ICanvasConfig {
             const Cells = this.selection.getSelectedCells()
             if(Cells.length>0){
                 Cells.forEach((cell:any)=>{
+                    if(cell.shape==='edge'){
+                        const source=cell.getSource()
+                        const target=cell.getTarget()
+                        if(source.cell||target.cell) return
+                        const vertices=   cell.getVertices()
+                        if(vertices.length>0){
+                            vertices.forEach((vertica:any)=>{
+                                vertica.y=vertica.y+1
+                            })
+                        }
+                        cell.setSource({x:source.x,y:source.y+1})
+                        cell.setTarget({x:target.x,y:target.y+1})
+                        return
+                    }
                     const pos = cell.position();
                     cell.position(pos.x,pos.y+1);
                 })
@@ -296,6 +326,20 @@ class CanvasConfig implements ICanvasConfig {
             const Cells = this.selection.getSelectedCells()
             if(Cells.length>0){
                 Cells.forEach((cell:any)=>{
+                    if(cell.shape==='edge'){
+                        const source=cell.getSource()
+                        const target=cell.getTarget()
+                        if(source.cell||target.cell) return
+                        const vertices=   cell.getVertices()
+                        if(vertices.length>0){
+                            vertices.forEach((vertica:any)=>{
+                                vertica.x=vertica.x+1
+                            })
+                        }
+                        cell.setSource({x:source.x+1,y:source.y})
+                        cell.setTarget({x:target.x+1,y:target.y})
+                        return
+                    }
                     const pos = cell.position();
                     cell.position(pos.x+1,pos.y);
                 })
@@ -308,6 +352,20 @@ class CanvasConfig implements ICanvasConfig {
             const Cells = this.selection.getSelectedCells()
             if(Cells.length>0){
                 Cells.forEach((cell:any)=>{
+                    if(cell.shape==='edge'){
+                        const source=cell.getSource()
+                        const target=cell.getTarget()
+                        if(source.cell||target.cell) return
+                        const vertices=   cell.getVertices()
+                        if(vertices.length>0){
+                            vertices.forEach((vertica:any)=>{
+                                vertica.x=vertica.x-1
+                            })
+                        }
+                        cell.setSource({x:source.x-1,y:source.y})
+                        cell.setTarget({x:target.x-1,y:target.y})
+                        return
+                    }
                     const pos = cell.position();
                     cell.position(pos.x-1,pos.y);
                 })
