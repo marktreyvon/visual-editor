@@ -38,31 +38,35 @@ export default {
     data() {
         return {
             activeNames: 'style',
-            formData: styleData
+            formData: JSON.parse(JSON.stringify(styleData))
         }
     },
     watch: {
         formData: {
             handler(val) {
                 // 当自定义属性改变时，传递给Main.vue的style属性
-                console.log('text.Attribute.watch.formData', val)
                 this.$emit("onChange", {
                     style: { ...val, fontSize: val.fontSize + 'px', borderWidth: val.borderWidth + 'px' }
                 });
             },
             deep: true
+        },
+        data: {
+            handler(val) {
+                console.log('text.Attribute.watch.data', val)
+                const jsonStr = JSON.stringify(val);
+                if (jsonStr !== '{}') {
+                    const jsonObj = JSON.parse(jsonStr);
+                    jsonObj.fontSize = jsonObj.fontSize?.toString().replace("px", "") || styleData.fontSize
+                    jsonObj.borderWidth = jsonObj.borderWidth?.toString().replace("px", "") || styleData.borderWidth
+                    this.formData = jsonObj;
+                } else {
+                    this.formData = JSON.parse(JSON.stringify(styleData));
+                }
+            },
+            immediate: true,
+            deep: true
         }
-    },
-    mounted() {
-        if (this.data) {
-            const jsonStr = JSON.stringify(this.data);
-            if (jsonStr === '{}') return;
-            const jsonObj = JSON.parse(jsonStr);
-            jsonObj.fontSize = jsonObj.fontSize?.toString().replace("px", "") || styleData.fontSize
-            jsonObj.borderWidth = jsonObj.borderWidth?.toString().replace("px", "") || styleData.borderWidth
-            this.formData = jsonObj;
-        }
-        
     }
 }
 </script>

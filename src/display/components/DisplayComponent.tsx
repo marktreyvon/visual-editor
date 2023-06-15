@@ -1,27 +1,23 @@
-import { parseJSONData } from "@/utils";
+import { parseJSONData, randomString } from "@/utils";
 import { Component, defineComponent } from "vue";
 import { DataConfig } from "../config/DataConfig";
+import { Node } from "@antv/x6";
 
 export const getDisplayComponent = (cpt: Component, nodeData: any, refType: any): Component => {
     const dataConfig: DataConfig = new DataConfig(nodeData, refType);
-
     return defineComponent({
+        inject: ['getNode'],
         data() {
             return {
                 value: "",
-                style: undefined,
-                option: undefined,
-                data: undefined
+                style: {},
+                data: {},
             }
         },
         mounted() {
-            if (!nodeData) return;
-            console.log('display.mounted.nodeData', nodeData)
-            // 从节点的附加数据中获取样式和绑定数据
-            const jsonData = parseJSONData(nodeData.jsonData);
-            console.log('display.mounted.jsonData', jsonData)
-
-            if (!jsonData) return;
+            const node: Node.Properties = (this as any).getNode() as Node.Properties;
+            const data = node.store.data.data || {};
+            const jsonData = parseJSONData(data.jsonData);
             if (jsonData.style) {
                 this.style = { ...jsonData.style }
             }
@@ -50,9 +46,6 @@ export const getDisplayComponent = (cpt: Component, nodeData: any, refType: any)
                     dataConfig.start();
                 }
             }
-            if (jsonData.option) {
-                this.option = { ...jsonData.option }
-            }
         },
         methods: {
             onChange(value: any) {
@@ -69,9 +62,7 @@ export const getDisplayComponent = (cpt: Component, nodeData: any, refType: any)
         },
         render() {
             return (
-                <div style="width:100%;height:100%">
-                    <cpt value={this.value} style={this.style} data={this.data} option={this.option} onChange={this.onChange}/>
-                </div>
+                <cpt value={this.value} style={this.style} data={this.data} onChange={this.onChange}/>
             )
         }
     })

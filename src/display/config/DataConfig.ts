@@ -225,8 +225,8 @@ class DataConfig {
                     let value = {};
                     if (data && data.length !== 0) {
                         value = data[0];
+                        this.callback({ current: value});
                     }
-                    this.callback({ current: value});
                 }
                 let endTime = (new Date()).getTime();
                 let startTime = endTime - (Number(24*60*60*10) * 1000);

@@ -64,7 +64,8 @@
   
 <script>
 import { defaultOption, shapeOptions } from './default'
-export default {
+import { defineComponent } from 'vue';
+export default defineComponent({
     props: {
         data: {
             type: Object,
@@ -74,32 +75,46 @@ export default {
     data() {
         return {
             activeNames: 'style',
-            formData: defaultOption,
-            shapeOptions: shapeOptions
+            formData: JSON.parse(JSON.stringify(defaultOption)),
+            shapeOptions: JSON.parse(JSON.stringify(shapeOptions))
         }
     },
     watch: {
         formData: {
             handler(val) {
                 // 当自定义属性改变时，传递给Main.vue的style属性
-                console.log('text.Attribute.watch.formData', val)
+                console.log('liquid.Attribute.watch.formData', val)
                 this.$emit("onChange", {
                     style: { ...val }
                 });
             },
             deep: true
+        },
+        data: {
+            handler(val) {
+                console.log('liquid.Attribute.watch.data', {...val})
+                if (JSON.stringify(val) !== "{}") {
+                    this.formData = JSON.parse(JSON.stringify(val));
+                } else {
+                    this.formData = JSON.parse(JSON.stringify(defaultOption));
+                }
+            },
+            deep: true
         }
     },
     mounted() {
-        if (this.data) {
-            const jsonStr = JSON.stringify(this.data);
-            if (jsonStr === '{}') return;
-            const jsonObj = JSON.parse(jsonStr);
-            this.formData = jsonObj;
-        }
+        console.log('liquid.Attribute.mounted.data', JSON.stringify(this.data))
+        console.log('liquid.Attribute.mounted.data', this.formData)
+        // if (this.data) {
+        //     console.log('liquid.Attribute.mounted.data', this.data)
+        //     const jsonStr = JSON.stringify(this.data);
+        //     if (jsonStr === '{}') return;
+        //     const jsonObj = JSON.parse(jsonStr);
+        //     this.formData = jsonObj;
+        // }
         
     }
-}
+})
 </script>
   
 <style lang="scss" scoped></style>

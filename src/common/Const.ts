@@ -97,3 +97,11 @@ export const PREVIEW_JSON_DATA_KEY = 'preview_json_data';
  */
 export const DEFAULT_BACKGROUND_COLOR = '#F2F7FA';
 
+/**
+ * 显示器大小
+ */
+export const DEFAULT_SCREEN_RECT = {
+    width: 1920,
+    height: 1080
+}
+

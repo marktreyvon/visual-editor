@@ -14,6 +14,7 @@ export const getDropComponent = (cpt: Component): Component => {
         },
         mounted() {
             const node: Node = (this as any).getNode() as Node;
+            console.log('DropComponent.mounted', node)
             // 监听节点的附加数据变化
             node.on("change:data", ({ current }) => {
                 // 判断是否为json字符串

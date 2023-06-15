@@ -19,6 +19,8 @@ declare interface IPluginConfig {
 
     getComponent(name: String): any;
 
+    getScreenRect(): { width: number; height: number; };
+
     registerComponents(mode: "editor" | "display", data: any): void;
 
 }

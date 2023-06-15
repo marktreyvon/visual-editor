@@ -53,19 +53,23 @@ let {
 } = useEvents();
 
 // 自定义样式
-const attrData = shallowRef<any>({});
+const attrData = ref<any>({});
 // 数据绑定
-const bindData = shallowRef<any>({});
-
-
-
-// watch(nodeData, (value) => {
-//     console.log('right-attribute-panel.nodeData', value)
-//     if (!value || !value.data) return;
-//     const jsonObj = parseJSONData(value.data.jsonData);
-//     attrData.value = jsonObj.style;
-//     bindData.value = jsonObj.data;
-// })
+const bindData = ref<any>({});
+watch(nodeData, (value) => {
+    console.log('right-attribute-panel.nodeData1', value)
+    if (!value) return;
+    if (!value.data) {
+        attrData.value = {};
+        bindData.value = {};
+        console.log('right-attribute-panel.nodeData2', attrData.value)
+        return;
+    }
+    const jsonObj = parseJSONData(value.data.jsonData);
+    console.log('right-attribute-panel.nodeData3', jsonObj)
+    attrData.value = {...jsonObj.style};
+    bindData.value = {...jsonObj.data};
+})
 
 let actionHandlers = reactive({})
 onMounted(() => {

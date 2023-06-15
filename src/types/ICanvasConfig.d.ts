@@ -255,6 +255,7 @@ declare namespace ICanvasConfig {
      * @param rotatingGrid      节点每次旋转的角度
      * @param nodeMovable       节点是否可移动
      * @param nodeResizable     节点是否可缩放
+     * @param screenRect        显示器大小
      */
     export interface Options {
         autoResize?: boolean;
@@ -269,6 +270,10 @@ declare namespace ICanvasConfig {
         rotatingGrid?: number;
         nodeMovable?: boolean;
         nodeResizable?: boolean;
+        screenRect?: {
+            width: number;
+            height: number;
+        }
     }
 
     /**

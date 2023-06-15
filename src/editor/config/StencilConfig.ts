@@ -122,8 +122,8 @@ class StencilConfig implements IStencilConfig {
             shape: data.name,
             x: 100,
             y: 40,
-            width: cpt.size.width || 200,
-            height: cpt.size.height || 200,
+            width: cpt.size.width === '100%' ? pluginConfig.getScreenRect().width : cpt.size.width || 200,
+            height: cpt.size.height === '100%' ? pluginConfig.getScreenRect().height : cpt.size.height || 200,
             label: data.name,
             //在创建节点时增加连接点属性;  *@author; 王炳宏  2023-05-23
             ports: this.getPorts(),

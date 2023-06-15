@@ -1,6 +1,6 @@
 <template>
     <div :style="myStyle" style="width:100%;height:100%;">
-        <span >{{ textValue }}</span>
+        <span :style="{ 'color': myStyle.color }">{{ textValue }}</span>
     </div>
 </template>
 
@@ -12,29 +12,39 @@ export default {
     value: {
       type: [String, Object],
       default: '文本'
+    },
+    style: {
+      type: Object,
+      default: () => ({})
     }
   },
   data() {
     return {
+      myStyle: styleData,
+      textValue: '文本'
     }
   },
-  computed: {
-    myStyle() {
-        if (this.style) {
-            return this.style
-        } else {
-            return styleData
-        }
+  watch: {
+    style: {
+      handler: function (val, oldVal) {
+        console.log('text.Main.style', val, oldVal)
+        if (JSON.stringify(val) === "{}") return;
+        this.myStyle = val;
+      },
+      immediate: true,
+      deep: true
     },
-    textValue() {
-        if (JSON.stringify(this.value) !== "{}") {
-            return this.value;
+    value: {
+      handler: function(val) {
+        if (!val) {
+          this.textValue = "文本";
         } else {
-            return "文本";
+          this.textValue = val;
         }
+        console.log('text.Main.value', this.textValue)
+      },
+      immediate: true
     }
-  },
-  methods: {
   }
 }
 </script>

@@ -53,16 +53,14 @@ export const useEvents = () => {
                 return;
             }
 
-            console.log('initEvents.currentNode', currentNode)
             nodeId = currentNode?.id
             // 获取插件管理器
             const pluginConfig: IPluginConfig = PluginConfig.getInstance();
             // 通过节点名称获取组件
             component = pluginConfig.getComponent(currentNode.shape);
-            console.log('initEvents.component', component)
             // 节点的附加数据
             nodeData.value = currentNode.store.data ;
-
+            console.log('initEvents.nodeData', nodeData.value)
             if (component) {
 
                 // 自定义组件
@@ -111,7 +109,6 @@ export const useEvents = () => {
         });
 
         events.setResizedEventListener((data: any) => {
-            console.log('setResizedEventListener', data)
             setNodeData(data)
         });
 
@@ -127,8 +124,6 @@ export const useEvents = () => {
             setCellList(view,false)
         });
         events.setMouseEnterEventListener((data: any) => {
-            console.log('setMouseEnterEventListener', data)
-
             const node = data.cell;
             if(node.shape!=='edge'){
                 const ports=node.getPorts()
@@ -136,7 +131,6 @@ export const useEvents = () => {
                     node.portProp(port.id, "attrs/circle/style/visibility", "visible");
                 })
             }
-
 
             node.addTools({
                 name: 'button-remove',

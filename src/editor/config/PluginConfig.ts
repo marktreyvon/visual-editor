@@ -4,6 +4,7 @@ import { getDropComponent } from "../components/canvas-editor/DropComponent";
 import { getDisplayComponent } from "@/display/components/DisplayComponent";
 import { getDisplayPicComponent } from "@/display/components/DisplayPicComponent";
 import { getDropPicComponent } from "../components/canvas-editor/DropPicComponent";
+import { Component } from "vue";
 
 /**
  * @author cxs
@@ -16,9 +17,11 @@ import { getDropPicComponent } from "../components/canvas-editor/DropPicComponen
 class PluginConfig implements IPluginConfig  {
     private static instance: PluginConfig;
     components: Map<String, any>;
+    screenRect: { width: number; height: number; };
 
-    public constructor() {
+    public constructor(screenRect: { width: number; height: number; } = { width: 1920, height: 1080}) {
         this.components = new Map<String, any>();
+        this.screenRect = screenRect;
     }
 
     public static getInstance(): PluginConfig {
@@ -43,6 +46,10 @@ class PluginConfig implements IPluginConfig  {
     public getComponents(): Map<String, any> {
         return this.components;
     }
+    
+    public getScreenRect(): { width: number; height: number; } {
+        return this.screenRect;
+    }
 
     public registerComponents(mode: "editor" | "display", data: any): void {
         console.log('============registerComponents===================')
@@ -59,8 +66,8 @@ class PluginConfig implements IPluginConfig  {
                                 const cpt: any = getDropComponent(view.Main);
                                 this.registerComponent(cell, cpt);
                             } else if (mode === 'display') {
-                                console.log('registerComponents.view.Data', view.Data.data())
-                                const cpt: any = getDisplayComponent(view.Main, cell.data || null, view.type);
+                                console.log('registerComponents.view.Data', cell.data)
+                                const cpt: Component = getDisplayComponent(view.Main, cell.data || null, view.type);
                                 this.registerComponent(cell, cpt);
                             }
                         } else if (cell.data && cell.data.pic) {
@@ -77,15 +84,15 @@ class PluginConfig implements IPluginConfig  {
 
             })
         }
-       
         console.log('============registerComponents===================')
     }
 
     public registerComponent(cell: any, component: any): void {
+        console.log('registerComponent',cell.size)
         register({
             shape: cell.shape,
-            width: cell.size.width,
-            height: cell.size.height,
+            width: cell.size.width === '100%' ? this.screenRect.width : cell.size.width,
+            height: cell.size.height === '100%' ? this.screenRect.height : cell.size.height,
             component
           });
     }

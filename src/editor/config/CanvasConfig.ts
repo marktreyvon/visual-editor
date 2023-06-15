@@ -49,6 +49,7 @@ class CanvasConfig implements ICanvasConfig {
     rotatingGrid: number = Common.DEFAULT_RATATING_GRID;
     nodeMovable: boolean = Common.DEFAULT_NODE_MOVABLE;
     nodeResizable: boolean = Common.DEFAULT_NODE_RESIZABLE;
+    screenRect: { width: number, height: number } = Common.DEFAULT_SCREEN_RECT;
 
     private constructor(containerId: string, options?: ICanvasConfig.Options) {
         this.containerId = containerId;
@@ -65,6 +66,7 @@ class CanvasConfig implements ICanvasConfig {
             if (options.rotatingGrid !== undefined) this.rotatingGrid = options.rotatingGrid;
             if (options.nodeMovable !== undefined) this.nodeMovable = options.nodeMovable;
             if (options.nodeResizable !== undefined) this.nodeResizable = options.nodeResizable;
+            if (options.screenRect !== undefined) this.screenRect = options.screenRect;
         }
         this.graphOptions = {
             background: {},
@@ -93,7 +95,13 @@ class CanvasConfig implements ICanvasConfig {
      * @param options 
      * @returns 
      */
-    public static getDisplayInstance(containerId: string = Common.DEFAULT_DISPLAY_CONTAINER_ID, options?: ICanvasConfig.Options): CanvasConfig {
+    public static getDisplayInstance(containerId: string = Common.DEFAULT_DISPLAY_CONTAINER_ID, 
+        options: ICanvasConfig.Options = {}): CanvasConfig {
+        options.autoResize = true;
+        options.nodeMovable = false;
+        options.nodeResizable = false;
+        options.enableRotating = false;
+        options.enableSelection = false;
         if (!CanvasConfig.displayInstance) {
             CanvasConfig.displayInstance = new CanvasConfig(containerId, options);
         }
@@ -518,7 +526,7 @@ class CanvasConfig implements ICanvasConfig {
     public renderJSON(json: any): void {
         if (!this.graph) 
             throw new Error('Graph is undefined.');
-        const pluginConfig: IPluginConfig = new PluginConfig();
+        const pluginConfig: IPluginConfig = new PluginConfig(this.screenRect);
         if (CanvasConfig.instance) {
             pluginConfig.registerComponents("editor", json.cells);
         } else if (CanvasConfig.displayInstance) {

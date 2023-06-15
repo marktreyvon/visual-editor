@@ -32,18 +32,20 @@ onMounted(() => {
 });
 
 const containerRect = ref({
-  width: 0,
-  height: 0
+  width: 1920,
+  height: 1080
 });
 
 onMounted(() => {
   const resizeObserver = new ResizeObserver(entries => {
     console.log("监听变化", entries[0].contentRect.width, entries[0].contentRect.height)
-    containerRect.value = {
-      width: entries[0].contentRect.width,
-      height: entries[0].contentRect.height
+    const options: ICanvasConfig.Options = {
+      screenRect: {
+        width: entries[0].contentRect.width,
+        height: entries[0].contentRect.height
+      }
     }
-    CanvasConfig.getDisplayInstance().zoomToFit();
+    CanvasConfig.getDisplayInstance(Common.DEFAULT_DISPLAY_CONTAINER_ID, options).zoomToFit();
   })
   const displayContainer: HTMLElement = <HTMLElement>document.getElementById(Common.DEFAULT_DISPLAY_CONTAINER_ID);
   resizeObserver.observe(displayContainer);
