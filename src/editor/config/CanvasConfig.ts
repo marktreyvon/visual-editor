@@ -1,5 +1,6 @@
 import { Cell, Graph, Node,Color,Timing } from '@antv/x6';
 import { Selection } from "@antv/x6-plugin-selection";
+import { Clipboard } from "@antv/x6-plugin-clipboard";
 import { History } from "@antv/x6-plugin-history";
 import { Snapline } from "@antv/x6-plugin-snapline";
 import { Transform } from "@antv/x6-plugin-transform";
@@ -41,6 +42,7 @@ class CanvasConfig implements ICanvasConfig {
     autoResize: boolean = Common.DEFAULT_AUTO_RESIZE;
     gridSize: number = Common.DEFAULT_GRID_SIZE;
     history: boolean = Common.DEFAULT_HISTORY;
+    selection:any;
     enableMouseWheel: boolean = Common.DEFAULT_ENABLE_MOUSE_WHEEL;
     enableMousePan: boolean = Common.DEFAULT_ENABLE_MOUSE_PAN;
     enableSelection: boolean = Common.DEFAULT_ENABLE_SELECTION;
@@ -154,9 +156,6 @@ class CanvasConfig implements ICanvasConfig {
         // 显示网格
         this.graph.showGrid();
 
-
-        
-
         // 配置撤销重做
         if (this.history) {
             this.graph.use(
@@ -170,7 +169,6 @@ class CanvasConfig implements ICanvasConfig {
         if (this.enableMouseWheel) {
             this.graph.enableMouseWheel();
         }
-
         // 启用画布平移
         this.graph.enablePanning();
 
@@ -211,17 +209,22 @@ class CanvasConfig implements ICanvasConfig {
                 enabled: true,
             })
         );
+        // 启用复制粘贴
+        this.graph.use(
+            new Clipboard({
+                enabled: true,
+            })
+        );
         // 配置多节点框选
         if (this.enableSelection) {
-            this.graph.use(
-                new Selection({
-                    enabled: true,
-                    multiple: true,
-                    rubberband: true,
-                    movable: true,
-                    showNodeSelectionBox: true,
-                })
-            );
+            this.selection = new Selection({
+                enabled: true,
+                multiple: true,
+                rubberband: true,
+                movable: true,
+                showNodeSelectionBox: true,
+            })
+            this.graph.use(this.selection);
         }
         // 启用导出
         this.graph.use(new Export());
@@ -234,15 +237,82 @@ class CanvasConfig implements ICanvasConfig {
         this.graph.centerContent();
         // delete
         const  that=this
+
         this.graph.bindKey('backspace', () => {
             console.log(that.graph)
             if (!that.graph)
                 throw new Error('Graph is undefined.');
+            that.graph.removeCells(this.selection.getSelectedCells())
+        })
+        this.graph.bindKey('ctrl+c', () => {
+            if (!that.graph)
+                throw new Error('Graph is undefined.');
             const cells = that.graph.getSelectedCells()
-            console.log(cells)
             if (cells.length) {
-                that.graph.removeCells(cells)
+                that.graph.copy(cells)
             }
+            return false
+        })
+
+        this.graph.bindKey('ctrl+v', () => {
+            if (!that.graph)
+                throw new Error('Graph is undefined.');
+            if (!that.graph.isClipboardEmpty()) {
+                const cells = that.graph.paste({ offset: 32 })
+                that.graph.cleanSelection()
+                that.graph.select(cells)
+            }
+            return false
+        })
+
+        this.graph.bindKey('up', () => {
+            if (!that.graph)
+                throw new Error('Graph is undefined.');
+           const Cells = this.selection.getSelectedCells()
+            if(Cells.length>0){
+                Cells.forEach((cell:any)=>{
+                    const pos = cell.position();
+                    cell.position(pos.x,pos.y-1);
+                })
+            }
+            return false
+        })
+
+        this.graph.bindKey('down', () => {
+            if (!that.graph)
+                throw new Error('Graph is undefined.');
+            const Cells = this.selection.getSelectedCells()
+            if(Cells.length>0){
+                Cells.forEach((cell:any)=>{
+                    const pos = cell.position();
+                    cell.position(pos.x,pos.y+1);
+                })
+            }
+            return false
+        })
+        this.graph.bindKey('right', () => {
+            if (!that.graph)
+                throw new Error('Graph is undefined.');
+            const Cells = this.selection.getSelectedCells()
+            if(Cells.length>0){
+                Cells.forEach((cell:any)=>{
+                    const pos = cell.position();
+                    cell.position(pos.x+1,pos.y);
+                })
+            }
+            return false
+        })
+        this.graph.bindKey('left', () => {
+            if (!that.graph)
+                throw new Error('Graph is undefined.');
+            const Cells = this.selection.getSelectedCells()
+            if(Cells.length>0){
+                Cells.forEach((cell:any)=>{
+                    const pos = cell.position();
+                    cell.position(pos.x-1,pos.y);
+                })
+            }
+            return false
         })
     }
 
@@ -292,8 +362,6 @@ class CanvasConfig implements ICanvasConfig {
                 strokeD='10 10 2 10'
                 break
         }
-        console.log(typeof data.lineStyle)
-        console.log(strokeD)
         edge.attr('line/strokeDasharray', strokeD)
         edge.attr('line/strokeWidth', data.lineWidth)
         edge.removeMarkup()
@@ -340,7 +408,6 @@ class CanvasConfig implements ICanvasConfig {
             }
         }
 
-        extracted(edge,data)
         if(data && data.flowEffect!=='无效果'){
             let count=data.cycleTimes
             let count1=-1
