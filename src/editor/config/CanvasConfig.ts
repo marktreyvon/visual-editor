@@ -111,7 +111,7 @@ class CanvasConfig implements ICanvasConfig {
                 eventTypes: ["rightMouseDown", "mouseWheel"]
             },
             connecting:{
-                snap: false,
+                snap: true,
                 allowBlank: true,  //不允许指向空节点;  *@author 王炳宏  2023-05-23
                 allowMulti: true,  //不允许重复连接;  *@author 王炳宏  2023-05-23
                 allowLoop: false,   //不允许自连;   *@author; 王炳宏  2023-05-23
@@ -125,8 +125,8 @@ class CanvasConfig implements ICanvasConfig {
                         router:"orth",
                         attrs: {
                             line: {
-                                stroke: "#333",
-                                strokeWidth: 1,
+                                stroke: '#343434',
+                                strokeWidth: 2,
                             },
                         },
                     });
