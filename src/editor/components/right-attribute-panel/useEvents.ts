@@ -41,9 +41,9 @@ export const useEvents = () => {
 
         // 点击node
         events.setClickEventListener((data: any) => {
-
             const temp = data.node || data.cell || null;
             currentNode = temp;
+            console.log('initEvents.setClickEventListener', currentNode)
 
             if (temp === null) {
                 // 如果点击的是画布
@@ -62,7 +62,6 @@ export const useEvents = () => {
             nodeData.value = currentNode.store.data ;
             console.log('initEvents.nodeData', nodeData.value)
             if (component) {
-
                 // 自定义组件
                 setNodeData(data);
                 isNode.value = true;

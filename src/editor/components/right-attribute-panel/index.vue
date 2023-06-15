@@ -11,7 +11,7 @@
                         <!-- 自定义样式 -->
                         <component  v-if="attributeCpt" :currentNode='nodeId' :data="attrData" :is="attributeCpt" v-on="actionHandlers"
                             @onChange="onChange" />
-                        <BaseNodeAttr v-if="!attributeCpt"  @onChange="onChange"/>
+                        <BaseNodeAttr v-if="!attributeCpt" :data="attrData" @onChange="onChange"/>
                     </div>
                     
                       <!-- 边样式 -->
@@ -66,9 +66,10 @@ watch(nodeData, (value) => {
         return;
     }
     const jsonObj = parseJSONData(value.data.jsonData);
-    console.log('right-attribute-panel.nodeData3', jsonObj)
     attrData.value = {...jsonObj.style};
     bindData.value = {...jsonObj.data};
+    console.log('right-attribute-panel.nodeData3', attrData.value)
+
 })
 
 let actionHandlers = reactive({})

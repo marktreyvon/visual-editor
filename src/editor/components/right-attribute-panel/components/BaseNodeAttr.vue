@@ -15,21 +15,39 @@
                 <el-form-item label="边框颜色">
                     <el-color-picker v-model="formData.body.stroke" />
                 </el-form-item>
+
+                <el-form-item label="边框圆角">
+                    <el-input type="number" v-model="formData.body.rx"></el-input>
+                </el-form-item>
             </el-form>
         </el-collapse-item>
     </el-collapse>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from "vue";
+import { ref, reactive, watch, watchSyncEffect } from "vue";
 const activeNames = ref("style");
 const formData = reactive({
     body: {
         fill: "",
         strokeWidth: 2,
         stroke: "#000000",
+        rx: 6,
+        ry: 6
     }
 })
+const props = defineProps({
+    data: {
+        type: Object,
+        default: () => ({})
+    }
+})
+
+watch(() => props.data, (val) => {
+    if (!val || JSON.stringify(val) === "{}") return;
+    console.log('BaseNodeAttr.watch.props.data', val)
+    formData.body = { ...val.body };
+}, { deep: true, immediate: true })
 
 const emit = defineEmits(["onChange"]);
 watch(formData, (val) => {
@@ -38,10 +56,13 @@ watch(formData, (val) => {
     if(!val.body.fill){
         val.body.fill="#00000000"
     }
+    val.body.ry = val.body.rx;
     emit("onChange", {
         style: { ...val }
     });
 }, { deep: true })
+
+
 
 
 </script>

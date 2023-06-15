@@ -80,6 +80,8 @@ export const useStencil = () => {
             fill: 'transparent',
             stroke: '#000',
             strokeWidth: 2,
+            rx: 6,
+            ry: 6,
         },
         label: {
             text: '',
@@ -88,7 +90,7 @@ export const useStencil = () => {
             refY2: 4,
             textAnchor: 'middle',
             textVerticalAnchor: 'top',
-        },
+        }
     }
     
     const baseNode = [
