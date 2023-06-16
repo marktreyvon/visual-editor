@@ -196,6 +196,7 @@ export const useEvents = () => {
      * @param data
      */
     const onChange = (data: any) => {
+        console.log('useEvents.onChange', data)
         let jsonStr = "{}";
         if (currentNode.getData()) {
             // 从节点的附加数据中获取JSON字符串

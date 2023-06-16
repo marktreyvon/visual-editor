@@ -19,11 +19,14 @@
                 </div>
 
             </el-tab-pane>
+            <!-- 数据绑定 -->
             <el-tab-pane label="数据" name="data" v-if="!isEdge">
                 <component v-if="isNode" :is="dataCpt" :data="bindData"  @onChange="onChange">
-                    <BaseData @onChange="onChange"/>
+                    <!-- 设备数据 -->
+                    <BaseData :data="bindData" @onChange="onChange"/>
                 </component>
             </el-tab-pane>
+            <!-- 图层 -->
             <el-tab-pane label="图层" name="layer">
                 <LayerAttr :cellList='cellList' :initEvents='initEvents'/>
             </el-tab-pane>

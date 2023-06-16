@@ -12,11 +12,14 @@ export const getDisplayComponent = (cpt: Component, nodeData: any, refType: any)
                 value: "",
                 style: {},
                 data: {},
+                id: randomString(8),
+                dataConfig: new DataConfig(nodeData, refType)
             }
         },
         mounted() {
             const node: Node.Properties = (this as any).getNode() as Node.Properties;
             const data = node.store.data.data || {};
+            console.log('display.mounted.data', data)
             const jsonData = parseJSONData(data.jsonData);
             if (jsonData.style) {
                 this.style = { ...jsonData.style }
@@ -31,18 +34,19 @@ export const getDisplayComponent = (cpt: Component, nodeData: any, refType: any)
                     // this.value = jsonData.data.dynamic;
                 } else if (jsonData.data.bindType === "device") {
                     console.log('display.mounted.device', jsonData.data.deviceData)
+                    if (!jsonData.data.deviceData[0].projectId) return;
                     // 设备数据
                     const cb = (value: any) => {
                         this.value = value;
                     }
                     // 设置回调
-                    dataConfig.setCallback(cb);
+                    this.dataConfig.setCallback(cb);
                     // 设置设备ID
-                    dataConfig.setDevicesData(jsonData.data.deviceData)
-                    dataConfig.setDeviceId(jsonData.data.deviceData[0].deviceId);
-                    dataConfig.setProperty(jsonData.data.deviceData[0].property);
+                    this.dataConfig.setDevicesData(jsonData.data.deviceData)
+                    this.dataConfig.setDeviceId(jsonData.data.deviceData[0].deviceId);
+                    this.dataConfig.setProperty(jsonData.data.deviceData[0].property);
                     // 启动定时器开始刷新数据
-                    dataConfig.start();
+                    this.dataConfig.start();
                 }
             }
         },
@@ -51,17 +55,17 @@ export const getDisplayComponent = (cpt: Component, nodeData: any, refType: any)
                 const { device, property } = value; 
                 console.log('display.change', device, property)
                 if (!device || !property) return;
-                dataConfig.stop();
+                this.dataConfig.stop();
                 // 改变了数据入口
-                device && dataConfig.setDeviceId(device.deviceId);
-                property && dataConfig.setProperty(property);
+                device && this.dataConfig.setDeviceId(device.deviceId);
+                property && this.dataConfig.setProperty(property);
                 // 重启定时器
-                dataConfig.start();
+                this.dataConfig.start();
             }
         },
         render() {
             return (
-                <cpt value={this.value} style={this.style} data={this.data} onChange={this.onChange}/>
+                <cpt id={this.id} key={this.id} value={this.value} style={this.style} data={this.data} onChange={this.onChange}/>
             )
         }
     })

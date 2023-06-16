@@ -33,11 +33,15 @@
               </template>
             </el-upload>
 
-            <el-dropdown class="el-dropdown" split-button text 
-                @click="handleClickExport"
+            <el-dropdown class="el-dropdown" 
                 @command="handleCommandExport"
                 >
-                导出JSON
+                <span class="el-dropdown-link" @click="handleClickExport">
+                  导出JSON
+                  <el-icon class="el-icon--right">
+                    <arrow-down />
+                  </el-icon>
+                </span>
                 <template #dropdown>
                   <el-dropdown-menu>
                     <el-dropdown-item command="json">导出JSON</el-dropdown-item>
@@ -62,7 +66,7 @@
 <script setup lang="ts">
 import { ref, reactive, toRefs, inject, onMounted } from "vue";
 import { House, RefreshLeft, RefreshRight, ZoomOut, ZoomIn, Crop, View, Download, Share, CircleCheck, SwitchButton, QuestionFilled } from "@element-plus/icons-vue";
-import {StencilConfig} from "@/editor/config/StencilConfig"
+import { ArrowDown } from '@element-plus/icons-vue'
 import { exportFile, readFile } from "@/utils";
 const props = defineProps({ 
     tools: {
@@ -157,5 +161,6 @@ const handleCommandExport = (command: string) => {
   .el-dropdown {
     margin-left: 12px;
     margin-right: 12px;
+    align-items: center;
   }
 </style>

@@ -7,7 +7,7 @@
           <el-button style="width:100%" @click="addDevice">新增设备</el-button>
           <div class="device-container overflow-y-auto overflow-x-auto" >
               <div v-for="(device, index) in deviceData" >
-                <DeviceSelector :index="index" @delete="handleDeleteDevice" @change="handleChangeDeviceData"/>
+                <DeviceSelector :index="index" :data="device" @delete="handleDeleteDevice" @change="handleChangeDeviceData"/>
               </div>
           </div>
           
@@ -18,18 +18,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, getCurrentInstance, toRaw } from "vue";
+import { ref, reactive, onMounted, getCurrentInstance, toRaw, watch } from "vue";
 import { ElMessageBox } from 'element-plus'
 
 import DeviceSelector from "./components/DeviceSelector.vue";
 import { useBaseData } from './useBaseData'
-const emit = defineEmits(["onChange"]);
+const props = defineProps({
+  data: {
+    type: [Object],
+    default: () => ({})
+  }
+})
 
-const deviceData = reactive<any>([
+const emit = defineEmits(["onChange"]);
+const deviceData = ref<any>([
   {
+    devices: [],
     projectId: '',
     groupId: '',
-    deviceId: ''
+    deviceId: '',
+    property: '',
+    pluginId: '',
+    propertyTitle: ''
   }
 ])
 
@@ -43,18 +53,47 @@ onMounted(() => {
 })
 
 const addDevice = () => {
-  deviceData.push({
+  deviceData.value.push({
+    devices: [],
     projectId: '',
     groupId: '',
-    deviceId: ''
+    deviceId: '',
+    property: '',
+    pluginId: '',
+    propertyTitle: ''
   })
 }
 
+watch(() => props.data, (val) => {
+  console.log('baseData.data', val)
+  if (JSON.stringify(val) !== "{}") {
+    deviceData.value = JSON.parse(JSON.stringify(val.deviceData));
+  } else {
+    deviceData.value = [
+      {
+        devices: [],
+        projectId: '',
+        groupId: '',
+        deviceId: '',
+        property: '',
+        pluginId: '',
+        propertyTitle: ''
+      }
+    ]
+  }
+}, {deep: true, immediate: true});
+
+
+watch(deviceData, (value) => {
+  console.log('baseData.device', value)
+  emit('onChange', { data: { bindType: 'device', deviceData: toRaw(deviceData.value) }})
+}, {deep: true});
+
 const handleChangeDeviceData = (data: any) => {
-  deviceData.splice(data.index, 1, data);
-  const _deviceData = toRaw(deviceData);
-  const option = { bindType: 'device', deviceData: _deviceData  };
-  emit('onChange', { data: option })
+  deviceData.value.splice(data.index, 1, data);
+  // const _deviceData = toRaw(deviceData.value);
+  // const option = { bindType: 'device', deviceData: _deviceData  };
+  // emit('onChange', { data: option })
 }
 
 /**
@@ -62,13 +101,13 @@ const handleChangeDeviceData = (data: any) => {
  * @param id 
  */
 const handleDeleteDevice = (index: number) => {
-  if (deviceData.length === 1) {
+  if (deviceData.value.length === 1) {
     ElMessageBox.alert('至少保留一个设备', '提示', {})
     return
   }
   const callback = (action: any, instance: any) => {
     if (action === 'confirm') {
-      deviceData.splice(index, 1)
+      deviceData.value.splice(index, 1)
     }
   }
   ElMessageBox.confirm('是否确认删除该设备？', '确认删除', {callback}, null)
