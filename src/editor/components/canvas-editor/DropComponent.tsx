@@ -27,18 +27,18 @@ export const getDropComponent = (cpt: Component): Component => {
                 if (!data) return;
                 // 判断是否为json字符串
                 const jsonObj = isJSON(data.jsonData);
-                if (!data.jsonData || !jsonObj) return;
+                if (!data?.jsonData || !jsonObj) return;
 
-                if (jsonObj.style) {
-                    this.style = { ...jsonObj.style }
+                if (jsonObj?.style) {
+                    this.style = { ...jsonObj?.style }
                 }
-                if (jsonObj.value) {
-                    this.value = { ...jsonObj.value } ;
+                if (jsonObj?.value) {
+                    this.value = { ...jsonObj?.value } ;
                 }
-                if (jsonObj.option) {
-                    this.option = { ...jsonObj.option }
+                if (jsonObj?.option) {
+                    this.option = { ...jsonObj?.option }
                 }
-                if (jsonObj.data) {
+                if (jsonObj?.data) {
                     this.data = { ...jsonObj.data }
                     if (jsonObj.data.bindType === "static") {
                         this.value = jsonObj.data.static;

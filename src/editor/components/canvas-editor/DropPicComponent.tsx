@@ -32,7 +32,7 @@ export const getDropPicComponent = (url: String): Component => {
                 if (!data) return;
                 // 判断是否为json字符串
                 const jsonObj = isJSON(data.jsonData);
-                if (jsonObj.style) {
+                if (jsonObj?.style) {
                     this.style = { ...jsonObj.style, width: '100%', height: '100%' }
                 }
             }
