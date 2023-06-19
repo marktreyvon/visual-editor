@@ -35,6 +35,8 @@ class CellEvents implements ICellEvents {
 
     unmountedListener: EventListener<Object> | undefined;
 
+    removedListener: EventListener<Object> | undefined;
+
     constructor(graph: Graph,isDrawLine:boolean) {
         this.graph = graph;
         this.isDrawLine=isDrawLine
@@ -153,6 +155,10 @@ class CellEvents implements ICellEvents {
             edge.removeTools()
         })
 
+        this.graph.on('cell:removed', ({ cell }) => {
+            this.removedListener && this.removedListener({ cell });
+        })
+
     }
 
     public setGraphScaleEventListener(listener: EventListener<Object>): void {
@@ -199,6 +205,10 @@ class CellEvents implements ICellEvents {
     }
     public  setUnmountedEventListener(listener: EventListener<Object>): void {
         this.unmountedListener = listener;
+    }
+
+    public setRemovedEventListener(listener: EventListener<Object>): void {
+        this.removedListener = listener;
     }
 }
 

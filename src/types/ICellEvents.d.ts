@@ -32,6 +32,8 @@ declare interface ICellEvents {
     
     resizedListener: EventListener<Object> | undefined;
 
+    removedListener: EventListener<Object> | undefined;
+
     /**
      * 初始化事件
      */
@@ -106,6 +108,8 @@ declare interface ICellEvents {
      * @param listener
      */
     setUnmountedEventListener(listener: EventListener<Object>): void;
+
+    setRemovedEventListener(listener: EventListener<Object>): void;
 }
 
 declare interface EventListener<E> {

@@ -23,15 +23,13 @@ export const useStencil = () => {
         const { groups, nodeMap } = createStencilNode(plugins, graph);
         // 基础图形
         createStencilBaseNode(groups, nodeMap, graph);
-        console.log('initStencil.nodeMap', groups, nodeMap)
         let groupList: Stencil.Group[] = groups.map((group: string) => getGroup(group));
         const stencilConfig: IStencilConfig = getStencilConfig(groupList);
+        const stencil = stencilConfig.getStencil();
         nodeMap.forEach((nodes: any[], key: string) => {
-            console.log(nodes,"0000000")
-            if(key&&nodes){
-                stencilConfig.getStencil().load(nodes, key);
+            if (key && nodes) {
+                stencil.load(nodes, key);
             }
-
         });
         console.log('=================initStencil===================');
 
