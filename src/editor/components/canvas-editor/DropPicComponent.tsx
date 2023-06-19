@@ -22,6 +22,7 @@ export const getDropPicComponent = (url: String): Component => {
             node.setData({
                 pic: url
             })
+            console.log("getDropPicComponent.node", node)
             // 监听节点的附加数据变化
             node.on("change:data", ({ current }) => {
                 // 判断是否为json字符串

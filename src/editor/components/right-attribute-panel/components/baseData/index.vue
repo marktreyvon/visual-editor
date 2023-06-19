@@ -66,7 +66,7 @@ const addDevice = () => {
 
 watch(() => props.data, (val) => {
   console.log('baseData.data', val)
-  if (JSON.stringify(val) !== "{}") {
+  if (JSON.stringify(val) !== "{}" && val.deviceData) {
     deviceData.value = JSON.parse(JSON.stringify(val.deviceData));
   } else {
     deviceData.value = [

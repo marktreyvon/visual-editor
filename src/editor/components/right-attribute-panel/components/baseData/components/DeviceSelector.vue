@@ -24,12 +24,19 @@
                     </el-select>
                 </el-form-item>
 
-                <el-form-item v-if="state.groupId" label="选择设备">
+                <!-- <el-form-item v-if="state.groupId" label="选择设备">
                     <el-select filterable v-model="state.deviceId" placeholder="选择设备">
                         <el-option v-for="item in deviceOptions" :key="item.value" 
                         :label="item.label + (item.pluginId ? ' [已绑定]' : '')" 
                         :value="item.value" />
                     </el-select>
+                </el-form-item> -->
+
+                <el-form-item v-if="state.groupId" label="选择设备">
+                    <el-cascader ref="deviceRef" style="width: 100%;margin-right:10px" v-model="state.deviceId" placeholder="选择设备"
+                            :options="deviceOptions" clearable :props="{ checkStrictly: true, emitPath: false }"
+                            @change="handleDeviceChange">
+                    </el-cascader>
                 </el-form-item>
 
                 <el-form-item v-if="state.deviceId" label="选择属性">
@@ -124,11 +131,22 @@ watch(() => state.groupId, async (value) => {
  */
 watch(() => state.deviceId, async (value) => {
     if (!value) return;
-    console.log('watch deviceOptions', deviceOptions.value)
-    const index: number = deviceOptions.value.findIndex((item: any) => item.value === value);
-    if (index === -1) return;
-    state.pluginId = deviceOptions.value[index].pluginId;
-}, { immediate: true });
+    try {
+        deviceOptions.value.forEach((item: any) => {
+            if (item.children && item.children.length > 0) {
+                item.children.forEach((child: any) => {
+                    if (child.value === value) {
+                        state.pluginId = child.pluginId;
+                        throw new Error('break');
+                    }
+                })
+            }
+        })    
+    }
+    catch(e) {
+        console.log('watch deviceId', e)
+    }
+ }, { immediate: true });
 
 watchEffect(() => {
     if (state.deviceId && JSON.stringify(deviceOptions.value) !== "{}") {
@@ -193,7 +211,7 @@ async function getGroupList(groupId: string)  {
  * @param groupId
  * @returns 
  */
-function getDeviceList(groupId: string) {
+function getDeviceList1(groupId: string) {
     return new Promise((resolve, reject) => {
         DeviceAPI.getDeviceList({ current_page: 1, per_page: 9999, asset_id: groupId })
         .then(({ data: result }) => {
@@ -211,6 +229,59 @@ function getDeviceList(groupId: string) {
         })
     })
 }
+
+function handleDeviceChange(v) {
+
+}
+function getDeviceList(id: string) {
+      const params = {current_page: 1, per_page: 9999, asset_id: id}
+      DeviceAPI.getDeviceList(params)
+          .then(({data}) => {
+            if (data.code == 200) {
+              let arr = data.data?.data || [];
+
+              deviceOptions.value = arr.map((item: any) => {
+                if (item.children && item.children.length > 0) {
+                  item.children = item.children.map((child: any) => {
+                    return {
+                      label: child.device_name, value: child.device, pluginId: child.type
+                    }
+                  })
+                }
+                return {
+                  label: item.device_name, 
+                  value: item.device, 
+                  pluginId: item.type, 
+                  children: item.children || undefined
+                }
+              });
+              console.log("this.deviceOptions", deviceOptions.value)
+              
+            //   if (state.deviceId) {
+            //     state.device = [];
+            //     let pluginId = null;
+            //     const deviceObj = this.deviceOptions.find(item => {
+            //       if (item.children && item.children.length > 0) {
+            //         return item.children.find(child => {
+            //           if (child.value == this.formData.deviceId) {
+            //             pluginId = child.pluginId;
+            //             this.formData.device.push(item.value);
+            //             this.formData.device.push(child.value);
+            //             return true;
+            //           }
+            //         })
+            //       }
+            //       if (item.value == this.formData.deviceId) {
+            //         pluginId = item.pluginId;
+            //         this.formData.device.push(item.value);
+            //         return true;
+            //       }
+            //     });
+
+                // console.log("getDeviceList.formData", this.formData.device);
+            }
+          })
+    }
 
 /**
  * 通过设备Id获取插件

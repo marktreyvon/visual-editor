@@ -198,9 +198,10 @@ export const useEvents = () => {
     // 画布上的内容有改动时，将内容存入浏览器缓存中
     const storageGraphData = () => {
         const canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
-        const graph = canvasConfig.getGraph();
-        const data = graph.toJSON();
-        localStorage.setItem(Common.STORAGE_JSON_DATA_KEY, JSON.stringify(data));
+        setTimeout(() => {
+            const json = canvasConfig.toJSON();
+            localStorage.setItem(Common.STORAGE_JSON_DATA_KEY, JSON.stringify(json));
+        }, 200);
     }
 
     /**
@@ -210,7 +211,7 @@ export const useEvents = () => {
     const onChange = (data: any) => {
         console.log('useEvents.onChange', data)
         let jsonStr = "{}";
-        if (currentNode.getData()) {
+        if (currentNode?.getData()) {
             // 从节点的附加数据中获取JSON字符串
             jsonStr = currentNode.getData()?.jsonData || "{}";
         }

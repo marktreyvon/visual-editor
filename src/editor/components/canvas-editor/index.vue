@@ -1,5 +1,5 @@
 <template>
-  <div class="container" style="width=100%; height=100%">
+  <div class="container" style="width:100%; height:100%">
     <div :id="Common.DEFAULT_CONTAINER_ID"></div>
     <!-- <div class="mini-container" :id="Common.DEFAULT_MINI_CONTAINER_ID"></div> -->
     <TeleportContainer />
