@@ -155,14 +155,14 @@ export const useStencil = () => {
             label: '右箭头',
             attrs: commonAttrs
         },
-        // {
-        //     shape: "rect_img",
-        //     width: 40,
-        //     height: 40,
-        //     label: "图片",
-        //     imageUrl:defaultImg,
-        //     attrs: commonImgAttrs
-        // },
+        {
+            shape: "rect_img",
+            width: 40,
+            height: 40,
+            label: "图片",
+            imageUrl:defaultImg,
+            attrs: commonImgAttrs
+        },
     ]
     const createStencilBaseNode = (groups: any, nodeMap: any, graph: any) => {
         console.log('createStencilBaseNode.nodeMap', groups, nodeMap)
