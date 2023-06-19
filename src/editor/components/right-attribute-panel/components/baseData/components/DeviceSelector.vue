@@ -34,8 +34,7 @@
 
                 <el-form-item v-if="state.groupId" label="选择设备">
                     <el-cascader ref="deviceRef" style="width: 100%;margin-right:10px" v-model="state.deviceId" placeholder="选择设备"
-                            :options="deviceOptions" clearable :props="{ checkStrictly: true, emitPath: false }"
-                            @change="handleDeviceChange">
+                            :options="deviceOptions" clearable :props="{ checkStrictly: true, emitPath: false }">
                     </el-cascader>
                 </el-form-item>
 
@@ -230,9 +229,7 @@ function getDeviceList1(groupId: string) {
     })
 }
 
-function handleDeviceChange(v) {
 
-}
 function getDeviceList(id: string) {
       const params = {current_page: 1, per_page: 9999, asset_id: id}
       DeviceAPI.getDeviceList(params)
