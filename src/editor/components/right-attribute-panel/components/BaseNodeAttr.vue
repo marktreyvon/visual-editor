@@ -20,7 +20,7 @@
               <el-form-item label="图片地址" v-if='isImg'>
                 <el-input v-model="formData.image.xlink"></el-input>
               </el-form-item>
-              <el-form-item label="上传图片" prop="files">
+              <el-form-item label="上传图片" prop="files" v-if='isImg'>
                 <el-upload   ref="upload" :on-exceed="handleExceed" action='' :auto-upload='false'  :limit="1" class="upload-demo" :file-list="formData.files" :multiple="false"
                            :on-change="handleChange">
                   <template #trigger>
