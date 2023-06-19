@@ -206,6 +206,7 @@ export const useEvents = () => {
         const canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
         setTimeout(() => {
             const json = canvasConfig.toJSON();
+            console.log('storageGraphData', json)
             localStorage.setItem(Common.STORAGE_JSON_DATA_KEY, JSON.stringify(json));
         }, 200);
     }
@@ -237,7 +238,7 @@ export const useEvents = () => {
             jsonData
         });
 
-        storageGraphData();
+        
 
         const baseNodes = ["rect", "circle", "ellipse", "polygon", "polyline", "rect_img"];
         const index = baseNodes.findIndex((item: string) => item === currentNode.shape)
@@ -250,8 +251,9 @@ export const useEvents = () => {
                 currentNode.attr('image', {...data.style.image} )
                 currentNode.attr('image/xlink:href',data.style.image.xlink )
             }
-
         }
+
+        storageGraphData();
     }
 
     /**

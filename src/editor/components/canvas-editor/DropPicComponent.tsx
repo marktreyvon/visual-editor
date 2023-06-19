@@ -22,18 +22,20 @@ export const getDropPicComponent = (url: String): Component => {
             node.setData({
                 pic: url
             })
-            console.log("getDropPicComponent.node", node)
-            // 监听节点的附加数据变化
-            node.on("change:data", ({ current }) => {
-                // 判断是否为json字符串
-                const jsonObj = isJSON(current.jsonData);
-                // if (!current.jsonData || !jsonObj) return;
 
+            this.setData(node.getData());
+            // 监听节点的附加数据变化
+            node.on("change:data", ({ current }) => this.setData(current));
+        },
+        methods: {
+            setData(data: any) {
+                if (!data) return;
+                // 判断是否为json字符串
+                const jsonObj = isJSON(data.jsonData);
                 if (jsonObj.style) {
                     this.style = { ...jsonObj.style, width: '100%', height: '100%' }
                 }
-                console.log("getDropPicComponent.this.style", this.style)
-            });
+            }
         },
         render() {
             return (

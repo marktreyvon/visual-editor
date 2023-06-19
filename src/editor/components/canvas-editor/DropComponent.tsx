@@ -15,13 +15,19 @@ export const getDropComponent = (cpt: Component): Component => {
         mounted() {
             const node: Node = (this as any).getNode() as Node;
             console.log('DropComponent.mounted.node', node)
+            this.setData(node.getData());
+
             // 监听节点的附加数据变化
             node.on("change:data", ({ current }) => {
-
-                console.log('DropComponent.change:data', current)
+                this.setData(current);
+            });
+        },
+        methods: {
+            setData(data: any) {
+                if (!data) return;
                 // 判断是否为json字符串
-                const jsonObj = isJSON(current.jsonData);
-                if (!current.jsonData || !jsonObj) return;
+                const jsonObj = isJSON(data.jsonData);
+                if (!data.jsonData || !jsonObj) return;
 
                 if (jsonObj.style) {
                     this.style = { ...jsonObj.style }
@@ -38,8 +44,7 @@ export const getDropComponent = (cpt: Component): Component => {
                         this.value = jsonObj.data.static;
                     }
                 }
-                console.log('DropComponent.jsonObj', jsonObj)
-            });
+            }
         },
         render() {
             return (
