@@ -23,11 +23,13 @@ export const useStencil = () => {
         const { groups, nodeMap } = createStencilNode(plugins, graph);
         // 基础图形
         createStencilBaseNode(groups, nodeMap, graph);
-        console.log('initStencil.nodeMap', groups, nodeMap)
         let groupList: Stencil.Group[] = groups.map((group: string) => getGroup(group));
         const stencilConfig: IStencilConfig = getStencilConfig(groupList);
+        const stencil = stencilConfig.getStencil();
         nodeMap.forEach((nodes: any[], key: string) => {
-            stencilConfig.getStencil().load(nodes, key);
+            if (key && nodes) {
+                stencil.load(nodes, key);
+            }
         });
         console.log('=================initStencil===================');
 
@@ -153,14 +155,14 @@ export const useStencil = () => {
             label: '右箭头',
             attrs: commonAttrs
         },
-        {
-            shape: "rect_img",
-            width: 40,
-            height: 40,
-            label: "图片",
-            imageUrl:defaultImg,
-            attrs: commonImgAttrs
-        },
+        // {
+        //     shape: "rect_img",
+        //     width: 40,
+        //     height: 40,
+        //     label: "图片",
+        //     imageUrl:defaultImg,
+        //     attrs: commonImgAttrs
+        // },
     ]
     const createStencilBaseNode = (groups: any, nodeMap: any, graph: any) => {
         console.log('createStencilBaseNode.nodeMap', groups, nodeMap)
