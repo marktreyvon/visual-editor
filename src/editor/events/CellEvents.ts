@@ -11,6 +11,8 @@ class CellEvents implements ICellEvents {
 
     container: HTMLElement | SVGElement| undefined;
 
+    nodeAddListener: EventListener<Object> | undefined;
+
     clickListener: EventListener<Object> | undefined;
 
     dbClickListener: EventListener<Object> | undefined;
@@ -132,6 +134,10 @@ class CellEvents implements ICellEvents {
             this.clickListener && this.clickListener({ e, x, y });
         });
 
+        this.graph.on("cell:added", ({ cell, index, options }) => {
+            this.nodeAddListener && this.nodeAddListener({ cell, index, options });
+        });
+
         // 单击事件 
         this.graph.on("cell:click", ({ e, x, y, cell, view }) => {
             this.clickListener && this.clickListener({ e, x, y, cell, view });
@@ -219,6 +225,10 @@ class CellEvents implements ICellEvents {
             edge.removeTools()
         })
 
+    }
+
+    public setNodeAddEventListener(listener: EventListener<Object>): void {
+        this.nodeAddListener = listener;
     }
 
     public setClickEventListener(listener: EventListener<Object>): void {

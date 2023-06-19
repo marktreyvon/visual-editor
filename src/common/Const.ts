@@ -87,10 +87,6 @@ export const DEFAULT_NODE_MOVABLE = true;
  */
 export const DEFAULT_NODE_RESIZABLE = true;
 
-/**
- * 预览大屏数据存储key
- */
-export const PREVIEW_JSON_DATA_KEY = 'preview_json_data';
 
 /**
  * 画布背景颜色
@@ -105,3 +101,12 @@ export const DEFAULT_SCREEN_RECT = {
     height: 1080
 }
 
+/**
+ * 预览大屏数据存储key
+ */
+export const PREVIEW_JSON_DATA_KEY = 'preview_json_data';
+
+/**
+ * 画布数据临时存储key
+ */
+export const STORAGE_JSON_DATA_KEY = 'storage_json_data';

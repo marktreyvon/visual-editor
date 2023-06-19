@@ -37,18 +37,34 @@ const useCanvas = (id?: any): any => {
         // useEvents(canvasConfig);
         // 加载插件
         loadPlugins(pluginsClone);
+        // 加载左侧组件列表
         initStencil(pluginsClone, picPlugins);
-        let { data: result } = await VisualAPI.getJsonDataById({ id, current_page: 1, per_page: 10 })
-        if (result.code === 200) {
-            screenName.value = result.data?.data?.[0].dashboard_name;
-            let jsonData = result.data?.data?.[0]?.json_data;
-            const jsonObj = isJSON(jsonData);
-            console.log('importJSON', jsonObj)
-            if (jsonObj) {
-                canvasConfig.renderJSON(jsonObj);
-                canvasConfig.zoomToFit();
+        // 加载画布内容
+        console.log('====initCanvas.id', id)
+        if (id) {
+            let { data: result } = await VisualAPI.getJsonDataById({ id, current_page: 1, per_page: 10 })
+            if (result.code === 200) {
+                screenName.value = result.data?.data?.[0].dashboard_name;
+                let jsonData = result.data?.data?.[0]?.json_data;
+                const jsonObj = isJSON(jsonData);
+                console.log('importJSON', jsonObj)
+                if (jsonObj) {
+                    canvasConfig.renderJSON(jsonObj);
+                    canvasConfig.zoomToFit();
+                }
             }
+        } else {
+            let storageJson = localStorage.getItem(Common.STORAGE_JSON_DATA_KEY);
+            if (storageJson) {
+                const jsonObj = isJSON(storageJson);
+                if (jsonObj) {
+                    canvasConfig.renderJSON(jsonObj);
+                    canvasConfig.zoomToFit();
+                }
+            }
+
         }
+        
     }
 
     const createPicPlugin = (plugins: any, picPlugins: any) => {

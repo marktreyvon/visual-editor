@@ -3,6 +3,7 @@ import { CanvasConfig, PluginConfig } from "@/editor/config";
 import { isJSON } from "@/utils";
 import {uniqWith,isEqual,filter}  from "lodash"
 import {Graph} from "@antv/x6";
+import * as Common from "@/common";
 /**
  * @author cxs
  * @date 2023-05-20
@@ -38,6 +39,12 @@ export const useEvents = () => {
         let canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
         const events: ICellEvents = canvasConfig.getEvents();
         const graph= canvasConfig.getGraph()
+
+        // 节点新增事件
+        events.setNodeAddEventListener((data: any) => {
+            console.log('setNodeAddEventListener', data)
+            storageGraphData();
+        });
 
         // 点击node
         events.setClickEventListener((data: any) => {
@@ -108,15 +115,18 @@ export const useEvents = () => {
         });
 
         events.setResizedEventListener((data: any) => {
+            console.log('setResizedEventListener')
             const temp = data.node || data.cell || null;
             currentNode = temp;
-            setNodeData(data)
+            setNodeData(data);
+            storageGraphData();
         });
 
         events.setMovedEventListener((data: any) => {
             const temp = data.node || data.cell || null;
             currentNode = temp;
-            setNodeData(data)
+            setNodeData(data);
+            storageGraphData();
         });
 
         events.setMountedEventListener((view) => {
@@ -190,6 +200,13 @@ export const useEvents = () => {
         }
     }
 
+    // 画布上的内容有改动时，将内容存入浏览器缓存中
+    const storageGraphData = () => {
+        const canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
+        const graph = canvasConfig.getGraph();
+        const data = graph.toJSON();
+        localStorage.setItem(Common.STORAGE_JSON_DATA_KEY, JSON.stringify(data));
+    }
 
     /**
      * 用户自定义组件的样式和绑定的数据改变后，会调用这个方法，更新画布上的节点数据
@@ -218,16 +235,7 @@ export const useEvents = () => {
             jsonData
         });
 
-        // console.log('useEvents.onChange.data.zIndex', {...data.style});
-        // if(currentNode?.resize){
-        //     currentNode.resize(Number(data?.style?.size?.width), Number(data?.style?.size?.height));
-        // }
-        // if(currentNode?.position){
-        //     currentNode.position(Number(data?.style?.position?.x), Number(data?.style?.position?.y));
-        // }
-        // if(currentNode?.setZIndex){
-        //     currentNode.setZIndex(data?.style?.zIndex);
-        // }
+        storageGraphData();
 
         const baseNodes = ["rect", "circle", "ellipse", "polygon", "polyline", "line"];
         const index = baseNodes.findIndex((item: string) => item === currentNode.shape)
@@ -236,6 +244,10 @@ export const useEvents = () => {
         }
     }
 
+    /**
+     * 基础属性改变时（位置、大小、层级），更新画布上的节点数据
+     * @param data 
+     */
     const onBaseChange = (data: any) => {
         console.log('onBaseChange', data)
         data.baseStyle.size && currentNode.resize(Number(data.baseStyle.size.width), Number(data.baseStyle.size.height));

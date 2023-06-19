@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { useTools } from '@/editor/hooks'
 
-import { ref, onMounted, reactive, watch, toRaw, computed, shallowRef } from "vue";
+import { ref, onMounted, reactive, watch } from "vue";
 import CanvasAttr from "./components/CanvasAttr.vue";
 import BaseAttr from "./components/BaseAttr.vue";
 import LineAttr from "./components/LineAttr.vue";

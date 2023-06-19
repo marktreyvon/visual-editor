@@ -12,6 +12,8 @@ declare interface ICellEvents {
      */
     graph: Graph;
 
+    nodeAddListener: EventListener<Object> | undefined;
+
     clickListener: EventListener<Object> | undefined;
 
     dbClickListener: EventListener<Object> | undefined;
@@ -33,7 +35,11 @@ declare interface ICellEvents {
      */
     initEvents(): void;
 
-    
+    /**
+     * 设置节点被添加到画布上的事件
+     * @param listener 
+     */
+    setNodeAddEventListener(listener: EventListener<Object>): void;
    
     /**
      * 设置单击事件

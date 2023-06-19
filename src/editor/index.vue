@@ -50,8 +50,6 @@ onMounted(async () => {
   const picPlugins = await getPicPlugins();
   initCanvas(picPlugins);
 
-  // let { loadPicPlugins } = usePlugins();
-  // loadPicPlugins(picPlugins);
 })
 
 // ========================================自定义插件=============================================
