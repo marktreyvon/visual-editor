@@ -68,6 +68,7 @@ import { ref, reactive, toRefs, inject, onMounted } from "vue";
 import { House, RefreshLeft, RefreshRight, ZoomOut, ZoomIn, Crop, View, Download, Share, CircleCheck, SwitchButton, QuestionFilled } from "@element-plus/icons-vue";
 import { ArrowDown } from '@element-plus/icons-vue'
 import { exportFile, readFile } from "@/utils";
+import { CanvasConfig } from "@/editor/config";
 const props = defineProps({ 
     tools: {
         type: Object,
@@ -105,6 +106,13 @@ const params: any = inject("params", null)
 
 onMounted(() => {
   console.log(999)
+  let canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
+  const events: ICellEvents = canvasConfig.getEvents();
+
+  events.setGraphScaleEventListener((data: any) => {
+      console.log('setGraphScaleEventListener', data)
+      scaling.value = Number((data.sx * 100).toFixed(0));
+  });
   zoomToFit()
 });
 

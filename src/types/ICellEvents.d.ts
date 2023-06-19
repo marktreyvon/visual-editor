@@ -12,6 +12,8 @@ declare interface ICellEvents {
      */
     graph: Graph;
 
+    graphScaleListener: EventListener<Object> | undefined;
+
     nodeAddListener: EventListener<Object> | undefined;
 
     clickListener: EventListener<Object> | undefined;
@@ -34,6 +36,12 @@ declare interface ICellEvents {
      * 初始化事件
      */
     initEvents(): void;
+
+    /**
+     * 设置画布缩放的事件
+     * @param listener 
+     */
+    setGraphScaleEventListener(listener: EventListener<Object>): void;
 
     /**
      * 设置节点被添加到画布上的事件

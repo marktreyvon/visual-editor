@@ -11,6 +11,8 @@ class CellEvents implements ICellEvents {
     isDrawLine:boolean =false
     container: HTMLElement | SVGElement| undefined;
 
+    graphScaleListener: EventListener<Object> | undefined;
+
     nodeAddListener: EventListener<Object> | undefined;
 
     clickListener: EventListener<Object> | undefined;
@@ -45,8 +47,13 @@ class CellEvents implements ICellEvents {
             throw new Error('Graph is undefined.');
         let edge: Edge | null = null
         let node: Node | null = null
+
+        // 画布缩放事件
+        this.graph.on("scale", ({ sx, sy, ox, oy }) => {
+            this.graphScaleListener && this.graphScaleListener({ sx, sy, ox, oy });
+        });
+
         this.graph.on("blank:click", ({ e, x, y }) => {
-            console.log("ssss")
             this.clickListener && this.clickListener({ e, x, y });
         });
 
@@ -146,6 +153,10 @@ class CellEvents implements ICellEvents {
             edge.removeTools()
         })
 
+    }
+
+    public setGraphScaleEventListener(listener: EventListener<Object>): void {
+        this.graphScaleListener = listener;
     }
 
     public setNodeAddEventListener(listener: EventListener<Object>): void {

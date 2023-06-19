@@ -40,7 +40,7 @@ export const useEvents = () => {
         const events: ICellEvents = canvasConfig.getEvents();
         const graph = canvasConfig.getGraph()
 
-        // 节点新增事件
+        // 新增节点事件
         events.setNodeAddEventListener((data: any) => {
             console.log('setNodeAddEventListener', data)
             storageGraphData();
