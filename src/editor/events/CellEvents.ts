@@ -8,7 +8,7 @@ import {DEFAULT_CONTAINER_ID} from "@/common";
 class CellEvents implements ICellEvents {
 
     graph: Graph | undefined;
-
+    isDrawLine:boolean =false
     container: HTMLElement | SVGElement| undefined;
 
     nodeAddListener: EventListener<Object> | undefined;
@@ -33,8 +33,9 @@ class CellEvents implements ICellEvents {
 
     unmountedListener: EventListener<Object> | undefined;
 
-    constructor(graph: Graph) {
+    constructor(graph: Graph,isDrawLine:boolean) {
         this.graph = graph;
+        this.isDrawLine=isDrawLine
         this.container = <HTMLDivElement>document.getElementById(Common.DEFAULT_CONTAINER_ID);
         this.initEvents();
     }
@@ -42,10 +43,8 @@ class CellEvents implements ICellEvents {
     initEvents(): void {
         if (!this.graph)
             throw new Error('Graph is undefined.');
-
         let edge: Edge | null = null
         let node: Node | null = null
-
         this.graph.on("blank:click", ({ e, x, y }) => {
             console.log("ssss")
             this.clickListener && this.clickListener({ e, x, y });

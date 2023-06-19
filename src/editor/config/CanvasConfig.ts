@@ -13,6 +13,7 @@ import {message} from "@/utils";
 import { PluginConfig } from '.';
 import { Keyboard } from '@antv/x6-plugin-keyboard';
 
+
 /**
  * @author cxs
  * @date 2023-04-19
@@ -43,6 +44,7 @@ class CanvasConfig implements ICanvasConfig {
     gridSize: number = Common.DEFAULT_GRID_SIZE;
     history: boolean = Common.DEFAULT_HISTORY;
     selection:any;
+    isDrawLine:boolean =false
     enableMouseWheel: boolean = Common.DEFAULT_ENABLE_MOUSE_WHEEL;
     enableMousePan: boolean = Common.DEFAULT_ENABLE_MOUSE_PAN;
     enableSelection: boolean = Common.DEFAULT_ENABLE_SELECTION;
@@ -110,7 +112,27 @@ class CanvasConfig implements ICanvasConfig {
         return CanvasConfig.displayInstance;
     }
 
+
     initGraph(): void {
+
+        Graph.registerNode(
+            'rect_img',
+            {
+                inherit: 'image',
+                markup: [
+                    {
+                        tagName: 'rect', // 标签名称
+                        selector: 'body', // 选择器
+                    },
+                    {
+                        tagName: 'image',
+                        selector: 'image',
+                    },
+                ],
+            }
+
+        )
+
         // window.__x6_instances__ = [];
         this.graph = new Graph({
             container:  <HTMLDivElement>document.getElementById(this.containerId),
@@ -230,12 +252,10 @@ class CanvasConfig implements ICanvasConfig {
         this.graph.use(new Export());
 
         // 监听节点事件
-        this.cellEvents = new CellEvents(this.graph);
+        this.cellEvents = new CellEvents(this.graph,this.isDrawLine);
 
         this.setNodeMovable(this.nodeMovable);
-
         this.graph.centerContent();
-
         //键盘 绑定事件
         const  that=this
         this.graph.bindKey('backspace', () => {
@@ -584,7 +604,6 @@ class CanvasConfig implements ICanvasConfig {
     }
     
     public zoomIn(): Number {
-        console.log(1001)
         if (!this.graph) 
             throw new Error('Graph is undefined.');
         this.graph.zoom(this.zoomFactor);
@@ -598,11 +617,16 @@ class CanvasConfig implements ICanvasConfig {
     }
     
     public zoomOut(): Number {
-        console.log(1002)
         if (!this.graph) 
             throw new Error('Graph is undefined.');
         this.graph.zoom(-this.zoomFactor);
         return Number((this.graph.zoom() * 100).toFixed(0));
+    }
+    public drawLine(): void {
+        if (!this.graph)
+            throw new Error('Graph is undefined.');
+
+
     }
 
     public enableSnapline(): void {

@@ -63,7 +63,8 @@ watchEffect(() => {
             position: {
                 x: props.data.position.x,
                 y: props.data.position.y
-            }
+            },
+
          };
     }
 })

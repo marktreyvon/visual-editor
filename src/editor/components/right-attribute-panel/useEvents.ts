@@ -239,10 +239,18 @@ export const useEvents = () => {
 
         storageGraphData();
 
-        const baseNodes = ["rect", "circle", "ellipse", "polygon", "polyline", "line"];
+        const baseNodes = ["rect", "circle", "ellipse", "polygon", "polyline", "rect_img"];
         const index = baseNodes.findIndex((item: string) => item === currentNode.shape)
+
         if (index !== -1) {
-            currentNode.attr('body', { ...data.style.body })
+            if(currentNode.shape!=='rect_img'){
+                console.log("1111")
+                currentNode.attr('body', { ...data.style.body })
+            }else{
+                currentNode.attr('image', {...data.style.image} )
+                currentNode.attr('image/xlink:href',data.style.image.xlink )
+            }
+
         }
     }
 
