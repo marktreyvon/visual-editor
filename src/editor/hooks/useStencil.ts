@@ -3,6 +3,7 @@ import * as Common from '@/common';
 import { Graph } from '@antv/x6';
 import { Stencil } from "@antv/x6-plugin-stencil";
 import { getDropPicComponent } from '../components/canvas-editor/DropPicComponent';
+import defaultImg from '@/assets/defalut_img.jpg'
 /**
  * @author cxs
  * @date 2023-04-28
@@ -29,6 +30,7 @@ export const useStencil = () => {
             stencilConfig.getStencil().load(nodes, key);
         });
         console.log('=================initStencil===================');
+
     }
 
     /**
@@ -75,6 +77,10 @@ export const useStencil = () => {
         }
     }
 
+    const commonImgAttrs = {
+
+    }
+
     const commonAttrs = {
         body: {
             fill: 'transparent',
@@ -94,7 +100,6 @@ export const useStencil = () => {
     }
     
     const baseNode = [
-
         {
             shape: "rect",
             width: 40,
@@ -147,7 +152,15 @@ export const useStencil = () => {
             points: '0,20 60,20 60,0 100,50 60,100 60,80 0,80',
             label: '右箭头',
             attrs: commonAttrs
-        }
+        },
+        {
+            shape: "rect_img",
+            width: 40,
+            height: 40,
+            label: "图片",
+            imageUrl:defaultImg,
+            attrs: commonImgAttrs
+        },
     ]
     const createStencilBaseNode = (groups: any, nodeMap: any, graph: any) => {
         console.log('createStencilBaseNode.nodeMap', groups, nodeMap)

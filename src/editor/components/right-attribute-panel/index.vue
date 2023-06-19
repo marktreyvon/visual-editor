@@ -11,11 +11,11 @@
                         <!-- 自定义样式 -->
                         <component  v-if="attributeCpt" :currentNode='nodeId' :data="attrData" :is="attributeCpt" v-on="actionHandlers"
                             @onChange="onChange" />
-                        <BaseNodeAttr v-if="!attributeCpt" :data="attrData" @onChange="onChange"/>
+                        <BaseNodeAttr v-if="!attributeCpt" :data="nodeData" @onChange="onChange"/>
                     </div>
                     
                       <!-- 边样式 -->
-                    <LineAttr v-if="isEdge"  :tools="useTools()" :edgeData="edgeData" :nodeData="nodeData" @onChange="onChange"/>
+                    <LineAttr v-if="isEdge"   :tools="useTools()" :edgeData="edgeData" :nodeData="nodeData" @onChange="onChange"/>
                 </div>
 
             </el-tab-pane>
@@ -28,7 +28,7 @@
             </el-tab-pane>
             <!-- 图层 -->
             <el-tab-pane label="图层" name="layer">
-                <LayerAttr :cellList='cellList' :initEvents='initEvents'/>
+                <LayerAttr :nodeData='nodeData' :cellList='cellList' :initEvents='initEvents'/>
             </el-tab-pane>
         </ElTabs>
     </div>
@@ -54,12 +54,14 @@ let {
     initEvents, onChange, onBaseChange,
     cellList
 } = useEvents();
-
+const cellIndex=ref(-1)
 // 自定义样式
 const attrData = ref<any>({});
 // 数据绑定
 const bindData = ref<any>({});
 watch(nodeData, (value) => {
+
+    cellIndex.value=-1
     console.log('right-attribute-panel.nodeData1', value)
     if (!value) return;
     if (!value.data) {
