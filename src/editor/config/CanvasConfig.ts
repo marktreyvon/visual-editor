@@ -114,11 +114,12 @@ class CanvasConfig implements ICanvasConfig {
 
 
     initGraph(): void {
-
         Graph.registerNode(
             'rect_img',
             {
                 inherit: 'image',
+                width:100,
+                height:100,
                 markup: [
                     {
                         tagName: 'rect', // 标签名称
@@ -130,7 +131,7 @@ class CanvasConfig implements ICanvasConfig {
                     },
                 ],
             }
-
+,true
         )
 
         // window.__x6_instances__ = [];

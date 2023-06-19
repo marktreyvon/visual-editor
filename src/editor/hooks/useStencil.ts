@@ -27,7 +27,11 @@ export const useStencil = () => {
         let groupList: Stencil.Group[] = groups.map((group: string) => getGroup(group));
         const stencilConfig: IStencilConfig = getStencilConfig(groupList);
         nodeMap.forEach((nodes: any[], key: string) => {
-            stencilConfig.getStencil().load(nodes, key);
+            console.log(nodes,"0000000")
+            if(key&&nodes){
+                stencilConfig.getStencil().load(nodes, key);
+            }
+
         });
         console.log('=================initStencil===================');
 
@@ -48,7 +52,10 @@ export const useStencil = () => {
             const { views } = plugin.default;
             views.forEach((view: any) => {
                 if (groups.indexOf(view.group) === -1) {
-                    groups.push(view.group);
+                    if(view.group){
+                        groups.push(view.group);
+                    }
+
                 }
                 const node = graph?.createNode({
                     shape: 'image',
