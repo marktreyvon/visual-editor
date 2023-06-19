@@ -46,91 +46,12 @@ class CellEvents implements ICellEvents {
         let edge: Edge | null = null
         let node: Node | null = null
 
-        const init = (pos: { x: number; y: number }) => {
-            if (!this.graph)
-                throw new Error('Graph is undefined.');
-            edge = this.graph.addEdge({
-                source: {x:pos.x-100,y:pos.y},
-                target: pos,
-                attrs: {
-                    line: {
-                        stroke: '#343434',
-                        strokeWidth: 2,
-                    },
-                },
-            })
-            finish(true)
-        }
-
-        const finish = (closed: boolean) => {
-            if (!this.graph)
-                throw new Error('Graph is undefined.');
-            if (node && edge) {
-                const vertices = edge.getVertices()
-                if (closed) {
-                    if (vertices.length >= 2) {
-                        const center = node.getBBox().center
-                        edge.setSource(center)
-                        edge.setTarget(center)
-                        this.graph.removeNode(node)
-                        node = null
-                        print()
-                    } else {
-                        this.graph.removeCells([node, edge])
-                        node = null
-                        edge = null
-                    }
-                } else {
-                    if (vertices.length >= 1) {
-                        const center = node.getBBox().center
-                        edge.setSource(center)
-                        edge.setTarget(vertices[vertices.length - 1])
-                        this.graph.removeNode(node)
-                        node = null
-                        print()
-                    } else {
-                        this.graph.removeCells([node, edge])
-                        node = null
-                        edge = null
-                    }
-                }
-
-            }
-        }
-
-
         this.graph.on("blank:click", ({ e, x, y }) => {
+            console.log("ssss")
             this.clickListener && this.clickListener({ e, x, y });
         });
 
         this.graph.on("blank:contextmenu", ({ e, x, y }) => {
-
-            if (!this.graph)
-                throw new Error('Graph is undefined.');
-            if (!this.container)
-                throw new Error('container is undefined.');
-            const pos = this.graph.clientToGraph(e.clientX, e.clientY)
-            const item = ToolsView.createElement('div',false) as HTMLDivElement
-
-            item.className='menu-show'
-            item.innerHTML="<div id='add-line'>添加直线</div>"
-
-            const addLine=item.children[0] as HTMLDivElement
-            addLine.onclick=()=>{
-                init({x,y})
-                item.className='menu-close'
-            }
-
-
-            item.style.left = `${pos.x-10}px`
-            item.style.top = `${pos.y-10}px`
-        item.onmouseleave=(e)=>{
-            item.className='menu-close'
-        }
-            // item.style.bottom=y+'px'
-            // item.style.right=x+'px'
-            this.container.appendChild(item)
-            // init({ x, y })
             this.clickListener && this.clickListener({ e, x, y });
         });
 
@@ -162,6 +83,7 @@ class CellEvents implements ICellEvents {
 
         //节点从画布上卸载时触发。
         this.graph.on("view:unmounted", ({ view }) => {
+
             this.unmountedListener&& this.unmountedListener({  view });
 
         });

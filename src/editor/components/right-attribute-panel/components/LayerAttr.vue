@@ -74,7 +74,6 @@ const editCell= (v: any, index: any, i: any)=>{
 }
 const layerList=ref<any[]>([])
 const layerClick=(e:any,d:any)=> {
-
   if(d.cell.shape!=='edge'){
     d.graph.trigger('node:click',{ e:e, node: d.cell })
   }else{

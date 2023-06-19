@@ -6,9 +6,9 @@ export default {
         showBorder: false
     },
     header: {
-        bgColor: "#333333",
-        fontColor: "#135939",
-        fontSize: 10
+        bgColor: "",
+        fontColor: "",
+        fontSize: 14
     },
     border: {
         borderColor: "#000000",
@@ -20,7 +20,7 @@ export default {
         {
             show: true,
             filed: 'seqNo',
-            name: 'No.',
+            name: '序号',
             width: 100,
             color: '#000000',
             size: 10
@@ -28,7 +28,7 @@ export default {
         {
             show: true,
             filed: 'deviceName',
-            name: 'Name',
+            name: '名称',
             width: 100,
             color: '#000000',
             size: 10
@@ -36,7 +36,7 @@ export default {
         {
             show: true,
             filed: 'propA',
-            name: 'propA.',
+            name: '参数1',
             width: 100,
             color: '#000000',
             size: 10
@@ -44,7 +44,7 @@ export default {
         {
             show: true,
             filed: 'propB',
-            name: 'propB.',
+            name: '参数2',
             width: 100,
             color: '#000000',
             size: 10

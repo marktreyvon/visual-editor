@@ -59,7 +59,7 @@ export default defineComponent({
       cellStyle: { color: "#000000", background: data.table.bgColor, border: "none", height: '45px' },
       headerCellStyle: { background: data.header.bgColor, color: data.header.fontColor, fontSize: data.header.fontSize + 'px', border: "none" },
       interval: ref<any>(null),
-      tableHeight: 200,
+      tableHeight: 170,
       orgNameData: data.orgNameData,
       newRows: data.newRows,
     }

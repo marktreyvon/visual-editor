@@ -104,7 +104,8 @@ const params: any = inject("params", null)
   console.log('onMounted', params)
 
 onMounted(() => {
-  
+  console.log(999)
+  zoomToFit()
 });
 
 const fileList = ref([]);
