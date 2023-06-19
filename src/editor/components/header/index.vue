@@ -159,9 +159,14 @@ const handleCommandExport = (command: string) => {
     display: flex;
     align-items: center;
   }
-  .el-dropdown {
-    margin-left: 12px;
-    margin-right: 12px;
+  :deep(.el-dropdown) {
+    height: 32px;
+    margin: 0px 0px 0px 12px;
+    padding: 8px 15px;
     align-items: center;
+    font-size:  var(--el-font-size-base);
+  }
+  .el-dropdown-link:focus-visible {
+    outline: -webkit-focus-ring-color auto 0px;
   }
 </style>
