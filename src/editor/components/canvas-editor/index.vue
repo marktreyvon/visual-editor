@@ -8,7 +8,9 @@
 
 <script setup lang="ts">
 import * as Common from '@/common';
+import { CanvasConfig } from '@/editor/config';
 import { register,getTeleport } from "@antv/x6-vue-shape";
+import { onMounted } from 'vue';
 // import RightClickMenu from '@/editor/RightClickMenu.vue'
 // register({
 //   shape: "right-click-menu",
@@ -16,7 +18,19 @@ import { register,getTeleport } from "@antv/x6-vue-shape";
 //   height: 100,
 //   component: RightClickMenu,
 // });
+
 const TeleportContainer = getTeleport();
+
+onMounted(() => {
+  let canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
+  const events: ICellEvents = canvasConfig.getEvents();
+  events.setRemovedEventListener((cell: any) => {
+      setTimeout(() => {
+          const json = canvasConfig.toJSON();
+          localStorage.setItem(Common.STORAGE_JSON_DATA_KEY, JSON.stringify(json));
+      }, 200);
+  })
+})
 
 </script>
 
