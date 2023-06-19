@@ -38,7 +38,7 @@ export const useEvents = () => {
     const initEvents = () => {
         let canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
         const events: ICellEvents = canvasConfig.getEvents();
-        const graph= canvasConfig.getGraph()
+        const graph = canvasConfig.getGraph()
 
         // 节点新增事件
         events.setNodeAddEventListener((data: any) => {
@@ -49,6 +49,8 @@ export const useEvents = () => {
         // 点击node
         events.setClickEventListener((data: any) => {
             const temp = data.node || data.cell || null;
+            // 节点工具
+            setNodeTools(temp, currentNode);
             currentNode = temp;
             console.log('initEvents.setClickEventListener', currentNode)
 
@@ -110,8 +112,6 @@ export const useEvents = () => {
 
                 }
             }
-
-
         });
 
         events.setResizedEventListener((data: any) => {
@@ -144,19 +144,9 @@ export const useEvents = () => {
                     node.portProp(port.id, "attrs/circle/style/visibility", "visible");
                 })
             }
-
-            node.addTools({
-                name: 'button-remove',
-                args: {
-                  x: '100%',
-                  y: 0,
-                  offset: { x: 10, y: -10 },
-                },
-              })
         });
 
         events.setMouseLeaveEventListener((data: any) => {
-            console.log('setMouseLeaveEventListener', data)
             const node = data.cell;
             if(node.shape!=='edge'){
                 const ports=node.getPorts()
@@ -165,9 +155,14 @@ export const useEvents = () => {
                 })
             }
 
-
-            // 删除所有的工具
-            // node.removeTools();
+            // const { e } = data;
+            // console.log('setMouseLeaveEventListener', e, e.offsetX, e.offsetY)
+            // if (e.offsetX < node.size().width || e.offsetX > node.size().width + 10 || 
+            //     e.offsetY > 0 && e.offsetY < -10 ) {
+            //     // 删除所有的工具
+            //     node.removeTools();
+            // }
+            
         });
 
     }
@@ -253,6 +248,24 @@ export const useEvents = () => {
         data.baseStyle.size && currentNode.resize(Number(data.baseStyle.size.width), Number(data.baseStyle.size.height));
         data.baseStyle.position && currentNode.position(Number(data.baseStyle.position.x), Number(data.baseStyle.position.y));
         data.baseStyle.zIndex && currentNode.setZIndex(data.baseStyle.zIndex);
+    }
+
+    const setNodeTools = (newNode: any, oldNode: any) => {
+        if (oldNode) {
+            // 删除旧节点的工具
+            oldNode.removeTools();
+        }
+        if (newNode) {
+            // 添加新节点的工具
+            newNode.addTools({
+                name: 'button-remove',
+                args: {
+                  x: '100%',
+                  y: 0,
+                  offset: { x: 10, y: -10 },
+                },
+              })
+        }
     }
 
     return {

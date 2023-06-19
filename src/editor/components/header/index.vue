@@ -37,7 +37,7 @@
                 @command="handleCommandExport"
                 >
                 <span class="el-dropdown-link" @click="handleClickExport">
-                  导出JSON
+                  导出
                   <el-icon class="el-icon--right">
                     <arrow-down />
                   </el-icon>

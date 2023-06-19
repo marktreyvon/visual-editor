@@ -57,6 +57,7 @@ const useCanvas = (id?: any): any => {
             let storageJson = localStorage.getItem(Common.STORAGE_JSON_DATA_KEY);
             if (storageJson) {
                 const jsonObj = isJSON(storageJson);
+                console.log(jsonObj)
                 if (jsonObj) {
                     canvasConfig.renderJSON(jsonObj);
                     canvasConfig.zoomToFit();
