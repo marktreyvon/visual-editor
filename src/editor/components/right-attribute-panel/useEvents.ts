@@ -135,6 +135,12 @@ export const useEvents = () => {
 
         events.setUnmountedEventListener((view) => {
             setCellList(view,false)
+            if(cellList.value.length===0){
+                isNode.value = false;
+                isEdge.value=false;
+                nodeData.value = {};
+                return;
+            }
         });
         events.setMouseEnterEventListener((data: any) => {
             const node = data.cell;

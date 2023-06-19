@@ -150,12 +150,12 @@ class CanvasConfig implements ICanvasConfig {
                 }
             }
         });
+
         // window.__x6_instances__.push(this.graph);
         // 配置网格大小
         this.graph.setGridSize(this.gridSize);
         // 显示网格
         this.graph.showGrid();
-
         // 配置撤销重做
         if (this.history) {
             this.graph.use(
@@ -164,7 +164,6 @@ class CanvasConfig implements ICanvasConfig {
                 })
             );
         }
-
         // 开启滚轮缩放画布
         if (this.enableMouseWheel) {
             this.graph.enableMouseWheel();
@@ -241,11 +240,14 @@ class CanvasConfig implements ICanvasConfig {
         const  that=this
         this.graph.bindKey('backspace', () => {
             // delete
+            if(!this.enableSelection) return
+
             if (!that.graph)
                 throw new Error('Graph is undefined.');
             that.graph.removeCells(this.selection.getSelectedCells())
         })
         this.graph.bindKey('ctrl+c', () => {
+            if(!this.enableSelection) return
             if (!that.graph)
                 throw new Error('Graph is undefined.');
             const cells = that.graph.getSelectedCells()
@@ -254,8 +256,8 @@ class CanvasConfig implements ICanvasConfig {
             }
             return false
         })
-
         this.graph.bindKey('ctrl+v', () => {
+            if(!this.enableSelection) return
             if (!that.graph)
                 throw new Error('Graph is undefined.');
             if (!that.graph.isClipboardEmpty()) {
@@ -265,8 +267,8 @@ class CanvasConfig implements ICanvasConfig {
             }
             return false
         })
-
         this.graph.bindKey('up', () => {
+            if(!this.enableSelection) return
             if (!that.graph)
                 throw new Error('Graph is undefined.');
            const Cells = this.selection.getSelectedCells()
@@ -293,8 +295,8 @@ class CanvasConfig implements ICanvasConfig {
             }
             return false
         })
-
         this.graph.bindKey('down', () => {
+            if(!this.enableSelection) return
             if (!that.graph)
                 throw new Error('Graph is undefined.');
             const Cells = this.selection.getSelectedCells()
@@ -321,6 +323,7 @@ class CanvasConfig implements ICanvasConfig {
             return false
         })
         this.graph.bindKey('right', () => {
+            if(!this.enableSelection) return
             if (!that.graph)
                 throw new Error('Graph is undefined.');
             const Cells = this.selection.getSelectedCells()
@@ -347,6 +350,7 @@ class CanvasConfig implements ICanvasConfig {
             return false
         })
         this.graph.bindKey('left', () => {
+            if(!this.enableSelection) return
             if (!that.graph)
                 throw new Error('Graph is undefined.');
             const Cells = this.selection.getSelectedCells()
@@ -571,6 +575,7 @@ class CanvasConfig implements ICanvasConfig {
     }
 
     public zoomToFit(): Number {
+
         if (!this.graph) 
             throw new Error('Graph is undefined.');
         this.graph.zoomToFit({ maxScale: 1 });
@@ -579,6 +584,7 @@ class CanvasConfig implements ICanvasConfig {
     }
     
     public zoomIn(): Number {
+        console.log(1001)
         if (!this.graph) 
             throw new Error('Graph is undefined.');
         this.graph.zoom(this.zoomFactor);
@@ -592,6 +598,7 @@ class CanvasConfig implements ICanvasConfig {
     }
     
     public zoomOut(): Number {
+        console.log(1002)
         if (!this.graph) 
             throw new Error('Graph is undefined.');
         this.graph.zoom(-this.zoomFactor);
