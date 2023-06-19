@@ -1,5 +1,5 @@
 <template>
-    <div style="width:100%;height:100%;">
+    <div :style="myStyle" style="width:100%;height:100%;">
         <span >{{ textValue }}</span>
     </div>
 </template>
@@ -20,15 +20,15 @@ export default {
       timer: null
     }
   },
-  // computed: {
-  //   myStyle() {
-  //       if (JSON.stringify(this.style) !== "{}") {
-  //           return this.style
-  //       } else {
-  //           return styleData
-  //       }
-  //   },
-  // },
+  computed: {
+    myStyle() {
+        if (JSON.stringify(this.style) !== "{}") {
+            return this.style
+        } else {
+            return styleData
+        }
+    },
+  },
   watch: {
     style: {
         handler: function (val, oldVal) {
