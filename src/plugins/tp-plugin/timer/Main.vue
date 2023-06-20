@@ -21,15 +21,6 @@ export default {
       myStyle: styleData
     }
   },
-  // computed: {
-  //   myStyle() {
-  //       if (JSON.stringify(this.style) !== "{}") {
-  //           return this.style
-  //       } else {
-  //           return styleData
-  //       }
-  //   },
-  // },
   watch: {
     style: {
         handler: function (val, oldVal) {

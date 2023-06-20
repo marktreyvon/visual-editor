@@ -245,7 +245,7 @@ class CanvasConfig implements ICanvasConfig {
                 rubberband: true,
                 rubberEdge: true,
                 movable: true,
-                showNodeSelectionBox: true,
+                showNodeSelectionBox: false,
             })
             this.graph.use(this.selection);
         }
