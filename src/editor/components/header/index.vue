@@ -37,7 +37,7 @@
                 @command="handleCommandExport"
                 >
                 <span class="el-dropdown-link" @click="handleClickExport">
-                  导出
+                  <el-button text :icon="Upload">导出</el-button>
                   <el-icon class="el-icon--right">
                     <arrow-down />
                   </el-icon>
@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, toRefs, inject, onMounted } from "vue";
-import { House, RefreshLeft, RefreshRight, ZoomOut, ZoomIn, Crop, View, Download, Share, CircleCheck, SwitchButton, QuestionFilled } from "@element-plus/icons-vue";
+import { House, RefreshLeft, RefreshRight, ZoomOut, ZoomIn, Crop, View, Download, Upload, Share, CircleCheck, SwitchButton, QuestionFilled } from "@element-plus/icons-vue";
 import { ArrowDown } from '@element-plus/icons-vue'
 import { exportFile, readFile } from "@/utils";
 import { CanvasConfig } from "@/editor/config";

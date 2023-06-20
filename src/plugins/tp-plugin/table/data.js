@@ -6,7 +6,7 @@ export default {
         showBorder: false
     },
     header: {
-        bgColor: "",
+        bgColor: "#eee",
         fontColor: "",
         fontSize: 14
     },

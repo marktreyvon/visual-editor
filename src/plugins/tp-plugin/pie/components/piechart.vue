@@ -86,7 +86,12 @@ export default defineComponent({
             radius: 0.9,
             legend: {
                 position: this.background.textPosition as any,
-                visible: this.background.pointerShow
+                visible: this.background.pointerShow,
+                itemName: {
+                    style: {
+                        fill: '#5b8ff9',
+                    }
+                },
             },
             label: {
                 type: 'inner',
