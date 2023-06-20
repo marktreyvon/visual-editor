@@ -600,7 +600,7 @@ class CanvasConfig implements ICanvasConfig {
 
         if (!this.graph) 
             throw new Error('Graph is undefined.');
-        this.graph.zoomToFit({ maxScale: 1 });
+        this.graph.zoomToFit({ minScale: 1, maxScale: 1 });
         this.graph.centerContent();
         return Number((this.graph.zoom() * 100).toFixed(0));
     }
