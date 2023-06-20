@@ -54,8 +54,19 @@ export const useTools = (): ITools => {
         importJSON: (jsonData: any) => {
             const jsonObj = isJSON(jsonData);
             console.log('importJSON', jsonObj)
+            const instance= CanvasConfig.getInstance()
             if (jsonObj) {
-                 CanvasConfig.getInstance().renderJSON(jsonObj);
+
+                instance.renderJSON(jsonObj);
+            }
+            const  theg = instance.getGraph()
+            if(theg){
+            const Edges=theg.getEdges()
+            console.log(Edges)
+            Edges.forEach((edge:any)=>{
+                console.log(edge.attr('targetData'))
+                instance.edgeAnimation(edge,edge.attr('targetData'))
+            })
             }
         },
         exportJPEG: (fileName?, options?) => {
