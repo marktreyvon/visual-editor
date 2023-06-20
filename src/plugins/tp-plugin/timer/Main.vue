@@ -17,30 +17,33 @@ export default {
     return {
       textValue: "",
       format: "yyyy-MM-dd HH:mm:ss",
-      timer: null
+      timer: null,
+      myStyle: styleData
     }
   },
-  computed: {
-    myStyle() {
-        if (JSON.stringify(this.style) !== "{}") {
-            return this.style
-        } else {
-            return styleData
-        }
-    },
-  },
+  // computed: {
+  //   myStyle() {
+  //       if (JSON.stringify(this.style) !== "{}") {
+  //           return this.style
+  //       } else {
+  //           return styleData
+  //       }
+  //   },
+  // },
   watch: {
     style: {
         handler: function (val, oldVal) {
-          console.log('timer.Main.style', val)
+            console.log('timer.Main.style', val)
+            if (JSON.stringify(val) === "{}") return;
+            this.myStyle = val;
             this.format = val?.format || "yyyy-MM-dd HH:mm:ss";
             if (this.timer && val.format !== oldVal.format) {
                 clearInterval(this.timer);
                 this.start();
             }
         },
-        deep: true,
-        immediate: true
+        immediate: true,
+        deep: true
     }
   },
   mounted() {

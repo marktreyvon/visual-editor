@@ -4,7 +4,6 @@ import { DataConfig } from "../config/DataConfig";
 import { Node } from "@antv/x6";
 
 export const getDisplayComponent = (cpt: Component, nodeData: any, refType: any): Component => {
-    const dataConfig: DataConfig = new DataConfig(nodeData, refType);
     return defineComponent({
         inject: ['getNode'],
         data() {
@@ -24,6 +23,7 @@ export const getDisplayComponent = (cpt: Component, nodeData: any, refType: any)
             if (jsonData.style) {
                 this.style = { ...jsonData.style }
             }
+            // console.log('display.mounted.this.style', jsonData, this.style)
             if (jsonData.data) {
                 this.data = { ...jsonData.data } ;
                 if (jsonData.data.bindType === "static") {
@@ -49,6 +49,9 @@ export const getDisplayComponent = (cpt: Component, nodeData: any, refType: any)
                     this.dataConfig.start();
                 }
             }
+            console.log('display.mounted.this.style', jsonData.data)
+
+
         },
         methods: {
             onChange(value: any) {

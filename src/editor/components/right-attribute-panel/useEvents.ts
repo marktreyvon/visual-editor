@@ -48,11 +48,11 @@ export const useEvents = () => {
 
         // 点击node
         events.setClickEventListener((data: any) => {
+            console.log('initEvents.setClickEventListener', data)
             const temp = data.node || data.cell || null;
             // 节点工具
             setNodeTools(temp, currentNode);
             currentNode = temp;
-            console.log('initEvents.setClickEventListener', currentNode)
 
             if (temp === null) {
                 // 如果点击的是画布

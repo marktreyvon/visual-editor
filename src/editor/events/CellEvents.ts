@@ -55,7 +55,11 @@ class CellEvents implements ICellEvents {
             this.graphScaleListener && this.graphScaleListener({ sx, sy, ox, oy });
         });
 
-        this.graph.on("blank:click", ({ e, x, y }) => {
+        // this.graph.on("blank:click", ({ e, x, y }) => {
+        //     this.clickListener && this.clickListener({ e, x, y });
+        // });
+
+        this.graph.on("blank:mousedown", ({ e, x, y }) => {
             this.clickListener && this.clickListener({ e, x, y });
         });
 

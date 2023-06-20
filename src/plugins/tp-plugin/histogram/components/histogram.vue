@@ -161,6 +161,7 @@ export default defineComponent({
 
                 // 计算边框的透明度
                 function hexToRgba(hex: any, alpha: any) {
+                    if (!hex) return "";
                     var r = parseInt(hex.slice(1, 3), 16);
                     var g = parseInt(hex.slice(3, 5), 16);
                     var b = parseInt(hex.slice(5, 7), 16);
@@ -169,6 +170,7 @@ export default defineComponent({
                 this.bgColorAndOpicity = hexToRgba(this.background.bgColor, this.background.beij as any / 10);
 
                 function hexToRgba1(hex: any, alpha: any) {
+                    if (!hex) return "";
                     var r = parseInt(hex.slice(1, 3), 16);
                     var g = parseInt(hex.slice(3, 5), 16);
                     var b = parseInt(hex.slice(5, 7), 16);
