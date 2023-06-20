@@ -70,7 +70,20 @@ export const useTools = (): ITools => {
         preview: () => {
             // 获取大屏数据
 
-            const jsonData = CanvasConfig.getInstance().toJSON();
+            const instance= CanvasConfig.getInstance()
+
+            const nodes=  instance.graph?.getNodes()
+            nodes?.forEach((node)=>{
+                const ports=node.getPorts()
+                console.log(ports)
+                ports.forEach((port:any) => {
+                    node.portProp(port.id, "attrs/circle/style/visibility", "hidden");
+                })
+                console.log(ports)
+            })
+
+
+            const jsonData =instance.toJSON();
 
             // 大屏数据存入session
             sessionStorage.setItem(Common.PREVIEW_JSON_DATA_KEY, JSON.stringify(jsonData));

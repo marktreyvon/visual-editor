@@ -104,7 +104,7 @@ class StencilConfig implements IStencilConfig {
                     label: node.label || node.shape,
                     points: node.points,
                     attrs: {...node.attrs,body:{...node.attrs.body}},
-                    ports: this.getPorts()
+                    ports: node.shape!=='rect_img'?this.getPorts():null
                 });
 
 
@@ -126,7 +126,7 @@ class StencilConfig implements IStencilConfig {
             height: cpt.size.height === '100%' ? pluginConfig.getScreenRect().height : cpt.size.height || 200,
             label: data.name,
             //在创建节点时增加连接点属性;  *@author; 王炳宏  2023-05-23
-            ports: this.getPorts(),
+            ports: node.shape!=='rect_img'?this.getPorts():null,
         });
 
         return dropNode;
@@ -236,7 +236,6 @@ class StencilConfig implements IStencilConfig {
                     },
                 },
                 {
-
                     group: 'top',
                 }, {
 

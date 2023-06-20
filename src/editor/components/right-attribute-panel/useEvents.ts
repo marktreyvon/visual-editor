@@ -156,6 +156,7 @@ export const useEvents = () => {
             const node = data.cell;
             if(node.shape!=='edge'&&node.shape!=='rect_img'){
                 const ports=node.getPorts()
+                console.log(ports)
                 ports.forEach((port:any) => {
                     node.portProp(port.id, "attrs/circle/style/visibility", "hidden");
                 })

@@ -35,6 +35,7 @@ export const useDisplay = (containerId: string) => {
                     cell.ports.groups.bottom.attrs.circle.r=0
                     cell.ports.groups.left.attrs.circle.r=0
                     cell.ports.groups.right.attrs.circle.r=0
+                    cell.ports.groups.absolute.attrs.circle.r=0
                 }
 
                 // 移除删除按钮
