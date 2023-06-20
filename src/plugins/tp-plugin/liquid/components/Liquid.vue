@@ -3,10 +3,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, watch, onUnmounted } from "vue"
+import { ref, onMounted, watch, onUnmounted } from "vue"
 import { Liquid } from '@antv/g2plot';
 import { defaultOption, getOptionData } from '../default'
-const id = "liquid" + Math.random().toString(36).substr(2);
 const props = defineProps({
     value: {
         type: [String, Number],
@@ -15,12 +14,18 @@ const props = defineProps({
     style: {
         type: Object,
         default: () => ({})
+    },
+    id: {
+        type: String,
+        default: ""
     }
 })
 let liquidPlot: any = null;
 onMounted(() => {
     const option: any = getOptionData(defaultOption);
-    liquidPlot = new Liquid(id, option);
+    console.log('Liquid.option', props.id)
+    
+    liquidPlot = new Liquid(props.id, option);
     liquidPlot.render();
     loop(defaultOption.isLoop)
 })

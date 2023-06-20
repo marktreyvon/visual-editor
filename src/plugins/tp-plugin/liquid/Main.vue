@@ -1,5 +1,5 @@
 <template>
-    <Liquid :value="value" style="width:100%; height: 100%"/>
+    <Liquid :id="id" :value="value" style="width:100%; height: 100%"/>
 </template>
 
 <script>
@@ -16,6 +16,7 @@ export default {
     },
     data() {
         return {
+            id: `liquid-${this._uid}`
         }
     },
     computed: {
