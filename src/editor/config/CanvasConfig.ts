@@ -241,11 +241,11 @@ class CanvasConfig implements ICanvasConfig {
         if (this.enableSelection) {
             this.selection = new Selection({
                 enabled: true,
-                multiple: true,
+                multiple: false,
                 rubberband: true,
                 rubberEdge: true,
                 movable: true,
-                showNodeSelectionBox: false,
+                showNodeSelectionBox: false
             })
             this.graph.use(this.selection);
         }

@@ -5,7 +5,7 @@
 <script>
 import Liquid from './components/Liquid.vue'
 import { defaultData } from './default'
-
+import { randomString } from '@/utils'
 export default {
     components: { Liquid },
     props: {
@@ -16,7 +16,7 @@ export default {
     },
     data() {
         return {
-            id: `liquid-${this._uid}`
+            id: `liquid-${randomString(10)}`
         }
     },
     computed: {
