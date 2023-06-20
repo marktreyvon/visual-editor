@@ -50,7 +50,10 @@ export const useStencil = () => {
             const { views } = plugin.default;
             views.forEach((view: any) => {
                 if (groups.indexOf(view.group) === -1) {
-                    groups.push(view.group);
+                    if(view.group){
+                        groups.push(view.group);
+                    }
+
                 }
                 const node = graph?.createNode({
                     shape: 'image',

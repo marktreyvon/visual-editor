@@ -144,7 +144,7 @@ export const useEvents = () => {
         });
         events.setMouseEnterEventListener((data: any) => {
             const node = data.cell;
-            if(node.shape!=='edge'){
+            if(node.shape!=='edge'&&node.shape!=='rect_img'){
                 const ports=node.getPorts()
                 ports.forEach((port:any) => {
                     node.portProp(port.id, "attrs/circle/style/visibility", "visible");
@@ -154,7 +154,7 @@ export const useEvents = () => {
 
         events.setMouseLeaveEventListener((data: any) => {
             const node = data.cell;
-            if(node.shape!=='edge'){
+            if(node.shape!=='edge'&&node.shape!=='rect_img'){
                 const ports=node.getPorts()
                 ports.forEach((port:any) => {
                     node.portProp(port.id, "attrs/circle/style/visibility", "hidden");
@@ -223,10 +223,10 @@ export const useEvents = () => {
             jsonStr = currentNode.getData()?.jsonData || "{}";
         }
         const jsonObj = isJSON(jsonStr);
-        if (data.style) {
+        if (data?.style) {
             jsonObj.style = { ...data.style };
         }
-        if (data.data) {
+        if (data?.data) {
             jsonObj.data = { ...data.data };
         }
         // 因为antv-x6的setData暂不支持Array，所以这里只能用JSON字符串来存储数据

@@ -20,8 +20,8 @@
               <el-form-item label="图片地址" v-if='isImg'>
                 <el-input v-model="formData.image.xlink"></el-input>
               </el-form-item>
-              <el-form-item label="上传图片" prop="files">
-                <el-upload  action='' :auto-upload='false'  :on-success='handleSuccess'  ref="uploadRef" class="upload-demo" :file-list="formData.files" :multiple="false"
+              <el-form-item label="上传图片" prop="files" v-if='isImg'>
+                <el-upload   ref="upload" :on-exceed="handleExceed" action='' :auto-upload='false'  :limit="1" class="upload-demo" :file-list="formData.files" :multiple="false"
                            :on-change="handleChange">
                   <template #trigger>
                     <el-button type="primary">选择图片</el-button>
@@ -47,6 +47,7 @@ const getPicPlugins = async () => {
     return result.data.data;
   }
 }
+const upload = ref<UploadInstance>()
 const formData = reactive({
     body: {
         fill: "",
@@ -71,16 +72,31 @@ const props = defineProps({
         default: () => ({})
     }
 })
-
+const handleExceed: UploadProps['onExceed'] = (files) => {
+  upload.value!.clearFiles()
+  const file = files[0] as UploadRawFile
+  file.uid = genFileId()
+  upload.value!.handleStart(file)
+}
 let isImg=ref(false)
 const handleChange =async (file: any, uploadFiles: any) => {
   formData.files = uploadFiles;
+  console.log(uploadFiles)
+  console.log(file)
   const fd = new FormData()
 
-  fd.append('files', file)
+  fd.append('files', file.raw)
  await PluginAPI.uploadPlugins(fd)
- const res= await getPicPlugins
+ const res= await getPicPlugins()
   console.log(res)
+  if(res.length>0){
+    console.log("00000000")
+    formData.image.xlink ='http://dev.thingspanel.cn:9999/'+res[res.length-1].files[0].file_url.replace('.','')
+    console.log(res[res.length-1])
+    console.log("111111111")
+  }
+
+
 }
 
 
