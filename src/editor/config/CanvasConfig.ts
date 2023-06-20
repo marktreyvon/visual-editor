@@ -597,7 +597,6 @@ class CanvasConfig implements ICanvasConfig {
     }
 
     public zoomToFit(): Number {
-
         if (!this.graph) 
             throw new Error('Graph is undefined.');
         this.graph.zoomToFit({ minScale: 1, maxScale: 1 });

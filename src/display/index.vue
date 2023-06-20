@@ -45,7 +45,7 @@ onMounted(() => {
         height: entries[0].contentRect.height
       }
     }
-    CanvasConfig.getDisplayInstance(Common.DEFAULT_DISPLAY_CONTAINER_ID, options).zoomToFit(1);
+    CanvasConfig.getDisplayInstance(Common.DEFAULT_DISPLAY_CONTAINER_ID, options).zoomToFit();
   })
   const displayContainer: HTMLElement = <HTMLElement>document.getElementById(Common.DEFAULT_DISPLAY_CONTAINER_ID);
   resizeObserver.observe(displayContainer);
