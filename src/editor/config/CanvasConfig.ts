@@ -599,7 +599,19 @@ class CanvasConfig implements ICanvasConfig {
     public zoomToFit(): Number {
         if (!this.graph) 
             throw new Error('Graph is undefined.');
-        this.graph.zoomToFit({ minScale: 1, maxScale: 1 });
+        console.log('getContentBBox', this.graph.getContentBBox())
+        console.log('getContentArea', this.graph.getContentArea())
+        console.log('getContentBBox.screenRect', this.screenRect)
+        let wScale = this.screenRect.width / this.graph.getContentArea().width;
+        let hScale = this.screenRect.height / this.graph.getContentArea().height;
+        console.log('Scale', wScale, hScale)
+        if (wScale > hScale) {
+            // this.graph.zoom(hScale);
+            this.graph.zoomToFit({ minScale: hScale, maxScale: wScale, padding: 0 });
+        } else {
+            this.graph.zoomToFit({ minScale: wScale, maxScale: wScale, padding: 0 });
+        }
+        // this.graph.zoomToFit({ minScale: 1 padding: 0 });
         this.graph.centerContent();
         return Number((this.graph.zoom() * 100).toFixed(0));
     }

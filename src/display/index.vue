@@ -4,7 +4,7 @@
     <TeleportContainer />
   </div>
   <div class="display-tools-container" style="position: absolute">
-    <el-button @click="fullScreen">全屏</el-button>
+    <el-button v-if="!isFullScreen" @click="fullScreen">全屏</el-button>
   </div>
 </template>
 
@@ -15,6 +15,7 @@ import { useDisplay } from "./useDisplay"
 import { getTeleport } from "@antv/x6-vue-shape";
 import { parseParams } from "@/utils";
 import { CanvasConfig } from "@/editor/config";
+import { Events } from "@antv/x6";
 
 const TeleportContainer = getTeleport();
 
@@ -49,27 +50,35 @@ onMounted(() => {
   })
   const displayContainer: HTMLElement = <HTMLElement>document.getElementById(Common.DEFAULT_DISPLAY_CONTAINER_ID);
   resizeObserver.observe(displayContainer);
-
+  
+  const canvasConfig: ICanvasConfig = CanvasConfig.getDisplayInstance(Common.DEFAULT_DISPLAY_CONTAINER_ID);
+  const events: ICellEvents = canvasConfig.getEvents() 
+  events.setMountedEventListener((data: any) => {
+    console.log("mounted", data)
+    // containerRect.value = data.containerRect;
+  })
 })
 
-let isFullScreen = false;
+let isFullScreen = ref<any>(false);
 function fullScreen() {
-  if (isFullScreen) {
-    document.exitFullscreen();
-    isFullScreen = false;
-  } else {
+  if (!isFullScreen.value) {
     document.documentElement.requestFullscreen();
-    isFullScreen = true;
+    isFullScreen.value = true;
   }
 }
+function screenChange() {
+  document.fullscreenElement ? isFullScreen.value = true : isFullScreen.value = false
+}
+document.addEventListener("fullscreenchange", screenChange , true);
 
 </script>
 
 <style lang="scss" scoped>
 :deep(.x6-port.x6-port-link) {
   // 隐藏连接桩
-  display:none;
+  display: none;
 }
+
 .display-tools-container {
   position: absolute;
   top: 0px;
