@@ -184,6 +184,7 @@ class CanvasConfig implements ICanvasConfig {
             this.graph.use(
                 new History({
                     enabled: true,
+                    ignoreChange: true,
                 })
             );
         }
