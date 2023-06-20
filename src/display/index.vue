@@ -4,7 +4,7 @@
     <TeleportContainer />
   </div>
   <div class="display-tools-container" style="position: absolute">
-    <!-- <el-button>全屏</el-button> -->
+    <el-button @click="fullScreen">全屏</el-button>
   </div>
 </template>
 
@@ -51,6 +51,17 @@ onMounted(() => {
   resizeObserver.observe(displayContainer);
 
 })
+
+let isFullScreen = false;
+function fullScreen() {
+  if (isFullScreen) {
+    document.exitFullscreen();
+    isFullScreen = false;
+  } else {
+    document.documentElement.requestFullscreen();
+    isFullScreen = true;
+  }
+}
 
 </script>
 
