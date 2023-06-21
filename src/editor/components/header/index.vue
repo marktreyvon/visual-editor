@@ -57,7 +57,6 @@
         <div class="absolute inset-y-0 right-0 w-auto">
             <el-button :icon="Share" >分享</el-button>
             <el-button :icon="CircleCheck" @click="save(params.id)">保存</el-button>
-            <el-button :icon="SwitchButton" @click="save(params.id)" >保存并关闭</el-button>
             <el-button :icon="QuestionFilled" @click="help" >帮助</el-button>
         </div>
     </div>
@@ -155,6 +154,8 @@ const handleCommandExport = (command: string) => {
 
 const getUserInfo = () => {
   setInterval(() => {
+    const json = toJSON();
+    console.log('getUserInfo', json)
     AuthAPI.getUserInfo({}).then(res => {
       console.log('getUserInfo', res)
     })

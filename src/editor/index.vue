@@ -28,14 +28,16 @@
     <CustomPlugins v-model:visible="customPluginsDialogVisible" @submit="customPluginSubmit"/>
   </template>
 <script setup lang="ts">
-import { onMounted, inject, ref } from "vue";
+import { onMounted, inject, ref, onUnmounted } from "vue";
 import Header from "./components/header/index.vue";
 import LeftAside from "./components/left-aside/index.vue";
 import CanvasEditor from "./components/canvas-editor/index.vue";
 import RightAttributePanel from "./components/right-attribute-panel/index.vue";
-import { useTools, useCanvas, usePlugins } from './hooks'
+import { useTools, useCanvas } from './hooks'
 import PluginAPI from '@/api/plugin'
 import CustomPlugins from "./components/left-aside/CustomPlugins.vue";
+import * as Common from '@/common';
+import { isJSON } from '@/utils';
 
 const params: any = inject('params', null);
 console.log('====editor mounted', params) 
@@ -46,13 +48,13 @@ onMounted(async () => {
   // 从服务器获取大屏数据
   console.log("====", screenName.value)
 
-  // 加载自定义图片插件
+  // 加载自定义图片
   const picPlugins = await getPicPlugins();
   initCanvas(picPlugins);
 
 })
 
-// ========================================自定义插件=============================================
+// ========================================自定义图片=============================================
 const customPluginsDialogVisible = ref(false);
 const showCustomPlugins = () => {
   customPluginsDialogVisible.value = true;
@@ -66,7 +68,7 @@ const getPicPlugins = async () => {
     return result.data.data;
   }
 }
-  // ========================================自定义插件=============================================
+  // ========================================自定义图片=============================================
 
 const containerRect = ref({
   width: 0,
@@ -82,7 +84,23 @@ onMounted(() => {
   })
   const displayContainer: HTMLElement = <HTMLElement>document.getElementById("containerId");
   resizeObserver.observe(displayContainer);
+});
+
+let { save, autoSave } = useTools();
+onMounted(() => {
+  let storageJson = localStorage.getItem(Common.STORAGE_JSON_DATA_KEY);
+  if (storageJson) {
+      const jsonObj = isJSON(storageJson);
+      if (jsonObj) {
+          save(params?.id, jsonObj);
+      }
+  }
+  autoSave(params?.id)
+  console.log('editor mounted save')
 })
+onUnmounted(() => {
+  save(params?.id);
+});
 </script>
 
 <style lang="scss">
