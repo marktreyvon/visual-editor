@@ -9,7 +9,10 @@ const message = {
               })
         },
         error: (msg: string) => {
-
+            ElMessage({
+                message: msg,
+                type: 'error',
+              })
         }
 }
 /**

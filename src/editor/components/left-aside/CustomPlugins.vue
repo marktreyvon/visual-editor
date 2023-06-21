@@ -1,16 +1,20 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="上传图形" width="560" draggable>
+  <el-dialog v-model="dialogVisible" title="上传图形" width="50%" draggable>
     <el-form ref="ruleFormRef" :model="formData" :rules="formRules" label-width="120">
       <el-form-item label="输入分类名称" prop="plugin_name">
         <el-input v-model="formData.plugin_name"></el-input>
       </el-form-item>
       <el-form-item label="上传图片" prop="files">
-        <el-upload ref="uploadRef" class="upload-demo" action="" :file-list="formData.files" :multiple="true"
+        <el-upload ref="uploadRef" class="upload-container" action="" :file-list="formData.files" :multiple="true"
+          list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handleRemove"
           :auto-upload="false" :on-change="handleChange">
           <template #trigger>
             <el-button type="primary">选择图片</el-button>
           </template>
         </el-upload>
+        <el-dialog v-model="previewDialogVisible">
+          <img w-full :src="dialogImageUrl" alt="Preview Image" />
+        </el-dialog>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -26,6 +30,8 @@
 import PluginAPI from '@/api/plugin'
 import { FormInstance, UploadInstance } from "element-plus";
 import { ref, reactive, computed, watch } from "vue";
+import type { UploadProps, UploadUserFile } from 'element-plus'
+import { message } from '@/utils';
 const dialogVisible = ref<Boolean>(false);
 const props = defineProps({
   visible: {
@@ -60,6 +66,19 @@ const handleChange = (file: any, uploadFiles: any) => {
   formData.files = uploadFiles;
 }
 
+const dialogImageUrl = ref('')
+const previewDialogVisible = ref(false)
+/**
+ * 图片预览
+ */
+const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile: any) => {
+  dialogImageUrl.value = uploadFile.url!
+  previewDialogVisible.value = true
+}
+const handleRemove: UploadProps['onRemove'] = (uploadFile, uploadFiles) => {
+  console.log(uploadFile, uploadFiles)
+}
+
 /**
  * 提交上传
  */
@@ -72,12 +91,18 @@ const submit = async (formEl: FormInstance | undefined) => {
         fd.append('files', item.raw)
       })
       fd.append('plugin_name', formData.plugin_name);
-      PluginAPI.uploadPlugins(fd).then(res => {
-        console.log('uploadPlugins', res);
-        dialogVisible.value = false;
-        resetForm(formEl);
-        emit('submit')
-      })
+      PluginAPI.uploadPlugins(fd)
+        .then(({ data: result }) => {
+          if (result.code === 200) {
+            dialogVisible.value = false;
+            resetForm(formEl);
+            emit('submit')
+            message.success('上传成功');
+          } else {
+            message.error('上传失败');
+          }
+          
+        })
     }
   })
 }
@@ -90,7 +115,9 @@ const resetForm = (formEl: FormInstance | undefined) => {
 </script>
 
 <style lang="scss" scoped>
-.upload-demo {
+.upload-container {
   text-align: left;
+  height: 400px;
+  overflow-y: auto;
 }
 </style>
