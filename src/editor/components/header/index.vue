@@ -69,6 +69,7 @@ import { House, RefreshLeft, RefreshRight, ZoomOut, ZoomIn, Crop, View, Download
 import { ArrowDown } from '@element-plus/icons-vue'
 import { exportFile, readFile } from "@/utils";
 import { CanvasConfig } from "@/editor/config";
+import AuthAPI from "@/api/auth"
 const props = defineProps({ 
     tools: {
         type: Object,
@@ -113,7 +114,8 @@ onMounted(() => {
       console.log('setGraphScaleEventListener', data)
       scaling.value = Number((data.sx * 100).toFixed(0));
   });
-  zoomToFit()
+  zoomToFit();
+  getUserInfo();
 });
 
 const fileList = ref([]);
@@ -149,6 +151,14 @@ const handleCommandExport = (command: string) => {
         default:
             break;
     }
+}
+
+const getUserInfo = () => {
+  setInterval(() => {
+    AuthAPI.getUserInfo({}).then(res => {
+      console.log('getUserInfo', res)
+    })
+  }, 1000 * 30)
 }
 
 </script>

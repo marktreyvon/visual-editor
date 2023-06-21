@@ -43,7 +43,7 @@ html,body,#app,.el-container{
   z-index: 9999;
   padding: 12px;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: self-start;
   text-align: left;
 }
