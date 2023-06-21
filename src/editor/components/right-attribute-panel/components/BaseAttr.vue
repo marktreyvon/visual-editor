@@ -54,15 +54,15 @@ watchEffect(() => {
     console.log('BaseAttr.watchEffect.props.data', { ...props.data })
     if (props.data) {
         formData.value = { 
-            shape: props.data.shape,
-            zIndex: props.data.zIndex,
+            shape: props?.data?.shape,
+            zIndex: props?.data?.zIndex,
             size: {
-                width: props.data.size.width,
-                height: props.data.size.height
+                width: props?.data?.size?.width,
+                height: props?.data?.size?.height
             },
             position: {
-                x: props.data.position.x,
-                y: props.data.position.y
+                x: props?.data?.position?.x,
+                y: props?.data?.position?.y
             },
 
          };
