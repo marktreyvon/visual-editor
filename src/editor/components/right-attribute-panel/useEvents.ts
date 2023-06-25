@@ -2,7 +2,6 @@ import { ref, shallowRef, toRaw } from "vue";
 import { CanvasConfig, PluginConfig } from "@/editor/config";
 import { isJSON } from "@/utils";
 import {uniqWith,isEqual,filter}  from "lodash"
-import {Graph} from "@antv/x6";
 import * as Common from "@/common";
 /**
  * @author cxs
@@ -92,7 +91,6 @@ export const useEvents = () => {
                 }
             } else {
                 // 连线或基础节点
-
                 if(currentNode.shape==='edge'){
                     //如果点击的是边 ;  *@author; 王炳宏  2023-05-23
                     console.log(currentNode.shape,"这是边：",currentNode.id,)
