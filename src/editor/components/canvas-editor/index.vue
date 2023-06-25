@@ -11,6 +11,7 @@ import * as Common from '@/common';
 import { CanvasConfig } from '@/editor/config';
 import { register,getTeleport } from "@antv/x6-vue-shape";
 import { onMounted } from 'vue';
+import { ruler } from '@/utils'
 // import RightClickMenu from '@/editor/RightClickMenu.vue'
 // register({
 //   shape: "right-click-menu",
@@ -22,6 +23,7 @@ import { onMounted } from 'vue';
 const TeleportContainer = getTeleport();
 
 onMounted(() => {
+  console.log('刻度尺', ruler)
   let canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
   const events: ICellEvents = canvasConfig.getEvents();
   events.setRemovedEventListener((cell: any) => {

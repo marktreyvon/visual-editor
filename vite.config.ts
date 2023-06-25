@@ -11,6 +11,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
     base: env.VITE_BASE_PATH || '/visual/',
     plugins: [vue(), vueJsx()],
     server: {
+      host: true,
       port: Number(env.VITE_PORT),
       cors: true,
       proxy: {

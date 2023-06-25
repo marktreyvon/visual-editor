@@ -57,7 +57,6 @@
         <div class="absolute inset-y-0 right-0 w-auto">
             <el-button :icon="Share" >分享</el-button>
             <el-button :icon="CircleCheck" @click="save(params.id)">保存</el-button>
-            <el-button :icon="SwitchButton" @click="save(params.id)" >保存并关闭</el-button>
             <el-button :icon="QuestionFilled" @click="help" >帮助</el-button>
         </div>
     </div>
@@ -69,6 +68,7 @@ import { House, RefreshLeft, RefreshRight, ZoomOut, ZoomIn, Crop, View, Download
 import { ArrowDown } from '@element-plus/icons-vue'
 import { exportFile, readFile } from "@/utils";
 import { CanvasConfig } from "@/editor/config";
+import AuthAPI from "@/api/auth"
 const props = defineProps({ 
     tools: {
         type: Object,
@@ -113,7 +113,8 @@ onMounted(() => {
       console.log('setGraphScaleEventListener', data)
       scaling.value = Number((data.sx * 100).toFixed(0));
   });
-  zoomToFit()
+  zoomToFit();
+  getUserInfo();
 });
 
 const fileList = ref([]);
@@ -148,6 +149,16 @@ const handleCommandExport = (command: string) => {
         default:
             break;
     }
+}
+
+const getUserInfo = () => {
+  setInterval(() => {
+    const json = toJSON();
+    console.log('getUserInfo', json)
+    AuthAPI.getUserInfo({}).then(res => {
+      console.log('getUserInfo', res)
+    })
+  }, 1000 * 30)
 }
 
 </script>

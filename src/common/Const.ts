@@ -110,3 +110,8 @@ export const PREVIEW_JSON_DATA_KEY = 'preview_json_data';
  * 画布数据临时存储key
  */
 export const STORAGE_JSON_DATA_KEY = 'storage_json_data';
+
+/**
+ * 自动保存时间间隔 30秒
+ */
+export const AUTO_SAVE_INTERVAL = 1000 * 30;

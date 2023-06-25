@@ -88,7 +88,6 @@ class CellEvents implements ICellEvents {
         
         //节点被挂载到画布上时触发。
         this.graph.on("view:mounted", ({ view }) => {
-
             this.mountedListener&& this.mountedListener({  view });
         });
 

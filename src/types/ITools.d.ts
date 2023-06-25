@@ -101,7 +101,11 @@ declare interface ITools {
      */
     help(): void;
     /**
+     * 自动保存
+     */
+    autoSave(id: string) : void;
+    /**
      * 保存大屏数据
      */
-    save(id: string): void;
+    save(id: string, jsonData?: any): void;
 }
