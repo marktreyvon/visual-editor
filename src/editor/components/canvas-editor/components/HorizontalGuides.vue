@@ -19,7 +19,7 @@ onMounted(() => {
         shortLineSize : 5,
         mainLineSize : 7,
         unit: 100,
-        rulerStyle: { left: "0px", width: "calc(100% - 10px)", height: "20px" },
+        rulerStyle: { left: "0px", width: "calc(100% + 20px)", height: "20px" },
     })
     guides.on("changeGuides", e => {
         console.log('guides', e.guides);

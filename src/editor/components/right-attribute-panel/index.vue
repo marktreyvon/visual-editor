@@ -20,7 +20,7 @@
 
             </el-tab-pane>
             <!-- 数据绑定 -->
-            <el-tab-pane label="数据" name="data" v-if="!isEdge">
+            <el-tab-pane label="数据" name="data" v-if="!isEdge && isNode">
                 <component v-if="isNode" :is="dataCpt" :data="bindData"  @onChange="onChange">
                     <!-- 设备数据 -->
                     <BaseData :data="bindData" @onChange="onChange"/>

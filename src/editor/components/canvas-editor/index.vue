@@ -1,5 +1,6 @@
 <template>
   <div class="canvas-box">
+    <el-button v-if="showRuler" class="button-view" :icon="View" ></el-button>
     <HorizontalGuides v-if="showRuler" class="horizontal-container" :scaling="scaling"/>
     <VerticalGuides v-if="showRuler" class="vertical-container" :scaling="scaling"/>
     <div class="canvas-container" :id="Common.DEFAULT_CONTAINER_ID"></div>
@@ -11,7 +12,9 @@
 <script setup lang="ts">
 import * as Common from '@/common';
 import { CanvasConfig } from '@/editor/config';
-import { register,getTeleport } from "@antv/x6-vue-shape";
+import { getTeleport } from "@antv/x6-vue-shape";
+import { View } from '@element-plus/icons-vue'
+
 import { onMounted, ref } from 'vue';
 import HorizontalGuides from "./components/HorizontalGuides.vue";
 import VerticalGuides from "./components/VerticalGuides.vue";
@@ -70,8 +73,6 @@ onMounted(() => {
   })
 })
 
-
-
 </script>
 
 <style lang="scss" scoped>
@@ -80,6 +81,18 @@ onMounted(() => {
   width: 100%;
   height: calc(100% - 30px);
   margin-top: 0px;
+  .button-view {
+    position:absolute;
+    top: 1px;
+    left: 0px;
+    width: 20px;
+    height: 20px;
+    padding: 0px;
+    border: 0px;
+    border-radius: 0px;
+    background-color: #ffffff;
+    z-index: 9999;
+  }
   .horizontal-container {
     position:absolute;
     height: 20px;
