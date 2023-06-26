@@ -15,6 +15,7 @@ import { Keyboard } from '@antv/x6-plugin-keyboard';
 import { ICanvas } from '@antv/g2/lib/dependents';
 
 
+import CellMove from '@/utils/CellMove';
 /**
  * @author cxs
  * @date 2023-04-19
@@ -294,114 +295,72 @@ class CanvasConfig implements ICanvasConfig {
             return false
         })
         this.graph.bindKey('up', () => {
+
             if(!this.enableSelection) return
             if (!that.graph)
                 throw new Error('Graph is undefined.');
-           const Cells = this.selection.getSelectedCells()
-
-            if(Cells.length>0){
-                Cells.forEach((cell:any)=>{
-                    if(cell.shape==='edge'){
-                        const source=cell.getSource()
-                        const target=cell.getTarget()
-                        if(source.cell||target.cell) return
-                        const vertices=   cell.getVertices()
-                        if(vertices.length>0){
-                            vertices.forEach((vertica:any)=>{
-                                vertica.y=vertica.y-1
-                            })
-                        }
-                        cell.setSource({x:source.x,y:source.y-1})
-                        cell.setTarget({x:target.x,y:target.y-1})
-                        return
-                    }
-                    const pos = cell.position();
-                    cell.position(pos.x,pos.y-1);
-                })
-            }
+            const Cells = that.selection.getSelectedCells()
+            CellMove(Cells,'up',1)
             return false
         })
         this.graph.bindKey('down', () => {
-            if(!this.enableSelection) return
             if (!that.graph)
                 throw new Error('Graph is undefined.');
-            const Cells = this.selection.getSelectedCells()
-            if(Cells.length>0){
-                Cells.forEach((cell:any)=>{
-                    if(cell.shape==='edge'){
-                        const source=cell.getSource()
-                        const target=cell.getTarget()
-                        if(source.cell||target.cell) return
-                        const vertices=   cell.getVertices()
-                        if(vertices.length>0){
-                            vertices.forEach((vertica:any)=>{
-                                vertica.y=vertica.y+1
-                            })
-                        }
-                        cell.setSource({x:source.x,y:source.y+1})
-                        cell.setTarget({x:target.x,y:target.y+1})
-                        return
-                    }
-                    const pos = cell.position();
-                    cell.position(pos.x,pos.y+1);
-                })
-            }
+            const Cells = that.selection.getSelectedCells()
+            CellMove(Cells,'down',1)
             return false
         })
         this.graph.bindKey('right', () => {
+
             if(!this.enableSelection) return
             if (!that.graph)
                 throw new Error('Graph is undefined.');
-            const Cells = this.selection.getSelectedCells()
-            if(Cells.length>0){
-                Cells.forEach((cell:any)=>{
-                    if(cell.shape==='edge'){
-                        const source=cell.getSource()
-                        const target=cell.getTarget()
-                        if(source.cell||target.cell) return
-                        const vertices=   cell.getVertices()
-                        if(vertices.length>0){
-                            vertices.forEach((vertica:any)=>{
-                                vertica.x=vertica.x+1
-                            })
-                        }
-                        cell.setSource({x:source.x+1,y:source.y})
-                        cell.setTarget({x:target.x+1,y:target.y})
-                        return
-                    }
-                    const pos = cell.position();
-                    cell.position(pos.x+1,pos.y);
-                })
-            }
+            const Cells = that.selection.getSelectedCells()
+            CellMove(Cells,'right',1)
+
             return false
         })
-        this.graph.bindKey('left', () => {
+        this.graph.bindKey('left', (e) => {
             if(!this.enableSelection) return
             if (!that.graph)
                 throw new Error('Graph is undefined.');
-            const Cells = this.selection.getSelectedCells()
-            if(Cells.length>0){
-                Cells.forEach((cell:any)=>{
-                    if(cell.shape==='edge'){
-                        const source=cell.getSource()
-                        const target=cell.getTarget()
-                        if(source.cell||target.cell) return
-                        const vertices=   cell.getVertices()
-                        if(vertices.length>0){
-                            vertices.forEach((vertica:any)=>{
-                                vertica.x=vertica.x-1
-                            })
-                        }
-                        cell.setSource({x:source.x-1,y:source.y})
-                        cell.setTarget({x:target.x-1,y:target.y})
-                        return
-                    }
-                    const pos = cell.position();
-                    cell.position(pos.x-1,pos.y);
-                })
-            }
+            const Cells = that.selection.getSelectedCells()
+                CellMove(Cells,'left',1)
             return false
         })
+        this.graph.bindKey('shift+up', (e) => {
+            if(!this.enableSelection) return
+            if (!that.graph)
+                throw new Error('Graph is undefined.');
+            const Cells = that.selection.getSelectedCells()
+            CellMove(Cells,'up',10)
+            return false
+        })
+        this.graph.bindKey('shift+down', (e) => {
+            if(!this.enableSelection) return
+            if (!that.graph)
+                throw new Error('Graph is undefined.');
+            const Cells = that.selection.getSelectedCells()
+            CellMove(Cells,'down',10)
+            return false
+        })
+        this.graph.bindKey('shift+right', (e) => {
+            if(!this.enableSelection) return
+            if (!that.graph)
+                throw new Error('Graph is undefined.');
+            const Cells = that.selection.getSelectedCells()
+            CellMove(Cells,'right',10)
+            return false
+        })
+        this.graph.bindKey('shift+left', (e) => {
+            if(!this.enableSelection) return
+            if (!that.graph)
+                throw new Error('Graph is undefined.');
+            const Cells = that.selection.getSelectedCells()
+            CellMove(Cells,'left',10)
+            return false
+        })
+
     }
 
 

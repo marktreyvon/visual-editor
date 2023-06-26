@@ -93,8 +93,8 @@
           console.log('yibiaopan.jsonStr', jsonStr)
           if (jsonStr === '{}') return;
           const jsonObj = JSON.parse(jsonStr);
-          jsonObj.fontSize = jsonObj.dashboard?.fontSize.toString().replace("px", "") || styleData.dashboard.fontSize
-          jsonObj.borderWidth = jsonObj.background?.borderWidth.toString().replace("px", "") || styleData.background.borderWidth
+          jsonObj.fontSize = jsonObj.dashboard?.fontSize?.toString().replace("px", "") || styleData?.dashboard?.fontSize
+          jsonObj.borderWidth = jsonObj.background?.borderWidth.toString().replace("px", "") || styleData?.background?.borderWidth
           this.formData = jsonObj;
       }
     },

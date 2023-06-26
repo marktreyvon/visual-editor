@@ -4,7 +4,7 @@
 <div style='height:700px;overflow-y: auto;overflow-x: hidden;padding: 0 6px'>
   <el-row :gutter="20">
     <el-col style='margin-top:6px' :span="24" v-for="(data, tIndex) in layerList" key='data.view.cell.id' @click.stop='layerClick($event,data.view,tIndex)'>
-      <el-card :body-style="{padding: '0px 12px',height:'60px',display:'flex',justifyContent:'space-between',alignItems:'center',border:tIndex===theCellIndex?'1px solid #40affe':undefined}">
+      <el-card :body-style="{padding: '0px 12px',height:'60px',display:'flex',justifyContent:'space-between',alignItems:'center',border:data.view.cell.id===theCellIndex?'1px solid #40affe':undefined}">
         <img v-if="pluginConfig.getComponent(data.view
         .cell.shape)?.icon" width='50' height='50' :src="pluginConfig.getComponent(data.view
         .cell.shape)?.icon" alt=''>
@@ -16,7 +16,7 @@
 
         <div >
           <span style='font-size: 12px;'>顺序：</span>
-          <el-input-number size='small' style='max-width: 75px;' v-model="statList[tIndex].zIndex"   @change='zIndexChange($event,data)' />
+          <el-input-number size='small' :min='0' :max='layerList.length' style='max-width: 75px;' v-model="statList[tIndex].zIndex"   @change='zIndexChange($event,data)' />
           <el-switch
               size='small'
               @change='showCell($event,tIndex,data)'
@@ -57,7 +57,7 @@ import {PluginConfig} from "@/editor/config";
 import defaultIcon from "@/assets/defaultIcon.svg";
 import edgeLayerIcon from "@/assets/edgeLayerIcon.svg";
 import {useEvents} from "@/editor/components/right-attribute-panel/useEvents";
-let {nodeData} = useEvents();
+
 const pluginConfig: IPluginConfig = PluginConfig.getInstance();
 const theCellIndex=ref<any>(-1)
 const statList=ref<any>([])
@@ -99,13 +99,16 @@ const layerClick=(e:any,d:any,index:any)=> {
     d.graph.clearTransformWidgets();
   }
   d.graph.trigger('cell:click', { e:e, cell: d.cell });
-  theCellIndex.value=index
+  theCellIndex.value=d.cell.id
 }
 
 watch(props,(v)=>{
   console.log(u9)
   if(u9!==1){
     theCellIndex.value=-1
+  }
+  if(v?.nodeData){
+    theCellIndex.value=v.nodeData.id
   }
 
   layerList.value=v.cellList

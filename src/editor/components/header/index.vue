@@ -122,7 +122,6 @@ const handleChange = (uploadFile: any) => {
   const raw = uploadFile.raw;
   readFile(raw)
     .then(result => {
-
       importJSON(result)
     });
 }
