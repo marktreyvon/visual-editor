@@ -160,14 +160,6 @@ export const useEvents = () => {
                 })
             }
 
-            // const { e } = data;
-            // console.log('setMouseLeaveEventListener', e, e.offsetX, e.offsetY)
-            // if (e.offsetX < node.size().width || e.offsetX > node.size().width + 10 || 
-            //     e.offsetY > 0 && e.offsetY < -10 ) {
-            //     // 删除所有的工具
-            //     node.removeTools();
-            // }
-            
         });
 
     }
@@ -191,7 +183,6 @@ export const useEvents = () => {
     }
 
     const setEdgeData = (data: any) => {
-
         const edge =  data.node || data.cell || null;
         // console.log('edges', edge)
         if (edge !== null) {

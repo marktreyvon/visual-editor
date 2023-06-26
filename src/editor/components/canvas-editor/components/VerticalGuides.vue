@@ -15,7 +15,7 @@ onMounted(() => {
         type: "vertical",
         backgroundColor: '#fff',
         textColor: '#000',
-        textOffset: [10, 0],
+        textOffset: [10, 20],
         displayDragPos: true,
         shortLineSize : 5,
         mainLineSize : 7,

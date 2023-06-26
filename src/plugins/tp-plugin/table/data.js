@@ -1,4 +1,5 @@
 export default {
+    plimit: 3,
     table: {
         bgColor: "#FFFFFF",
         borderColor: "#000000",

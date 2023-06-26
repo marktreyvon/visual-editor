@@ -15,18 +15,17 @@ onMounted(() => {
         backgroundColor: '#fff',
         textColor: '#000',
         displayDragPos: true,
-        textOffset: [0, 10],
+        textOffset: [20, 10],
         shortLineSize : 5,
         mainLineSize : 7,
         unit: 100,
-        rulerStyle: { left: "20px", width: "calc(100% - 10px)", height: "20px" },
+        rulerStyle: { left: "0px", width: "calc(100% - 10px)", height: "20px" },
     })
     guides.on("changeGuides", e => {
         console.log('guides', e.guides);
     });
     guides.on("clickRuler", (e: any) => {
         console.log('guides', guides.getGuides())
-        // guides.loadGuides([10, 0]);
     })
 
     

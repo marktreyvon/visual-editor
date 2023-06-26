@@ -1,21 +1,5 @@
 <template>
   <el-collapse v-model="activeNames" accordion>
-    <!-- <el-collapse-item title="样式" name="style">
-      <el-form v-model="formData">
-        <el-form-item label="字体大小">
-          <el-input v-model="formData.fontSize"></el-input>
-        </el-form-item>
-
-        <el-form-item label="字体颜色">
-          <el-input v-model="formData.fontColor"></el-input>
-        </el-form-item>
-
-        <el-form-item label="背景颜色">
-          <el-input v-modl="formData.bgColor"></el-input>
-        </el-form-item>
-      </el-form>
-    </el-collapse-item> -->
-
     <el-collapse-item title="属性" name="attribute">
       <el-form class="ml-4">
         <el-form-item label="轮播">
@@ -136,14 +120,9 @@ export default defineComponent({
   data() {
     return {
       activeNames: 'attribute',
-      // formData: {
-      //   fontSize: 20,
-      //   fontColor: '',
-      //   bgColor: ''
-      // },
       table: {
         carousel: false, //轮播
-        plimit: 3, //每页行数
+        plimit: data.plimit, //每页行数
         table: data.table,
         border: data.border,
         header: data.header,
@@ -166,6 +145,7 @@ export default defineComponent({
     },
     table: {
       handler(val) {
+        console.log("table.Attribute.table", val)
         this.$emit("onChange", {
           style: val
         });

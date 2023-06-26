@@ -1,18 +1,7 @@
 <template>
-  <div class="table-wrap" style="height: 100%">
-    <el-table :height="tableHeight" width="100%" :data="orgNameData" :cellStyle="cellStyle"
+  <div class="table-wrap" style="min-height: 100%">
+    <el-table style="height: 100%" :height="tableHeight" width="100%" :data="orgNameData" :cellStyle="cellStyle"
       :header-cell-style="headerCellStyle" :cell-class-name="tableCellClassName" ref="sdangerTable" :style="tableStyle">
-
-      <!-- <el-table-column prop="seqNo" label="seqNo">
-      </el-table-column>
-      <el-table-column prop="deviceName" label="deviceName">
-      </el-table-column>
-      <el-table-column prop="propA" label="propA">
-      </el-table-column>
-      <el-table-column prop="propB" label="propB">
-      </el-table-column>
-      <el-table-column prop="status" label="status">
-      </el-table-column> -->
 
       <template v-if="newRows" v-for="(item, index) in newRows">
         <el-table-column v-if="item.show" :width="item.width" :prop="item.filed" :label="item.name">
@@ -59,7 +48,7 @@ export default defineComponent({
       cellStyle: { color: "#000000", background: data.table.bgColor, border: "none", height: '45px' },
       headerCellStyle: { background: data.header.bgColor, color: data.header.fontColor, fontSize: data.header.fontSize + 'px', border: "none" },
       interval: ref<any>(null),
-      tableHeight: 170,
+      tableHeight: 39 + (data.plimit * 45),
       orgNameData: data.orgNameData,
       newRows: data.newRows,
     }
@@ -73,7 +62,6 @@ export default defineComponent({
         try {
             let obj = JSON.parse(val);
             console.log("table.Main.value.obj", obj);
-
             this.orgNameData = obj;
         } catch(e) {
           console.log('传入的数据不是JSON格式');
@@ -83,64 +71,70 @@ export default defineComponent({
     },
     style: {
       handler(val) {
-        console.log("Main.style", val);
-        this.tableChange(val)
+        console.log("table.Main.style", val);
+        if (JSON.stringify(val) !== "{}") {
+          this.tableChange(val)
+        }
       },
-      deep: true
+      deep: true,
+      immediate: true
     }
   },
   methods: {
-    tableChange(data: any) {
-
+    tableChange(_data: any) {
+      console.log('---table.tableChange--', _data)
       //新数据
-      this.newRows = data.newRows;
-
+      this.newRows = _data.newRows || data.newRows;
       //表格外边框
-      this.tableStyle.background = data.table.bgColor
-      if (data.table.showBorder) {
-        this.tableStyle.border = data.table.borderWidth + 'px solid ' + data.table.borderColor;
+      this.tableStyle.background = _data.table?.bgColor || data.table.bgColor;
+      if (_data.table?.showBorder) {
+        this.tableStyle.border = (_data.table?.borderWidth || data.table.borderWidth) + 'px solid ' + (_data.table?.borderColor || data.table.borderColor);
       } else {
         this.tableStyle.border = 'none'
       }
 
       //表格头部
-      this.headerCellStyle.background = data.header.bgColor
-      this.headerCellStyle.color = data.header.fontColor
-      this.headerCellStyle.fontSize = data.header.fontSize + 'px'
+      this.headerCellStyle.background = _data.header?.bgColor || data.header.bgColor;
+      this.headerCellStyle.color = _data.header?.fontColor || data.header.fontColor
+      this.headerCellStyle.fontSize = (_data.header?.fontSize || data.header.fontSize) + 'px' 
 
       //表格内容
-      this.cellStyle.background = data.table.bgColor;
-      if (data.border.showBorder) {
-        this.headerCellStyle.border = "1px solid " + data.border.borderColor
-        this.cellStyle.border = "1px solid " + data.border.borderColor
+      this.cellStyle.background = _data.table?.bgColor || data.table.bgColor;
+      if (_data.border?.showBorder) {
+        this.headerCellStyle.border = "1px solid " + (_data.border?.borderColor || data.border.borderColor)
+        this.cellStyle.border = "1px solid " + (_data.border?.borderColor || data.border.borderColor)
       } else {
         this.headerCellStyle.border = 'none'
         this.cellStyle.border = 'none'
       }
 
       //滚动
-      if (data.carousel) {
+      if (_data.carousel) {
         this.startScroll();
       } else {
         this.stopScroll();
       }
 
       //显示行数
-      const table: any = this.$refs['sdangerTable'];
-
-      this.tableHeight = table?.$refs.headerWrapper.clientHeight + data.plimit * 45
+      this.$nextTick(() => {
+        const table: any = this.$refs['sdangerTable'];
+        console.log('---data.plimit.table--', table)
+        const headerHeight = table?.$refs.headerWrapper.clientHeight === 0 ? 39 : table?.$refs.headerWrapper.clientHeight;
+        this.tableHeight = headerHeight + (_data.plimit || data.plimit) * 45
+        console.log('---data.plimit--', table?.$refs.headerWrapper.clientHeight, this.tableHeight)
+      })
 
       //斑马线
-      console.log('---data.border.showZebrastripe--', data.border.showZebrastripe)
+      console.log('---data.border.showZebrastripe--', _data.border?.showZebrastripe)
       let stripes = document.getElementsByClassName('stripe');
       for (let i in stripes) {
         const stripe: any = stripes[i];
         let istyle = stripe.style;
         if (istyle) {
-          if (data.border.showZebrastripe) {
-            istyle.background = data.border.zebrastripeColor
+          if (_data.border?.showZebrastripe) {
+            istyle.background = _data.border?.zebrastripeColor || data.border.zebrastripeColor
           } else {
-            istyle.background = data.table.bgColor
+            istyle.background = _data.table?.bgColor || data.table.bgColor
           }
         }
       }
