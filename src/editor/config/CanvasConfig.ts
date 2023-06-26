@@ -12,6 +12,7 @@ import { CellEvents } from '../events/CellEvents';
 import {message} from "@/utils";
 import { PluginConfig } from '.';
 import { Keyboard } from '@antv/x6-plugin-keyboard';
+import { ICanvas } from '@antv/g2/lib/dependents';
 
 
 /**
@@ -55,6 +56,8 @@ class CanvasConfig implements ICanvasConfig {
     nodeResizable: boolean = Common.DEFAULT_NODE_RESIZABLE;
     screenRect: { width: number, height: number } = Common.DEFAULT_SCREEN_RECT;
 
+    rulerCallbacks: ICanvasConfig.RulerCallback[] = [];
+
     private constructor(containerId: string, options?: ICanvasConfig.Options) {
         this.containerId = containerId;
         this.container = <HTMLDivElement>document.getElementById(this.containerId);
@@ -76,6 +79,7 @@ class CanvasConfig implements ICanvasConfig {
             background: {},
             showGrid: Common.DEFAULT_SHOW_GRID,
             gridSize: this.gridSize,
+            showRuler: Common.DEFAULT_SHOW_RULER
         }
         this.initGraph();
     }
@@ -599,19 +603,19 @@ class CanvasConfig implements ICanvasConfig {
     public zoomToFit(): Number {
         if (!this.graph) 
             throw new Error('Graph is undefined.');
-        console.log('getContentBBox', this.graph.getContentBBox())
-        console.log('getContentArea', this.graph.getContentArea())
-        console.log('getContentBBox.screenRect', this.screenRect)
-        let wScale = this.screenRect.width / this.graph.getContentArea().width;
-        let hScale = this.screenRect.height / this.graph.getContentArea().height;
-        console.log('Scale', wScale, hScale)
-        if (wScale > hScale) {
-            // this.graph.zoom(hScale);
-            this.graph.zoomToFit({ minScale: hScale, maxScale: wScale, padding: 0 });
-        } else {
-            this.graph.zoomToFit({ minScale: wScale, maxScale: wScale, padding: 0 });
-        }
-        // this.graph.zoomToFit({ minScale: 1 padding: 0 });
+        // console.log('getContentBBox', this.graph.getContentBBox())
+        // console.log('getContentArea', this.graph.getContentArea())
+        // console.log('getContentBBox.screenRect', this.screenRect)
+        // let wScale = this.screenRect.width / this.graph.getContentArea().width;
+        // let hScale = this.screenRect.height / this.graph.getContentArea().height;
+        // console.log('Scale', wScale, hScale)
+        // if (wScale > hScale) {
+        //     // this.graph.zoom(hScale);
+        //     this.graph.zoomToFit({ minScale: hScale, maxScale: wScale, padding: 0 });
+        // } else {
+        //     this.graph.zoomToFit({ minScale: wScale, maxScale: wScale, padding: 0 });
+        // }
+        this.graph.zoomToFit({ minScale: 1, maxScale: 1 });
         this.graph.centerContent();
         return Number((this.graph.zoom() * 100).toFixed(0));
     }
@@ -663,6 +667,19 @@ class CanvasConfig implements ICanvasConfig {
             this.graph.hideGrid();
         }
         this.graphOptions.showGrid = show;
+    }
+
+    public setRulerCallback(callback: ICanvasConfig.RulerCallback): void {
+        // 去重
+        if (this.rulerCallbacks.includes(callback)) return;
+        this.rulerCallbacks.push(callback);
+    }
+
+
+    public showRuler(show: boolean): void {
+        if (!this.graph) 
+            throw new Error('Graph is undefined.');
+        this.rulerCallbacks.forEach(callback => callback({ show }) );
     }
 
     public setBackground(options: ICanvasConfig.BackgroundOptions): void {

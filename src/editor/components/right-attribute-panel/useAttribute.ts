@@ -7,14 +7,11 @@ import { CanvasConfig } from "@/editor/config"
  */
 export const useAttribute = () => {
 
-    render: () => {
-
-    }
-
     const onCanvasAttrChange = (data: any) => {
         const canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
         canvasConfig.showGrid(data.showGrid);
         canvasConfig.setGridSize(data.gridSize);
+        canvasConfig.showRuler(data.showRuler);
         const background = {
             color: data.backgroundColor,
             image:data.backgroundImage,

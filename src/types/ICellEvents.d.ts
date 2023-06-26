@@ -12,27 +12,27 @@ declare interface ICellEvents {
      */
     graph: Graph;
 
-    graphScaleListener: EventListener<Object> | undefined;
+    graphScaleListener: EventListener[];
 
-    nodeAddListener: EventListener<Object> | undefined;
+    nodeAddListener: EventListener | undefined;
 
-    clickListener: EventListener<Object> | undefined;
+    clickListener:  EventListener[];
 
-    dbClickListener: EventListener<Object> | undefined;
+    dbClickListener: EventListener | undefined;
 
-    mouseEnterListener: EventListener<Object> | undefined;
+    mouseEnterListener: EventListener | undefined;
 
-    mouseLeaveListener: EventListener<Object> | undefined;
+    mouseLeaveListener: EventListener | undefined;
 
-    movedListener: EventListener<Object> | undefined;
+    movedListener: EventListener | undefined;
 
-    contextMenuListener: EventListener<Object> | undefined;
+    contextMenuListener: EventListener | undefined;
 
-    resizeListener: EventListener<Object> | undefined;
+    resizeListener: EventListener | undefined;
     
-    resizedListener: EventListener<Object> | undefined;
+    resizedListener: EventListener | undefined;
 
-    removedListener: EventListener<Object> | undefined;
+    removedListener: EventListener | undefined;
 
     /**
      * 初始化事件
@@ -43,13 +43,13 @@ declare interface ICellEvents {
      * 设置画布缩放的事件
      * @param listener 
      */
-    setGraphScaleEventListener(listener: EventListener<Object>): void;
+    setGraphScaleEventListener(listener: EventListener): void;
 
     /**
      * 设置节点被添加到画布上的事件
      * @param listener 
      */
-    setNodeAddEventListener(listener: EventListener<Object>): void;
+    setNodeAddEventListener(listener: EventListener): void;
    
     /**
      * 设置单击事件
@@ -61,19 +61,19 @@ declare interface ICellEvents {
      * 设置双击事件
      * @param listener 
      */
-    setDBClickEventListener(listener: EventListener<Object>): void;
+    setDBClickEventListener(listener: EventListener): void;
 
     /**
      * 鼠标移入事件
      * @param listener 
      */
-    setMouseEnterEventListener(listener: EventListener<Object>): void;
+    setMouseEnterEventListener(listener: EventListener): void;
 
     /**
      * 鼠标移除事件
      * @param listener 
      */
-    setMouseLeaveEventListener(listener: EventListener<Object>): void;
+    setMouseLeaveEventListener(listener: EventListener): void;
 
     /**
      * 设置右键菜单事件
@@ -85,33 +85,34 @@ declare interface ICellEvents {
      * 设置节点移动事件
      * @param listener 
      */
-    setMovedEventListener(listener: EventListener<Object>): void
+    setMovedEventListener(listener: EventListener): void
 
     /**
      * 设置节点缩放事件
      * @param listener 
      */
-    setResizeEventListener(listener: EventListener<Object>): void;
+    setResizeEventListener(listener: EventListener): void;
 
     /**
      * 设置节点缩放结束事件
      * @param listener 
      */
-    setResizedEventListener(listener: EventListener<Object>): void;
+    setResizedEventListener(listener: EventListener): void;
     /**
      * 设置节点挂载事件
      * @param listener
      */
-    setMountedEventListener(listener: EventListener<Object>): void;
+    setMountedEventListener(listener: EventListener): void;
     /**
      * 设置节点卸载载事件
      * @param listener
      */
-    setUnmountedEventListener(listener: EventListener<Object>): void;
+    setUnmountedEventListener(listener: EventListener): void;
 
-    setRemovedEventListener(listener: EventListener<Object>): void;
+    setRemovedEventListener(listener: EventListener): void;
 }
 
-declare interface EventListener<E> {
-    (event: E): void;
+declare interface EventListener {
+    (event: any): void;
 }
+

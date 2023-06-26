@@ -78,6 +78,11 @@ declare interface ICanvasConfig {
     nodeResizable: boolean;
 
     /**
+     * 标尺回调
+     */
+    rulerCallbacks: ICanvasConfig.RulerCallback[];
+
+    /**
      * 初始化画布
      */
     initGraph(): void;
@@ -148,6 +153,18 @@ declare interface ICanvasConfig {
      * @param show 
      */
     showGrid(show: boolean): void;
+
+    /**
+     * 设置标尺回调
+     * @param callback 
+     */
+    setRulerCallback(callback: ICanvasConfig.RulerCallback): void;
+
+    /**
+     * 是否显示标尺
+     * @param show 
+     */
+    showRuler(show: boolean): void;
 
     /**
      * 配置画布背景
@@ -310,14 +327,23 @@ declare namespace ICanvasConfig {
      * @author cxs
      * @date 2023-05-25
      * @update 2023-05-25
-     * @description 画布背景和网格配置
+     * @description 画布背景、网格和标尺配置
      * @param background   背景配置
      * @param grid         网格
      * @param gridSize     网格大小
+     * @param ruler        标尺
      */
     export interface GraphOptions {
         background: BackgroundOptions,
         showGrid: boolean,
-        gridSize: number
+        gridSize: number,
+        showRuler: boolean
+    }
+
+    /**
+     * 标尺回调
+     */
+    export interface RulerCallback {
+        (options: any): void;
     }
 }

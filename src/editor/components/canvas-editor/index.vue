@@ -1,6 +1,8 @@
 <template>
-  <div class="container" style="width:100%; height:100%">
-    <div :id="Common.DEFAULT_CONTAINER_ID"></div>
+  <div class="canvas-box">
+    <HorizontalGuides v-if="showRuler" class="horizontal-container" :scaling="scaling"/>
+    <VerticalGuides v-if="showRuler" class="vertical-container" :scaling="scaling"/>
+    <div class="canvas-container" :id="Common.DEFAULT_CONTAINER_ID"></div>
     <!-- <div class="mini-container" :id="Common.DEFAULT_MINI_CONTAINER_ID"></div> -->
     <TeleportContainer />
   </div>
@@ -10,8 +12,9 @@
 import * as Common from '@/common';
 import { CanvasConfig } from '@/editor/config';
 import { register,getTeleport } from "@antv/x6-vue-shape";
-import { onMounted } from 'vue';
-import { ruler } from '@/utils'
+import { onMounted, ref } from 'vue';
+import HorizontalGuides from "./components/HorizontalGuides.vue";
+import VerticalGuides from "./components/VerticalGuides.vue";
 // import RightClickMenu from '@/editor/RightClickMenu.vue'
 // register({
 //   shape: "right-click-menu",
@@ -22,29 +25,84 @@ import { ruler } from '@/utils'
 
 const TeleportContainer = getTeleport();
 
+const showRuler = ref<Boolean>(Common.DEFAULT_SHOW_RULER);
+const scaling = ref(1);
 onMounted(() => {
-  console.log('刻度尺', ruler)
   let canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
   const events: ICellEvents = canvasConfig.getEvents();
+
+  /**
+   * 监听标尺事件
+   */
+  canvasConfig.setRulerCallback((data: any) => {
+      console.log('setRulerCallback', data)
+      showRuler.value = data.show;
+      console.log('setRulerCallback', showRuler.value)
+      const canvasContainer = document.getElementById(Common.DEFAULT_CONTAINER_ID);
+      if (data.show) {
+          canvasContainer?.style.setProperty("--left", "20px");
+          canvasContainer?.style.setProperty("--top", "20px");
+      } else {
+          canvasContainer?.style.setProperty("--left", "0px");
+          canvasContainer?.style.setProperty("--top", "0px");
+      }
+  });
+
+  /**
+   * 节点删除事件
+   */
   events.setRemovedEventListener((cell: any) => {
       setTimeout(() => {
           const json = canvasConfig.toJSON();
           localStorage.setItem(Common.STORAGE_JSON_DATA_KEY, JSON.stringify(json));
       }, 200);
   })
+
+  /**
+   * 缩放事件
+   */
+  events.setGraphScaleEventListener((data: any) => {
+      console.log('setGraphScaleEventListener', data)
+      scaling.value = data.sx;
+  })
 })
+
+
 
 </script>
 
 <style lang="scss" scoped>
-.mini-container {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  width: 200px;
-  height: 160px;
-  z-index: 100;
+.canvas-box {
+  position:relative;
+  width: 100%;
+  height: calc(100% - 30px);
+  margin-top: 0px;
+  .horizontal-container {
+    position:absolute;
+    height: 20px;
+  }
+  .vertical-container {
+    position:absolute;
+    left: 0px;
+    height: 100%;
+    width: 20px;
+  }
+  .canvas-container {
+    position: absolute;
+    margin-top: var(--top, 20px);
+    margin-left: var(--left, 20px);
+    width: 100%;
+  }
+  .mini-container {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 200px;
+    height: 160px;
+    z-index: 100;
+  }
 }
+
 
 :deep(.x6-widget-selection-box.x6-widget-selection-box-node) {
   border: unset !important;

@@ -16,7 +16,7 @@
         </el-aside>
         <el-main>
           <!-- 中间编辑区域start -->
-          <canvas-editor class="w-full h-full" style="width: 100%;margin-left:300px;margin-right:300px"/>
+          <canvas-editor class="canvas-editor"/>
           <!-- 中间编辑区域end -->
   
           <!-- 右侧属性面板start -->
@@ -144,7 +144,12 @@ onUnmounted(() => {
   }
 
   .el-main {
-    padding: 12px;
+    .canvas-editor {
+      width: calc(100% - 630px);
+      margin-left:300px;
+      margin-right:300px
+    }
+    padding: 0;
     background-color: #f5f5f5;
     @media (min-width: 1111px) {
       overflow-x: hidden;

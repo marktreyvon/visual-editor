@@ -2,40 +2,43 @@ import { Graph,Edge,Node,ToolsView } from "@antv/x6";
 import * as Common from "@/common";
 import { h } from 'vue';
 import {DEFAULT_CONTAINER_ID} from "@/common";
+
+
+
 /**
  * 事件处理
  */
 class CellEvents implements ICellEvents {
 
     graph: Graph | undefined;
-    isDrawLine:boolean =false
+    isDrawLine:boolean = false
     container: HTMLElement | SVGElement| undefined;
 
-    graphScaleListener: EventListener<Object> | undefined;
+    graphScaleListener: EventListener[] = [];
 
-    nodeAddListener: EventListener<Object> | undefined;
+    nodeAddListener: EventListener | undefined;
 
-    clickListener: EventListener<Object> | undefined;
+    clickListener:  EventListener[] = [];
 
-    dbClickListener: EventListener<Object> | undefined;
+    dbClickListener: EventListener | undefined;
 
-    mouseEnterListener: EventListener<Object> | undefined;
+    mouseEnterListener: EventListener | undefined;
 
-    mouseLeaveListener: EventListener<Object> | undefined;
+    mouseLeaveListener: EventListener | undefined;
 
-    movedListener: EventListener<Object> | undefined;
+    movedListener: EventListener | undefined;
 
-    contextMenuListener: EventListener<Object> | undefined;
+    contextMenuListener: EventListener | undefined;
 
-    resizeListener: EventListener<Object> | undefined;
+    resizeListener: EventListener | undefined;
 
-    resizedListener: EventListener<Object> | undefined;
+    resizedListener: EventListener | undefined;
 
-    mountedListener: EventListener<Object> | undefined;
+    mountedListener: EventListener | undefined;
 
-    unmountedListener: EventListener<Object> | undefined;
+    unmountedListener: EventListener | undefined;
 
-    removedListener: EventListener<Object> | undefined;
+    removedListener: EventListener | undefined;
 
     constructor(graph: Graph,isDrawLine:boolean) {
         this.graph = graph;
@@ -52,7 +55,9 @@ class CellEvents implements ICellEvents {
 
         // 画布缩放事件
         this.graph.on("scale", ({ sx, sy, ox, oy }) => {
-            this.graphScaleListener && this.graphScaleListener({ sx, sy, ox, oy });
+            this.graphScaleListener.forEach((listener) => {
+                listener({ sx, sy, ox, oy });
+            })
         });
 
         // this.graph.on("blank:click", ({ e, x, y }) => {
@@ -60,11 +65,15 @@ class CellEvents implements ICellEvents {
         // });
 
         this.graph.on("blank:mousedown", ({ e, x, y }) => {
-            this.clickListener && this.clickListener({ e, x, y });
+            this.clickListener.forEach((listener) => {
+                listener({ e, x, y });
+            })
         });
 
         this.graph.on("blank:contextmenu", ({ e, x, y }) => {
-            this.clickListener && this.clickListener({ e, x, y });
+            // this.clickListener.forEach((listener) => {
+            //     listener({ e, x, y });
+            // })
         });
 
         this.graph.on("cell:added", ({ cell, index, options }) => {
@@ -73,7 +82,9 @@ class CellEvents implements ICellEvents {
 
         // 单击事件 
         this.graph.on("cell:click", ({ e, x, y, cell, view }) => {
-            this.clickListener && this.clickListener({ e, x, y, cell, view });
+            this.clickListener.forEach((listener) => {
+                listener({ e, x, y, cell, view });
+            })
         });
 
         // 节点双击事件
@@ -164,53 +175,55 @@ class CellEvents implements ICellEvents {
 
     }
 
-    public setGraphScaleEventListener(listener: EventListener<Object>): void {
-        this.graphScaleListener = listener;
+    public setGraphScaleEventListener(listener: EventListener): void {
+        this.graphScaleListener.push(listener);
     }
 
-    public setNodeAddEventListener(listener: EventListener<Object>): void {
+    public setNodeAddEventListener(listener: EventListener): void {
         this.nodeAddListener = listener;
     }
 
-    public setClickEventListener(listener: EventListener<Object>): void {
-        this.clickListener = listener;
+    public setClickEventListener(listener: EventListener): void {
+        if (listener) {
+            this.clickListener.push(listener);
+        }
     }
 
-    public setDBClickEventListener(listener: EventListener<Object>): void {
+    public setDBClickEventListener(listener: EventListener): void {
         this.dbClickListener = listener;
     }
 
-    public setMouseEnterEventListener(listener: EventListener<Object>): void {
+    public setMouseEnterEventListener(listener: EventListener): void {
         this.mouseEnterListener = listener;
     }
 
-    public setMouseLeaveEventListener(listener: EventListener<Object>): void {
+    public setMouseLeaveEventListener(listener: EventListener): void {
         this.mouseLeaveListener = listener;
     }
 
-    public setMovedEventListener(listener: EventListener<Object>): void {
+    public setMovedEventListener(listener: EventListener): void {
         this.movedListener = listener;
     }
 
-    public setContextMenuEventListener(listener: EventListener<Object>): void {
+    public setContextMenuEventListener(listener: EventListener): void {
         this.contextMenuListener = listener;
     }
 
-    public setResizeEventListener(listener: EventListener<Object>): void {
+    public setResizeEventListener(listener: EventListener): void {
         this.resizeListener = listener;
     }
 
-    public setResizedEventListener(listener: EventListener<Object>): void {
+    public setResizedEventListener(listener: EventListener): void {
         this.resizedListener = listener;
     }
-    public setMountedEventListener(listener: EventListener<Object>): void {
+    public setMountedEventListener(listener: EventListener): void {
         this.mountedListener = listener;
     }
-    public  setUnmountedEventListener(listener: EventListener<Object>): void {
+    public  setUnmountedEventListener(listener: EventListener): void {
         this.unmountedListener = listener;
     }
 
-    public setRemovedEventListener(listener: EventListener<Object>): void {
+    public setRemovedEventListener(listener: EventListener): void {
         this.removedListener = listener;
     }
 }

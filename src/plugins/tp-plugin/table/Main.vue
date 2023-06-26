@@ -1,5 +1,5 @@
 <template>
-  <div class="table-wrap">
+  <div class="table-wrap" style="height: 100%">
     <el-table :height="tableHeight" width="100%" :data="orgNameData" :cellStyle="cellStyle"
       :header-cell-style="headerCellStyle" :cell-class-name="tableCellClassName" ref="sdangerTable" :style="tableStyle">
 

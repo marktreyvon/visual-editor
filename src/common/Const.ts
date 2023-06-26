@@ -30,6 +30,11 @@ export const DEFAULT_DISPLAY_CONTAINER_ID = 'view_container';
 export const DEFAULT_SHOW_GRID = true;
 
 /**
+ * 是否显示标尺
+ */
+export const DEFAULT_SHOW_RULER = true;
+
+/**
  * 网格大小
  */
 export const DEFAULT_GRID_SIZE = 10;

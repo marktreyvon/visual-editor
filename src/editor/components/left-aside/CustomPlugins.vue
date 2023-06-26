@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="上传图形" width="50%" draggable>
+  <el-dialog v-model="dialogVisible" title="上传图形" width="50%" >
     <el-form ref="ruleFormRef" :model="formData" :rules="formRules" label-width="120">
       <el-form-item label="输入分类名称" prop="plugin_name">
         <el-input v-model="formData.plugin_name"></el-input>
