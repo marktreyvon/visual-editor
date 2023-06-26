@@ -42,9 +42,12 @@ onMounted(() => {
       if (data.show) {
           canvasContainer?.style.setProperty("--left", "20px");
           canvasContainer?.style.setProperty("--top", "20px");
+          canvasContainer?.style.setProperty("--w", "calc(100% - 20px)");
+
       } else {
           canvasContainer?.style.setProperty("--left", "0px");
           canvasContainer?.style.setProperty("--top", "0px");
+          canvasContainer?.style.setProperty("--w", "100%");
       }
   });
 
@@ -91,7 +94,7 @@ onMounted(() => {
     position: absolute;
     margin-top: var(--top, 20px);
     margin-left: var(--left, 20px);
-    width: 100%;
+    width: var(--w, calc(100% - 20px));
   }
   .mini-container {
     position: absolute;

@@ -3,8 +3,17 @@
     <div :id="Common.DEFAULT_DISPLAY_CONTAINER_ID"></div>
     <TeleportContainer />
   </div>
-  <div class="display-tools-container" style="position: absolute">
-    <el-button v-if="!isFullScreen" @click="fullScreen">全屏</el-button>
+  <div v-if="!isFullScreen" class="display-tools-container" style="position: absolute">
+    <!-- <el-button v-if="!isFullScreen" @click="fullScreen">全屏</el-button> -->
+    <el-dropdown @command="handleToolsCommand">
+      <el-button :icon="More" size="small" round />
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item command="fullScreen">全屏</el-dropdown-item>
+          <el-dropdown-item command="fit">自适应</el-dropdown-item>
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
   </div>
 </template>
 
@@ -16,7 +25,7 @@ import { getTeleport } from "@antv/x6-vue-shape";
 import { parseParams } from "@/utils";
 import { CanvasConfig } from "@/editor/config";
 import { Events } from "@antv/x6";
-
+import { More }  from "@element-plus/icons-vue";
 const TeleportContainer = getTeleport();
 
 let { initDisplay, screenName } = useDisplay(Common.DEFAULT_DISPLAY_CONTAINER_ID);
@@ -59,6 +68,18 @@ onMounted(() => {
   })
 })
 
+function handleToolsCommand(command: string) {
+  switch (command) {
+    case "fullScreen":
+      fullScreen();
+      break;
+    case "fit":
+      const canvasConfig: ICanvasConfig = CanvasConfig.getDisplayInstance(Common.DEFAULT_DISPLAY_CONTAINER_ID);
+      canvasConfig.zoomToFit();
+      break;
+  }
+}
+
 let isFullScreen = ref<any>(false);
 function fullScreen() {
   if (!isFullScreen.value) {
@@ -81,7 +102,7 @@ document.addEventListener("fullscreenchange", screenChange , true);
 
 .display-tools-container {
   position: absolute;
-  top: 0px;
-  left: 0px;
+  top: 10px;
+  left: 5px;
 }
 </style>

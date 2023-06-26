@@ -145,7 +145,7 @@ onUnmounted(() => {
 
   .el-main {
     .canvas-editor {
-      width: calc(100% - 630px);
+      width: calc(100% - 600px);
       margin-left:300px;
       margin-right:300px
     }
