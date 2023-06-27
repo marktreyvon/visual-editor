@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import PluginAPI from '@/api/plugin'
-import { FormInstance, UploadInstance } from "element-plus";
+import { FormInstance, UploadInstance, UploadProps, UploadRawFile } from "element-plus";
 import {ref, reactive, watch, watchSyncEffect, watchEffect} from "vue";
 const activeNames = ref("style");
 const getPicPlugins = async () => {
@@ -56,15 +56,15 @@ const formData = reactive({
         rx: 6,
         ry: 6
     },
-image:{
-  fill: "",
-  strokeWidth: 2,
-  stroke: "#000000",
-  rx: 6,
-  ry: 6,
-  xlink:'',
-},
-  files:[]
+    image:{
+      fill: "",
+      strokeWidth: 2,
+      stroke: "#000000",
+      rx: 6,
+      ry: 6,
+      xlink:'',
+    },
+    files:[]
 })
 const props = defineProps({
     data: {
@@ -95,23 +95,22 @@ const handleChange =async (file: any, uploadFiles: any) => {
     console.log(res[res.length-1])
     console.log("111111111")
   }
-
-
 }
 
-
-
-
 watch(() => props.data, (val) => {
+  console.log('基础图形.data', val.attrs.body)
     if (!val || JSON.stringify(val) === "{}") return;
-  if(val.shape==='rect_img'){
-    isImg.value=true
-    formData.body = { ...val.attrs.image };
-    formData.image.xlink = val.attrs.image['xlink:href'] ;
-  }else{
-    isImg.value=false
-    formData.body = { ...val.attrs.body };
-  }
+    let temp = JSON.parse(JSON.stringify(val));
+    if(temp.shape==='rect_img'){
+      isImg.value=true
+      formData.body = { ...temp.attrs.image };
+      formData.image.xlink = temp.attrs.image['xlink:href'] ;
+    }else{
+      isImg.value=false
+      if (temp.attrs.body.fill === "transparent") 
+        temp.attrs.body.fill = "";
+      formData.body = { ...temp.attrs.body  };
+    }
 }, { deep: true, immediate: true })
 
 const upImg=()=>{
@@ -120,13 +119,13 @@ const upImg=()=>{
 const emit = defineEmits(["onChange",'update:visible', 'submit']);
 watch(formData, (val) => {
     // 当自定义属性改变时，传递给Main.vue的style属性
-    console.log('BaseNode.Attribute.watch.formData', val)
-    if(!val.body.fill){
-        val.body.fill="#00000000"
-    }
-    val.body.ry = val.body.rx;
+    console.log('基础图形', val)
+    let temp = JSON.parse(JSON.stringify(val));
+    if (!temp.body.fill) 
+    temp.body.fill = "transparent";
+    temp.body.ry = temp.body.rx;
     emit("onChange", {
-        style: { ...val }
+        style: { ...temp }
     });
 }, { deep: true })
 

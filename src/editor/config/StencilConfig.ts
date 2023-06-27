@@ -97,17 +97,16 @@ class StencilConfig implements IStencilConfig {
         const { data } = node;
         console.log('getDropNode.node', node, node.data)
         if (!node.data) {
-                return this.graph.createNode({
-                    width: 100,
-                    height: 100,
-                    shape: node.shape,
-                    label: node.label || node.shape,
-                    points: node.points,
-                    attrs: {...node.attrs,body:{...node.attrs.body}},
-                    ports: node.shape!=='rect_img'?this.getPorts():null
-                });
-
-
+            // 基础图形
+            return this.graph.createNode({
+                width: 100,
+                height: 100,
+                shape: node.shape,
+                label: node.label || node.shape,
+                points: node.points,
+                attrs: { ...node.attrs, body: { ...node.attrs.body }},
+                ports: node.shape!=='rect_img' ? this.getPorts() : null
+            });
         }
 
         const pluginConfig: IPluginConfig = PluginConfig.getInstance();

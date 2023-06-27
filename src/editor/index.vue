@@ -37,8 +37,7 @@ import { useTools, useCanvas } from './hooks'
 import PluginAPI from '@/api/plugin'
 import CustomPlugins from "./components/left-aside/CustomPlugins.vue";
 import * as Common from '@/common';
-import { isJSON } from '@/utils';
-
+import { isJSON, rgbtoHex } from '@/utils';
 const params: any = inject('params', null);
 console.log('====editor mounted', params) 
 const { initCanvas, screenName } = useCanvas(params?.id || null);

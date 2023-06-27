@@ -2,7 +2,6 @@ import { CanvasConfig, StencilConfig } from '../config';
 import * as Common from '@/common';
 import { Graph } from '@antv/x6';
 import { Stencil } from "@antv/x6-plugin-stencil";
-import { getDropPicComponent } from '../components/canvas-editor/DropPicComponent';
 import defaultImg from '@/assets/defalut_img.jpg'
 /**
  * @author cxs
@@ -88,7 +87,7 @@ export const useStencil = () => {
 
     const commonAttrs = {
         body: {
-            fill: 'transparent',
+            fill: "transparent",
             stroke: '#000',
             strokeWidth: 2,
             rx: 6,

@@ -121,5 +121,23 @@ const exportFile = (fileName: string, content: string) => {
     document.body.removeChild(element);
 }
 
+const ColorToHex = (color: any) => {
+    var hexadecimal = color.toString(16);
+    return hexadecimal.length == 1 ? "0" + hexadecimal : hexadecimal;
+  }
 
-export { message, parseParams, randomString, isJSON, parseJSONData, readFile, exportFile, isArray }
+/**
+ * rgb转hex
+ * @param rgba 
+ * @returns 
+ */
+const rgbtoHex = (rgba: String) => {
+    const color = rgba.replace(/\s/g, "").match(/^rgba?\((\d+),(\d+),(\d+),?([^,\s)]+)?/i);
+    const red = color ? parseInt(color[1]) : 0;
+    const green = color ? parseInt(color[2]) : 0;
+    const blue = color ? parseInt(color[3]) : 0;
+    return "#" + ColorToHex(red) + ColorToHex(green) + ColorToHex(blue);
+  }
+
+
+export { message, parseParams, randomString, isJSON, parseJSONData, readFile, exportFile, isArray, rgbtoHex }

@@ -62,18 +62,15 @@ const bindData = ref<any>({});
 watch(nodeData, (value) => {
 
     cellIndex.value=-1
-    console.log('right-attribute-panel.nodeData1', value)
     if (!value) return;
     if (!value.data) {
         attrData.value = {};
         bindData.value = {};
-        console.log('right-attribute-panel.nodeData2', attrData.value)
         return;
     }
     const jsonObj = parseJSONData(value.data.jsonData);
     attrData.value = {...jsonObj.style};
     bindData.value = {...jsonObj.data};
-    console.log('right-attribute-panel.nodeData3', attrData.value)
 
 })
 

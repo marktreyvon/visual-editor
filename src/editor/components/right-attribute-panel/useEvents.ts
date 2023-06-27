@@ -227,17 +227,20 @@ export const useEvents = () => {
             // ...currentNode.getData(),
             jsonData
         });
-
         
-
+        // 基础图形
         const baseNodes = ["rect", "circle", "ellipse", "polygon", "polyline", "rect_img"];
         const index = baseNodes.findIndex((item: string) => item === currentNode.shape)
-
         if (index !== -1) {
             if(currentNode.shape!=='rect_img'){
-                console.log("1111")
+
+                console.log('基础图形', data.style.body)
+                // 基础图形
                 currentNode.attr('body', { ...data.style.body })
+                console.log('基础图形', currentNode)
+
             }else{
+                // 图片组件
                 currentNode.attr('image', {...data.style.image} )
                 currentNode.attr('image/xlink:href',data.style.image.xlink )
             }
