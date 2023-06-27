@@ -165,6 +165,8 @@ class CanvasConfig implements ICanvasConfig {
                             line: {
                                 stroke: '#343434',
                                 strokeWidth: 2,
+                                sourceMarker: null,
+                                targetMarker: null,
                             },
                         },
                     });
@@ -385,8 +387,8 @@ class CanvasConfig implements ICanvasConfig {
         if (!this.graph)
             throw new Error('Graph is undefined.');
         const edge = this.graph.getCellById(edgeId)
-
         edge.attr('line/stroke', data.lineColor)
+
         let strokeD
         switch (data.lineStyle) {
             case 0:
@@ -404,6 +406,30 @@ class CanvasConfig implements ICanvasConfig {
         }
         edge.attr('line/strokeDasharray', strokeD)
         edge.attr('line/strokeWidth', data.lineWidth)
+
+        let str1=''
+        let strs1=[]
+        let str2=''
+        let strs2=[]
+        if(data.starStyle==='0'){
+            edge.attr('line/sourceMarker', null)
+        }else{
+            strs1= data.starStyle.split('-')
+
+            str1=strs1[strs1.length-1]
+            console.log(str1)
+            edge.attr('line/sourceMarker', {size:6+data.lineWidth,name:str1,offset: -1})
+        }
+
+        if(data.endStyle==='0'){
+            edge.attr('line/targetMarker', null)
+        }else{
+            strs2=data.endStyle.split('-')
+            str2=strs2[strs2.length-1]
+            console.log(str2)
+            edge.attr('line/targetMarker', {size:6+data.lineWidth,name:str2,offset: -1})
+        }
+
         edge.removeMarkup()
         edge.getTransitions().forEach(
             (path) => edge.stopTransition(path),

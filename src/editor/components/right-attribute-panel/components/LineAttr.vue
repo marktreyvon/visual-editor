@@ -22,6 +22,71 @@
         </el-option>
       </el-select>
     </el-form-item>
+    <el-form-item label="起点样式">
+
+      <el-input v-model="state.formData.starStyle" style='display:none;'/>
+      <div style='width:100%;height: 32px;border: 1px solid #d5d5d5;margin-right: 16px;padding: 0 12px'>
+        <el-dropdown @command="handleCommand1" style='width:100%;'>
+          <div class="el-dropdown-link" style='width:100%;display: flex;justify-content: space-between;align-items: center'>
+            <div style='line-height: 30px'>
+              <i v-if="state.formData.starStyle!=='0'" style='font-size: 18px' :class='`icon iconfont ${state.formData.starStyle}`'></i>
+              <span v-else>无</span>
+            </div>
+            <div style='line-height: 30px'>
+              <el-icon class="el-icon--right" >
+                <arrow-down />
+              </el-icon>
+            </div>
+          </div>
+          <template #dropdown >
+            <el-dropdown-menu style='width: 200px'>
+              <el-dropdown-item command="0">无</el-dropdown-item>
+              <el-dropdown-item command="vta-l-block"><i style='font-size: 18px' class='icon iconfont vta-l-block'></i></el-dropdown-item>
+              <el-dropdown-item command="vta-l-classic"><i style='font-size: 18px' class='icon iconfont vta-l-classic'></i></el-dropdown-item>
+              <el-dropdown-item command="vta-diamond">  <i style='font-size: 18px'  class='icon iconfont vta-diamond'></i></el-dropdown-item>
+              <el-dropdown-item command="vta-circle"><i style='font-size: 18px' class='icon iconfont vta-circle'></i></el-dropdown-item>
+              <el-dropdown-item command="vta-circlePlus"><i style='font-size: 18px' class='icon iconfont vta-circlePlus'></i></el-dropdown-item>
+              <el-dropdown-item command="vta-ellipse">  <i style='font-size: 18px'  class='icon iconfont vta-ellipse'></i></el-dropdown-item>
+              <el-dropdown-item command="vta-cross"><i style='font-size: 18px' class='icon iconfont vta-cross'></i></el-dropdown-item>
+              <el-dropdown-item command="vta-l-async"><i style='font-size: 18px' class='icon iconfont vta-l-async'></i></el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </div>
+
+    </el-form-item>
+    <el-form-item label="終點样式">
+        <el-input v-model="state.formData.endStyle" style='display:none;'/>
+        <div style='width:100%;height: 32px;border: 1px solid #d5d5d5;margin-right: 16px;padding: 0 12px'>
+          <el-dropdown @command="handleCommand2" style='width:100%;'>
+            <div class="el-dropdown-link" style='width:100%;display: flex;justify-content: space-between;align-items: center'>
+              <div style='line-height: 30px'>
+                <i v-if="state.formData.endStyle!=='0'" style='font-size: 18px' :class='`icon iconfont ${state.formData.endStyle}`'></i>
+                <span v-else>无</span>
+              </div>
+              <div  style='line-height: 30px'>
+                <el-icon class="el-icon--right" >
+                  <arrow-down />
+                </el-icon>
+              </div>
+            </div>
+            <template #dropdown >
+              <el-dropdown-menu style='width: 200px'>
+                <el-dropdown-item command="0">无</el-dropdown-item>
+                <el-dropdown-item command="vta-r-block"><i style='font-size: 18px' class='icon iconfont vta-r-block'></i></el-dropdown-item>
+                <el-dropdown-item command="vta-r-classic"><i style='font-size: 18px' class='icon iconfont vta-r-classic'></i></el-dropdown-item>
+                <el-dropdown-item command="vta-diamond">  <i style='font-size: 18px'  class='icon iconfont vta-diamond'></i></el-dropdown-item>
+                <el-dropdown-item command="vta-circle"><i style='font-size: 18px' class='icon iconfont vta-circle'></i></el-dropdown-item>
+                <el-dropdown-item command="vta-circlePlus"><i style='font-size: 18px' class='icon iconfont vta-circlePlus'></i></el-dropdown-item>
+                <el-dropdown-item command="vta-ellipse">  <i style='font-size: 18px'  class='icon iconfont vta-ellipse'></i></el-dropdown-item>
+                <el-dropdown-item command="vta-cross"><i style='font-size: 18px' class='icon iconfont vta-cross'></i></el-dropdown-item>
+                <el-dropdown-item command="vta-r-async"><i style='font-size: 18px' class='icon iconfont vta-r-async'></i></el-dropdown-item>
+
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+    </el-form-item>
     <el-form-item label="线条宽度">
       <el-input-number :min="1" :max="99" v-model="state.formData.lineWidth" @change='validate' ></el-input-number>
     </el-form-item>
@@ -71,8 +136,10 @@
 </template>
 
 <script setup lang="ts">
+import '@/style/font/iconfont.css'
 import {ref, reactive, watch, watchEffect, toRefs, toRaw} from "vue";
 import type { FormInstance, FormRules } from 'element-plus'
+import { ArrowDown } from '@element-plus/icons-vue'
 const props = defineProps({
   edgeData: {
     type: Object,
@@ -90,7 +157,7 @@ const props = defineProps({
 })
 const FormRef = ref<FormInstance>()
 
-const validate=(val:any)=>{
+const validate=()=>{
 
   setLineStyle(props.edgeData.id, props.nodeData.id, state.formData)
 }
@@ -111,11 +178,19 @@ let state = reactive<any>({
     lineColor: '#409EFF',
     waters:1,
     droplet:6,
+    starStyle:'0',
+    endStyle:'0'
   }
 })
 
-
-
+const handleCommand1 = (command: string | number | object) => {
+  state.formData.starStyle=command
+  validate()
+}
+const handleCommand2 = (command: string | number | object) => {
+  state.formData.endStyle=command
+  validate()
+}
 watchEffect(() => {
   if (props.edgeData) {
     let edgeObj = {
@@ -130,6 +205,8 @@ watchEffect(() => {
       lineColor: '#409EFF',
       waters:1,
       droplet:6,
+      starStyle:'0',
+      endStyle:'0'
     }
 
     if(props?.edgeData?.attrs?.targetData){
