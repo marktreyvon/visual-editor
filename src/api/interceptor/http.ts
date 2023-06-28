@@ -45,7 +45,7 @@ class HttpRequest {
             // 没有 token 或者时间大于 expires_in 重定向到登录
             if(!token || !expiresTime || now > Number(expiresTime)) {
                 useAuthStore().destroyToken()
-                window.location.href = '/#/login'
+                // window.location.href = '/#/login'
                 // return false; // 阻止后面的请求
                 return config;
             }

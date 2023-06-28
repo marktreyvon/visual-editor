@@ -6,9 +6,13 @@
  * @interface ITools
  */
 declare interface ITools {
+    /**
+     * 缩放比例
+     */
+    scaling: Nummber;
+    
     // 测试线条的颜色修改  *@author; 王炳宏  2023-05-23
     setLineStyle:(eid:any,nid:any,data:any) => void;
-
 
     /**
      * 自适应
@@ -24,6 +28,12 @@ declare interface ITools {
      * 放大
      */
     zoomIn: () => void;
+
+    /**
+     * 获取当前缩放比例
+     * @returns 
+     */
+    getZoom: () => Number;
 
     /**
      * 开启对齐线
@@ -51,6 +61,11 @@ declare interface ITools {
     toJSON: () => { cells: Cell.Properties[] } | { graph: any };
 
     /**
+     * 导入文件
+     */
+    importJSON: (jsonData: any) => void;
+
+    /**
      * 导出SVG
      * @param fileName 
      * @param options 
@@ -74,7 +89,7 @@ declare interface ITools {
     /**
      * 预览
      */
-    preview(id: string): void;
+    preview(): void;
 
     /**
      * 分享
@@ -86,7 +101,11 @@ declare interface ITools {
      */
     help(): void;
     /**
+     * 自动保存
+     */
+    autoSave(id: string) : void;
+    /**
      * 保存大屏数据
      */
-    save(id: string): void;
+    save(id: string, jsonData?: any): void;
 }

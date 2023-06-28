@@ -28,7 +28,7 @@ class StencilConfig implements IStencilConfig {
      * @param stencilId 
      */
     private constructor(
-        graph: Graph, 
+        graph: Graph,
         groups: Stencil.Group[],
         stencilId: string) {
         this.graph = graph;
@@ -44,9 +44,9 @@ class StencilConfig implements IStencilConfig {
      * @param stencilId 
      * @returns 
      */
-    public static getInstance (
-        graph: Graph, 
-        groups: Stencil.Group[], 
+    public static getInstance(
+        graph: Graph,
+        groups: Stencil.Group[],
         stencilId: string = Common.DEFAULT_STENCIL_CONTAINER_ID): StencilConfig {
         if (!StencilConfig.instance) {
             StencilConfig.instance = new StencilConfig(graph, groups, stencilId);
@@ -67,11 +67,12 @@ class StencilConfig implements IStencilConfig {
                 return false;
             },
             groups: this.groups,
-            layoutOptions: {    
+            layoutOptions: {
                 columns: 2,
                 resizeToFit: true,
             },
             stencilGraphWidth: 280,
+            stencilGraphHeight: 0,
             getDropNode(draggingNode) {
                 return __this.getDropNode(draggingNode);
             }
@@ -91,11 +92,26 @@ class StencilConfig implements IStencilConfig {
      * @returns 
      */
     private getDropNode(node: any): Node {
-        if (!this.graph) 
-            throw new Error('Graph is undefined.'); 
+        if (!this.graph)
+            throw new Error('Graph is undefined.');
         const { data } = node;
+        console.log('getDropNode.node', node, node.data)
+        if (!node.data) {
+            // 基础图形
+            return this.graph.createNode({
+                width: 100,
+                height: 100,
+                shape: node.shape,
+                label: node.label || node.shape,
+                points: node.points,
+                attrs: { ...node.attrs, body: { ...node.attrs.body }},
+                ports: node.shape!=='rect_img' ? this.getPorts() : null
+            });
+        }
+
         const pluginConfig: IPluginConfig = PluginConfig.getInstance();
         const cpt = pluginConfig.getComponent(data.name);
+        console.log('getDropNode.cpt', cpt)
         const dropCpt: Component = getDropComponent(cpt.Main);
         // 注册组件
         registerShape(data.name, dropCpt);
@@ -105,87 +121,19 @@ class StencilConfig implements IStencilConfig {
             shape: data.name,
             x: 100,
             y: 40,
-            width: 200,
-            height: 200,
+            width: cpt.size.width === '100%' ? pluginConfig.getScreenRect().width : cpt.size.width || 200,
+            height: cpt.size.height === '100%' ? pluginConfig.getScreenRect().height : cpt.size.height || 200,
             label: data.name,
             //在创建节点时增加连接点属性;  *@author; 王炳宏  2023-05-23
-            ports: {
-                groups: {
-                    top: {
-                        attrs: {
-                            circle: {
-                                r: 6,
-                                magnet: true,
-                                stroke: '#31d0c6',
-                                strokeWidth: 2,
-                                fill: '#fff',
-                            },
-                        },
-                        position: 'top',
-                    },
-                    bottom: {
-                        attrs: {
-                            circle: {
-                                r: 6,
-                                magnet: true,
-                                stroke: '#31d0c6',
-                                strokeWidth: 2,
-                                fill: '#fff',
-                            },
-                        },
-                        position: 'bottom',
-                    },
-                    right: {
-                        attrs: {
-                            circle: {
-                                r: 6,
-                                magnet: true,
-                                stroke: '#31d0c6',
-                                strokeWidth: 2,
-                                fill: '#fff',
-                            },
-                        },
-                        position: 'right',
-                    },
-                    left: {
-                        attrs: {
-                            circle: {
-                                r: 6,
-                                magnet: true,
-                                stroke: '#31d0c6',
-                                strokeWidth: 2,
-                                fill: '#fff',
-                            },
-                        },
-                        position: 'left',
-                    }
-                },
-                items: [
-                    {
-
-                        group: 'top',
-                    },   {
-
-                        group: 'bottom',
-                    },   {
-
-                        group: 'right',
-                    },   {
-
-                        group: 'left',
-                    }
-                ]
-            },
+            ports: node.shape!=='rect_img'?this.getPorts():null,
         });
 
         return dropNode;
     }
 
-
-
     public addGroup(group: string): void {
-        if (!this.stencil) 
-            throw new Error('Stencil is undefined.'); 
+        if (!this.stencil)
+            throw new Error('Stencil is undefined.');
         this.groups.push({
             name: group,
             title: group,
@@ -193,7 +141,114 @@ class StencilConfig implements IStencilConfig {
         });
     }
 
+    /**
+     * @author cxs
+     * @date 2023-06-08
+     * @description 获取连接桩
+     * @returns 
+     */
+    private getPorts(): any {
+        return {
+            groups: {
+                top: {
+                    attrs: {
+                        circle: {
+                            r: 4,
+                            magnet: true,
+                            stroke: '#31d0c6',
+                            strokeWidth: 2,
+                            fill: '#fff',
+                            style:{
+                                visibility:'hidden'
+                            }
+                        },
+                    },
+                    position: 'top',
+                },
+                absolute: {
+                    attrs: {
+                        circle: {
+                            r:4,
+                            magnet: true,
+                            stroke: '#31d0c6',
+                            strokeWidth: 2,
+                            fill: '#fff',
+                            style:{
+                                visibility:'hidden'
+                            }
+                        },
+                    },
+                    position: {name: 'absolute'}
+                },
+                bottom: {
+                    attrs: {
+                        circle: {
+                            r: 4,
+                            magnet: true,
+                            stroke: '#31d0c6',
+                            strokeWidth: 2,
+                            fill: '#fff',
+                            style:{
+                                visibility:'hidden'
+                            }
+                        },
+                    },
+                    position: 'bottom',
+                },
+                right: {
+                    attrs: {
+                        circle: {
+                            r: 4,
+                            magnet: true,
+                            stroke: '#31d0c6',
+                            strokeWidth: 2,
+                            fill: '#fff',
+                            style:{
+                                visibility:'hidden'
+                            }
+                        },
+                    },
+                    position: 'right',
+                },
+                left: {
+                    attrs: {
+                        circle: {
+                            r: 4,
+                            magnet: true,
+                            stroke: '#31d0c6',
+                            strokeWidth: 2,
+                            fill: '#fff',
+                            style:{
+                                visibility:'hidden'
+                            }
+                        },
+                    },
+                    position: 'left',
+                }
+            },
+            items: [
+                {
+                    group: 'absolute',
+                    args: {
+                        x: '50%',
+                        y: '50%',
+                    },
+                },
+                {
+                    group: 'top',
+                }, {
 
+                    group: 'bottom',
+                }, {
+
+                    group: 'right',
+                }, {
+
+                    group: 'left',
+                }
+            ]
+        }
+    }
 }
 
 /**
@@ -207,7 +262,7 @@ const registerShape = (shape: string, component: any) => {
         width: 100,
         height: 100,
         component
-      });
+    });
 }
 
 

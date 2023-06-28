@@ -10,7 +10,10 @@ import * as dayjs from 'dayjs'
 import * as axios from 'axios'
 import * as ElementPlus from 'element-plus'
 // 第三方插件
-import * as Plugins from './dependence'
+import * as Plugins from './dependence';
+import * as Global from '@/utils/global'
+// 全局方法
+Global.install();
 
 import 'systemjs'
 System.set('lib:vue', Vue)
@@ -24,7 +27,10 @@ const app = createApp(App);
 
 // 使用 Element Plus
 Plugins.installElementPlus(app);
+// 使用AMap
+Plugins.installAMap(app);
 // Plugins.installDataV(app);
+
 
 app.use(router);
 app.use(createPinia());

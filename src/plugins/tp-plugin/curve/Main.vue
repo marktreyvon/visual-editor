@@ -1,16 +1,20 @@
 <template>
-  <div :id="id" style="width:100%;height:100%"></div>
+  <Line id="yibiaopan" :formData="formData" :formData1="formData1"></Line>
 </template>
 
 <script lang="ts">
 import { defineComponent, watch } from "vue";
-import { Line } from '@antv/g2plot';
-import { randomString } from "@/utils";
+import Line from './components/Curve.vue'
 export default defineComponent({
   components: {
+    Line,
   },
   props: {
     value: {
+      type: [Object],
+      default: () => ({})
+    },
+    data: {
       type: [Object, String, Number],
       default: () => {
         return {};
@@ -25,43 +29,33 @@ export default defineComponent({
   },
   data() {
     return {
-      formData: "",
-      id: "container_curve_" + randomString(10)
+      formData: {},
     }
   },
   watch: {
-    value: {
+    data: {
       handler(val) {
         console.log("Main.value", val);
+        this.formData1 = val
       },
       deep: true
     },
     style: {
       handler(val) {
         console.log("Main.style", val);
+        this.formData = val
       },
       deep: true
     }
   },
-  mounted() {
-    fetch('https://gw.alipayobjects.com/os/bmw-prod/1d565782-dde4-4bb6-8946-ea6a38ccf184.json')
-    .then((res) => res.json())
-    .then((data) => {
-      const line = new Line(this.id, {
-        data,
-        padding: 'auto',
-        xField: 'Date',
-        yField: 'scales',
-        xAxis: {
-          // type: 'timeCat',
-          tickCount: 5,
-        },
-      });
-
-      line.render();
-    });
-
-
+  computed: {
+    formData1() {
+        if (JSON.stringify(this.value) !== "{}") {
+            return this.value;
+        } else {
+            return {};
+        }
+    }
   },
   methods: {
     changeData(data: any) {

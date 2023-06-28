@@ -1,11 +1,12 @@
 <template>
-  <gauge id="pm25"></gauge>
+  <!-- <gauge id="pm25"></gauge> -->
+  <div id="scene3d" ref="scene3d" style="width:800px;height:800px"></div>
 </template>
 
 <script lang="ts">
 import { defineComponent, watch } from "vue";
 import Gauge from "../components/Gauge.vue";
-
+import  { SceneBackstage }  from  './scene/lib/engine';
 export default defineComponent({
   components: {
     Gauge,
@@ -26,7 +27,8 @@ export default defineComponent({
   },
   data() {
     return {
-      formData: ""
+      formData: "",
+      scene: null,
     }
   },
   watch: {
@@ -42,6 +44,13 @@ export default defineComponent({
       },
       deep: true
     }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      const containerDiv = this.$refs.scene3d;
+      const scene = new SceneBackstage(containerDiv);	
+    })
+    
   },
   methods: {
     changeData(data: any) {

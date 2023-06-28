@@ -13,6 +13,12 @@ export const DEFAULT_MINI_CONTAINER_ID = 'mini_container';
  */
 export const DEFAULT_STENCIL_CONTAINER_ID = 'stencil_container';
 
+
+/**
+ * 默认组件列表容器ID
+ */
+export const LAYER_STENCIL_CONTAINER_ID = 'layer_container';
+
 /**
  * 默认视图容器ID
  */
@@ -22,6 +28,11 @@ export const DEFAULT_DISPLAY_CONTAINER_ID = 'view_container';
  * 是否显示网格
  */
 export const DEFAULT_SHOW_GRID = true;
+
+/**
+ * 是否显示标尺
+ */
+export const DEFAULT_SHOW_RULER = true;
 
 /**
  * 网格大小
@@ -81,13 +92,31 @@ export const DEFAULT_NODE_MOVABLE = true;
  */
 export const DEFAULT_NODE_RESIZABLE = true;
 
-/**
- * 预览大屏数据存储key
- */
-export const PREVIEW_JSON_DATA_KEY = 'preview_json_data';
 
 /**
  * 画布背景颜色
  */
 export const DEFAULT_BACKGROUND_COLOR = '#F2F7FA';
 
+/**
+ * 显示器大小
+ */
+export const DEFAULT_SCREEN_RECT = {
+    width: 1920,
+    height: 1080
+}
+
+/**
+ * 预览大屏数据存储key
+ */
+export const PREVIEW_JSON_DATA_KEY = 'preview_json_data';
+
+/**
+ * 画布数据临时存储key
+ */
+export const STORAGE_JSON_DATA_KEY = 'storage_json_data';
+
+/**
+ * 自动保存时间间隔 30秒
+ */
+export const AUTO_SAVE_INTERVAL = 1000 * 30;

@@ -126,15 +126,18 @@ pnpm run dev
  
 
 
-## 示例
+## 立即上手 开发第一个插件
 以文本组件为例，我们为官方插件开发一个可以拖拽到画布上的文本组件，可以通过右侧属性面板调整文字的大小、颜色以及背景框。 通过数据面板设置文本显示的值。
 如下图所示：  
 ![文本组件](readme_files/text_example.png)    
 
+### 第一步：创建组件所需的文件
 官方插件所在的目录是tp-plugins文件夹，我们在这个文件夹里创建`text`目录，然后在text目录创建以下4个文件：  
 index.ts、Main.vue、Data.vue、Attribute.vue
-### 主组件： text/Main.vue
+
+### 第二步：编写Main.vue
 ```ts
+// text/Main.vue
 <template>
     <div :style="myStyle" style="width:100%;height:100%">
         {{ value }}
@@ -174,9 +177,9 @@ export default {
 ```
 
 
-
-### 属性面板: text/Attribute.vue  
+### 第三步：编写属性面板Attribute.vue
 ```ts
+// text/Attribute.vue  
 <template>
     <el-collapse v-model="activeNames">
         <el-collapse-item title="样式" name="style">
@@ -238,52 +241,83 @@ this.$emit("onChange", {
 });
 ```
 之后，编辑器会自动将style传递到Main.vue中，Main组件的props属性就会接收到传过来的参数.  
-目前仅支持传递style和value.
+目前仅支持传递style和data.
 
-### 数据面板：text/Data.vue
+### 第四步：编写数据面板：Data.vue
 ```ts
+// text/Data.vue
 <template>
-  <el-tabs v-model="activeName">
-    <el-tab-pane label="静态数据" name="static">
-      <el-form v-model="formData">
-        <el-form-item label="绑定数据">
-          <el-input v-model="formData.staticValue"></el-input>
+  <div style="height:100%">
+    <el-row style="margin-bottom: 10px">
+        <el-radio-group v-model="formData.bindType">
+          <el-radio v-for="item in bindOptions" :label="item.value" size="small">{{ item.label}}</el-radio>
+        </el-radio-group>
+    </el-row>
+    <el-row style="height:100%">
+        <!-- 静态数据 -->
+        <el-input v-if="formData.bindType==='static'" :rows="20" type="textarea" v-model="formData.static"></el-input>
+        <!-- 动态数据 -->
+        <el-form-item v-else-if="formData.bindType==='dynamic'" style="width:100%">
+          <el-input :rows="2" type="textarea" v-model="formData.dynamic"></el-input>
         </el-form-item>
-      </el-form>
-    </el-tab-pane>
-    <el-tab-pane label="动态数据" name="dynamic">
-
-    </el-tab-pane>
-  </el-tabs>
+        <!-- 设备数据 -->
+        <div class="w-full" v-else-if="formData.bindType==='device'" >
+          <slot></slot>
+        </div>
+        
+    </el-row>
+  </div>
 </template>
 
 <script>
 export default {
-  props: {},
+  props: {
+    data: {
+      type: [String, Object],
+      default: () => ({})
+    }
+  },
   data() {
     return {
-      activeName: 'static',
       formData: {
-        value: ""
-      }
+        bindType: 'static',
+        static: "文本"
+      },
+      bindOptions: [
+        { value: 'static', label: '静态数据' }, 
+        { value: 'dynamic', label: '动态数据'}, 
+        { value: 'device', label: '设备数据'}
+      ]
     }
   },
   watch: {
     formData: {
       handler(val) {
         this.$emit("onChange", {
-          value: { ...val }
+          data: { bindType: this.bindType, ...val }
         });
       },
       deep: true
     }
   },
-  methods: {}
+  mounted() {
+    if (JSON.stringify(this.data) !== "{}") {
+      this.formData = JSON.parse(JSON.stringify(this.data));
+    }
+  },
+  methods: {
+    
+  }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.el-radio.el-radio--small {
+  margin-right: 10px
+}
+</style>
 ```
 
+### 第五步：导出组件
 接下来在text/index.ts中导出组件.  
 ```ts
 import Text_Attribute from './Attribute.vue';
@@ -292,7 +326,8 @@ import Text_Main from './Main.vue';
 export { Text_Attribute, Text_Data, Text_Main }
 ```
 
-然后在tp-plugin/index.ts文件中进行配置
+### 第六步：配置
+在tp-plugin/index.ts文件中进行配置
 ```ts
 import { Text_Attribute, Text_Data, Text_Main } from "./text";
 
@@ -303,6 +338,7 @@ export default {
             description: "",
             group: "官方插件",   // 左侧组件列表的分组名称
             icon: "",         // 左侧列表的组件图标，base64或在线图片地址
+            size: { width: 120, height: 60 },
             Main: Text_Main,    // 将要在画布上渲染的节点
             Attribute: Text_Attribute,   // 点击节点后在右侧属性面板显示的表单
             Data: Text_Data    // 点击节点后在右侧数据面板显示的表单
@@ -313,7 +349,7 @@ export default {
     ]
 }
 ```
-
+### 第七步：导出插件
 最后，在src/plugins/index.ts导出该插件
 ```ts
 export * as tpPlugin from './tp-plugin';

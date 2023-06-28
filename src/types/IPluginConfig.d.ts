@@ -11,12 +11,16 @@ declare interface IPluginConfig {
      */
     components: Map<String, any>;
 
-    public setComponents(components: Map<String, any>): void;
+    setComponents(components: Map<String, any>): void;
 
-    public getComponents(): Map<String, any>;
+    getComponents(): Map<String, any>;
 
-    public addComponent(name: String, component: any): void;
+    addComponent(name: String, component: any): void;
 
-    public getComponent(name: String): any;
+    getComponent(name: String): any;
+
+    getScreenRect(): { width: number; height: number; };
+
+    registerComponents(mode: "editor" | "display", data: any): void;
 
 }

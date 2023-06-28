@@ -10,32 +10,32 @@ declare interface IStencilConfig {
         /**
         * 画布
         */
-        private graph: Graph | undefined;
+        graph: Graph | undefined;
     
         /**
         * 组件列表
         */
-        private stencil: Stencil | undefined;
+        stencil: Stencil | undefined;
     
         /**
         * 组件列表容器ID
         */
-        private stencilId: string;
+        stencilId: string;
 
         /**
          * 组件列表分组
          */
-        private groups: Stencil.Group[];
+        groups: Stencil.Group[];
     
         /**
         * 初始化组件列表
         */
-        private initStencil(): void;
+        initStencil(): void;
 
         /**
          * 获取组件列表
          */
         getStencil(): Stencil | undefined;
 
-        public addGroup(group: string): void;
+        addGroup(group: string): void;
 }

@@ -25,8 +25,16 @@ export const usePlugins = (): any => {
         }
     }
 
+    /**
+     * 加载自定义图片插件
+     * @param plugins 
+     */
+    const loadPicPlugins = (plugins: any): void => {
+        console.log('loadPicPlugins', plugins)
+    }
+
     return {
-        loadPlugins
+        loadPlugins, loadPicPlugins
     }
 }
 
