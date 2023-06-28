@@ -37,7 +37,12 @@
               <el-button>查看secret</el-button>
             </template>
           </el-popover>
-          <el-button type="primary">创建插件</el-button>
+          <el-button
+            type="primary"
+            @click="data.editVisible = true;data.selectId = ''"
+          >
+            创建插件
+          </el-button>
         </div>
       </div>
       <el-table :data="data.list" @expand-change="getRecords">
@@ -53,7 +58,6 @@
                 <el-table-column label="发布说明">
                   <template #default="scope">
                     <el-popover
-                      title="发布说明"
                       :width="400"
                       trigger="click"
                     >
@@ -100,7 +104,7 @@
           </template>
         </el-table-column>
         <el-table-column label="版本数" prop="_count.stores" />
-        <el-table-column width="70">
+        <el-table-column width="70" label="icon">
           <template #default="scope">
             <img class="w-10 h-10" :src="`${oss}/${scope.row.icon}`" />
           </template>
@@ -118,7 +122,18 @@
           </template>
         </el-table-column>
         <el-table-column label="操作">
-
+          <template #default="{row}">
+            <el-button
+              type="danger" v-if="!row._count.stores" size="small"
+              @click="removePlugin(row.id)"
+            >
+              删除
+            </el-button>
+            <template v-if="row._count.stores">
+              <el-button type="danger" v-if="!row.deprecate" size="small">废弃</el-button>
+              <el-button type="danger" v-if="row.deprecate" size="small">恢复</el-button>
+            </template>
+          </template>
         </el-table-column>
       </el-table>
       <div class="mt-4 justify-end flex">
@@ -130,6 +145,11 @@
         />
       </div>
     </div>
+    <edit-plugin
+      v-model:visible="data.editVisible"
+      :id="data.selectId"
+      @success="getPlugins"
+    />
   </el-drawer>
 </template>
 
@@ -141,6 +161,7 @@ import dayjs from 'dayjs'
 import { copyToClipboard } from '@/utils'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import StoreHandle from '@/market/StoreHandle.vue'
+import EditPlugin from '@/market/EditPlugin.vue'
 
 const oss = import.meta.env.VITE_OSS
 
@@ -160,7 +181,8 @@ const data = reactive({
   total: 0,
   secret: '',
   historyMap: new Map<string, { list: any[], total: number, page: number, pageSize: number }>(),
-  releaseNote: ''
+  editVisible: false,
+  selectId: ''
 })
 
 const getPlugins = () => {
@@ -221,6 +243,15 @@ const onRemoteStore = (pluginId: string) => {
 const getSecret = () => {
   MarketApi.getSecret().then(res => {
     data.secret = res.data.secret
+  })
+}
+
+const removePlugin = (id: string) => {
+  ElMessageBox.confirm('点击确认删除该插件', '提示').then(() => {
+    return MarketApi.removePlugin(id).then(() => {
+      ElMessage.success('删除成功')
+      getPlugins()
+    })
   })
 }
 watch(() => props.visible, (v) => {

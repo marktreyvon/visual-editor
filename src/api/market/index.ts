@@ -1,4 +1,5 @@
 import { $market } from '@/api/market/http'
+import dayjs from 'dayjs'
 
 export const StoreStateMap = new Map([
   ['review', '待审核'],
@@ -7,8 +8,39 @@ export const StoreStateMap = new Map([
   ['put', '已上传']
 ])
 
+const getBase64 = (file: File) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = res => {
+      resolve(reader.result)
+    }
+    reader.onerror = reject
+  })
+}
 
 export const MarketApi = {
+  async upload(file: File) {
+    const ext = file.name.match(/\.\w+$/)
+    return $market.post('/market/saveBase64', {
+      fileName: dayjs().format('YYMMDDHHmmss') + ext?.[0],
+      base64: await getBase64(file)
+    })
+  },
+  updatePlugin(data: {pluginId: string, deprecate: boolean}) {
+    return $market.post('/market/updatePlugin', data)
+  },
+  removePlugin(pluginId: string) {
+    return $market.post('/market/removePlugin', {pluginId})
+  },
+  createPlugin(data: {
+    description: string,
+    icon: string,
+    zh_name: string,
+    name: string
+  }) {
+    return $market.post('/market/createPlugin', data)
+  },
   getPlugins(query: {
     page: number
     pageSize: number

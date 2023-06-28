@@ -24,6 +24,8 @@
     "@kjgl77/datav-vue3": "^1.5.0",
     "@types/axios": "^0.14.0",
     "@types/node": "^20.2.3",
+    "@wangeditor/editor": "^5.1.23",
+    "@wangeditor/editor-for-vue": "^5.1.12",
     "axios": "^1.4.0",
     "dayjs": "^1.11.7",
     "echarts": "^5.4.2",
