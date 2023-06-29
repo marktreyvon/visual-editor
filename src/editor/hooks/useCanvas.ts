@@ -10,6 +10,31 @@ import { isJSON } from '@/utils';
 import { ref } from 'vue';
 
 const localUrl = import.meta.env.VITE_BASE_URL  || document.location.origin;
+
+// MarketApi.getInstalledPlugins().then(res => {
+//     const data = res.data.plugins as any[]
+//     const remotePlugins:Record<string, any> = {}
+//     Promise.all(data.map(p => {
+//         return System.import(`${oss}${p.url}`)
+//     })).then(modules => {
+//         for (let i = 0; i < modules.length; i++) {
+//             remotePlugins[data[i].name] = modules[i]
+//         }
+//         // 获取画布管理器
+//         let canvasConfig: ICanvasConfig = CanvasConfig.getInstance(Common.DEFAULT_CONTAINER_ID);
+//         // 初始化事件
+//         // useEvents(canvasConfig);
+//         // 加载插件
+//         const plugins = {
+//             ...Plugins,
+//             ...remotePlugins
+//         }
+//         console.log('plugins', remotePlugins)
+//         loadPlugins(plugins);
+//         initStencil(plugins);
+//     })
+// })
+
 /**
  * @author cxs
  * @date 2023-04-28

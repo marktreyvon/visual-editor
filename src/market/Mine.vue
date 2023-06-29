@@ -3,7 +3,7 @@
     :model-value="visible" @close="$emit('update:visible', false)"
     direction="rtl"
     class="market-drawer"
-    size="70%"
+    size="1200px"
     :with-header="false"
   >
     <div class="flex h-12 items-center justify-between px-3 border-b border-gray-200">
@@ -121,6 +121,11 @@
             {{ scope.row.stores[0]?.version }}
           </template>
         </el-table-column>
+        <el-table-column label="状态">
+          <template #default="scope">
+            {{ scope.row.deprecate ? '已废弃' : '正常'}}
+          </template>
+        </el-table-column>
         <el-table-column label="操作">
           <template #default="{row}">
             <el-button
@@ -130,8 +135,8 @@
               删除
             </el-button>
             <template v-if="row._count.stores">
-              <el-button type="danger" v-if="!row.deprecate" size="small">废弃</el-button>
-              <el-button type="danger" v-if="row.deprecate" size="small">恢复</el-button>
+              <el-button type="danger" v-if="!row.deprecate" size="small" @click="updatePlugin(row.id, true)">废弃</el-button>
+              <el-button type="success" v-if="row.deprecate" size="small" @click="updatePlugin(row.id, false)">恢复</el-button>
             </template>
           </template>
         </el-table-column>
@@ -173,6 +178,20 @@ const emit = defineEmits<{
   (e: 'update:visible', visible: boolean): void
 }>()
 
+const updatePlugin = (id: string, deprecate: boolean) => {
+  ElMessageBox.confirm(deprecate ? '废弃后，该插件将对插件市场隐藏，已安装用户不受影响，点击确认废弃' : '点击确认恢复', '提示').then(() => {
+    MarketApi.updatePlugin({
+      pluginId: id,
+      deprecate
+    }).then(() => {
+      ElMessage({
+        type: 'success',
+        message: '操作成功'
+      })
+      getPlugins()
+    })
+  })
+}
 const data = reactive({
   page: 1,
   pageSize: 10,

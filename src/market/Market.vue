@@ -3,7 +3,7 @@
     :model-value="visible" @close="$emit('update:visible', false)"
     direction="rtl"
     class="market-drawer"
-    size="70%"
+    size="1200px"
     append-to-body
     :with-header="false"
   >
@@ -22,7 +22,14 @@
             <el-input placeholder="回车搜索" v-model="data.keyword" @keydown.enter="keydown" />
           </el-form-item>
           <el-form-item label="已安装">
-            <el-checkbox v-model="data.installed" @change="data.page = 1;getPlugins()" />
+            <span class="mr-4">
+              <el-badge :value="data.waitingUpdateTotal" type="warning" v-if="data.waitingUpdateTotal > 0">
+              <span class="text-sm text-gray-500">
+                待更新
+              </span>
+            </el-badge>
+            </span>
+            <el-checkbox v-model="data.installed" @change="data.page = 1;getPlugins()"/>
           </el-form-item>
         </el-form>
         <div>
@@ -38,12 +45,12 @@
       <el-table :data="data.list" @expand-change="expand">
         <el-table-column type="expand">
           <template #default="props">
-            <div class="pl-10 pr-4">
+            <div class="pl-10 pr-4 mt-4">
               <div class="flex text-sm mb-4">
                 <span>插件描述：</span>
                 <div class="flex-1 ml-2" v-html="props.row.description"></div>
               </div>
-              <el-table size="small" max-height="250" :data="data.historyMap.get(props.row.id) || []">
+              <el-table size="small" max-height="250" :data="data.historyMap.get(props.row.id)?.list || []">
                 <el-table-column label="版本号" prop="version">
                   <template #default="scope">
                     <el-tag>{{ scope.row.version }}</el-tag>
@@ -70,7 +77,28 @@
                     {{ dayjs(scope.row.created).format('YYYY-MM-DD HH:mm') }}
                   </template>
                 </el-table-column>
+                <el-table-column label="安装">
+                  <template #default="{row}">
+                    <el-button
+                      size="small" type="primary" v-if="!row.installed"
+                      @click="install(row.id)"
+                    >
+                      安装
+                    </el-button>
+                    <div v-else>已安装</div>
+                  </template>
+                </el-table-column>
               </el-table>
+              <div class="mt-2 justify-end flex" v-if="data.historyMap.get(props.row.id)?.total > 10">
+                <el-pagination
+                  layout="prev, pager, next"
+                  small
+                  @current-change="e => pageChange(props.row.id, e)"
+                  :total="data.historyMap.get(props.row.id)?.total || 0"
+                  :model-value="data.historyMap.get(props.row.id)?.page || 0"
+                  :page-size="data.historyMap.get(props.row.id)?.pageSize || 10"
+                />
+              </div>
             </div>
           </template>
         </el-table-column>
@@ -88,6 +116,13 @@
         </el-table-column>
         <el-table-column label="操作">
           <template #default="scope">
+            <el-button
+              type="success" v-if="scope.row.upgrade"
+              size="small"
+              @click="upgrade(scope.row.id)"
+            >
+              升级
+            </el-button>
             <el-button
               size="small" type="primary"
               v-if="!scope.row.installed"
@@ -124,6 +159,7 @@ import { MarketApi } from '@/api/market'
 import dayjs from 'dayjs'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import Mine from '@/market/Mine.vue'
+import histogram from '@/plugins/tp-plugin/histogram/components/histogram.vue'
 
 const oss = import.meta.env.VITE_OSS
 
@@ -140,8 +176,9 @@ const data = reactive({
   pageSize: 10,
   list: [] as any[],
   total: 0,
-  historyMap: new Map<string, any[]>(),
+  historyMap: new Map<string, {page: number, pageSize: number, list: any[], total: number}>(),
   openMine: false,
+  waitingUpdateTotal: 0
 })
 const getPlugins = () => {
   MarketApi.getPlugins({
@@ -155,11 +192,13 @@ const getPlugins = () => {
   })
 }
 const expand = (row: any) => {
-  if (!data.historyMap.get(row.id)) {
-    MarketApi.getHistory({ pluginId: row.id, page: 1, pageSize: 20, state: 'passed'}).then(res => {
-      data.historyMap.set(row.id, res.data.list)
-    })
-  }
+  let history = data.historyMap.get(row.id) || {page: 1, pageSize: 10, total: 0, list: []}
+  history.page = 1
+  MarketApi.getHistory({ pluginId: row.id, page: history.page, pageSize: history.pageSize, state: 'passed'}).then(res => {
+    history.list = res.data.list
+    history.total = res.data.total
+    data.historyMap.set(row.id, history)
+  })
 }
 const keydown = (e: KeyboardEvent) => {
   e.stopPropagation()
@@ -168,12 +207,37 @@ const keydown = (e: KeyboardEvent) => {
   getPlugins()
 }
 
+const pageChange = (pluginId: string, page: number) => {
+  const record = data.historyMap.get(pluginId)
+  if (record) {
+    record.page = page
+    MarketApi.getHistory({
+      pluginId: pluginId,
+      pageSize: record.pageSize,
+      page: page
+    }).then(res => {
+      data.historyMap.get(pluginId)!.list = res.data.list
+      data.historyMap.get(pluginId)!.total = res.data.total
+    })
+  }
+}
+
 watch(() => props.visible, (v) => {
   if (v) {
     getPlugins()
+    getUpdateTotal()
   }
 })
 
+const upgrade = (pluginId: string) => {
+  ElMessageBox.confirm('升级插件可能会造成与现有功能不兼容的情况，点击确认升级', '提示').then(() => {
+    MarketApi.upgrade(pluginId).then(() => {
+      ElMessage.success('升级成功，刷新页面后生效')
+      getPlugins()
+      getUpdateTotal()
+    })
+  })
+}
 const install = (id: string) => {
   ElMessageBox.confirm(
     '点击确认安装该插件',
@@ -200,7 +264,14 @@ const uninstall = (id: string) => {
         type: 'success'
       })
       getPlugins()
+      getUpdateTotal()
     })
+  })
+}
+
+const getUpdateTotal = () => {
+  MarketApi.waitingUpdate().then(res => {
+    data.waitingUpdateTotal = res.data.total
   })
 }
 </script>

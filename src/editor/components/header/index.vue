@@ -6,7 +6,7 @@
               </el-icon>
             <span class="align-middle pl-6">{{name}}</span>
         </div>
-        <div class="ml-64 mr-96 w-auto">
+        <div class="ml-64 mr-[400px] w-auto">
           <div class="inline-flex">
             <!--        变色测试按钮  *@author; 王炳宏 -->
             <!-- <el-button @click="attrColor">变色</el-button> -->
@@ -54,11 +54,11 @@
             <el-button text @click="preview()" :icon="View">预览</el-button>
           </div>
         </div>
-        <div class="absolute inset-y-0 right-0 w-auto">
+        <div class="absolute inset-y-0 right-4 w-auto">
             <el-button :icon="Share" >分享</el-button>
             <el-button :icon="CircleCheck" @click="save(params.id)">保存</el-button>
             <el-button :icon="QuestionFilled" @click="help" >帮助</el-button>
-            <el-button type="primary" :icon="HomeFilled" @click="data.marketVisible = true">插件市场</el-button>
+            <el-button :icon="HomeFilled" @click="data.marketVisible = true">插件市场</el-button>
         </div>
     </div>
     <Market v-model:visible="data.marketVisible"/>

@@ -27,8 +27,14 @@ export const MarketApi = {
       base64: await getBase64(file)
     })
   },
+  waitingUpdate() {
+    return $market.get('/market/waitingUpdate')
+  },
   updatePlugin(data: {pluginId: string, deprecate: boolean}) {
     return $market.post('/market/updatePlugin', data)
+  },
+  upgrade(pluginId: string) {
+    return $market.post('/market/upgrade', {pluginId})
   },
   removePlugin(pluginId: string) {
     return $market.post('/market/removePlugin', {pluginId})
