@@ -1,20 +1,34 @@
 <template>
     <el-container id="containerId">
+
       <el-header id="header" height="50px" class="flex items-center shadow-md w-full">
         <!-- 顶部start -->
         <Header :name="screenName" :tools="useTools()"/>
+
         <!-- 顶部end -->
       </el-header>
+
       <el-container id="layout" class="layout-container relative">
         <el-aside class="shadow-sm absolute w-44 z-50 h-full bg-white" style="width:300px">
           <!-- 左侧组件start -->
+
           <left-aside class="left-aside w-full"/>
           <div class="custom-component">
-            <el-button class="custom-button" @click="showCustomPlugins">自定义图形</el-button>
+            <el-row>
+              <el-col :span="12"><el-button class="custom-button" @click="showCustomPlugins">自定义图形</el-button></el-col>
+              <el-col :span="12"><el-button class="custom-button" @click="changeEditEdgeMode">{{ EditEdgeMode.isEditEdgeMode?"取消自由画线":"自由画线" }}</el-button></el-col>
+            </el-row>
           </div>
           <!-- 左侧组件end -->
         </el-aside>
         <el-main>
+          <div class="editAlert" v-if="EditEdgeMode.isEditEdgeMode" >
+            <el-row>
+              <el-col :span="20"><spna>当前为自由画线模式，右键完成，或</spna><spna @click="changeEditEdgeMode" style="color: #59a6ff">点此</spna><spna>完成</spna></el-col>
+              <el-col :span="4"><el-button class="custom-button" @click="changeEditEdgeMode">取消自由划线</el-button></el-col>
+            </el-row>
+          </div>
+
           <!-- 中间编辑区域start -->
           <canvas-editor class="canvas-editor"/>
           <!-- 中间编辑区域end -->
@@ -37,7 +51,9 @@ import { useTools, useCanvas } from './hooks'
 import PluginAPI from '@/api/plugin'
 import CustomPlugins from "./components/left-aside/CustomPlugins.vue";
 import * as Common from '@/common';
-import { isJSON, rgbtoHex } from '@/utils';
+import { isJSON, rgbtoHex } from '@/utils';import {useIsEditEdgeMode} from "@/store/modules/isEditEdgeaModeStore.ts"
+
+const EditEdgeMode =useIsEditEdgeMode()
 const params: any = inject('params', null);
 console.log('====editor mounted', params) 
 const { initCanvas, screenName } = useCanvas(params?.id || null);
@@ -57,6 +73,9 @@ onMounted(async () => {
 const customPluginsDialogVisible = ref(false);
 const showCustomPlugins = () => {
   customPluginsDialogVisible.value = true;
+}
+const changeEditEdgeMode=()=>{
+  EditEdgeMode.increment()
 }
 const customPluginSubmit = () => {
   getPicPlugins();
@@ -144,6 +163,12 @@ onUnmounted(() => {
 
   .el-main {
     .canvas-editor {
+      width: calc(100% - 600px);
+      margin-left:300px;
+      margin-right:300px
+    }
+    .editAlert{
+      padding:8px;
       width: calc(100% - 600px);
       margin-left:300px;
       margin-right:300px

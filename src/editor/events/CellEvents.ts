@@ -1,6 +1,8 @@
 import { Graph,Edge,Node,ToolsView } from "@antv/x6";
 import * as Common from "@/common";
-import { h } from 'vue';
+import { watch } from 'vue';
+import {useIsEditEdgeMode} from "@/store/modules/isEditEdgeaModeStore"
+
 import {DEFAULT_CONTAINER_ID} from "@/common";
 
 
@@ -53,6 +55,8 @@ class CellEvents implements ICellEvents {
         let edge: Edge | null = null
         let node: Node | null = null
 
+        const EditEdgeMode = useIsEditEdgeMode();
+
         // 画布缩放事件
         this.graph.on("scale", ({ sx, sy, ox, oy }) => {
             this.graphScaleListener.forEach((listener) => {
@@ -61,7 +65,8 @@ class CellEvents implements ICellEvents {
         });
 
         // this.graph.on("blank:click", ({ e, x, y }) => {
-        //     this.clickListener && this.clickListener({ e, x, y });
+        //    if(!EditEdgeMode.isEditEdgeMode) return
+        //     console.log(EditEdgeMode.isEditEdgeMode)
         // });
 
         this.graph.on("blank:mousedown", ({ e, x, y }) => {
@@ -127,6 +132,7 @@ class CellEvents implements ICellEvents {
 
         // 右键菜单事件
         this.graph.on("cell:contextmenu", ({ e, x, y, cell, view }) => {
+
             this.contextMenuListener && this.contextMenuListener({ e, x, y, cell, view });
         });
 
@@ -149,6 +155,7 @@ class CellEvents implements ICellEvents {
         });
 
         this.graph.on('edge:selected', ({ edge }) => {
+            if(EditEdgeMode.isEditEdgeMode) return
             edge.addTools([ { name: "segments" ,args:{stopPropagation:false,}},{ name: "vertices" ,args:{stopPropagation:false,}}, { name: "target-arrowhead" ,args:{stopPropagation:false}},  { name: "source-arrowhead" ,args:{
                     attrs: {
                         d: `

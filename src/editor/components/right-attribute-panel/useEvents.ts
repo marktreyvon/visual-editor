@@ -1,8 +1,11 @@
-import { ref, shallowRef, toRaw } from "vue";
+import {ref, shallowRef, toRaw, watch} from "vue";
 import { CanvasConfig, PluginConfig } from "@/editor/config";
 import { isJSON } from "@/utils";
 import {uniqWith,isEqual,filter}  from "lodash"
 import * as Common from "@/common";
+import {useIsEditEdgeMode} from "@/store/modules/isEditEdgeaModeStore";
+import { Graph, Node, Edge, EdgeView } from '@antv/x6'
+
 /**
  * @author cxs
  * @date 2023-05-20
@@ -10,6 +13,7 @@ import * as Common from "@/common";
  * @description 事件管理
  * @returns
  */
+
 export const useEvents = () => {
     // 当前点击的是节点还是画布
     let isNode = ref<any>(false);
@@ -34,17 +38,113 @@ export const useEvents = () => {
      * 初始化事件
      * @returns
      */
+    const EditEdgeMode = useIsEditEdgeMode();
+
+
     const initEvents = () => {
         let canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
         const events: ICellEvents = canvasConfig.getEvents();
         const graph = canvasConfig.getGraph()
+        const container = graph.container as HTMLDivElement
 
         // 新增节点事件
         events.setNodeAddEventListener((data: any) => {
             console.log('setNodeAddEventListener', data)
             storageGraphData();
         });
+        //画线相关函数
+        let editEdge: Edge | null = null
+        let editNode: Node | null = null
 
+//开始画线
+
+        const init = (pos: { x: number; y: number }) => {
+            editNode = graph.addNode({
+                shape: 'circle',
+                width: 0,
+                height: 0,
+                ...pos,
+            })
+            editEdge = graph.addEdge({
+                source: pos,
+                target: pos,
+                attrs: {
+                    line: {
+                        targetMarker: null,
+                        stroke: '#A2B1C3',
+                        strokeWidth: 2,
+                    },
+                },
+            })
+        }
+        const addVertices = (pos: { x: number; y: number }) => {
+            if (editEdge) {
+                editEdge.appendVertex(pos)
+            }
+        }
+        const onMouseMove = (e: MouseEvent) => {
+            if (editEdge) {
+                const pos = graph.clientToLocal(e.clientX, e.clientY)
+                editEdge.setTarget(pos)
+            }
+        }
+        const print = () => {
+            if (editEdge) {
+                const view = graph.findViewByCell(editEdge) as EdgeView
+                console.log(view.path.serialize(),"4324324324324324")
+            }
+        }
+        const finish = (closed: boolean) => {
+            console.log(1)
+            if (editNode && editEdge) {
+                console.log(11)
+                const vertices = editEdge.getVertices()
+                if (closed) {
+                    console.log(111)
+                    if (vertices.length >= 2) {
+                        console.log(1111)
+                        const center = editNode.getBBox().center
+                        editEdge.setSource(center)
+                        editEdge.setTarget(center)
+                        graph.removeNode(editNode)
+                        editNode = null
+                    } else {
+                        console.log(11112)
+                        graph.removeCells([editNode, editEdge])
+                        editNode = null
+                        editEdge = null
+                    }
+                } else {
+                    console.log(112)
+                    if (vertices.length >= 1) {
+                        console.log(1121)
+                        const center = editNode.getBBox().center
+                        editEdge.setSource(center)
+                        editEdge.setTarget(vertices[vertices.length - 1])
+                        graph.removeNode(editNode)
+                        editNode = null
+                    } else {
+                        console.log(1122)
+                        graph.removeCells([editNode, editEdge])
+                        editNode = null
+                        editEdge = null
+                    }
+                }
+                editNode = null
+                EditEdgeMode.increment()
+                container.removeEventListener('mousemove', onMouseMove)
+            }
+        }
+        watch(() => EditEdgeMode.isEditEdgeMode,(newValue, oldValue) => {
+            if(!newValue){
+                finish(false)
+                console.log("关闭了")
+            }
+        })
+        graph.on('edge:contextmenu', () => {
+            console.log("eewewqewq")
+            finish(false)
+        })
         // 点击node
         events.setClickEventListener((data: any) => {
             console.log('initEvents.setClickEventListener', data)
@@ -58,6 +158,12 @@ export const useEvents = () => {
                 isNode.value = false;
                 isEdge.value=false;
                 nodeData.value = {};
+
+                if(EditEdgeMode.isEditEdgeMode){
+                    console.log("开始画线")
+                    init({ x:data.x, y:data.y })
+                    container.addEventListener('mousemove', onMouseMove)
+                }
                 return;
             }
 
@@ -92,15 +198,25 @@ export const useEvents = () => {
             } else {
                 // 连线或基础节点
                 if(currentNode.shape==='edge'){
-                    //如果点击的是边 ;  *@author; 王炳宏  2023-05-23
                     console.log(currentNode.shape,"这是边：",currentNode.id,)
-                    graph.clearTransformWidgets();
-                    dataCpt.value = null;
-                    isEdge.value=true;
-                    isNode.value=false
-                    setEdgeData(data)
-                    // currentNode.attr('line/stroke','#7e14ff')
-                    console.log(isEdge.value)
+                    if(EditEdgeMode.isEditEdgeMode){
+                        const nodes = graph.getNodesFromPoint(data.x, data.y)
+                        if (nodes.length && nodes[0] === editNode) {
+                            finish(true)
+                        } else {
+                            addVertices({ x:data.x, y:data.y })
+                        }
+                    }else{
+                        //如果点击的是边 ;  *@author; 王炳宏  2023-05-23
+                        graph.clearTransformWidgets();
+                        dataCpt.value = null;
+                        isEdge.value=true;
+                        isNode.value=false
+                        setEdgeData(data)
+                        // currentNode.attr('line/stroke','#7e14ff')
+                        console.log(isEdge.value)
+                    }
+
 
                 } else {
                     // 基础节点
@@ -232,6 +348,7 @@ export const useEvents = () => {
         const baseNodes = ["rect", "circle", "ellipse", "polygon", "polyline", "rect_img"];
         const index = baseNodes.findIndex((item: string) => item === currentNode.shape)
         if (index !== -1) {
+            if(data?.style) return
             if(currentNode.shape!=='rect_img'){
 
                 console.log('基础图形', data.style.body)
@@ -255,9 +372,10 @@ export const useEvents = () => {
      */
     const onBaseChange = (data: any) => {
         console.log('onBaseChange', data)
-        data.baseStyle.size && currentNode.resize(Number(data.baseStyle.size.width), Number(data.baseStyle.size.height));
-        data.baseStyle.position && currentNode.position(Number(data.baseStyle.position.x), Number(data.baseStyle.position.y));
-        data.baseStyle.zIndex && currentNode.setZIndex(data.baseStyle.zIndex);
+        if(!data?.baseStyle) return
+        data.baseStyle.size && currentNode.resize(Number(data?.baseStyle?.size?.width), Number(data?.baseStyle?.size?.height));
+        data.baseStyle.position && currentNode.position(Number(data?.baseStyle?.position?.x), Number(data?.baseStyle?.position?.y));
+        data.baseStyle.zIndex && currentNode.setZIndex(data?.baseStyle?.zIndex);
     }
 
     const setNodeTools = (newNode: any, oldNode: any) => {
@@ -267,6 +385,7 @@ export const useEvents = () => {
         }
         if (newNode) {
             // 添加新节点的工具
+            if(EditEdgeMode.isEditEdgeMode) return
             newNode.addTools({
                 name: 'button-remove',
                 args: {
