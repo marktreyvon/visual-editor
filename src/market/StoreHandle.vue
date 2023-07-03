@@ -29,7 +29,7 @@
   </el-popover>
   <el-button
     size="small" link type="danger"
-    v-if="row.state === 'put' || row.state === 'review'"
+    v-if="row.state === 'put'"
     @click="removeStore"
   >
     删除

@@ -234,7 +234,8 @@ const getRecords = (row: any) => {
   MarketApi.getHistory({
     pluginId: row.id,
     pageSize: 10,
-    page: 1
+    page: 1,
+    owner: 'true'
   }).then(res => {
     data.historyMap.get(row.id)!.list = res.data.list
     data.historyMap.get(row.id)!.page = 1

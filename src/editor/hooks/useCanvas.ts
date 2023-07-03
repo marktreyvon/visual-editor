@@ -1,6 +1,6 @@
 import { CanvasConfig } from '../config';
 import * as Common from '@/common';
-import * as Plugins from '@/plugins'
+// import * as Plugins from '@/plugins'
 import { useEvents, usePlugins, useStencil } from '.';
 import { getDropPicComponent } from '../components/canvas-editor/DropPicComponent';
 import { isFunction } from 'element-plus/es/utils';
@@ -8,33 +8,10 @@ import { getPicAttrComponent } from '../components/right-attribute-panel/compone
 import VisualAPI from '@/api/visual';
 import { isJSON } from '@/utils';
 import { ref } from 'vue';
+import { MarketApi } from '@/api/market'
 
 const localUrl = import.meta.env.VITE_BASE_URL  || document.location.origin;
-
-// MarketApi.getInstalledPlugins().then(res => {
-//     const data = res.data.plugins as any[]
-//     const remotePlugins:Record<string, any> = {}
-//     Promise.all(data.map(p => {
-//         return System.import(`${oss}${p.url}`)
-//     })).then(modules => {
-//         for (let i = 0; i < modules.length; i++) {
-//             remotePlugins[data[i].name] = modules[i]
-//         }
-//         // 获取画布管理器
-//         let canvasConfig: ICanvasConfig = CanvasConfig.getInstance(Common.DEFAULT_CONTAINER_ID);
-//         // 初始化事件
-//         // useEvents(canvasConfig);
-//         // 加载插件
-//         const plugins = {
-//             ...Plugins,
-//             ...remotePlugins
-//         }
-//         console.log('plugins', remotePlugins)
-//         loadPlugins(plugins);
-//         initStencil(plugins);
-//     })
-// })
-
+const oss = import.meta.env.VITE_OSS
 /**
  * @author cxs
  * @date 2023-04-28
@@ -52,18 +29,56 @@ const useCanvas = (id?: any): any => {
         // 获取画布管理器
         let canvasConfig: ICanvasConfig = CanvasConfig.getInstance(Common.DEFAULT_CONTAINER_ID);
 
-        let pluginsClone: any = Object.assign({}, Plugins);
+        // let pluginsClone: any = Object.assign({}, Plugins);
+
+        MarketApi.getInstalledPlugins().then(res => {
+            const data = res.data.plugins as any[]
+            let remotePlugins:Record<string, any> = {}
+            Promise.all(data.map(p => {
+                return System.import(`${oss}${p.url}`)
+            })).then(modules => {
+                for (let i = 0; i < modules.length; i++) {
+                    remotePlugins[data[i].name] = modules[i]
+                }
+                // console.log('remote', remotePlugins)
+
+                if (picPlugins) {
+                    remotePlugins  = createPicPlugin(remotePlugins, picPlugins)
+                }
+                console.log('pluginsClone', remotePlugins)
+                // 初始化事件
+                // useEvents(canvasConfig);
+                // 加载插件
+                loadPlugins(remotePlugins);
+                // 加载左侧组件列表
+                initStencil(remotePlugins, picPlugins);
+
+
+                // 获取画布管理器
+                // let canvasConfig: ICanvasConfig = CanvasConfig.getInstance(Common.DEFAULT_CONTAINER_ID);
+                // // 初始化事件
+                // // useEvents(canvasConfig);
+                // // 加载插件
+                // const plugins = {
+                //     ...Plugins,
+                //     ...remotePlugins
+                // }
+                // console.log('plugins', remotePlugins)
+                // loadPlugins(plugins);
+                // initStencil(plugins);
+            })
+        })
         // 加载自定义图片插件
-        if (picPlugins) {
-            pluginsClone  = createPicPlugin(pluginsClone, picPlugins)
-        }
-        console.log('pluginsClone', pluginsClone)
-        // 初始化事件
-        // useEvents(canvasConfig);
-        // 加载插件
-        loadPlugins(pluginsClone);
-        // 加载左侧组件列表
-        initStencil(pluginsClone, picPlugins);
+        // if (picPlugins) {
+        //     pluginsClone  = createPicPlugin(pluginsClone, picPlugins)
+        // }
+        // console.log('pluginsClone', pluginsClone)
+        // // 初始化事件
+        // // useEvents(canvasConfig);
+        // // 加载插件
+        // loadPlugins(pluginsClone);
+        // // 加载左侧组件列表
+        // initStencil(pluginsClone, picPlugins);
         // 加载画布内容
         console.log('====initCanvas.id', id)
         if (id) {

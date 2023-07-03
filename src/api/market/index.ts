@@ -71,7 +71,7 @@ export const MarketApi = {
       id
     })
   },
-  getHistory(query: {pluginId: string, page: number, pageSize: number, state?: string}) {
+  getHistory(query: {pluginId: string, page: number, pageSize: number, owner?: string}) {
     return $market.get('/market/pluginRecords', {
       params: query
     })

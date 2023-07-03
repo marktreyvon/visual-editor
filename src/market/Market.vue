@@ -77,6 +77,11 @@
                     {{ dayjs(scope.row.created).format('YYYY-MM-DD HH:mm') }}
                   </template>
                 </el-table-column>
+                <el-table-column label="状态">
+                  <template #default="{row}">
+                    <el-tag :type="row.state === 'passed' ? 'success' : 'warning'">{{row.state === 'passed' ? '正常' : '待审核'}}</el-tag>
+                  </template>
+                </el-table-column>
                 <el-table-column label="安装">
                   <template #default="{row}">
                     <el-button
@@ -153,7 +158,7 @@
   </el-drawer>
 </template>
 <script setup lang="ts">
-import { reactive, watch } from 'vue'
+import { onMounted, reactive, watch } from 'vue'
 import { ArrowLeftBold, HelpFilled } from '@element-plus/icons-vue'
 import { MarketApi } from '@/api/market'
 import dayjs from 'dayjs'
@@ -178,7 +183,13 @@ const data = reactive({
   total: 0,
   historyMap: new Map<string, {page: number, pageSize: number, list: any[], total: number}>(),
   openMine: false,
-  waitingUpdateTotal: 0
+  waitingUpdateTotal: 0,
+  manager: false
+})
+onMounted(() => {
+  MarketApi.checkManager().then(res => {
+    data.manager = res
+  })
 })
 const getPlugins = () => {
   MarketApi.getPlugins({
