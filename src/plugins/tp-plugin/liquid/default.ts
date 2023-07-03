@@ -16,7 +16,6 @@ export const defaultOption = {
   titleSize: 20,
   titleColor1: 'rgba(44,53,66,0.85)',
   titleColor2: '#fff',
-  fontSize: 60,
   color1: 'rgba(44,53,66,0.85)',
   color2: '#fff',
   borderWidth: 2,

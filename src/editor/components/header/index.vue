@@ -4,7 +4,7 @@
             <el-icon class="align-middle" :size="20">
                 <House />
               </el-icon>
-            <span class="align-middle pl-6" style="overflow：hidden;text-overflow：ellipsis">{{ name }}</span>
+            <span class="align-middle pl-6" style="overflow：hidden;text-overflow：ellipsis" @dblclick="handleDBClick">{{ name }}</span>
             <span class="align-middle pl-6 saving-state">{{ savingState }}</span>
         </div>
         <div class="ml-64 mr-96 w-auto">
@@ -161,6 +161,10 @@ const getUserInfo = () => {
       console.log('getUserInfo', res)
     })
   }, 1000 * 30)
+}
+
+const handleDBClick = () => {
+  console.log('handleDBClick')
 }
 
 </script>
