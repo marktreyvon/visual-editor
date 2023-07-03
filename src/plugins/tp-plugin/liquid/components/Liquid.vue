@@ -1,11 +1,13 @@
 <template>
-    <div :id="id" style="width:100%;height: 100%"></div>
+    <div :id="containerId" style="width:100%;height: 100%"></div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, onUnmounted } from "vue"
+import { ref, onMounted, watch, onUnmounted, nextTick } from "vue"
 import { Liquid } from '@antv/g2plot';
 import { defaultOption, getOptionData } from '../default'
+import { randomString } from '@/utils'
+
 const props = defineProps({
     value: {
         type: [String, Number],
@@ -20,14 +22,18 @@ const props = defineProps({
         default: ""
     }
 })
+const containerId = props.id || randomString(8);
 let liquidPlot: any = null;
 onMounted(() => {
     const option: any = getOptionData(defaultOption);
-    console.log('Liquid.option', props.id)
-    
-    liquidPlot = new Liquid(props.id, option);
-    liquidPlot.render();
-    loop(defaultOption.isLoop)
+    console.log('Liquid.option', props.id, containerId)
+    nextTick(() => {
+        const container: HTMLElement = <HTMLElement>document.getElementById(containerId);
+        console.log('Liquid.container', containerId, container)
+        liquidPlot = new Liquid(container, option);
+        liquidPlot.render();
+        loop(defaultOption.isLoop)
+    })
 })
 
 let timer: any = null;

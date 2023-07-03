@@ -265,6 +265,8 @@ class CanvasConfig implements ICanvasConfig {
 
         this.setNodeMovable(this.nodeMovable);
         this.graph.centerContent();
+
+     
         //键盘 绑定事件
         const  that=this
         this.graph.bindKey('backspace', () => {
@@ -382,13 +384,12 @@ class CanvasConfig implements ICanvasConfig {
     }
 
     //增加改变边样式的函数， ;  *@author; 王炳宏  2023-05-23
-    //todo 需要完善其他需求
+
     public onChangeEdges(edgeId: any,nodeId:any,data:any): void {
         if (!this.graph)
             throw new Error('Graph is undefined.');
         const edge = this.graph.getCellById(edgeId)
         edge.attr('line/stroke', data.lineColor)
-
         let strokeD
         switch (data.lineStyle) {
             case 0:
@@ -406,7 +407,6 @@ class CanvasConfig implements ICanvasConfig {
         }
         edge.attr('line/strokeDasharray', strokeD)
         edge.attr('line/strokeWidth', data.lineWidth)
-
         let str1=''
         let strs1=[]
         let str2=''
@@ -420,7 +420,6 @@ class CanvasConfig implements ICanvasConfig {
             console.log(str1)
             edge.attr('line/sourceMarker', {size:6+data.lineWidth,name:str1,offset: -1})
         }
-
         if(data.endStyle==='0'){
             edge.attr('line/targetMarker', null)
         }else{
@@ -435,6 +434,7 @@ class CanvasConfig implements ICanvasConfig {
             (path) => edge.stopTransition(path),
         )
         this.edgeAnimation(edge,data)
+        extracted(edge,data)
         edge.attr('targetData',data)
     }
 
@@ -500,12 +500,10 @@ class CanvasConfig implements ICanvasConfig {
                 })
                 edge.attr('p2', {...edge.attr().line, connection: true,
                     fill: 'none', cursor: 'pointer',})
-                console.log(edge.attr('p2/strokeWidth'))
 
                 edge.attr('p2/')
                 edge.attr('p1', { connection: true, stroke: data.flowColor,
                     fill: 'none',strokeDasharray:'10 5 10',strokeDashoffset:10,strokeWidth: data.waters})
-
                 const t1=data.flowDirection==='正向'?10:-10
                 const options = {
                     delay:10,

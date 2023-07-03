@@ -8,7 +8,6 @@ import { getPicAttrComponent } from '../components/right-attribute-panel/compone
 import VisualAPI from '@/api/visual';
 import { isJSON } from '@/utils';
 import { ref } from 'vue';
-
 const localUrl = import.meta.env.VITE_BASE_URL  || document.location.origin;
 /**
  * @author cxs
@@ -52,6 +51,7 @@ const useCanvas = (id?: any): any => {
                 if (jsonObj) {
                     canvasConfig.renderJSON(jsonObj);
                     canvasConfig.zoomToFit();
+
                 }
             }
         } else {
@@ -64,9 +64,17 @@ const useCanvas = (id?: any): any => {
                     canvasConfig.zoomToFit();
                 }
             }
-
         }
-        
+        const edges=canvasConfig.graph.getEdges()
+        if(edges.length > 0) {
+            edges.forEach((edge:any) => {
+                console.log(edge.attr('targetData'),"54938590342859032485934825")
+                if(edge?.attr('targetData')?.flowEffect!=="无效果"){
+                    canvasConfig.edgeAnimation(edge,edge.attr('targetData'))
+                }
+
+            })
+        }
     }
 
     const createPicPlugin = (plugins: any, picPlugins: any) => {

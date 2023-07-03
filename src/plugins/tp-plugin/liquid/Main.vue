@@ -1,5 +1,5 @@
 <template>
-    <Liquid :id="id" :value="value" style="width:100%; height: 100%"/>
+    <Liquid :id="getId()" :value="value" style="width:100%; height: 100%"/>
 </template>
 
 <script>
@@ -16,12 +16,18 @@ export default {
     },
     data() {
         return {
-            id: `liquid-${randomString(10)}`
+            id: randomString(8)
         }
     },
     computed: {
     },
     methods: {
+        getId() {
+            return randomString(8)
+        }
+    },
+    mounted() {
+        console.log('Liquid', this.id)
     }
 }
 </script>
