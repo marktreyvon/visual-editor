@@ -48,6 +48,7 @@ const useCanvas = (id?: any): any => {
                 let jsonData = result.data?.data?.[0]?.json_data;
                 const jsonObj = isJSON(jsonData);
                 console.log('importJSON', jsonObj)
+                localStorage.removeItem(Common.STORAGE_JSON_DATA_KEY);
                 if (jsonObj) {
                     canvasConfig.renderJSON(jsonObj);
                     canvasConfig.zoomToFit();

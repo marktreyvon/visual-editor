@@ -4,7 +4,7 @@ import { useRouter } from "vue-router";
 import VisualAPI from "@/api/visual";
 import { exportFile, isJSON, message } from "@/utils/tool";
 import * as Common from "@/common"
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 /**
  * @author cxs
  * @date 2023-04-20
@@ -15,7 +15,13 @@ import { ref } from "vue";
  */
 export const useTools = (): ITools => {
     const router = useRouter();
+    const state = reactive({
+       scaling: 100,
+       savingState: "" 
+    })
     const scaling = ref<Number>(100);
+    const savingState = ref("");
+
     // 测试线条的颜色修改工具;  *@author; 王炳宏  2023-05-23
     function setLineStyle(eid: any, nid: any, data: any) {
         CanvasConfig.getInstance().onChangeEdges(eid,nid,data);
@@ -121,12 +127,13 @@ export const useTools = (): ITools => {
         VisualAPI.updateJsonDate({id, json_data: JSON.stringify(json)})
             .then(({ data }) => {
                 if (data.code === 200) {
-                    message.success('保存成功')
+                    const now = new Date().toLocaleString();
+                    savingState.value = now.slice(-8) + " 已保存";
                 }
             });
     };
     return {
-        scaling, setLineStyle, zoomToFit, getZoom, zoomOut, zoomIn, enableSnapline, disableSnapline,undo, 
+        scaling, savingState,  setLineStyle, zoomToFit, getZoom, zoomOut, zoomIn, enableSnapline, disableSnapline,undo, 
         redo, toJSON, importJSON, exportJPEG, exportPNG, exportSVG, preview, help, share,autoSave, save
     }
 }

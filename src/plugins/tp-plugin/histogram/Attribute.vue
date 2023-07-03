@@ -1,34 +1,4 @@
 <template>
-  <!-- 标题 -->
-  <el-collapse v-model="activeNames">
-
-    <!-- <el-collapse-item title="标题" name="style">
-
-      <el-form v-model="formData" label-width="140px" label-position="left">
-
-        <el-form-item label="显示">
-          <el-switch v-model="formData.pointerShow" />
-        </el-form-item>
-
-        <el-form-item label="标题">
-          <el-input v-model="formData.header"></el-input>
-        </el-form-item>
-
-        <el-form-item label="字体大小">
-          <el-input v-model="formData.sizeborder"></el-input>
-        </el-form-item>
-
-
-        <el-form-item label="字体颜色选择器">
-          <el-color-picker v-model="formData.color1" />
-        </el-form-item>
-
-
-      </el-form>
-
-    </el-collapse-item> -->
-
-  </el-collapse>
 
   <!-- 背景与边框 -->
   <el-collapse v-model="activeNames">

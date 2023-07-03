@@ -1,23 +1,19 @@
 <template>
-    <div class="">
-        <ElTabs v-model="activeName">
-            <el-tab-pane :label="!isEdge?'外观':'线条样式'" name="attr">
-                <div style="height: 100%;">
-                    <!-- 画布样式 -->
-                    <CanvasAttr v-if="!isNode&&!isEdge" @onChange="onCanvasAttrChange"/>
-                    <div v-if="isNode">
-                        <!-- 节点基础样式 -->
-                        <BaseAttr :data="nodeData" @onChange="onBaseChange"/>
-                        <!-- 自定义样式 -->
-                        <component  v-if="attributeCpt" :currentNode='nodeId' :data="attrData" :is="attributeCpt" v-on="actionHandlers"
-                            @onChange="onChange" />
-                        <BaseNodeAttr v-if="!attributeCpt" :data="nodeData" @onChange="onChange"/>
-                    </div>
-                    
-                      <!-- 边样式 -->
-                    <LineAttr v-if="isEdge"   :tools="useTools()" :edgeData="edgeData" :nodeData="nodeData" @onChange="onChange"/>
+        <ElTabs style="height: 100%" v-model="activeName">
+            <el-tab-pane style="height: 100%" :label="!isEdge?'外观':'线条样式'" name="attr">
+                <!-- 画布样式 -->
+                <CanvasAttr v-if="!isNode&&!isEdge" @onChange="onCanvasAttrChange"/>
+                <div style="height: 100%" v-if="isNode">
+                    <!-- 节点基础样式 -->
+                    <BaseAttr :data="nodeData" @onChange="onBaseChange"/>
+                    <!-- 自定义样式 -->
+                    <component  v-if="attributeCpt" :currentNode='nodeId' :data="attrData" :is="attributeCpt" v-on="actionHandlers"
+                        @onChange="onChange" />
+                    <BaseNodeAttr v-if="!attributeCpt" :data="nodeData" @onChange="onChange"/>
                 </div>
 
+                <!-- 边样式 -->
+                <LineAttr v-if="isEdge"   :tools="useTools()" :edgeData="edgeData" :nodeData="nodeData" @onChange="onChange"/>
             </el-tab-pane>
             <!-- 数据绑定 -->
             <el-tab-pane label="数据" name="data" v-if="!isEdge && isNode">
@@ -31,7 +27,6 @@
                 <LayerAttr :nodeData='nodeData' :cellList='cellList' :initEvents='initEvents'/>
             </el-tab-pane>
         </ElTabs>
-    </div>
 </template>
 
 <script setup lang="ts">

@@ -1,7 +1,8 @@
-import { ref, shallowRef, toRaw } from "vue";
+import { inject, ref, shallowRef, toRaw } from "vue";
 import { CanvasConfig, PluginConfig } from "@/editor/config";
 import { isJSON } from "@/utils";
 import {uniqWith,isEqual,filter}  from "lodash"
+import { useTools } from "@/editor/hooks"
 import * as Common from "@/common";
 /**
  * @author cxs
@@ -29,7 +30,7 @@ export const useEvents = () => {
     let edgeData = ref<any>({});
     let nodeId = ref<any>(null)
     let cellList =  ref<any>([])
-
+    const params: any = inject('params', null);
     /**
      * 初始化事件
      * @returns
@@ -154,7 +155,6 @@ export const useEvents = () => {
             const node = data.cell;
             if(node.shape!=='edge'&&node.shape!=='rect_img'){
                 const ports=node.getPorts()
-                console.log(ports)
                 ports.forEach((port:any) => {
                     node.portProp(port.id, "attrs/circle/style/visibility", "hidden");
                 })
@@ -191,13 +191,15 @@ export const useEvents = () => {
         }
     }
 
+    let { save } = useTools();
     // 画布上的内容有改动时，将内容存入浏览器缓存中
     const storageGraphData = () => {
         const canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
+        console.log('storageGraphData.parama.id', params.id)
         setTimeout(() => {
             const json = canvasConfig.toJSON();
-            console.log('storageGraphData', json)
             localStorage.setItem(Common.STORAGE_JSON_DATA_KEY, JSON.stringify(json));
+            save(params?.id);
         }, 200);
     }
 

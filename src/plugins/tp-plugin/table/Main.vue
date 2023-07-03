@@ -1,10 +1,10 @@
 <template>
-  <div class="table-wrap" style="min-height: 100%">
-    <el-table style="height: 100%" :height="tableHeight" width="100%" :data="orgNameData" :cellStyle="cellStyle"
+  <div :id="'table_' + id" lass="table-wrap" style="height: 100%">
+    <el-table style="height: 100%;" width="100%" fit :data="orgNameData" :cellStyle="cellStyle"
       :header-cell-style="headerCellStyle" :cell-class-name="tableCellClassName" ref="sdangerTable" :style="tableStyle">
 
       <template v-if="newRows" v-for="(item, index) in newRows">
-        <el-table-column v-if="item.show" :width="item.width" :prop="item.filed" :label="item.name">
+        <el-table-column v-if="item.show" width="auto" :prop="item.filed" :label="item.name">
 
           <template #default="scope">
             <span :style="'color:' + item.color + '; font-size:' + item.size + ';'">{{ scope.row[item.filed] }}</span>
@@ -35,6 +35,12 @@ export default defineComponent({
         };
       },
     },
+    id: {
+      type: String,
+      default: () => {
+        return "table";
+      },
+    },
     style: {
       type: Object,
       default: () => {
@@ -51,9 +57,9 @@ export default defineComponent({
       tableHeight: 39 + (data.plimit * 45),
       orgNameData: data.orgNameData,
       newRows: data.newRows,
+      tableBodyHeight: 0,
+      rowHeight: 45
     }
-  },
-  mounted() {
   },
   watch: {
     value: {
@@ -79,6 +85,9 @@ export default defineComponent({
       deep: true,
       immediate: true
     }
+  },
+  mounted() {
+    this.getTableBodyHeight();
   },
   methods: {
     tableChange(_data: any) {
@@ -115,13 +124,25 @@ export default defineComponent({
         this.stopScroll();
       }
 
+     
       //显示行数
       this.$nextTick(() => {
-        const table: any = this.$refs['sdangerTable'];
-        console.log('---data.plimit.table--', table)
-        const headerHeight = table?.$refs.headerWrapper.clientHeight === 0 ? 39 : table?.$refs.headerWrapper.clientHeight;
-        this.tableHeight = headerHeight + (_data.plimit || data.plimit) * 45
-        console.log('---data.plimit--', table?.$refs.headerWrapper.clientHeight, this.tableHeight)
+        const dom = <HTMLElement>document.getElementById("table_" + this.id);
+        const tableBody = <HTMLElement>dom.getElementsByClassName("el-table__body-wrapper")[0];
+        const tableRows = <any>dom.getElementsByClassName("el-table__row"); 
+          console.log('tableRows', tableRows)
+        new ResizeObserver(entries => {
+          this.tableBodyHeight = entries[0].contentRect.height;
+          const rowHeihgt = this.tableBodyHeight / (_data.plimit || data.plimit);
+          for (let i in tableRows) {
+            const tableRow: any = tableRows[i];
+            console.log('tableRow', i, tableRow.style)
+            if (tableRow.style) {
+              tableRow.style.height = rowHeihgt + 'px'
+              console.log('tableRow', i, rowHeihgt + 'px')
+            }
+          }
+        }).observe(tableBody);
       })
 
       //斑马线
@@ -164,6 +185,20 @@ export default defineComponent({
         }
       }, 100)
     },
+    /**
+     * 获取表格内容区域高度
+     */
+    getTableBodyHeight() {
+      const resizeObserver = new ResizeObserver(entries => {
+        this.tableBodyHeight = entries[0].contentRect.height;
+        console.log('---tableBodyHeight--', this.tableBodyHeight)
+      })
+      this.$nextTick(() => {
+        const dom = <HTMLElement>document.getElementById("table_" + this.id);
+        const tableBody = <HTMLElement>dom.getElementsByClassName("el-table__body-wrapper")[0];
+        resizeObserver.observe(tableBody);
+      })
+    }
   }
 })
 

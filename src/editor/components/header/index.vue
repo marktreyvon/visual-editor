@@ -5,6 +5,7 @@
                 <House />
               </el-icon>
             <span class="align-middle pl-6">{{name}}</span>
+            <span class="align-middle pl-6 saving-state">{{ savingState }}</span>
         </div>
         <div class="ml-64 mr-96 w-auto">
           <div class="inline-flex">
@@ -69,6 +70,7 @@ import { ArrowDown } from '@element-plus/icons-vue'
 import { exportFile, readFile } from "@/utils";
 import { CanvasConfig } from "@/editor/config";
 import AuthAPI from "@/api/auth"
+import { useTools } from "@/editor/hooks"
 const props = defineProps({ 
     tools: {
         type: Object,
@@ -79,33 +81,32 @@ const props = defineProps({
       default: ''
     }
 });
-const { tools } = toRefs(props);
 const {
-  attrColor,
-    undo,
-    redo,
-    zoomToFit, 
-    zoomOut, 
-    zoomIn,
-    getZoom,
-    scaling,
-    disableSnapline,
-    enableSnapline,
-    importJSON,
-    exportPNG,
-    exportJPEG,
-    exportSVG,
-    toJSON,
-    preview,
-    help,
-    save
-} = tools.value
+  savingState,
+  undo,
+  redo,
+  zoomToFit, 
+  zoomOut, 
+  zoomIn,
+  getZoom,
+  scaling,
+  disableSnapline,
+  enableSnapline,
+  importJSON,
+  exportPNG,
+  exportJPEG,
+  exportSVG,
+  toJSON,
+  preview,
+  help,
+  save,
+  autoSave
+} = useTools()
 
 const params: any = inject("params", null)
   console.log('onMounted', params)
 
 onMounted(() => {
-  console.log(999)
   let canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
   const events: ICellEvents = canvasConfig.getEvents();
 
@@ -115,6 +116,7 @@ onMounted(() => {
   });
   zoomToFit();
   getUserInfo();
+  autoSave(params?.id)
 });
 
 const fileList = ref([]);
@@ -186,5 +188,12 @@ const getUserInfo = () => {
   }
   .el-dropdown-link:focus-visible {
     outline: -webkit-focus-ring-color auto 0px;
+  }
+
+  .saving-state {
+    color: #a3a4a7;
+    font-size: 14px;
+    margin-left: 12px;
+    margin-top: 14px;
   }
 </style>

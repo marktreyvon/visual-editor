@@ -9,12 +9,14 @@ export const getDropComponent = (cpt: Component): Component => {
                 value: undefined,
                 style: undefined,
                 option: {},
-                data: {}
+                data: {},
+                id: ""
             }
         },
         mounted() {
             const node: Node = (this as any).getNode() as Node;
             console.log('DropComponent.mounted.node', node)
+            this.id = node.id;
             this.setData(node.getData());
             // 监听节点的附加数据变化
             node.on("change:data", ({ current }) => {
@@ -68,7 +70,7 @@ export const getDropComponent = (cpt: Component): Component => {
         },
         render() {
             return (
-                <cpt value={this.value} style={this.style} option={this.option} data={this.data} onOnChange={(value: any) => this.onChange(value)}/>
+                <cpt id={this.id} value={this.value} style={this.style} option={this.option} data={this.data} onOnChange={(value: any) => this.onChange(value)}/>
             )
         }
     })

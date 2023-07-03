@@ -6,10 +6,9 @@
  * @interface ITools
  */
 declare interface ITools {
-    /**
-     * 缩放比例
-     */
-    scaling: Nummber;
+   
+    scaling: ref<Number>;
+    savingState: ref<string>;
     
     // 测试线条的颜色修改  *@author; 王炳宏  2023-05-23
     setLineStyle:(eid:any,nid:any,data:any) => void;

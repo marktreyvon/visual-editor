@@ -2,7 +2,7 @@
     <el-container id="containerId">
       <el-header id="header" height="50px" class="flex items-center shadow-md w-full">
         <!-- 顶部start -->
-        <Header :name="screenName" :tools="useTools()"/>
+        <Header :name="screenName"/>
         <!-- 顶部end -->
       </el-header>
       <el-container id="layout" class="layout-container relative">
@@ -36,17 +36,12 @@ import RightAttributePanel from "./components/right-attribute-panel/index.vue";
 import { useTools, useCanvas } from './hooks'
 import PluginAPI from '@/api/plugin'
 import CustomPlugins from "./components/left-aside/CustomPlugins.vue";
-import * as Common from '@/common';
-import { isJSON, rgbtoHex } from '@/utils';
+
 const params: any = inject('params', null);
-console.log('====editor mounted', params) 
 const { initCanvas, screenName } = useCanvas(params?.id || null);
 
 onMounted(async () => {
-  console.log('editor mounted', inject('params'))
   // 从服务器获取大屏数据
-  console.log("====", screenName.value)
-
   // 加载自定义图片
   const picPlugins = await getPicPlugins();
   initCanvas(picPlugins);
@@ -67,7 +62,7 @@ const getPicPlugins = async () => {
     return result.data.data;
   }
 }
-  // ========================================自定义图片=============================================
+// ========================================自定义图片=============================================
 
 const containerRect = ref({
   width: 0,
@@ -75,7 +70,6 @@ const containerRect = ref({
 });
 onMounted(() => {
   const resizeObserver = new ResizeObserver(entries => {
-    console.log("监听变化", entries[0].contentRect.width, entries[0].contentRect.height)
     containerRect.value = {
       width: entries[0].contentRect.width,
       height: entries[0].contentRect.height
@@ -85,18 +79,7 @@ onMounted(() => {
   resizeObserver.observe(displayContainer);
 });
 
-let { save, autoSave } = useTools();
-onMounted(() => {
-  let storageJson = localStorage.getItem(Common.STORAGE_JSON_DATA_KEY);
-  if (storageJson) {
-      const jsonObj = isJSON(storageJson);
-      if (jsonObj) {
-          save(params?.id, jsonObj);
-      }
-  }
-  autoSave(params?.id)
-  console.log('editor mounted save')
-})
+let { save } = useTools();
 onUnmounted(() => {
   save(params?.id);
 });
