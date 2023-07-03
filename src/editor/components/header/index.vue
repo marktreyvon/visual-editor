@@ -1,10 +1,10 @@
 <template>
     <div class="relative w-full">
-        <div class="absolute w-64 text-left pl-6">
+        <div class="absolute text-left pl-6">
             <el-icon class="align-middle" :size="20">
                 <House />
               </el-icon>
-            <span class="align-middle pl-6">{{name}}</span>
+            <span class="align-middle pl-6" style="overflow：hidden;text-overflow：ellipsis">{{ name }}</span>
             <span class="align-middle pl-6 saving-state">{{ savingState }}</span>
         </div>
         <div class="ml-64 mr-96 w-auto">
