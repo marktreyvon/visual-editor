@@ -119,8 +119,8 @@ class StencilConfig implements IStencilConfig {
         // 创建拖拽到画布上的组件
         const dropNode: Node = this.graph.createNode({
             shape: data.name,
-            x: 100,
-            y: 40,
+            x: 0,
+            y: 0,
             width: cpt.size.width === '100%' ? pluginConfig.getScreenRect().width : cpt.size.width || 200,
             height: cpt.size.height === '100%' ? pluginConfig.getScreenRect().height : cpt.size.height || 200,
             label: data.name,

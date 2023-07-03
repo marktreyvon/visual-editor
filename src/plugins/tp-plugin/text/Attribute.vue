@@ -3,7 +3,7 @@
         <el-collapse-item title="样式" name="style">
             <el-form v-model="formData" label-width="80px" label-position="left">
                 <el-form-item label="字体大小">
-                    <el-input v-model="formData.fontSize"></el-input>
+                    <el-input type="number" v-model="formData.fontSize"></el-input>
                 </el-form-item>
 
                 <el-form-item label="字体颜色">
@@ -15,7 +15,7 @@
                 </el-form-item>
 
                 <el-form-item label="边框宽度">
-                    <el-input v-model="formData.borderWidth"></el-input>
+                    <el-input type="number" v-model="formData.borderWidth"></el-input>
                 </el-form-item>
 
                 <el-form-item label="边框颜色">

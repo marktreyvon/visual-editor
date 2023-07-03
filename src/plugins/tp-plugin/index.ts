@@ -16,7 +16,7 @@ export default {
             group: "常用组件",
             type: "text",
             icon: Text_Icon,
-            size: { width: 120, height: 40 },
+            size: { width: 100, height: 40 },
             Main: Text_Main,
             Attribute: Text_Attribute,
             Data: Text_Data,
