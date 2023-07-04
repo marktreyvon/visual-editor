@@ -116,16 +116,28 @@
           <el-input v-model="formData.Zsize"></el-input>
         </el-form-item>
 
+        <el-form-item label="柱形颜色重复模式">
+          <div v-for="(item,i) in formData.barColors" :key="i">
+            <el-color-picker style="width: 175px;position: absolute;right: 0;" v-model="formData.barColors[i]" />
+            <el-icon class="ml-1" @click="delColor(i)"><Minus /></el-icon>
+          </div>
+          <div>
+            <el-icon class="block" @click="addColor"><Plus /></el-icon>
+          </div>
+        </el-form-item>
+
     </el-collapse-item>
 
   </el-collapse>
 
 </template>
- 
+
 <script lang="ts">
+import { Plus, Minus } from '@element-plus/icons-vue'
 import { defineComponent } from "vue";
 
 export default defineComponent({
+  components:{Plus, Minus},
   props: {
         data: {
             type: Object,
@@ -136,10 +148,11 @@ export default defineComponent({
     return {
       activeNames: 'style',
       activeNames1: 'style1',
-      formData: { 
+      formData: {
         Zsize:15, // 柱状图里面的字体大小
         Zwidth:10, // 柱形宽度
         Zcolor:'',// 柱形颜色
+        barColors: [], // 柱形重复颜色模式，高于Zcolor
         Ysizeborder:1,// Y轴宽度
         Ycolor1:'#000000', // Y轴颜色
         Ycolor:'#000000',//Y轴文本颜色
@@ -170,7 +183,12 @@ export default defineComponent({
     }
   },
   methods: {
-
+    delColor(i){
+      this.formData.barColors.splice(i,1)
+    },
+    addColor(){
+      this.formData.barColors.push('')
+    }
   },
 
   watch: {
@@ -191,13 +209,13 @@ export default defineComponent({
             const jsonObj = JSON.parse(jsonStr);
             this.formData = jsonObj;
         }
-        
+
     }
 })
 
 
 </script>
-  
+
 <style scoped >
 .el-dropdown-link {
   cursor: pointer;
