@@ -71,6 +71,7 @@ export default defineComponent({
                 Ysizeborder: '',
                 Zcolor: '',
                 Zwidth: '',
+                barColors: [],
                 Zsize: '',
             },
             bgColorAndOpicity: '',
@@ -202,8 +203,7 @@ export default defineComponent({
 
                 (this.Column as any).options.color = this.background.Zcolor;
                 if(this.background.barColors && this.background.barColors.length > 1){
-                    (this.Column as any).options.color  = (item, i) => {
-                        console.log(item, i)
+                    (this.Column as any).options.color  = item => {
                         const ind = i % this.background.barColors.length
                         const barColor = this.background.barColors[ind]
                         i++
