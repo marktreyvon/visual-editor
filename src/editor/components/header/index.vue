@@ -71,7 +71,8 @@ import { ArrowDown } from '@element-plus/icons-vue'
 import { exportFile, readFile } from "@/utils";
 import { CanvasConfig } from "@/editor/config";
 import AuthAPI from "@/api/auth"
-import Market from '@/market/Market.vue'
+// import Market from '@/market/Market.vue'
+import Market from "@/market/index.vue"
 const props = defineProps({ 
     tools: {
         type: Object,

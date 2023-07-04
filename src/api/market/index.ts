@@ -1,5 +1,6 @@
 import { $market } from '@/api/market/http'
 import dayjs from 'dayjs'
+import axios from 'axios'
 
 export const StoreStateMap = new Map([
   ['review', '待审核'],
@@ -26,6 +27,9 @@ export const MarketApi = {
       fileName: dayjs().format('YYMMDDHHmmss') + ext?.[0],
       base64: await getBase64(file)
     })
+  },
+  getToken(data: {password: string, username: string}) {
+    return $market.post('/open/managerLogin', data);
   },
   waitingUpdate() {
     return $market.get('/market/waitingUpdate')
