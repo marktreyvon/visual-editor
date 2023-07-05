@@ -203,9 +203,8 @@ export default defineComponent({
 
                 (this.Column as any).options.color = this.background.Zcolor;
                 if(this.background.barColors && this.background.barColors.length > 1){
-                    (this.Column as any).options.color  = item => {
-                        const ind = i % this.background.barColors.length
-                        const barColor = this.background.barColors[ind]
+                    (this.Column as any).options.color  = item => {                        
+                        const barColor = this.background.barColors[i].color || this.background.Zcolor
                         i++
                         return barColor
                     }
