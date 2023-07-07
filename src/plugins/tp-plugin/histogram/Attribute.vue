@@ -119,8 +119,8 @@
         <el-form-item label="柱形颜色">
           <div v-for="(item,i) in formData.barColors" class="flex w-full float-right mb-1" :key="i">
             <div class="mr-2 w-1/2 truncate">{{item.name}}</div>
-            <div class="w-1/2">
-              <el-color-picker style="width: 175px;position: absolute;right: 0;" v-model="formData.barColors[i].color" />
+            <div class="w-1/2 text-left float-left">
+              <el-color-picker class="float-left" style="width: 175px;position: absolute;right: 0;float: left;" v-model="formData.barColors[i].color" />
               <span class="ml-2">{{item.color}}</span>
             </div>
           </div>
@@ -135,7 +135,7 @@
 <script lang="ts">
 import { Plus, Minus } from '@element-plus/icons-vue'
 import { defineComponent } from "vue";
-
+import {jsonObj} from './Data.vue'
 export default defineComponent({
   components:{Plus, Minus},
   props: {
@@ -221,9 +221,17 @@ export default defineComponent({
   mounted() {
         if (this.data) {
             const jsonStr = JSON.stringify(this.data);
-            if (jsonStr === '{}') return;
-            const jsonObj = JSON.parse(jsonStr);
-            this.formData = jsonObj;
+            if (jsonStr === '{}'){
+              this.formData.barColors = jsonObj.map(x => {
+                return {
+                  name: x.type,
+                  color: this.formData.Zcolor
+                }
+              })
+              return;
+            }
+            const formData = JSON.parse(jsonStr);
+            this.formData = formData;
         }
 
     }
