@@ -48,6 +48,14 @@ export const useEvents = () => {
         const graph = canvasConfig.getGraph()
         const container = graph.container as HTMLDivElement
 
+        container.addEventListener('mousemove', (e)=>{
+            // if(1){
+            //     e.stopPropagation()
+            // }
+
+        })
+
+
         // 新增节点事件
         events.setNodeAddEventListener((data: any) => {
             console.log('setNodeAddEventListener', data)
@@ -92,7 +100,6 @@ export const useEvents = () => {
         const print = () => {
             if (editEdge) {
                 const view = graph.findViewByCell(editEdge) as EdgeView
-                console.log(view.path.serialize(),"4324324324324324")
             }
         }
         const finish = (closed: boolean) => {
@@ -139,16 +146,13 @@ export const useEvents = () => {
         watch(() => EditEdgeMode.isEditEdgeMode,(newValue, oldValue) => {
             if(!newValue){
                 finish(false)
-                console.log("关闭了")
             }
         })
         graph.on('edge:contextmenu', () => {
-            console.log("eewewqewq")
             finish(false)
         })
         // 点击node
         events.setClickEventListener((data: any) => {
-            console.log('initEvents.setClickEventListener', data)
             const temp = data.node || data.cell || null;
             // 节点工具
             setNodeTools(temp, currentNode);

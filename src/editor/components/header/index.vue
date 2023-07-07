@@ -1,5 +1,10 @@
 <template>
+  <div class="editAlert" v-if="EditEdgeMode.isEditEdgeMode" >
+
+      <spna>进入自由画线，拖动鼠标开始画线，拖动过程中单击加节点，直接单击或在线上右键退出,</spna>
+  </div>
     <div class="relative w-full">
+
         <div class="absolute text-left pl-6">
             <el-icon class="align-middle" :size="20">
                 <House />
@@ -11,6 +16,7 @@
           <div class="inline-flex">
             <!--        变色测试按钮  *@author; 王炳宏 -->
             <!-- <el-button @click="attrColor">变色</el-button> -->
+            <el-button  text  @click="changeEditEdgeMode">{{ EditEdgeMode.isEditEdgeMode?"取消画线":"自由画线" }}</el-button>
             <el-button text @click="undo" :icon="RefreshLeft">撤销</el-button>
             <el-button text @click="redo" :icon="RefreshRight">重做</el-button>
             <el-button text @click="zoomToFit" :icon="Crop">自适应</el-button>
@@ -71,6 +77,7 @@ import { exportFile, readFile } from "@/utils";
 import { CanvasConfig } from "@/editor/config";
 import AuthAPI from "@/api/auth"
 import { useTools } from "@/editor/hooks"
+import {useIsEditEdgeMode} from "@/store/modules/isEditEdgeaModeStore";
 const props = defineProps({ 
     tools: {
         type: Object,
@@ -102,7 +109,10 @@ const {
   save,
   autoSave
 } = useTools()
-
+const EditEdgeMode =useIsEditEdgeMode()
+const changeEditEdgeMode=()=>{
+  EditEdgeMode.increment()
+}
 const params: any = inject("params", null)
   console.log('onMounted', params)
 
@@ -196,4 +206,14 @@ const getUserInfo = () => {
     margin-left: 12px;
     margin-top: 14px;
   }
+.editAlert{
+  position: absolute;
+  top:70px;
+  color: #DD4A68;
+  font-size: 12px;
+  padding:8px;
+  width: calc(100vw - 600px);
+  margin-left:300px;
+  margin-right:300px
+}
 </style>
