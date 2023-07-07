@@ -203,12 +203,14 @@ export default defineComponent({
 
                 (this.Column as any).options.color = this.background.Zcolor;
                 if(this.background.barColors && this.background.barColors.length > 1){
-                    (this.Column as any).options.color  = item => {                        
+                    (this.Column as any).options.color  = item => {    
+                        if(i > chartData.length-1){
+                            i=0
+                        }                    
                         const barColor = this.background.barColors[i].color || this.background.Zcolor
                         i++
                         return barColor
-                    }
-                    i = 0
+                    }                    
                 }                
 
                 (this.Column as any).options.minColumnWidth = this.background.Zwidth;
