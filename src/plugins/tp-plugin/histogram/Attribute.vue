@@ -117,11 +117,11 @@
         </el-form-item>
 
         <el-form-item label="柱形颜色">
-          <div v-for="(item,i) in formData.barColors" class="flex w-full" :key="i">
-            <div>{{item.name}}</div>
-            <div>
+          <div v-for="(item,i) in formData.barColors" class="flex w-full float-right mb-1" :key="i">
+            <div class="mr-2 w-1/2 truncate">{{item.name}}</div>
+            <div class="w-1/2">
               <el-color-picker style="width: 175px;position: absolute;right: 0;" v-model="formData.barColors[i].color" />
-              <span>{{item.color}}</span>
+              <span class="ml-2">{{item.color}}</span>
             </div>
           </div>
         </el-form-item>
