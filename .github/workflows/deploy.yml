@@ -34,7 +34,7 @@ jobs:
         user: ${{ secrets.DC_USER }}
         pass: ${{ secrets.DC_PASS }}
         scp: |
-          ./dist/* => /usr/share/nginx/visual-editor/dist
+          ./dist/* => /home/visual-editor/dist/
         last_ssh: |
           echo $LASTSSH 
           nginx -t
