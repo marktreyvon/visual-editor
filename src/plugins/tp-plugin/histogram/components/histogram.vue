@@ -208,7 +208,8 @@ export default defineComponent({
                         i++
                         return barColor
                     }
-                }
+                    i = 0
+                }                
 
                 (this.Column as any).options.minColumnWidth = this.background.Zwidth;
 
