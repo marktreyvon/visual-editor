@@ -22,7 +22,7 @@
 </template>
   
 <script>
-const jsonObj = [
+export const jsonObj = [
   { type: "家具家电", sales: 38 },
   { type: "粮油副食", sales: 52 },
   { type: "生鲜水果", sales: 61, },
