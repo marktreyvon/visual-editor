@@ -62,7 +62,7 @@
           </div>
         </div>
         <div class="absolute inset-y-0 right-0 w-auto">
-            <el-button :icon="Share" >分享</el-button>
+            <el-button :icon="Share" id="share-btn" @click="share(params)" >分享</el-button>
             <el-button :icon="CircleCheck" @click="save(params.id)">保存</el-button>
             <el-button :icon="QuestionFilled" @click="help" >帮助</el-button>
         </div>
@@ -107,7 +107,8 @@ const {
   preview,
   help,
   save,
-  autoSave
+  autoSave,
+  share
 } = useTools()
 const EditEdgeMode =useIsEditEdgeMode()
 const changeEditEdgeMode=()=>{
