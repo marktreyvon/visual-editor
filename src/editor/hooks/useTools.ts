@@ -126,7 +126,7 @@ export const useTools = (): ITools => {
         })
         var clipboard = new Clipboard('#share-btn', {
             text:function(){
-                return `${url.href}`
+                return `${location.origin}${url.href}`
             },
         });
         clipboard.on('success', () =>{
