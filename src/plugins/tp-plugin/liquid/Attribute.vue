@@ -26,13 +26,13 @@
                 </el-form-item>
 
                 <el-form-item label="字体颜色">
-                    <el-color-picker v-model="formData.titleColor1" />
-                    <el-color-picker v-model="formData.titleColor2" />
+                    <tp-color-picker v-model="formData.titleColor1" />
+                    <tp-color-picker v-model="formData.titleColor2" />
                 </el-form-item>
 
                 <el-form-item label="百分比颜色">
-                    <el-color-picker v-model="formData.color1" />
-                    <el-color-picker v-model="formData.color2" />
+                    <tp-color-picker v-model="formData.color1" />
+                    <tp-color-picker v-model="formData.color2" />
                 </el-form-item>
 
             </el-form>
@@ -42,11 +42,11 @@
             <el-form class="ml-4" v-model="formData" label-width="100px" label-position="left">
 
                 <el-form-item label="水波颜色">
-                    <el-color-picker v-model="formData.liquidFill" />
+                    <tp-color-picker v-model="formData.liquidFill" />
                 </el-form-item>
 
                 <el-form-item label="背景颜色">
-                    <el-color-picker v-model="formData.backgroundColor" />
+                    <tp-color-picker v-model="formData.backgroundColor" />
                 </el-form-item>
 
                 <el-form-item label="外框边距">
@@ -54,7 +54,7 @@
                 </el-form-item>
 
                 <el-form-item label="外框颜色">
-                    <el-color-picker v-model="formData.borderColor" />
+                    <tp-color-picker v-model="formData.borderColor" />
                 </el-form-item>
 
             </el-form>

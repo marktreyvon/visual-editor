@@ -10,7 +10,8 @@
         </el-form-item> -->
 
         <el-form-item label="背景颜色:">
-            <el-color-picker v-model="formData.backgroundColor" />
+            <tp-color-picker v-model="formData.backgroundColor"></tp-color-picker>
+            <!-- <el-color-picker v-model="formData.backgroundColor" /> -->
         </el-form-item>
         
 <!--        <el-form-item label="背景图片:">-->

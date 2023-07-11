@@ -7,11 +7,11 @@
         </el-form-item>
 
         <el-form-item label="字体颜色">
-          <el-color-picker v-model="formData.color" />
+          <tp-color-picker v-model="formData.color" />
         </el-form-item>
 
         <el-form-item label="背景颜色">
-          <el-color-picker v-model="formData.bgColor" />
+          <tp-color-picker v-model="formData.bgColor" />
         </el-form-item>
       </el-form>
     </el-collapse-item>

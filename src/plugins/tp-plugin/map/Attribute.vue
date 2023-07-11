@@ -3,7 +3,7 @@
         <el-collapse-item title="样式" name="style">
             <el-form v-model="formData">
                 <el-form-item label="背景颜色">
-                    <el-color-picker v-model="formData.backgroundColor" />
+                    <tp-color-picker v-model="formData.backgroundColor" />
                 </el-form-item>
 
                 <el-form-item label="透明度">

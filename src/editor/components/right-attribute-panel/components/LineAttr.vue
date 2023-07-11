@@ -91,7 +91,7 @@
       <el-input-number :min="1" :max="99" v-model="state.formData.lineWidth" @change='validate' ></el-input-number>
     </el-form-item>
     <el-form-item label="线条颜色">
-      <el-color-picker v-model="state.formData.lineColor" @change='validate'/>
+      <tp-color-picker v-model="state.formData.lineColor" @change='validate'/>
     </el-form-item>
     <el-form-item label="流动效果">
       <el-select v-model="state.formData.flowEffect" placeholder="请选择" @change='validate'>
@@ -110,7 +110,7 @@
     </el-form-item>
 
     <el-form-item label="流动颜色" v-if="state.formData.flowEffect!=='无效果'" >
-      <el-color-picker v-model="state.formData.flowColor" @change='validate'/>
+      <tp-color-picker v-model="state.formData.flowColor" @change='validate'/>
     </el-form-item>
 
     <el-form-item label="流动速度" v-if="state.formData.flowEffect!=='无效果'" >

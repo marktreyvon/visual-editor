@@ -3,7 +3,7 @@
         <el-collapse-item title="样式" name="style" >
             <el-form  v-model="formData" label-width="80px" label-position="left">
                 <el-form-item label="填充颜色" v-if='!isImg'>
-                    <el-color-picker v-model="formData.body.fill" show-alpha/>
+                    <tp-color-picker v-model="formData.body.fill" show-alpha/>
                 </el-form-item>
 
                 <el-form-item label="边框宽度" v-if='!isImg'>
@@ -11,7 +11,7 @@
                 </el-form-item>
 
                 <el-form-item label="边框颜色" v-if='!isImg'>
-                    <el-color-picker v-model="formData.body.stroke" />
+                    <tp-color-picker v-model="formData.body.stroke" />
                 </el-form-item>
 
                 <el-form-item label="边框圆角" v-if='!isImg'>
