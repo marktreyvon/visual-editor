@@ -6,7 +6,7 @@ import { useTools } from "@/editor/hooks"
 import * as Common from "@/common";
 import {useIsEditEdgeMode} from "@/store/modules/isEditEdgeaModeStore";
 import { Graph, Node, Edge, EdgeView } from '@antv/x6'
-
+import { useIs3D } from '@/store/modules/is3DStroe';
 /**
  * @author cxs
  * @date 2023-05-20
@@ -34,6 +34,7 @@ export const useEvents = () => {
     let edgeData = ref<any>({});
     let nodeId = ref<any>(null)
     let cellList =  ref<any>([])
+    let container =  ref<any>(HTMLDivElement)
     const params: any = inject('params', null);
     /**
      * 初始化事件
@@ -41,20 +42,12 @@ export const useEvents = () => {
      */
     const EditEdgeMode = useIsEditEdgeMode();
 
-
+    const is3D=useIs3D()
     const initEvents = () => {
         let canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
         const events: ICellEvents = canvasConfig.getEvents();
         const graph = canvasConfig.getGraph()
-        const container = graph.container as HTMLDivElement
-
-        container.addEventListener('mousemove', (e)=>{
-            // if(1){
-            //     e.stopPropagation()
-            // }
-
-        })
-
+        container = graph.container as HTMLDivElement
 
         // 新增节点事件
         events.setNodeAddEventListener((data: any) => {
@@ -148,6 +141,18 @@ export const useEvents = () => {
                 finish(false)
             }
         })
+        function abc(e:any){
+            if(is3D.is3D){
+                console.log(999)
+                e.stopPropagation()
+            }
+        }
+        watch(() => is3D.is3D,(newValue, oldValue) => {
+                container.addEventListener('mousemove', abc)
+        })
+
+
+
         graph.on('edge:contextmenu', () => {
             finish(false)
         })
@@ -159,6 +164,7 @@ export const useEvents = () => {
             currentNode = temp;
 
             if (temp === null) {
+                is3D.setFalse()
                 // 如果点击的是画布
                 isNode.value = false;
                 isEdge.value=false;
@@ -173,6 +179,10 @@ export const useEvents = () => {
             }
 
             nodeId = currentNode?.id
+
+            if(currentNode.shape!=='ThreejsDemo2'){
+                is3D.setFalse()
+            }
             // 获取插件管理器
             const pluginConfig: IPluginConfig = PluginConfig.getInstance();
             // 通过节点名称获取组件
@@ -335,6 +345,7 @@ export const useEvents = () => {
             jsonStr = currentNode.getData()?.jsonData || "{}";
         }
         const jsonObj = isJSON(jsonStr);
+
         if (data?.style) {
             jsonObj.style = { ...data.style };
         }
@@ -349,7 +360,7 @@ export const useEvents = () => {
             // ...currentNode.getData(),
             jsonData
         });
-        
+
         // 基础图形
         const baseNodes = ["rect", "circle", "ellipse", "polygon", "polyline", "rect_img"];
         const index = baseNodes.findIndex((item: string) => item === currentNode.shape)
@@ -374,7 +385,7 @@ export const useEvents = () => {
 
     /**
      * 基础属性改变时（位置、大小、层级），更新画布上的节点数据
-     * @param data 
+     * @param data
      */
     const onBaseChange = (data: any) => {
         console.log('onBaseChange', data)
@@ -395,11 +406,11 @@ export const useEvents = () => {
             newNode.addTools({
                 name: 'button-remove',
                 args: {
-                  x: '100%',
-                  y: 0,
-                  offset: { x: 10, y: -10 },
+                    x: '100%',
+                    y: 0,
+                    offset: { x: 10, y: -10 },
                 },
-              })
+            })
         }
     }
 
@@ -408,3 +419,6 @@ export const useEvents = () => {
         initEvents, onChange, onBaseChange, cellList
     }
 }
+
+
+

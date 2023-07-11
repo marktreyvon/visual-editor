@@ -27,6 +27,7 @@ export default defineComponent({
       scene: {},
     }
   },
+
   watch: {
     value: {
       handler(val) {

@@ -50,6 +50,7 @@ class CellEvents implements ICellEvents {
     }
 
     initEvents(): void {
+        let isMove=false
         if (!this.graph)
             throw new Error('Graph is undefined.');
         let edge: Edge | null = null
@@ -87,6 +88,7 @@ class CellEvents implements ICellEvents {
 
         // 单击事件 
         this.graph.on("cell:click", ({ e, x, y, cell, view }) => {
+            e.stopPropagation()
             this.clickListener.forEach((listener) => {
                 listener({ e, x, y, cell, view });
             })
@@ -122,6 +124,8 @@ class CellEvents implements ICellEvents {
 
         // 节点移动事件
         this.graph.on("node:moved", ({ e, x, y, node, view }) => {
+            console.log(e,"4e324324324")
+            e.stopPropagation()
             this.movedListener && this.movedListener({ e, x, y, node, view });
         });
         
