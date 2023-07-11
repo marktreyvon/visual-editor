@@ -15,7 +15,7 @@
       <el-collapse-item title="背景和边框" name="bgandbd">
         <el-form class="ml-4" label-position="left" label-width="100px">
           <el-form-item label="背景颜色">
-            <el-color-picker v-model="table.table.bgColor"></el-color-picker>
+            <tp-color-picker v-model="table.table.bgColor"></tp-color-picker>
           </el-form-item>
           <el-form-item label="显示边框">
             <el-switch v-model="table.table.showBorder"></el-switch>
@@ -24,7 +24,7 @@
             <el-input-number v-model="table.table.borderWidth" :min="1" :max="10"></el-input-number>
           </el-form-item>
           <el-form-item v-if="table.table.showBorder" label="边框颜色">
-            <el-color-picker v-model="table.table.borderColor"></el-color-picker>
+            <tp-color-picker v-model="table.table.borderColor"></tp-color-picker>
           </el-form-item>
         </el-form>
       </el-collapse-item>
@@ -35,14 +35,14 @@
             <el-switch v-model="table.border.showBorder"></el-switch>
           </el-form-item>
           <el-form-item v-if="table.border.showBorder" label="边框颜色">
-            <el-color-picker v-model="table.border.borderColor"></el-color-picker>
+            <tp-color-picker v-model="table.border.borderColor"></tp-color-picker>
           </el-form-item>
   
           <el-form-item label="显示斑马纹">
             <el-switch v-model="table.border.showZebrastripe"></el-switch>
           </el-form-item>
           <el-form-item v-if="table.border.showZebrastripe" label="斑马纹颜色">
-            <el-color-picker v-model="table.border.zebrastripeColor"></el-color-picker>
+            <tp-color-picker v-model="table.border.zebrastripeColor"></tp-color-picker>
           </el-form-item>
         </el-form>
       </el-collapse-item>
@@ -50,7 +50,7 @@
       <el-collapse-item title="表头" name="btou">
         <el-form class="ml-4" label-position="left" label-width="100px">
           <el-form-item label="背景颜色">
-            <el-color-picker v-model="table.header.bgColor"></el-color-picker>
+            <tp-color-picker v-model="table.header.bgColor"></tp-color-picker>
           </el-form-item>
   
           <el-form-item label="字体大小">
@@ -58,7 +58,7 @@
           </el-form-item>
   
           <el-form-item label="字体颜色">
-            <el-color-picker v-model="table.header.fontColor"></el-color-picker>
+            <tp-color-picker v-model="table.header.fontColor"></tp-color-picker>
           </el-form-item>
         </el-form>
       </el-collapse-item>
@@ -96,7 +96,7 @@
                 <el-input v-model="table.newRows[index].name"></el-input>
               </el-form-item>
               <el-form-item label="文本颜色">
-                <el-color-picker v-model="table.newRows[index].color"></el-color-picker>
+                <tp-color-picker v-model="table.newRows[index].color"></tp-color-picker>
               </el-form-item>
               <el-form-item label="列宽">
                 <el-input v-model="table.newRows[index].width"></el-input>

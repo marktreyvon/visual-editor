@@ -4,7 +4,7 @@
         <el-form v-model="formData.background" label-width="140px" label-position="left">
   
           <el-form-item label="背景颜色">
-            <el-color-picker v-model="formData.background.backgroundColor" />
+            <tp-color-picker v-model="formData.background.backgroundColor" />
           </el-form-item>
 
           <el-form-item label="边框宽度">
@@ -12,7 +12,7 @@
           </el-form-item>
 
           <el-form-item label="边框颜色">
-            <el-color-picker v-model="formData.background.borderColor" />
+            <tp-color-picker v-model="formData.background.borderColor" />
           </el-form-item>
 
         </el-form>
@@ -30,22 +30,22 @@
           </el-form-item>
   
           <el-form-item label="字体颜色">
-            <el-color-picker v-model="formData.dashboard.fontColor" />
+            <tp-color-picker v-model="formData.dashboard.fontColor" />
           </el-form-item>
   
             <el-form-item label="进度条颜色">
-              <el-color-picker v-model="formData.dashboard.progressColor1" />
-              <el-color-picker v-model="formData.dashboard.progressColor2" />
+              <tp-color-picker v-model="formData.dashboard.progressColor1" />
+              <tp-color-picker v-model="formData.dashboard.progressColor2" />
 
             </el-form-item>
             <el-form-item label="显示指针">
               <el-switch v-model="formData.dashboard.pointerShow" />
             </el-form-item>
             <el-form-item label="指针颜色" v-if="formData.dashboard.pointerShow">
-              <el-color-picker v-model="formData.dashboard.pointerColor" />
+              <tp-color-picker v-model="formData.dashboard.pointerColor" />
             </el-form-item>
             <el-form-item label="圆心颜色" v-if="formData.dashboard.pointerShow">
-              <el-color-picker v-model="formData.dashboard.pinColor" />
+              <tp-color-picker v-model="formData.dashboard.pinColor" />
             </el-form-item>
             <el-form-item label="显示标签">
               <el-switch v-model="formData.dashboard.tagShow" />

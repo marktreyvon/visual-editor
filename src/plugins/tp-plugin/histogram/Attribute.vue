@@ -8,7 +8,7 @@
       <el-form v-model="formData" label-width="140px" label-position="left">
 
         <el-form-item label="背景颜色">
-          <el-color-picker v-model="formData.color" />
+          <tp-color-picker v-model="formData.color" />
         </el-form-item>
 
         <el-form-item label="背景透明度">
@@ -16,7 +16,7 @@
         </el-form-item>
 
         <el-form-item label="边框颜色">
-          <el-color-picker v-model="formData.bgColor" />
+          <tp-color-picker v-model="formData.bgColor" />
         </el-form-item>
 
         <el-form-item label="边框宽度">
@@ -52,12 +52,12 @@
         </el-form-item>
 
         <el-form-item label="文本颜色">
-          <el-color-picker v-model="formData.Xcolor" />
+          <tp-color-picker v-model="formData.Xcolor" />
         </el-form-item>
 
 
         <el-form-item label="轴线颜色">
-          <el-color-picker v-model="formData.Xcolor1" />
+          <tp-color-picker v-model="formData.Xcolor1" />
         </el-form-item>
 
         <el-form-item label="轴线宽度">
@@ -83,12 +83,12 @@
         </el-form-item>
 
         <el-form-item label="文本颜色">
-          <el-color-picker v-model="formData.Ycolor" />
+          <tp-color-picker v-model="formData.Ycolor" />
         </el-form-item>
 
 
         <el-form-item label="轴线颜色">
-          <el-color-picker v-model="formData.Ycolor1" />
+          <tp-color-picker v-model="formData.Ycolor1" />
         </el-form-item>
 
         <el-form-item label="轴线宽度">
@@ -105,7 +105,7 @@
     <el-collapse-item title="柱形" name="style4">
 
       <el-form-item label="柱形颜色">
-          <el-color-picker style="width: 175px;position: absolute;right: 0;" v-model="formData.Zcolor" />
+          <tp-color-picker style="width: 175px;position: absolute;right: 0;" v-model="formData.Zcolor" />
         </el-form-item>
 
         <el-form-item label="宽度">
@@ -120,7 +120,7 @@
           <div v-for="(item,i) in formData.barColors" class="flex w-full float-right mb-1" :key="i">
             <div class="mr-2 w-1/2 truncate">{{item.name}}</div>
             <div class="w-1/2 text-left float-left">
-              <el-color-picker class="float-left" style="width: 175px;position: absolute;right: 0;float: left;" v-model="formData.barColors[i].color" />
+              <tp-color-picker class="float-left" style="width: 175px;position: absolute;right: 0;float: left;" v-model="formData.barColors[i].color" />
               <span class="ml-2">{{item.color}}</span>
             </div>
           </div>
