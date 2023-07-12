@@ -19,6 +19,8 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import data from "./data"
+import { cloneDeep } from "lodash";
+const staticData = cloneDeep(data)
 
 export default defineComponent({
   components: {
@@ -28,10 +30,10 @@ export default defineComponent({
       type: [Object, String, Number],
       default: () => {
         return {
-          table: data.table,
-          border: data.border,
-          header: data.header,
-          newRows: data.newRows
+          table: staticData.table,
+          border: staticData.border,
+          header: staticData.header,
+          newRows: staticData.newRows
         };
       },
     },
