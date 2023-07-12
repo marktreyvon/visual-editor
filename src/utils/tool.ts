@@ -51,7 +51,7 @@ const randomString = (len?: number) => {
 
 /**
  * 判断字符串是否是JSON字符串
- * @param str 
+ * @param str
  * @returns 返回JSON对象或者false
  */
 const isJSON = (str: string) => {
@@ -67,8 +67,8 @@ const isJSON = (str: string) => {
 
 /**
  * 判断对象是否是数组
- * @param obj 
- * @returns 
+ * @param obj
+ * @returns
  */
 const isArray = (obj: any) => {
     return Object.prototype.toString.call(obj) === '[object Array]';
@@ -76,8 +76,8 @@ const isArray = (obj: any) => {
 
 /**
  * 解析JSON数据
- * @param str 
- * @returns 
+ * @param str
+ * @returns
  */
 const parseJSONData = (str: string) => {
     const jsonObj = isJSON(str);
@@ -92,32 +92,32 @@ const parseJSONData = (str: string) => {
 
 /**
  * 读取文件
- * @param raw 
+ * @param raw
  */
 const readFile = (raw: any) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        // onload 事件处理程序，在 FileReader 对象读取文件内容后触发      
-        reader.onload = (event: any) => {      
+        // onload 事件处理程序，在 FileReader 对象读取文件内容后触发
+        reader.onload = (event: any) => {
             const result = event.target.result;
             const data = decodeURIComponent(escape(result));
             resolve(data);
         };
-        // 读取文件内容      
+        // 读取文件内容
         reader.readAsBinaryString(raw)
     })
-    
+
 }
 
 const exportFile = (fileName: string, content: string) => {
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
     element.setAttribute('download', fileName);
-    
+
     element.style.display = 'none';
     document.body.appendChild(element);
-    
-    element.click(); 
+
+    element.click();
     document.body.removeChild(element);
 }
 
@@ -128,8 +128,8 @@ const ColorToHex = (color: any) => {
 
 /**
  * rgb转hex
- * @param rgba 
- * @returns 
+ * @param rgba
+ * @returns
  */
 const rgbtoHex = (rgba: String) => {
     const color = rgba.replace(/\s/g, "").match(/^rgba?\((\d+),(\d+),(\d+),?([^,\s)]+)?/i);
@@ -140,4 +140,49 @@ const rgbtoHex = (rgba: String) => {
   }
 
 
-export { message, parseParams, randomString, isJSON, parseJSONData, readFile, exportFile, isArray, rgbtoHex }
+async function copyToClipboard(text: string) {
+    try {
+        return navigator.clipboard.writeText(text)
+    } catch {
+        const element = document.createElement('textarea')
+        const previouslyFocusedElement = document.activeElement
+
+        element.value = text
+
+        // Prevent keyboard from showing on mobile
+        element.setAttribute('readonly', '')
+
+        element.style.contain = 'strict'
+        element.style.position = 'absolute'
+        element.style.left = '-9999px'
+        element.style.fontSize = '12pt' // Prevent zooming on iOS
+
+        const selection = document.getSelection()
+        const originalRange = selection
+          ? selection.rangeCount > 0 && selection.getRangeAt(0)
+          : null
+
+        document.body.appendChild(element)
+        element.select()
+
+        // Explicit selection workaround for iOS
+        element.selectionStart = 0
+        element.selectionEnd = text.length
+
+        document.execCommand('copy')
+        document.body.removeChild(element)
+
+        if (originalRange) {
+            selection!.removeAllRanges() // originalRange can't be truthy when selection is falsy
+            selection!.addRange(originalRange)
+        }
+
+        // Get the focus back on the previously focused element, if any
+        if (previouslyFocusedElement) {
+            ;(previouslyFocusedElement as HTMLElement).focus()
+        }
+    }
+}
+
+export { message, parseParams, randomString, isJSON, parseJSONData, readFile, exportFile, isArray, rgbtoHex, copyToClipboard }
+

@@ -1,7 +1,5 @@
 {
-    "name": "cxs-plugin",
-    "version": "1.0.0",
-    "secret": "",
-    "icon": "icon.png",
-    "author": "name"
+    "name": "offer",
+    "version": "0.1.4",
+    "secret": "4ceb7d5b9d03e5198f0062e7074adc1d"
 }

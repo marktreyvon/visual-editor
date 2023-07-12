@@ -126,6 +126,10 @@ class StencilConfig implements IStencilConfig {
             label: data.name,
             //在创建节点时增加连接点属性;  *@author; 王炳宏  2023-05-23
             ports: node.shape!=='rect_img'?this.getPorts():null,
+            extra: cpt.plugin ? {
+                pluginId: cpt.plugin.pluginId,
+                pluginUrl: cpt.plugin.url
+            } : null
         });
 
         return dropNode;

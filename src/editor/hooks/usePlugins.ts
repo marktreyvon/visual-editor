@@ -1,4 +1,3 @@
-import { Graph } from "@antv/x6";
 import { PluginConfig } from "../config";
 
 /**
@@ -15,7 +14,7 @@ export const usePlugins = (): any => {
      * @param plugins 
      */
     const loadPlugins = (plugins: any): void => {
-        const pluginConfig: IPluginConfig = PluginConfig.getInstance();
+        const pluginConfig: IPluginConfig = PluginConfig.getInstance(plugins);
         for (const key in plugins) {
             const plugin = plugins[key];
             const { views } = plugin.default;

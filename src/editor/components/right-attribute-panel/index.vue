@@ -7,7 +7,7 @@
                     <!-- 节点基础样式 -->
                     <BaseAttr :data="nodeData" @onChange="onBaseChange"/>
                     <!-- 自定义样式 -->
-                    <component  v-if="attributeCpt" :currentNode='nodeId' :data="attrData" :bindData="bindData" :is="attributeCpt" v-on="actionHandlers"
+                    <component  v-if="attributeCpt" :currentNode='nodeId' :data="attrData" :is="attributeCpt" v-on="actionHandlers"
                         @onChange="onChange" />
                     <BaseNodeAttr v-if="!attributeCpt" :data="nodeData" @onChange="onChange"/>
                 </div>

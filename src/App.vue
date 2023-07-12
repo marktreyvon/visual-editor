@@ -8,6 +8,26 @@ import { useAuthStore } from '@/store'
 import { useRouter } from "vue-router";
 import http from 'axios'
 
+let p1 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('Promise 成功了')
+  }, 1000);
+})
+ 
+let p2 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('Promise success')
+  }, 500);
+})
+ 
+let p3 = Promise.reject('Promise 失败')
+ 
+Promise.all([p1, p2, p3]).then((result) => {
+  console.log(result)               //['成功了', 'success']
+}).catch((error) => {
+  console.log(error)
+})
+
 const language = ref('zh-cn')
 const locale = computed(() => (language.value === 'zh-cn' ? zhCn : en))
 
