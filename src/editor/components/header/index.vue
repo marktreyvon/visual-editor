@@ -1,5 +1,10 @@
 <template>
+  <div class="editAlert" v-if="EditEdgeMode.isEditEdgeMode" >
+
+      <spna>进入自由画线，拖动鼠标开始画线，拖动过程中单击加节点，直接单击或在线上右键退出,</spna>
+  </div>
     <div class="relative w-full">
+
         <div class="absolute text-left pl-6">
             <el-icon class="align-middle" :size="20">
                 <House />
@@ -11,6 +16,7 @@
           <div class="inline-flex">
             <!--        变色测试按钮  *@author; 王炳宏 -->
             <!-- <el-button @click="attrColor">变色</el-button> -->
+            <el-button  text  @click="changeEditEdgeMode">{{ EditEdgeMode.isEditEdgeMode?"取消画线":"自由画线" }}</el-button>
             <el-button text @click="undo" :icon="RefreshLeft">撤销</el-button>
             <el-button text @click="redo" :icon="RefreshRight">重做</el-button>
             <el-button text @click="zoomToFit" :icon="Crop">自适应</el-button>
@@ -55,8 +61,13 @@
             <el-button text @click="preview()" :icon="View">预览</el-button>
           </div>
         </div>
+<<<<<<< HEAD
         <div class="absolute inset-y-0 right-4 w-auto">
             <el-button :icon="Share" >分享</el-button>
+=======
+        <div class="absolute inset-y-0 right-0 w-auto">
+            <el-button :icon="Share" id="share-btn" @click="share(params)" >分享</el-button>
+>>>>>>> f863fa4cc633b47d9679efd1d53fd95ee04f6dda
             <el-button :icon="CircleCheck" @click="save(params.id)">保存</el-button>
             <el-button :icon="QuestionFilled" @click="help" >帮助</el-button>
             <el-button :icon="HomeFilled" @click="data.marketVisible = true">插件市场</el-button>
@@ -73,7 +84,11 @@ import { exportFile, readFile } from "@/utils";
 import { CanvasConfig } from "@/editor/config";
 import AuthAPI from "@/api/auth"
 import { useTools } from "@/editor/hooks"
+<<<<<<< HEAD
 import Market from "@/market/index.vue"
+=======
+import {useIsEditEdgeMode} from "@/store/modules/isEditEdgeaModeStore";
+>>>>>>> f863fa4cc633b47d9679efd1d53fd95ee04f6dda
 const props = defineProps({ 
     tools: {
         type: Object,
@@ -103,9 +118,13 @@ const {
   preview,
   help,
   save,
-  autoSave
+  autoSave,
+  share
 } = useTools()
-
+const EditEdgeMode =useIsEditEdgeMode()
+const changeEditEdgeMode=()=>{
+  EditEdgeMode.increment()
+}
 const params: any = inject("params", null)
   console.log('onMounted', params)
 
@@ -206,4 +225,18 @@ const handleDBClick = () => {
     margin-left: 12px;
     margin-top: 14px;
   }
+<<<<<<< HEAD
 </style>
+=======
+.editAlert{
+  position: absolute;
+  top:70px;
+  color: #DD4A68;
+  font-size: 12px;
+  padding:8px;
+  width: calc(100vw - 600px);
+  margin-left:300px;
+  margin-right:300px
+}
+</style>
+>>>>>>> f863fa4cc633b47d9679efd1d53fd95ee04f6dda

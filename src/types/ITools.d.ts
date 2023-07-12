@@ -93,7 +93,7 @@ declare interface ITools {
     /**
      * 分享
      */
-    share(): void;
+    share(params: any): void;
 
     /**
      * 帮助

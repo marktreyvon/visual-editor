@@ -13,7 +13,7 @@
         </div>
     </div>
 </template>
-  
+
 <script lang="ts">
 import { Column } from '@antv/g2plot';
 import { defineComponent } from "vue";
@@ -71,6 +71,7 @@ export default defineComponent({
                 Ysizeborder: '',
                 Zcolor: '',
                 Zwidth: '',
+                barColors: [],
                 Zsize: '',
             },
             bgColorAndOpicity: '',
@@ -158,6 +159,8 @@ export default defineComponent({
         formData: {
             handler(val) {
                 this.background = val;
+                const chartData = this.Column.options.data || this.keydata.inputText
+                let i = 0
 
                 // 计算边框的透明度
                 function hexToRgba(hex: any, alpha: any) {
@@ -199,6 +202,16 @@ export default defineComponent({
                 (this.Column as any).options.yAxis.line.style.lineWidth = Number(this.background.Ysizeborder);
 
                 (this.Column as any).options.color = this.background.Zcolor;
+                if(this.background.barColors && this.background.barColors.length > 1){
+                    (this.Column as any).options.color  = item => {    
+                        if(i > chartData.length-1){
+                            i=0
+                        }                    
+                        const barColor = this.background.barColors[i].color || this.background.Zcolor
+                        i++
+                        return barColor
+                    }                    
+                }                
 
                 (this.Column as any).options.minColumnWidth = this.background.Zwidth;
 
@@ -230,7 +243,7 @@ export default defineComponent({
 })
 
 </script>
-  
+
 <style lang="scss" scoped>
 .header {
     left: 0;

@@ -7,7 +7,7 @@
                 </el-form-item>
 
                 <el-form-item label="字体颜色">
-                    <el-color-picker v-model="formData.color" />
+                    <tp-color-picker v-model="formData.color" />
                 </el-form-item>
 
                 <el-form-item label="字体样式">
@@ -18,7 +18,7 @@
                 </el-form-item>
 
                 <el-form-item label="背景颜色">
-                    <el-color-picker v-model="formData.backgroundColor" />
+                    <tp-color-picker v-model="formData.backgroundColor" />
                 </el-form-item>
 
                 <el-form-item label="边框宽度">
@@ -26,7 +26,7 @@
                 </el-form-item>
 
                 <el-form-item label="边框颜色">
-                    <el-color-picker v-model="formData.borderColor" />
+                    <tp-color-picker v-model="formData.borderColor" />
                 </el-form-item>
 
             </el-form>

@@ -1,5 +1,5 @@
 <template>
-        <ElTabs style="height: 100%" v-model="activeName">
+        <ElTabs style="height: 100%;overflow: auto;" v-model="activeName">
             <el-tab-pane style="height: 100%" :label="!isEdge?'外观':'线条样式'" name="attr">
                 <!-- 画布样式 -->
                 <CanvasAttr v-if="!isNode&&!isEdge" @onChange="onCanvasAttrChange"/>
@@ -7,7 +7,7 @@
                     <!-- 节点基础样式 -->
                     <BaseAttr :data="nodeData" @onChange="onBaseChange"/>
                     <!-- 自定义样式 -->
-                    <component  v-if="attributeCpt" :currentNode='nodeId' :data="attrData" :is="attributeCpt" v-on="actionHandlers"
+                    <component  v-if="attributeCpt" :currentNode='nodeId' :bindData="bindData" :data="attrData" :is="attributeCpt" v-on="actionHandlers"
                         @onChange="onChange" />
                     <BaseNodeAttr v-if="!attributeCpt" :data="nodeData" @onChange="onChange"/>
                 </div>

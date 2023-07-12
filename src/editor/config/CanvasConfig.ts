@@ -16,6 +16,7 @@ import { ICanvas } from '@antv/g2/lib/dependents';
 
 
 import CellMove from '@/utils/CellMove';
+import {useIs3D} from "@/store/modules/is3DStroe";
 /**
  * @author cxs
  * @date 2023-04-19
@@ -355,6 +356,10 @@ class CanvasConfig implements ICanvasConfig {
             const Cells = that.selection.getSelectedCells()
             CellMove(Cells,'right',10)
             return false
+        })
+        this.graph.bindKey('esc', (e) => {
+            const is3D=useIs3D()
+            is3D.setFalse()
         })
         this.graph.bindKey('shift+left', (e) => {
             if(!this.enableSelection) return

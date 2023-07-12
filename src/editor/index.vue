@@ -14,19 +14,13 @@
           <left-aside class="left-aside w-full"/>
           <div class="custom-component">
             <el-row>
-              <el-col :span="12"><el-button class="custom-button" @click="showCustomPlugins">自定义图形</el-button></el-col>
-              <el-col :span="12"><el-button class="custom-button" @click="changeEditEdgeMode">{{ EditEdgeMode.isEditEdgeMode?"取消自由画线":"自由画线" }}</el-button></el-col>
+              <el-col :span="24"><el-button class="custom-button" @click="showCustomPlugins">自定义图形</el-button></el-col>
             </el-row>
           </div>
           <!-- 左侧组件end -->
         </el-aside>
         <el-main>
-          <div class="editAlert" v-if="EditEdgeMode.isEditEdgeMode" >
-            <el-row>
-              <el-col :span="20"><spna>当前为自由画线模式，右键完成，或</spna><spna @click="changeEditEdgeMode" style="color: #59a6ff">点此</spna><spna>完成</spna></el-col>
-              <el-col :span="4"><el-button class="custom-button" @click="changeEditEdgeMode">取消自由划线</el-button></el-col>
-            </el-row>
-          </div>
+
 
           <!-- 中间编辑区域start -->
           <canvas-editor class="canvas-editor"/>
@@ -50,8 +44,10 @@ import { useTools, useCanvas } from './hooks'
 import PluginAPI from '@/api/plugin'
 import CustomPlugins from "./components/left-aside/CustomPlugins.vue";
 import {useIsEditEdgeMode} from "@/store/modules/isEditEdgeaModeStore.ts"
+import * as Common from '@/common';
+import { isJSON, rgbtoHex } from '@/utils';
 
-const EditEdgeMode =useIsEditEdgeMode()
+
 const params: any = inject('params', null);
 const { initCanvas, screenName } = useCanvas(params?.id || null);
 
@@ -68,9 +64,7 @@ const customPluginsDialogVisible = ref(false);
 const showCustomPlugins = () => {
   customPluginsDialogVisible.value = true;
 }
-const changeEditEdgeMode=()=>{
-  EditEdgeMode.increment()
-}
+
 const customPluginSubmit = () => {
   getPicPlugins();
 }
@@ -149,12 +143,7 @@ onUnmounted(() => {
       margin-left:300px;
       margin-right:300px
     }
-    .editAlert{
-      padding:8px;
-      width: calc(100% - 600px);
-      margin-left:300px;
-      margin-right:300px
-    }
+
     padding: 0;
     background-color: #f5f5f5;
     @media (min-width: 1111px) {

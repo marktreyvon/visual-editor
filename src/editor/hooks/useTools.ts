@@ -5,6 +5,8 @@ import VisualAPI from "@/api/visual";
 import { exportFile, isJSON, message } from "@/utils/tool";
 import * as Common from "@/common"
 import { reactive, ref } from "vue";
+import Clipboard from 'clipboard'
+
 /**
  * @author cxs
  * @date 2023-04-20
@@ -113,8 +115,24 @@ export const useTools = (): ITools => {
     function help() {
         window.open('http://thingspanel.io/zh-Hans/docs/overview');
     };
-    function share() {
-
+    function share(params: any) {
+        const url = router.resolve({
+            name: 'display',
+            query: {
+              id: params.id,
+              token: params.token,
+              expiresTime: params.expiresTime
+            }
+        })
+        var clipboard = new Clipboard('#share-btn', {
+            text:function(){
+                return `${location.origin}${url.href}`
+            },
+        });
+        clipboard.on('success', () =>{
+            message.success('分享链接已复制到粘贴板')
+        });
+ 
     };
     function autoSave(id: string) {
         setInterval(() => {
@@ -134,6 +152,6 @@ export const useTools = (): ITools => {
     };
     return {
         scaling, savingState,  setLineStyle, zoomToFit, getZoom, zoomOut, zoomIn, enableSnapline, disableSnapline,undo, 
-        redo, toJSON, importJSON, exportJPEG, exportPNG, exportSVG, preview, help, share,autoSave, save
+        redo, toJSON, importJSON, exportJPEG, exportPNG, exportSVG, preview, help, share, autoSave, save
     }
 }

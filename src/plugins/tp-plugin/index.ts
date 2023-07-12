@@ -3,6 +3,7 @@ import { Text_Attribute, Text_Data, Text_Main, Text_Icon } from "./text";
 import { Yibiaopan_Attribute, Yibiaopan_Data, Yibiaopan_Icon, Yibiaopan_Main } from "./yibiaopan";
 import { Amap_Attribute, Amap_Data, Amap_Icon, Amap_Main } from "./map";
 import { Three_Attribute, Three_Data, Three_Icon, Three_Main } from "./threejs-demo";
+import { Three_Attribute2, Three_Data2,Three_Icon2, Three_Main2 } from "./threejs-demo2";
 import { picechart_Attribute, picechart_Data, picechart_Icon, picechart_Main } from "./pie";
 import { TB_Attribute, TB_Data, TB_Icon, TB_Main } from "./table";
 import { histogram_Attribute, histogram_Data, histogram_Icon, histogram_Main } from "./histogram";
@@ -117,6 +118,17 @@ export default {
             Main: Three_Main,
             Attribute: Three_Attribute,
             Data: Three_Data
+        },
+        {
+            name: "ThreejsDemo2",
+            description: "",
+            type: "3d",
+            group: "3D",
+            icon: Three_Icon2,
+            size: { width: 800, height: 600 },
+            Main: Three_Main2,
+            Attribute: Three_Attribute2,
+            Data: Three_Data2
         }
     ]
 }

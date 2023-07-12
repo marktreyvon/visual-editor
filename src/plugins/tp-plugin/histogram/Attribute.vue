@@ -8,7 +8,7 @@
       <el-form v-model="formData" label-width="140px" label-position="left">
 
         <el-form-item label="背景颜色">
-          <el-color-picker v-model="formData.color" />
+          <tp-color-picker v-model="formData.color" />
         </el-form-item>
 
         <el-form-item label="背景透明度">
@@ -16,7 +16,7 @@
         </el-form-item>
 
         <el-form-item label="边框颜色">
-          <el-color-picker v-model="formData.bgColor" />
+          <tp-color-picker v-model="formData.bgColor" />
         </el-form-item>
 
         <el-form-item label="边框宽度">
@@ -52,12 +52,12 @@
         </el-form-item>
 
         <el-form-item label="文本颜色">
-          <el-color-picker v-model="formData.Xcolor" />
+          <tp-color-picker v-model="formData.Xcolor" />
         </el-form-item>
 
 
         <el-form-item label="轴线颜色">
-          <el-color-picker v-model="formData.Xcolor1" />
+          <tp-color-picker v-model="formData.Xcolor1" />
         </el-form-item>
 
         <el-form-item label="轴线宽度">
@@ -83,12 +83,12 @@
         </el-form-item>
 
         <el-form-item label="文本颜色">
-          <el-color-picker v-model="formData.Ycolor" />
+          <tp-color-picker v-model="formData.Ycolor" />
         </el-form-item>
 
 
         <el-form-item label="轴线颜色">
-          <el-color-picker v-model="formData.Ycolor1" />
+          <tp-color-picker v-model="formData.Ycolor1" />
         </el-form-item>
 
         <el-form-item label="轴线宽度">
@@ -105,7 +105,7 @@
     <el-collapse-item title="柱形" name="style4">
 
       <el-form-item label="柱形颜色">
-          <el-color-picker style="width: 175px;position: absolute;right: 0;" v-model="formData.Zcolor" />
+          <tp-color-picker style="width: 175px;position: absolute;right: 0;" v-model="formData.Zcolor" />
         </el-form-item>
 
         <el-form-item label="宽度">
@@ -116,30 +116,47 @@
           <el-input v-model="formData.Zsize"></el-input>
         </el-form-item>
 
+        <el-form-item label="柱形颜色">
+          <div v-for="(item,i) in formData.barColors" class="flex w-full float-right mb-1" :key="i">
+            <div class="mr-2 w-1/2 truncate">{{item.name}}</div>
+            <div class="w-1/2 text-left float-left">
+              <tp-color-picker class="float-left" style="width: 175px;position: absolute;right: 0;float: left;" v-model="formData.barColors[i].color" />
+              <span class="ml-2">{{item.color}}</span>
+            </div>
+          </div>
+        </el-form-item>
+
     </el-collapse-item>
 
   </el-collapse>
 
 </template>
- 
-<script lang="ts">
-import { defineComponent } from "vue";
 
+<script lang="ts">
+import { Plus, Minus } from '@element-plus/icons-vue'
+import { defineComponent } from "vue";
+import {jsonObj} from './Data.vue'
 export default defineComponent({
+  components:{Plus, Minus},
   props: {
         data: {
             type: Object,
             default: () => ({})
-        }
+        },
+        bindData: {
+          type: Object,
+          default: () => ({})
+        },
     },
   data() {
     return {
       activeNames: 'style',
       activeNames1: 'style1',
-      formData: { 
+      formData: {
         Zsize:15, // 柱状图里面的字体大小
         Zwidth:10, // 柱形宽度
         Zcolor:'',// 柱形颜色
+        barColors: [], // 每一个柱形颜色
         Ysizeborder:1,// Y轴宽度
         Ycolor1:'#000000', // Y轴颜色
         Ycolor:'#000000',//Y轴文本颜色
@@ -170,7 +187,12 @@ export default defineComponent({
     }
   },
   methods: {
-
+    delColor(i){
+      this.formData.barColors.splice(i,1)
+    },
+    addColor(){
+      this.formData.barColors.push('')
+    }
   },
   watch: {
     formData: {
@@ -181,22 +203,42 @@ export default defineComponent({
         });
       },
       deep: true
+    },
+    bindData: {
+      handler(val){
+        const chartData = JSON.parse(val.static)
+        this.formData.barColors = chartData.map(x => {
+          return {
+            name: x.type,
+            color: this.formData.Zcolor
+          }
+        })
+      },
+      deep: true
     }
   },
   mounted() {
         if (this.data) {
             const jsonStr = JSON.stringify(this.data);
-            if (jsonStr === '{}') return;
-            const jsonObj = JSON.parse(jsonStr);
-            this.formData = jsonObj;
+            if (jsonStr === '{}'){
+              this.formData.barColors = jsonObj.map(x => {
+                return {
+                  name: x.type,
+                  color: this.formData.Zcolor
+                }
+              })
+              return;
+            }
+            const formData = JSON.parse(jsonStr);
+            this.formData = formData;
         }
-        
+
     }
 })
 
 
 </script>
-  
+
 <style scoped >
 .el-dropdown-link {
   cursor: pointer;
