@@ -222,7 +222,7 @@ export default defineComponent({
         if (this.data) {
             const jsonStr = JSON.stringify(this.data);
             if (jsonStr === '{}'){
-              this.formData.barColors = jsonObj.map(x => {
+              (this.formData.barColors as any) = jsonObj.map(x => {
                 return {
                   name: x.type,
                   color: this.formData.Zcolor
