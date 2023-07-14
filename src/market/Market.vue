@@ -6,6 +6,7 @@
           <el-input placeholder="回车搜索" v-model="data.keyword" @keydown.enter="keydown" />
         </el-form-item>
         <el-form-item label="已安装">
+          <el-checkbox v-model="data.installed" @change="data.page = 1; getPlugins()" />
           <span class="mr-4">
             <el-badge :value="data.waitingUpdateTotal" type="warning" v-if="data.waitingUpdateTotal > 0">
               <span class="text-sm text-gray-500">
@@ -13,7 +14,6 @@
               </span>
             </el-badge>
           </span>
-          <el-checkbox v-model="data.installed" @change="data.page = 1; getPlugins()" />
         </el-form-item>
       </el-form>
       <div>
@@ -95,9 +95,9 @@
             升级
           </el-button>
           <el-button size="small" type="primary" v-if="!scope.row.installed" @click="install(scope.row.store.id)">
-            安装
+            {{ data.installState }}
           </el-button>
-          <el-button size="small" type="warning" @click="uninstall(scope.row.store.id)" v-if="scope.row.installed">
+          <el-button size="small" type="warning" @click="uninstall(scope.row)" v-if="scope.row.installed">
             卸载
           </el-button>
         </template>
@@ -114,6 +114,7 @@
 import { onMounted, reactive, watch } from 'vue'
 import { ArrowLeftBold, HelpFilled } from '@element-plus/icons-vue'
 import { MarketApi } from '@/api/market'
+import PluginAPI from '@/api/plugin'
 import dayjs from 'dayjs'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import Mine from '@/market/Mine.vue'
@@ -121,12 +122,7 @@ import histogram from '@/plugins/tp-plugin/histogram/components/histogram.vue'
 
 const oss = import.meta.env.VITE_OSS
 
-// const props = defineProps<{
-//   visible: boolean
-// }>()
-// const emit = defineEmits<{
-//   (e: 'update:visible', visible: boolean): void
-// }>()
+
 const data = reactive({
   installed: false,
   keyword: '',
@@ -137,7 +133,8 @@ const data = reactive({
   historyMap: new Map<string, { page: number, pageSize: number, list: any[], total: number }>(),
   openMine: false,
   waitingUpdateTotal: 0,
-  manager: false
+  manager: false,
+  installState: "安装"
 })
 onMounted(() => {
   console.log('market.onMounted')
@@ -145,16 +142,20 @@ onMounted(() => {
   getPlugins();
   getUpdateTotal();
 })
-const getPlugins = () => {
-  MarketApi.getPlugins({
-    page: data.page,
-    pageSize: data.pageSize,
-    installed: data.installed,
-    keyword: data.keyword
-  }).then(res => {
-    data.list = res.data.list
-    data.total = res.data.total
+const getPlugins = async () => {
+  return new Promise((resolve, reject) => {
+    MarketApi.getPlugins({
+      page: data.page,
+      pageSize: data.pageSize,
+      installed: data.installed,
+      keyword: data.keyword
+    }).then(res => {
+      data.list = res.data.list
+      data.total = res.data.total
+      resolve(res.data)
+    })
   })
+
 }
 const expand = (row: any) => {
   let history = data.historyMap.get(row.id) || { page: 1, pageSize: 10, total: 0, list: [] }
@@ -187,12 +188,6 @@ const pageChange = (pluginId: string, page: number) => {
   }
 }
 
-// watch(() => props.visible, (v) => {
-//   if (v) {
-//     getPlugins()
-//     getUpdateTotal()
-//   }
-// })
 
 const upgrade = (pluginId: string) => {
   ElMessageBox.confirm('升级插件可能会造成与现有功能不兼容的情况，点击确认升级', '提示').then(() => {
@@ -208,29 +203,77 @@ const install = (id: string) => {
     '点击确认安装该插件',
     '提示'
   ).then(() => {
-    MarketApi.install(id).then(res => {
-      ElMessage({
-        message: '安装成功，刷新页面后生效',
-        type: 'success'
-      })
-      getPlugins()
+    data.installState = "安装中"
+    MarketApi.install(id).then(async res => {
+      console.log('install', res.data.pluginId)
+      const pluginId = res.data.pluginId;
+
+      // 将插件安装到本地服务器
+      try {
+        let result = await MarketApi.getInstalledPlugins();
+        // 查找当前插件
+        const plugin = result.data.plugins.find((item: any) => item.pluginId === pluginId);
+        if (!plugin.url) throw new Error("找不到插件")
+        // 获取插件内容
+        let file = await MarketApi.getRemoteFile(oss + plugin.url);
+        if (!file.data) throw new Error("无法获取插件内容")
+
+        data.installState = "上传到本地服务器..."
+        // 保存插件到TP
+        const fd = new FormData();
+        fd.append('file', new File([new Blob([file.data])], "index.js"));
+        fd.append('type', 'd_plugin')
+        let upload = await PluginAPI.uploadPlugin(fd);
+        if (upload.data.code !== 200) throw new Error("本地上传失败")
+
+        // 保存到TP数据库
+        let add = await PluginAPI.addPlugintoTP({ id: pluginId, plugin_url: upload.data.data})
+        if (add.data.code !== 200) throw new Error("本地保存失败")
+        ElMessage({
+          message: '安装成功，刷新页面后生效',
+          type: 'success'
+        })
+        getPlugins();
+      }
+      catch (error: any) {
+        // 本地安装失败，卸载插件
+        MarketApi.uninstall(id).then(res => {
+          ElMessage({
+            message: '安装失败，' + error.message,
+            type: 'error'
+          })
+        })
+        .finally(() => {
+          data.installState = "安装"
+        })
+        
+      }
     })
   })
 }
 
-const uninstall = (id: string) => {
+const uninstall = (row: any) => {
+  console.log('uninstall', row)
   ElMessageBox.confirm(
     '点击确认卸载该插件',
     '提示'
-  ).then(() => {
-    MarketApi.uninstall(id).then(res => {
+  ).then(async () => {
+    try {
+      let res1 = await MarketApi.uninstall(row.store.id)
+      if (!res1.data) throw new Error("卸载失败");
+      let res2 = await PluginAPI.delPluginfromTP({ id: row.id });
+      if (res2.data.code !== 200) throw new Error("卸载失败");
       ElMessage({
-        message: '卸载成功，刷新页面后生效',
-        type: 'success'
+          message: '卸载成功，刷新页面后生效',
+          type: 'success'
       })
       getPlugins()
       getUpdateTotal()
-    })
+      data.installState = "安装"
+    }
+    catch (error) {
+      console.log(error)
+    }
   })
 }
 

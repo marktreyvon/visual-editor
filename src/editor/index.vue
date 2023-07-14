@@ -43,9 +43,6 @@ import RightAttributePanel from "./components/right-attribute-panel/index.vue";
 import { useTools, useCanvas } from './hooks'
 import PluginAPI from '@/api/plugin'
 import CustomPlugins from "./components/left-aside/CustomPlugins.vue";
-import {useIsEditEdgeMode} from "@/store/modules/isEditEdgeaModeStore.ts"
-import * as Common from '@/common';
-import { isJSON, rgbtoHex } from '@/utils';
 
 
 const params: any = inject('params', null);

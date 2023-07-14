@@ -16,15 +16,17 @@ export const useStencil = () => {
      * 初始化左侧组件列表
      * @param plugins 
      */
-    const initStencil = (plugins: any, picPlugins?: any) => {
+    const initStencil = (plugins: any) => {
         console.log('=================initStencil===================');
         const graph: Graph = getGraph();
+        console.log('initStencil.graph', graph)
         const { groups, nodeMap } = createStencilNode(plugins, graph);
         // 基础图形
         createStencilBaseNode(groups, nodeMap, graph);
         let groupList: Stencil.Group[] = groups.map((group: string) => getGroup(group));
         const stencilConfig: IStencilConfig = getStencilConfig(groupList);
         const stencil = stencilConfig.getStencil();
+        console.log('initStencil.stencil', stencil)
         nodeMap.forEach((nodes: any[], key: string) => {
             if (key && nodes) {
                 stencil.load(nodes, key);

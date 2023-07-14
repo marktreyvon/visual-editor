@@ -93,6 +93,7 @@ class CanvasConfig implements ICanvasConfig {
      * @returns 
      */
     public static getInstance(containerId: string = Common.DEFAULT_CONTAINER_ID, options?: ICanvasConfig.Options): CanvasConfig {
+        console.log('getInstance', CanvasConfig.instance)
         if (!CanvasConfig.instance) {
             CanvasConfig.instance = new CanvasConfig(containerId, options);
         }
@@ -714,6 +715,7 @@ class CanvasConfig implements ICanvasConfig {
         } else if (CanvasConfig.displayInstance) {
             pluginConfig.registerComponents("display", json.cells);
         }
+        console.log('renderJSOn', json)
         this.graph.fromJSON(json);
     }
 

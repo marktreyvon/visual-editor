@@ -1,7 +1,11 @@
 import { CanvasConfig } from "@/editor/config";
 import VisualAPI from '@/api/visual';
 import { ref } from "vue";
+import { usePlugins } from "@/editor/hooks";
+
+
 export const useDisplay = (containerId: string) => {
+    const { loadPlugins } = usePlugins();
 
     let jsonObj: any = {};
     const screenName = ref<string>("")
@@ -42,31 +46,23 @@ export const useDisplay = (containerId: string) => {
                 cell.tools = undefined;
 
             });
-            canvasConfig.renderJSON(jsonObj);
-            // 初始化画布背景
-            canvasConfig.setBackground(jsonObj.graph.background);
-            // 初始化画布网格
-            canvasConfig.showGrid(false);
-
-
-            const  theg = canvasConfig.getGraph()
-            const Edges=theg.getEdges()
-            console.log(Edges)
-            Edges.forEach((edge:any)=>{
-                console.log(edge.attr('targetData'))
-                canvasConfig.edgeAnimation(edge,edge.attr('targetData'))
-            })
-
-            // jsonObj.cells.forEach((cell: any) => {
-            //     /**
-            //      如果节点有链接桩，则不显示
-            //      **/
-            //     if(cell.shape==='edge'){
-            //         console.log(cell.attrs.targetData)
-            //         canvasConfig.getGraph().gete
-            //         canvasConfig.edgeAnimation(cell,cell.attrs.targetData)
-            //     }
-            // });
+            
+            // 加载插件
+            loadPlugins(() => {
+                canvasConfig.renderJSON(jsonObj);
+                // 初始化画布背景
+                canvasConfig.setBackground(jsonObj.graph.background);
+                // 初始化画布网格
+                canvasConfig.showGrid(false);
+    
+                const  theg = canvasConfig.getGraph()
+                const Edges=theg.getEdges()
+                console.log(Edges)
+                Edges.forEach((edge:any)=>{
+                    console.log(edge.attr('targetData'))
+                    canvasConfig.edgeAnimation(edge,edge.attr('targetData'))
+                })
+            }, { mode: 'display' });
         }
     }
 

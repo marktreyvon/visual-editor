@@ -61,13 +61,9 @@
             <el-button text @click="preview()" :icon="View">预览</el-button>
           </div>
         </div>
-<<<<<<< HEAD
-        <div class="absolute inset-y-0 right-4 w-auto">
-            <el-button :icon="Share" >分享</el-button>
-=======
+
         <div class="absolute inset-y-0 right-0 w-auto">
             <el-button :icon="Share" id="share-btn" @click="share(params)" >分享</el-button>
->>>>>>> f863fa4cc633b47d9679efd1d53fd95ee04f6dda
             <el-button :icon="CircleCheck" @click="save(params.id)">保存</el-button>
             <el-button :icon="QuestionFilled" @click="help" >帮助</el-button>
             <el-button :icon="HomeFilled" @click="data.marketVisible = true">插件市场</el-button>
@@ -84,11 +80,8 @@ import { exportFile, readFile } from "@/utils";
 import { CanvasConfig } from "@/editor/config";
 import AuthAPI from "@/api/auth"
 import { useTools } from "@/editor/hooks"
-<<<<<<< HEAD
 import Market from "@/market/index.vue"
-=======
 import {useIsEditEdgeMode} from "@/store/modules/isEditEdgeaModeStore";
->>>>>>> f863fa4cc633b47d9679efd1d53fd95ee04f6dda
 const props = defineProps({ 
     tools: {
         type: Object,
@@ -225,9 +218,6 @@ const handleDBClick = () => {
     margin-left: 12px;
     margin-top: 14px;
   }
-<<<<<<< HEAD
-</style>
-=======
 .editAlert{
   position: absolute;
   top:70px;
@@ -239,4 +229,3 @@ const handleDBClick = () => {
   margin-right:300px
 }
 </style>
->>>>>>> f863fa4cc633b47d9679efd1d53fd95ee04f6dda

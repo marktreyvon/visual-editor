@@ -106,5 +106,10 @@ export const MarketApi = {
   },
   getInstalledPlugins() {
     return $market.get('/market/installedPlugins')
+  },
+  getRemoteFile(url: string) {
+    return axios.get(url, 
+      // { responseType: 'arraybuffer' }
+    )
   }
 }
