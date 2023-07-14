@@ -36,8 +36,8 @@ const ruleFormRef = ref<FormInstance>()
 
 const isLoggining = ref(false);
 const formData = reactive({
-    username: '17398467065',
-    password: '123456'
+    username: '',
+    password: ''
 });
 const rules = reactive<FormRules>({
     username: [
