@@ -2,8 +2,7 @@
   <div>
     <el-color-picker
      :model-value="modelValue" 
-      @update:modelValue="changeColor" 
-      show-alpha
+      @update:modelValue="changeColor"
       :predefine="predefineColors"
       @change="changeColor">
     </el-color-picker>
@@ -39,7 +38,7 @@ export default defineComponent({
       : predefineColors
 
     this.predefineColors = storePredefineColors
-    this.saveColorLocl()
+    this.saveColorLocal()
   },
   methods: {
     changeColor(val: any) {
@@ -54,11 +53,11 @@ export default defineComponent({
       }
 
       this.predefineColors.unshift(val)
-      this.saveColorLocl()
+      this.saveColorLocal()
       this.$emit('update:modelValue', val)
       this.$emit('change', val)
     },
-    saveColorLocl() {
+    saveColorLocal() {
       localStorage.setItem('predefineColors', JSON.stringify(this.predefineColors))
     },
   },

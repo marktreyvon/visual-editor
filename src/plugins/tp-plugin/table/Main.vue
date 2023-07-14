@@ -1,6 +1,6 @@
 <template>
   <div :id="'table_' + id" lass="table-wrap" style="height: 100%">
-    <el-table style="height: 100%;" width="100%" fit :data="orgNameData" :cellStyle="cellStyle"
+    <el-table style="height: auto;" :height="tableHeight" width="100%" fit :data="orgNameData" :cellStyle="cellStyle"
       :header-cell-style="headerCellStyle" :cell-class-name="tableCellClassName" ref="sdangerTable" :style="tableStyle">
 
       <template v-if="newRows" v-for="(item, index) in newRows">
@@ -19,6 +19,8 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import data from "./data"
+import { cloneDeep } from "lodash";
+const staticData = cloneDeep(data)
 
 export default defineComponent({
   components: {
@@ -28,10 +30,10 @@ export default defineComponent({
       type: [Object, String, Number],
       default: () => {
         return {
-          table: data.table,
-          border: data.border,
-          header: data.header,
-          newRows: data.newRows
+          table: staticData.table,
+          border: staticData.border,
+          header: staticData.header,
+          newRows: staticData.newRows
         };
       },
     },
@@ -92,6 +94,7 @@ export default defineComponent({
   methods: {
     tableChange(_data: any) {
       console.log('---table.tableChange--', _data)
+      this.tableHeight = _data.plimit * this.rowHeight + 39 
       //新数据
       this.newRows = _data.newRows || data.newRows;
       //表格外边框
@@ -126,28 +129,28 @@ export default defineComponent({
 
      
       //显示行数
-      this.$nextTick(() => {
-        const dom = <HTMLElement>document.getElementById("table_" + this.id);
-        const tableBody = <HTMLElement>dom.getElementsByClassName("el-table__body-wrapper")[0];
-        const tableRows = <any>dom.getElementsByClassName("el-table__row"); 
-          console.log('tableRows', tableRows)
-        new ResizeObserver(entries => {
-          this.tableBodyHeight = entries[0].contentRect.height;
-          const rowHeihgt = this.tableBodyHeight / (_data.plimit || data.plimit);
-          for (let i in tableRows) {
-            const tableRow: any = tableRows[i];
-            console.log('tableRow', i, tableRow.style)
-            if (tableRow.style) {
-              tableRow.style.height = rowHeihgt + 'px'
-              console.log('tableRow', i, rowHeihgt + 'px')
-            }
-          }
-        }).observe(tableBody);
-      })
+      // this.$nextTick(() => {
+      //   const dom = <HTMLElement>document.getElementById("table_" + this.id);
+      //   const tableBody = <HTMLElement>dom.getElementsByClassName("el-table__body-wrapper")[0];
+      //   const tableRows = <any>dom.getElementsByClassName("el-table__row"); 
+      //     console.log('tableRows', tableRows)
+      //   new ResizeObserver(entries => {
+      //     this.tableBodyHeight = entries[0].contentRect.height;
+      //     const rowHeihgt = this.tableBodyHeight / (_data.plimit || data.plimit);
+      //     for (let i in tableRows) {
+      //       const tableRow: any = tableRows[i];
+      //       console.log('tableRow', i, tableRow.style)
+      //       if (tableRow.style) {
+      //         tableRow.style.height = rowHeihgt + 'px'
+      //         console.log('tableRow', i, rowHeihgt + 'px')
+      //       }
+      //     }
+      //   }).observe(tableBody);
+      // })
 
       //斑马线
       console.log('---data.border.showZebrastripe--', _data.border?.showZebrastripe)
-      let stripes = document.getElementsByClassName('stripe');
+      let stripes = this.$el.getElementsByClassName('stripe');
       for (let i in stripes) {
         const stripe: any = stripes[i];
         let istyle = stripe.style;

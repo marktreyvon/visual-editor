@@ -118,18 +118,30 @@
 import { defineComponent } from "vue";
 import { Plus, Minus } from '@element-plus/icons-vue'
 import data from "./data"
+import { cloneDeep } from "lodash";
+const staticData = cloneDeep(data)
 
 export default defineComponent({
+  props: {
+      data: {
+          type: Object,
+          default: () => ({})
+      },
+      bindData: {
+        type: Object,
+        default: () => ({})
+      },
+  },
   data() {
     return {
       activeNames: 'attribute',
       table: {
         carousel: false, //轮播
-        plimit: data.plimit, //每页行数
-        table: data.table,
-        border: data.border,
-        header: data.header,
-        newRows: data.newRows
+        plimit: staticData.plimit, //每页行数
+        table: staticData.table,
+        border: staticData.border,
+        header: staticData.header,
+        newRows: staticData.newRows
       },
     }
   },
@@ -169,6 +181,14 @@ export default defineComponent({
     },
     removeRow(index: number) {
       this.table.newRows.splice(index, 1);
+    }
+  },
+  mounted(){
+    if (this.data) {
+      const jsonStr = JSON.stringify(this.data);
+      if (jsonStr === '{}') return
+      const formData = JSON.parse(jsonStr);
+      this.table = formData;
     }
   }
 })
