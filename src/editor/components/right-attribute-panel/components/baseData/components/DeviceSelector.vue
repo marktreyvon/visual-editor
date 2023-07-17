@@ -64,8 +64,11 @@ const emit = defineEmits(["delete", 'change']);
 const activeNames = ref<string[]>(['style']);
 const state = reactive({
     projectId: '',
+    projectName: '',
     groupId: '',
+    groupName: '',
     deviceId: '',
+    deviceName: '',
     pluginId: '',
     property: '',
     propertyTitle: '',
@@ -112,6 +115,11 @@ onMounted(async () => {
  */
  watch(() => state.projectId, async (value) => {
     if (!value) return;
+    if(projectOptions.value.length){
+        const index: number = projectOptions.value.findIndex((item: any) => item.value === state.projectId);
+        state.projectName = index > -1 ? projectOptions.value[index].label : ''
+    }
+ 
     groupOptions.value = await getGroupList(value);
     console.log('watch groupOptions', groupOptions.value)
 }, { immediate: true });
@@ -121,6 +129,8 @@ onMounted(async () => {
  */
 watch(() => state.groupId, async (value) => {
     if (!value) return;
+    const index: number = groupOptions.value.findIndex((item: any) => item.value === state.groupId);
+    state.groupName = index > -1 ? groupOptions.value[index].label : ''
     deviceOptions.value = await getDeviceList(value);
     console.log('watch deviceOptions', deviceOptions.value)
 }, { immediate: true });
@@ -135,6 +145,7 @@ watch(() => state.deviceId, async (value) => {
             if (item.children && item.children.length > 0) {
                 item.children.forEach((child: any) => {
                     if (child.value === value) {
+                        state.deviceName = child.device_name
                         state.pluginId = child.pluginId;
                         throw new Error('break');
                     }
@@ -150,6 +161,7 @@ watch(() => state.deviceId, async (value) => {
 watchEffect(() => {
     if (state.deviceId && JSON.stringify(deviceOptions.value) !== "{}") {
         const index: number = deviceOptions.value.findIndex((item: any) => item.value === state.deviceId);
+        state.deviceName = index > -1 ? deviceOptions.value[index].label : ''
         console.log('watchEffect', index, deviceOptions.value[index])
         if (index === -1) return;
         state.pluginId = deviceOptions.value[index].pluginId;
