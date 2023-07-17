@@ -9,10 +9,10 @@
             <el-icon class="align-middle" :size="20">
                 <House />
               </el-icon>
-            <span class="align-middle pl-6" style="overflow：hidden;text-overflow：ellipsis">{{ name }}</span>
+            <span class="align-middle pl-6" style="overflow：hidden;text-overflow：ellipsis" @dblclick="handleDBClick">{{ name }}</span>
             <span class="align-middle pl-6 saving-state">{{ savingState }}</span>
         </div>
-        <div class="ml-64 mr-96 w-auto">
+        <div class="ml-64 mr-[400px] w-auto">
           <div class="inline-flex">
             <!--        变色测试按钮  *@author; 王炳宏 -->
             <!-- <el-button @click="attrColor">变色</el-button> -->
@@ -40,7 +40,7 @@
               </template>
             </el-upload>
 
-            <el-dropdown class="el-dropdown" 
+            <el-dropdown class="el-dropdown"
                 @command="handleCommandExport"
                 >
                 <span class="el-dropdown-link" @click="handleClickExport">
@@ -61,22 +61,26 @@
             <el-button text @click="preview()" :icon="View">预览</el-button>
           </div>
         </div>
+
         <div class="absolute inset-y-0 right-0 w-auto">
             <el-button :icon="Share" id="share-btn" @click="share(params)" >分享</el-button>
             <el-button :icon="CircleCheck" @click="save(params.id)">保存</el-button>
             <el-button :icon="QuestionFilled" @click="help" >帮助</el-button>
+            <el-button :icon="HomeFilled" @click="data.marketVisible = true">插件市场</el-button>
         </div>
     </div>
+    <Market v-model:visible="data.marketVisible"/>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, toRefs, inject, onMounted } from "vue";
-import { House, RefreshLeft, RefreshRight, ZoomOut, ZoomIn, Crop, View, Download, Upload, Share, CircleCheck, SwitchButton, QuestionFilled } from "@element-plus/icons-vue";
+import { House, HomeFilled,RefreshLeft, RefreshRight, ZoomOut, ZoomIn, Crop, View, Download, Upload, Share, CircleCheck, SwitchButton, QuestionFilled } from "@element-plus/icons-vue";
 import { ArrowDown } from '@element-plus/icons-vue'
 import { exportFile, readFile } from "@/utils";
 import { CanvasConfig } from "@/editor/config";
 import AuthAPI from "@/api/auth"
 import { useTools } from "@/editor/hooks"
+import Market from "@/market/index.vue"
 import {useIsEditEdgeMode} from "@/store/modules/isEditEdgeaModeStore";
 const props = defineProps({ 
     tools: {
@@ -172,6 +176,13 @@ const getUserInfo = () => {
       console.log('getUserInfo', res)
     })
   }, 1000 * 30)
+}
+const data = reactive({
+  marketVisible: false
+})
+
+const handleDBClick = () => {
+  console.log('handleDBClick')
 }
 
 </script>

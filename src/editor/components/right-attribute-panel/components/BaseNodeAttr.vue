@@ -86,7 +86,7 @@ const handleChange =async (file: any, uploadFiles: any) => {
   const fd = new FormData()
 
   fd.append('files', file.raw)
- await PluginAPI.uploadPlugins(fd)
+ await PluginAPI.uploadPicPlugins(fd)
  const res= await getPicPlugins()
   console.log(res)
   if(res.length>0){

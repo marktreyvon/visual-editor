@@ -93,6 +93,7 @@ class CanvasConfig implements ICanvasConfig {
      * @returns 
      */
     public static getInstance(containerId: string = Common.DEFAULT_CONTAINER_ID, options?: ICanvasConfig.Options): CanvasConfig {
+        console.log('getInstance', CanvasConfig.instance)
         if (!CanvasConfig.instance) {
             CanvasConfig.instance = new CanvasConfig(containerId, options);
         }
@@ -708,12 +709,13 @@ class CanvasConfig implements ICanvasConfig {
     public renderJSON(json: any): void {
         if (!this.graph) 
             throw new Error('Graph is undefined.');
-        const pluginConfig: IPluginConfig = new PluginConfig(this.screenRect);
+        const pluginConfig: IPluginConfig = PluginConfig.getInstance(null);
         if (CanvasConfig.instance) {
             pluginConfig.registerComponents("editor", json.cells);
         } else if (CanvasConfig.displayInstance) {
             pluginConfig.registerComponents("display", json.cells);
         }
+        console.log('renderJSOn', json)
         this.graph.fromJSON(json);
     }
 

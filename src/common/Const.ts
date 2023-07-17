@@ -120,3 +120,7 @@ export const STORAGE_JSON_DATA_KEY = 'storage_json_data';
  * 自动保存时间间隔 30秒
  */
 export const AUTO_SAVE_INTERVAL = 1000 * 30;
+
+export const DEFAULT_API_CURRENT_PAGE = 1;
+
+export const DEFAULT_API_PER_PAGE = 999;

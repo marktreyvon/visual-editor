@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, provide } from 'vue';
+import { ref, computed, provide, onMounted } from 'vue';
 import { parseParams } from '@/utils'
 import { Render } from './Demo'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
@@ -7,6 +7,7 @@ import en from 'element-plus/dist/locale/en.mjs'
 import { useAuthStore } from '@/store'
 import { useRouter } from "vue-router";
 import http from 'axios'
+
 
 const language = ref('zh-cn')
 const locale = computed(() => (language.value === 'zh-cn' ? zhCn : en))

@@ -194,7 +194,6 @@ export default defineComponent({
       this.formData.barColors.push('')
     }
   },
-
   watch: {
     formData: {
       handler(val) {

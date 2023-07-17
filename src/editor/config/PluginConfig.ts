@@ -1,5 +1,4 @@
 import { register } from "@antv/x6-vue-shape";
-import * as Plugins from '@/plugins'
 import { getDropComponent } from "../components/canvas-editor/DropComponent";
 import { getDisplayComponent } from "@/display/components/DisplayComponent";
 import { getDisplayPicComponent } from "@/display/components/DisplayPicComponent";
@@ -16,17 +15,19 @@ import { Component } from "vue";
  */
 class PluginConfig implements IPluginConfig  {
     private static instance: PluginConfig;
+    plugins: any;
     components: Map<String, any>;
     screenRect: { width: number; height: number; };
 
-    public constructor(screenRect: { width: number; height: number; } = { width: 1920, height: 1080}) {
+    public constructor(plugins: any, screenRect: { width: number; height: number; } = { width: 1920, height: 1080}) {
+        this.plugins = plugins;
         this.components = new Map<String, any>();
         this.screenRect = screenRect;
     }
 
-    public static getInstance(): PluginConfig {
+    public static getInstance(plugins: any = null): PluginConfig {
         if (!PluginConfig.instance) {
-            PluginConfig.instance = new PluginConfig();
+            PluginConfig.instance = new PluginConfig(plugins);
         }
         return PluginConfig.instance;
     }
@@ -52,13 +53,14 @@ class PluginConfig implements IPluginConfig  {
     }
 
     public registerComponents(mode: "editor" | "display", data: any): void {
-        console.log('============registerComponents===================')
-        const plugins: any = <any>Plugins;
+        console.log('============registerComponents===================', this.plugins)
+        const plugins: any = this.plugins;
         for (const key in plugins) {
-            console.log(key)
+            console.log('registerComponents', key)
             const plugin = plugins[key];
             const { views } = plugin.default;
             views.forEach((view: any) => {
+                console.log("registerComponents.view", view)
                 if (data) {
                     data.forEach((cell: any) => {
                         if (cell.shape === view.name) {

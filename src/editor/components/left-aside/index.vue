@@ -1,5 +1,5 @@
 <template>
-  <div :id="Common.DEFAULT_STENCIL_CONTAINER_ID" style="w-full"></div>
+  <div :id="Common.DEFAULT_STENCIL_CONTAINER_ID" class="w-full"></div>
 </template>
 
 <script setup lang="ts">
