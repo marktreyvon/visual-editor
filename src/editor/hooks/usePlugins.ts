@@ -45,11 +45,15 @@ export const usePlugins = (): any => {
                     remotePlugins.tpPlugin = { default: tpPlugin }
                     let result = await getPicPlugins();
                     remotePlugins.picPlugins = result;
+                    console.log('PluginAPI.getPluginList', remotePlugins)
                     initPluginConfig(remotePlugins);
                     // 如果是编辑模式，则加载左侧组件列表
                     options?.mode ==='editor' && initStencil(remotePlugins);
                     _callback && _callback();
                 })
+            })
+            .catch((err) => {
+                _callback && _callback();
             })
     }
 
@@ -59,6 +63,8 @@ export const usePlugins = (): any => {
      */
     const initPluginConfig = (plugins: any): void => {
         const pluginConfig: IPluginConfig = PluginConfig.getInstance(plugins);
+        pluginConfig.setPlugins(plugins);
+        console.log('plugin.initPluginConfig', pluginConfig, plugins)
         for (const key in plugins) {
             const plugin = plugins[key];
             const { views } = plugin.default;

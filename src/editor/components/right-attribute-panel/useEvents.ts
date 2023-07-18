@@ -184,6 +184,7 @@ export const useEvents = () => {
                 is3D.setFalse()
             }
             // 获取插件管理器
+            console.log('initEvents.PluginConfig.getInstance()')
             const pluginConfig: IPluginConfig = PluginConfig.getInstance();
             // 通过节点名称获取组件
             component = pluginConfig.getComponent(currentNode.shape);

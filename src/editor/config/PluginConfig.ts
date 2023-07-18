@@ -26,6 +26,7 @@ class PluginConfig implements IPluginConfig  {
     }
 
     public static getInstance(plugins: any = null): PluginConfig {
+        console.log('plugin.PluginConfig.getInstance', plugins)
         if (!PluginConfig.instance) {
             PluginConfig.instance = new PluginConfig(plugins);
         }
@@ -50,6 +51,10 @@ class PluginConfig implements IPluginConfig  {
     
     public getScreenRect(): { width: number; height: number; } {
         return this.screenRect;
+    }
+
+    public setPlugins(plugins: any): void {
+        this.plugins = plugins;
     }
 
     public registerComponents(mode: "editor" | "display", data: any): void {

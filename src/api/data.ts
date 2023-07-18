@@ -26,5 +26,18 @@ export default {
             method: 'post',
             data
         })
+    },
+
+    /**
+     * 手动控制设备
+     * @param data 
+     * @returns 
+     */
+    setDeviceValue: (data: any) => {
+        return axios.request({
+            url: 'device/operating_device',
+            method: 'post',
+            data
+        })
     }
 }

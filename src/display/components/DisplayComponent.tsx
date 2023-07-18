@@ -23,7 +23,6 @@ export const getDisplayComponent = (cpt: Component, nodeData: any, refType: any)
             if (jsonData.style) {
                 this.style = { ...jsonData.style }
             }
-            // console.log('display.mounted.this.style', jsonData, this.style)
             if (jsonData.data) {
                 this.data = { ...jsonData.data } ;
                 if (jsonData.data.bindType === "static") {
@@ -33,7 +32,6 @@ export const getDisplayComponent = (cpt: Component, nodeData: any, refType: any)
                     // 动态数据
                     // this.value = jsonData.data.dynamic;
                 } else if (jsonData.data.bindType === "device") {
-                    console.log('display.mounted.device', jsonData.data.deviceData)
                     if (!jsonData.data.deviceData[0].projectId) return;
                     // 设备数据
                     const cb = (value: any) => {
@@ -54,21 +52,32 @@ export const getDisplayComponent = (cpt: Component, nodeData: any, refType: any)
 
         },
         methods: {
-            onChange(value: any) {
-                const { device, property } = value; 
-                console.log('display.change', device, property)
-                if (!device || !property) return;
-                this.dataConfig.stop();
-                // 改变了数据入口
-                device && this.dataConfig.setDeviceId(device.deviceId);
-                property && this.dataConfig.setProperty(property);
-                // 重启定时器
-                this.dataConfig.start();
+            onChange(value: any, _callback: any) {
+                const { device, property, switch: switchValue } = value; 
+                if (refType === 'switch') {
+                    this.dataConfig.setCallback(_callback);
+                    this.dataConfig.setValue(switchValue);
+                    this.dataConfig.start();
+                } else {
+                    if (!device || !property) return;
+                    this.dataConfig.stop();
+                    // 改变了数据入口
+                    device && this.dataConfig.setDeviceId(device.deviceId);
+                    property && this.dataConfig.setProperty(property);
+                    // 重启定时器
+                    this.dataConfig.start();
+                }
             }
         },
         render() {
             return (
-                <cpt id={this.id} key={this.id} value={this.value} style={this.style} data={this.data} onChange={this.onChange}/>
+                <cpt id={this.id} 
+                    key={this.id} 
+                    value={this.value} 
+                    style={this.style} 
+                    data={this.data} 
+                    onChange={this.onChange}
+                    />
             )
         }
     })

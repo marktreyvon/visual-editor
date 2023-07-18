@@ -710,6 +710,7 @@ class CanvasConfig implements ICanvasConfig {
         if (!this.graph) 
             throw new Error('Graph is undefined.');
         const pluginConfig: IPluginConfig = PluginConfig.getInstance(null);
+        console.log('renderJSON.pluginConfig', pluginConfig)
         if (CanvasConfig.instance) {
             pluginConfig.registerComponents("editor", json.cells);
         } else if (CanvasConfig.displayInstance) {

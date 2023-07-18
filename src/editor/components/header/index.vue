@@ -9,7 +9,7 @@
             <el-icon class="align-middle" :size="20">
                 <House />
               </el-icon>
-            <span class="align-middle pl-6" style="overflow：hidden;text-overflow：ellipsis" @dblclick="handleDBClick">{{ name }}</span>
+            <span class="align-middle pl-6" style="overflow:hidden;text-overflow:ellipsis" @dblclick="handleDBClick">这是一个测试页面{{ name }}</span>
             <span class="align-middle pl-6 saving-state">{{ savingState }}</span>
         </div>
         <div class="ml-64 mr-[400px] w-auto">
