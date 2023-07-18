@@ -8,5 +8,13 @@ export default {
             method: 'post',
             data
         })
+    },
+
+    refreshToken: (data: any) => {
+        return axios.request({
+            url: '/auth/refresh',
+            method: 'post',
+            data
+        })
     }
 }

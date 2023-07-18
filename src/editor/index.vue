@@ -41,7 +41,6 @@ import LeftAside from "./components/left-aside/index.vue";
 import CanvasEditor from "./components/canvas-editor/index.vue";
 import RightAttributePanel from "./components/right-attribute-panel/index.vue";
 import { useTools, useCanvas } from './hooks'
-import PluginAPI from '@/api/plugin'
 import CustomPlugins from "./components/left-aside/CustomPlugins.vue";
 
 

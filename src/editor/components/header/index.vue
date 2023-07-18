@@ -172,8 +172,8 @@ const getUserInfo = () => {
   setInterval(() => {
     const json = toJSON();
     console.log('getUserInfo', json)
-    AuthAPI.getUserInfo({}).then(res => {
-      console.log('getUserInfo', res)
+    AuthAPI.refreshToken({}).then(res => {
+      
     })
   }, 1000 * 30)
 }
