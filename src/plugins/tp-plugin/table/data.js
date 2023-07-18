@@ -102,5 +102,47 @@ export default {
             "propB": "22.23%",
             "status": "正常"
         }
+    ],
+    deviceRow: [
+        {
+            show: true,
+            filed: 'seqNo',
+            name: '序号',
+            width: 100,
+            color: '#000000',
+            size: 10
+        },
+        {
+            show: true,
+            filed: 'projectName',
+            name: '项目',
+            width: 100,
+            color: '#000000',
+            size: 10
+        },
+        {
+            show: true,
+            filed: 'groupName',
+            name: '分组',
+            width: 100,
+            color: '#000000',
+            size: 10
+        },
+        {
+            show: true,
+            filed: 'deviceName',
+            name: '设备',
+            width: 100,
+            color: '#000000',
+            size: 10
+        },
+        {
+            show: true,
+            filed: 'propertyTitle',
+            name: '属性',
+            width: 100,
+            color: '#000000',
+            size: 10
+        },
     ]
 }

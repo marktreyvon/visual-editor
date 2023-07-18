@@ -4,7 +4,7 @@
       :header-cell-style="headerCellStyle" :cell-class-name="tableCellClassName" ref="sdangerTable" :style="tableStyle">
 
       <template v-if="newRows" v-for="(item, index) in newRows">
-        <el-table-column v-if="item.show" width="auto" :prop="item.filed" :label="item.name">
+        <el-table-column v-if="item.show" width="auto" show-overflow-tooltip :prop="item.filed" :label="item.name">
 
           <template #default="scope">
             <span :style="'color:' + item.color + '; font-size:' + item.size + ';'">{{ scope.row[item.filed] }}</span>
@@ -49,6 +49,12 @@ export default defineComponent({
         return {};
       },
     },
+    data: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
   data() {
     return {
@@ -86,12 +92,32 @@ export default defineComponent({
       },
       deep: true,
       immediate: true
+    },
+    data: {
+      handler(val){
+        if(val.bindType === 'device'){
+          this.orgNameData = val.deviceData.map((x:any,index:any) =>   {
+            return {
+              ...x,
+              seqNo:index+1
+            }
+          });
+          this.newRows = this.getDeviceRow()
+        }
+      },
+      deep: true,
+      immediate: true
     }
   },
   mounted() {
     this.getTableBodyHeight();
   },
   methods: {
+    getDeviceRow(){
+      return [
+        ...data.deviceRow
+      ]
+    },
     tableChange(_data: any) {
       console.log('---table.tableChange--', _data)
       this.tableHeight = _data.plimit * this.rowHeight + 39 
