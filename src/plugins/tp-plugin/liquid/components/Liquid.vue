@@ -33,6 +33,7 @@ const initLiquid = (_callback?: Function) => {
     if (isInitializing) return;
     isInitializing = true;
     if (liquidPlot) {
+        isInitializing = false;
         _callback && _callback();
         return;
     }
@@ -43,8 +44,11 @@ const initLiquid = (_callback?: Function) => {
         console.log('Liquid.container', containerId, container)
         liquidPlot = new Liquid(container, option);
         liquidPlot.render();
-        liquidPlot.update(getOptionData({...props.style}));
+        if (props.style.shape) {
+            liquidPlot.update(getOptionData({...props.style}));
+        }
         loop(props.style?.isLoop || defaultOption.isLoop);
+        isInitializing = false;
         _callback && _callback();
     })
 }

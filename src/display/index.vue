@@ -24,7 +24,6 @@ import { useDisplay } from "./useDisplay"
 import { getTeleport } from "@antv/x6-vue-shape";
 import { parseParams } from "@/utils";
 import { CanvasConfig } from "@/editor/config";
-import { Events } from "@antv/x6";
 import { More }  from "@element-plus/icons-vue";
 const TeleportContainer = getTeleport();
 
