@@ -125,10 +125,10 @@ export default defineComponent({
                 size: 10
             })
           })
-          if(inter) {
-            clearInterval(inter)
-          }
-          this.loopUpdatePropVal(val.deviceData)
+          // if(inter) {
+          //   clearInterval(inter)
+          // }
+          // this.loopUpdatePropVal(val.deviceData)
         }
       },
       deep: true,
