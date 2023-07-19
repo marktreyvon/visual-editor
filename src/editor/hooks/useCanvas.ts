@@ -36,7 +36,7 @@ const useCanvas = (id?: any): any => {
                     screenName.value = result.data?.data?.[0].dashboard_name;
                     let jsonData = result.data?.data?.[0]?.json_data;
                     const jsonObj = isJSON(jsonData);
-                    console.log('importJSON', jsonObj)
+                    console.log('plugin.importJSON', jsonObj)
                     localStorage.removeItem(Common.STORAGE_JSON_DATA_KEY);
                     if (jsonObj) {
                         canvasConfig.renderJSON(jsonObj);

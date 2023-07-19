@@ -58,7 +58,11 @@ import defaultIcon from "@/assets/defaultIcon.svg";
 import edgeLayerIcon from "@/assets/edgeLayerIcon.svg";
 import {useEvents} from "@/editor/components/right-attribute-panel/useEvents";
 
-const pluginConfig: IPluginConfig = PluginConfig.getInstance();
+
+let pluginConfig: IPluginConfig;
+onMounted(() => {
+  pluginConfig = PluginConfig.getInstance();
+})
 const theCellIndex=ref<any>(-1)
 const statList=ref<any>([])
 const props = defineProps({

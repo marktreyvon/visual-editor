@@ -24,7 +24,7 @@ export const useMarketStore = defineStore('marketStore', () => {
     const loginStatus = async () => {
         let res = await MarketApi.getSecret();
         console.log('market loginStatus', res)
-        if (res.status === 200) {
+        if (res && res.status === 200) {
             isLogined = true
         } else {
             isLogined = false;

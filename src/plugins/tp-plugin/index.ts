@@ -9,6 +9,7 @@ import { TB_Attribute, TB_Data, TB_Icon, TB_Main } from "./table";
 import { histogram_Attribute, histogram_Data, histogram_Icon, histogram_Main } from "./histogram";
 import { Timer_Attribute, Timer_Data, Timer_Icon, Timer_Main } from "./timer";
 import { Liquid_Icon, Liquid_Main, Liquid_Attribute, Liquid_Data } from "./liquid";
+import { Switch_Attribute, Switch_Data, Switch_Icon, Switch_Main } from "./switch";
 export default {
     views: [
         {
@@ -31,6 +32,17 @@ export default {
             Main: Timer_Main,
             Attribute: Timer_Attribute,
             Data: Timer_Data,
+        },
+        {
+            name: "开关",
+            description: "",
+            group: "常用组件",
+            type: "switch",
+            icon: Switch_Icon,
+            size: { width: 100, height: 40 },
+            Main: Switch_Main,
+            Attribute: Switch_Attribute,
+            Data: Switch_Data
         },
         {
             name: "仪表盘",

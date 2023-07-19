@@ -24,24 +24,43 @@ const props = defineProps({
 })
 const containerId = props.id || randomString(8);
 let liquidPlot: any = null;
+let isInitializing = false;
 onMounted(() => {
-    const option: any = getOptionData(defaultOption);
-    console.log('Liquid.option', props.id, containerId)
+    initLiquid();
+})
+
+const initLiquid = (_callback?: Function) => {
+    if (isInitializing) return;
+    isInitializing = true;
+    if (liquidPlot) {
+        isInitializing = false;
+        _callback && _callback();
+        return;
+    }
     nextTick(() => {
+        console.log('initLiquid.style', props.style)
+        const option: any = getOptionData({...defaultOption});
         const container: HTMLElement = <HTMLElement>document.getElementById(containerId);
         console.log('Liquid.container', containerId, container)
         liquidPlot = new Liquid(container, option);
         liquidPlot.render();
-        loop(defaultOption.isLoop)
+        if (props.style.shape) {
+            liquidPlot.update(getOptionData({...props.style}));
+        }
+        loop(props.style?.isLoop || defaultOption.isLoop);
+        isInitializing = false;
+        _callback && _callback();
     })
-})
+}
 
 let timer: any = null;
 watch(() => props.style, (val) => {
-    console.log('Liquid.style', val)
-    if (!liquidPlot || !val.shape) return;
-    liquidPlot.update(getOptionData(val));
-    loop(val.isLoop);
+    console.log('Liquid.style', liquidPlot, val)
+    if (!val.shape) return;
+    initLiquid(() => {
+        liquidPlot.update(getOptionData(val));
+        loop(val.isLoop);
+    })
 })
 
 watch(() => props.value, (val) => {

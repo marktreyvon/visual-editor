@@ -21,6 +21,8 @@ declare interface IPluginConfig {
 
     getScreenRect(): { width: number; height: number; };
 
+    setPlugins(plugins: any): void;
+
     registerComponents(mode: "editor" | "display", data: any): void;
 
 }

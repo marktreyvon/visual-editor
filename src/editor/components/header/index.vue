@@ -9,16 +9,16 @@
             <el-icon class="align-middle" :size="20">
                 <House />
               </el-icon>
-            <span class="align-middle pl-6" style="overflow：hidden;text-overflow：ellipsis" @dblclick="handleDBClick">{{ name }}</span>
+            <span class="align-middle pl-6" style="overflow:hidden;text-overflow:ellipsis" @dblclick="handleDBClick">{{ name }}</span>
             <span class="align-middle pl-6 saving-state">{{ savingState }}</span>
         </div>
         <div class="ml-64 mr-[400px] w-auto">
           <div class="inline-flex">
             <!--        变色测试按钮  *@author; 王炳宏 -->
             <!-- <el-button @click="attrColor">变色</el-button> -->
-            <el-button  text  @click="changeEditEdgeMode">{{ EditEdgeMode.isEditEdgeMode?"取消画线":"自由画线" }}</el-button>
             <el-button text @click="undo" :icon="RefreshLeft">撤销</el-button>
             <el-button text @click="redo" :icon="RefreshRight">重做</el-button>
+            <el-button text @click="changeEditEdgeMode">{{ EditEdgeMode.isEditEdgeMode?"取消连线":"连线" }}</el-button>
             <el-button text @click="zoomToFit" :icon="Crop">自适应</el-button>
             <el-button text @click="zoomOut" :icon="ZoomOut">缩小</el-button>
             <el-button text>{{ scaling + '%' }}</el-button>
@@ -172,8 +172,8 @@ const getUserInfo = () => {
   setInterval(() => {
     const json = toJSON();
     console.log('getUserInfo', json)
-    AuthAPI.getUserInfo({}).then(res => {
-      console.log('getUserInfo', res)
+    AuthAPI.refreshToken({}).then(res => {
+      
     })
   }, 1000 * 30)
 }

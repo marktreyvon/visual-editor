@@ -41,7 +41,6 @@ import LeftAside from "./components/left-aside/index.vue";
 import CanvasEditor from "./components/canvas-editor/index.vue";
 import RightAttributePanel from "./components/right-attribute-panel/index.vue";
 import { useTools, useCanvas } from './hooks'
-import PluginAPI from '@/api/plugin'
 import CustomPlugins from "./components/left-aside/CustomPlugins.vue";
 
 
@@ -50,10 +49,7 @@ const { initCanvas, screenName } = useCanvas(params?.id || null);
 
 onMounted(async () => {
   // 从服务器获取大屏数据
-  // 加载自定义图片
-  const picPlugins = await getPicPlugins();
-  initCanvas(picPlugins);
-
+  initCanvas();
 })
 
 // ========================================自定义图片=============================================
@@ -63,13 +59,6 @@ const showCustomPlugins = () => {
 }
 
 const customPluginSubmit = () => {
-  getPicPlugins();
-}
-const getPicPlugins = async () => {
-  let { data: result } = await PluginAPI.getPicPlugins({"current_page": 1,"per_page": 9999})
-  if (result.code === 200) {
-    return result.data.data;
-  }
 }
 // ========================================自定义图片=============================================
 

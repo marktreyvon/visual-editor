@@ -16,6 +16,8 @@ class DataConfig {
 
     private devicesData: any[] = [];
 
+    private value: any = undefined;
+
     private refType: string = "";
 
     /**
@@ -32,46 +34,6 @@ class DataConfig {
     constructor(nodeData: any, refType: any) {
         this.nodeData = nodeData;
         this.refType = refType;
-        console.log('DataConfig.constructor',  refType)
-    }
-
-    private getComponentType(refData: any) {
-        let element = {
-            type: "",
-            value: "",
-            position: ""
-        }
-        Object.keys(refData).forEach((key) => {
-            if (refData[key].static) {
-                const staticData = isJSON(refData[key].static);
-                if (staticData) {
-                    if (isArray(staticData)) {
-                        // 是数组: 饼图或柱状图或地图
-                        Object.keys(staticData[0]).forEach((key) => {
-                            console.log('key', typeof staticData[0][key])
-                            if (typeof staticData[0][key] === 'number') {
-                                // 数字
-                                element.value = key;
-                            } else if (typeof staticData[0][key] === 'string') {
-                                // 字符串
-                                element.type = key;
-                            } else if (typeof staticData[0][key] === 'object') {
-                                // 对象
-                                element.position = key;
-                            }
-                        })
-
-
-                    } else {
-                        // 是对象 折线图
-                        console.log('是对象')
-    
-                    }
-                } else {
-                    // 不是对象   文本或仪表盘
-                }
-            }
-        })
     }
 
     public setRefreshInterval(refreshInterval: number) {
@@ -94,8 +56,25 @@ class DataConfig {
         this.callback = callback;
     }
 
+    public setValue(value: any) {
+        this.value = value;
+    }
+
     public start() {
-        console.log('DataConfig.start', this.devicesData)
+        console.log('DataConfig.start', this.refType, this.devicesData, this.value)
+        if (this.refType.trim() === 'switch') {
+            // 开关不需要定时器
+            if (this.value === undefined) return;
+            const values: any = {};
+            values[this.property] = this.value;
+            DataAPI.setDeviceValue({ device_id: this.deviceId, values })
+                .then(({ data: result}) => {
+                    if (result.code !== 200) return;
+                    console.log('DataConfig.start.switch.result', result)
+                    this.callback && this.callback(true);
+                })
+            return;
+        }
         let isRunning: boolean = false;
         const intervalFunc: Function = () => {
             if (isRunning) return;
@@ -264,6 +243,10 @@ class DataConfig {
                 }
                 this.callback(JSON.stringify(values));
                 resolve(true);
+            } else if (this.refType === 'switch') {
+                // ===================================开关=========================================
+                console.log('DataConfig.parseData.switch', this.deviceId, this.property)
+                this.stop();
             }
         })
 
