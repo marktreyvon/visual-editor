@@ -120,17 +120,7 @@ export default {
             Attribute: Amap_Attribute,
             Data: Amap_Data
         },
-        {
-            name: "ThreejsDemo",
-            description: "",
-            type: "3d",
-            group: "3D",
-            icon: Three_Icon,
-            size: { width: 800, height: 600 },
-            Main: Three_Main,
-            Attribute: Three_Attribute,
-            Data: Three_Data
-        },
+
         {
             name: "ThreejsDemo2",
             description: "",
@@ -144,3 +134,14 @@ export default {
         }
     ]
 }
+// {
+//     name: "ThreejsDemo",
+//         description: "",
+//     type: "3d",
+//     group: "3D",
+//     icon: Three_Icon,
+//     size: { width: 800, height: 600 },
+//     Main: Three_Main,
+//         Attribute: Three_Attribute,
+//     Data: Three_Data
+// },

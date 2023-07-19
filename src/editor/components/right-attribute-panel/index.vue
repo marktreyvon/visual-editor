@@ -42,6 +42,7 @@ import BaseNodeAttr from "./components/BaseNodeAttr.vue"
 import { useEvents } from "./useEvents"
 import { useAttribute } from "./useAttribute"
 import { parseJSONData } from '@/utils';
+
 const activeName = ref("attr");
 let {
     isNode, attributeCpt, dataCpt, nodeData,edgeData,
@@ -54,6 +55,10 @@ const cellIndex=ref(-1)
 const attrData = ref<any>({});
 // 数据绑定
 const bindData = ref<any>({});
+
+
+
+
 watch(nodeData, (value) => {
 
     cellIndex.value=-1

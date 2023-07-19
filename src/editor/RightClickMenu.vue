@@ -1,5 +1,5 @@
 <template>
-<div @click.stop='nihao($event)'> 你大爷</div>
+<div @click.stop='nihao($event)'> xxx</div>
 </template>
 
 <script lang="ts">

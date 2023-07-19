@@ -358,9 +358,9 @@ class CanvasConfig implements ICanvasConfig {
             CellMove(Cells,'right',10)
             return false
         })
+        const is3D=useIs3D()
         this.graph.bindKey('esc', (e) => {
-            const is3D=useIs3D()
-            is3D.setFalse()
+                is3D.setFalse()
         })
         this.graph.bindKey('shift+left', (e) => {
             if(!this.enableSelection) return
@@ -369,6 +369,23 @@ class CanvasConfig implements ICanvasConfig {
             const Cells = that.selection.getSelectedCells()
             CellMove(Cells,'left',10)
             return false
+        })
+
+        this.graph.bindKey('ctrl+alt+Space', () => {
+            // delete
+            if(!this.enableSelection) return
+
+            if (!that.graph)
+                throw new Error('Graph is undefined.');
+            console.log("确实按了")
+
+            if(is3D.is3D){
+                is3D.setFalse()
+            }else{
+                is3D.setTrue()
+            }
+
+
         })
 
     }

@@ -7,6 +7,10 @@ import * as Common from "@/common";
 import {useIsEditEdgeMode} from "@/store/modules/isEditEdgeaModeStore";
 import { Graph, Node, Edge, EdgeView } from '@antv/x6'
 import { useIs3D } from '@/store/modules/is3DStroe';
+import { useThreeDDeviceData } from '@/store/modules/3DDeviceDataStroe';
+import DataAPI from "@/api/data";
+
+
 /**
  * @author cxs
  * @date 2023-05-20
@@ -141,16 +145,6 @@ export const useEvents = () => {
                 finish(false)
             }
         })
-        function abc(e:any){
-            if(is3D.is3D){
-                console.log(999)
-                e.stopPropagation()
-            }
-        }
-        watch(() => is3D.is3D,(newValue, oldValue) => {
-                container.addEventListener('mousemove', abc)
-        })
-
 
 
         graph.on('edge:contextmenu', () => {
@@ -253,6 +247,8 @@ export const useEvents = () => {
         });
 
         events.setMovedEventListener((data: any) => {
+
+
             const temp = data.node || data.cell || null;
             currentNode = temp;
             setNodeData(data);
@@ -262,8 +258,22 @@ export const useEvents = () => {
         events.setMountedEventListener((view) => {
             setCellList(view,true)
         });
-
+        const ThreeDDeviceData=useThreeDDeviceData()
         events.setUnmountedEventListener((view) => {
+            console.log(ThreeDDeviceData.threeDDeviceData,"5673434")
+            if(  ThreeDDeviceData.threeDDeviceData.length>0){
+                console.log(ThreeDDeviceData.threeDDeviceData.length,"5673434")
+                ThreeDDeviceData.threeDDeviceData.map((i:any)=>{
+                    console.log(i.nodeId,view,"5673434")
+                    if(i.nodeId===view.view.cell.id){
+                        console.log(i.timer,"5673434")
+                        clearInterval(i.timer)
+                    }else{
+                        return
+                    }
+
+                })
+            }
             setCellList(view,false)
             if(cellList.value.length===0){
                 isNode.value = false;
@@ -272,6 +282,7 @@ export const useEvents = () => {
                 return;
             }
         });
+
         events.setMouseEnterEventListener((data: any) => {
             const node = data.cell;
             if(node.shape!=='edge'&&node.shape!=='rect_img'){
@@ -302,12 +313,13 @@ export const useEvents = () => {
         }
     }
 
-    const setCellList = (data: any,flag:boolean) => {
+    const setCellList = (data: any,flag:boolean,) => {
         if(flag){
             cellList.value=uniqWith([...cellList.value,data],isEqual)
         }else{
+
             cellList.value= filter(cellList.value,(n:any)=>{
-                return n.view.cid!==data.view.cid
+                return n.view.cell.id!==data.view.cell.id
             })
         }
 
@@ -336,20 +348,28 @@ export const useEvents = () => {
 
     /**
      * 用户自定义组件的样式和绑定的数据改变后，会调用这个方法，更新画布上的节点数据
-     * @param data
+     * @param dataT
      */
+    let threeDTimer:any=null
     const onChange = (data: any) => {
-        console.log('useEvents.onChange', data)
+        const ThreeDDeviceData=useThreeDDeviceData()
+
+        console.log('useEvents.onChange1', data)
+
         let jsonStr = "{}";
         if (currentNode?.getData()) {
             // 从节点的附加数据中获取JSON字符串
             jsonStr = currentNode.getData()?.jsonData || "{}";
+
         }
         const jsonObj = isJSON(jsonStr);
 
         if (data?.style) {
             jsonObj.style = { ...data.style };
         }
+
+
+
         if (data?.data) {
             jsonObj.data = { ...data.data };
         }
@@ -357,6 +377,7 @@ export const useEvents = () => {
         const jsonData = JSON.stringify(jsonObj);
         console.log('useEvents.onChange', jsonData)
         // 更新节点的附加数据，写入JSON字符串
+
         currentNode.setData({
             // ...currentNode.getData(),
             jsonData

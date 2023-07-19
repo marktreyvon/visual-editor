@@ -1,5 +1,5 @@
 <template>
-    <div :style="myStyle" style="width:100%;height:100%;" @dblclick="handleDBClick">
+    <div :style="myStyle" style="width:100%;height:100%;overflow-y: auto" @dblclick="handleDBClick">
         <span v-if="mode==='view'" :style="{ 'color': myStyle.color }">{{ textValue }}</span>
         <el-input id="inputRef" ref="inputRef" style="width:100%;height:100%" v-if="mode==='edit'" v-model="textValue" @blur="onChange" @keyup.enter.native="onChange"></el-input>
     </div>
@@ -38,6 +38,7 @@ export default {
     },
     value: {
       handler: function(val) {
+        console.log( val,"9892832913218")
         if (!val) {
           this.textValue = "文本";
         } else {

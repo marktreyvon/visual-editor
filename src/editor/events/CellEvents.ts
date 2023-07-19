@@ -59,7 +59,8 @@ class CellEvents implements ICellEvents {
         const EditEdgeMode = useIsEditEdgeMode();
 
         // 画布缩放事件
-        this.graph.on("scale", ({ sx, sy, ox, oy }) => {
+        this.graph.on("scale", ({ sx, sy, ox, oy  }) => {
+
             this.graphScaleListener.forEach((listener) => {
                 listener({ sx, sy, ox, oy });
             })
@@ -187,6 +188,7 @@ class CellEvents implements ICellEvents {
     }
 
     public setGraphScaleEventListener(listener: EventListener): void {
+
         this.graphScaleListener.push(listener);
     }
 
