@@ -17,10 +17,12 @@
 </template>
 
 <script lang="ts">
+import DataAPI from '@/api/data';
 import { defineComponent, ref } from "vue";
 import data from "./data"
 import { cloneDeep } from "lodash";
 const staticData = cloneDeep(data)
+let inter: any = null
 
 export default defineComponent({
   components: {
@@ -94,15 +96,39 @@ export default defineComponent({
       immediate: true
     },
     data: {
-      handler(val){
+      async handler(val){
         if(val.bindType === 'device'){
-          this.orgNameData = val.deviceData.map((x:any,index:any) =>   {
-            return {
-              ...x,
-              seqNo:index+1
+          this.orgNameData = []
+          this.newRows = [
+            {
+                show: true,
+                filed: `updateTime`,
+                name: `时间`,
+                width: 100,
+                color: '#000000',
+                size: 10
             }
-          });
-          this.newRows = this.getDeviceRow()
+          ]
+          console.error(val.deviceData, 'val.deviceData');
+          (val.deviceData || []).forEach((x:any,index:any) => {
+            this.orgNameData.push({
+              ...x, 
+              seqNo: index+1,
+              [`device_property_${x.deviceId}_${x.property}`]: '',
+            })
+            this.newRows.push({
+                show: true,
+                filed: `device_property_${x.deviceId}_${x.property}`,
+                name: `${x.propertyTitle}`,
+                width: 100,
+                color: '#000000',
+                size: 10
+            })
+          })
+          if(inter) {
+            clearInterval(inter)
+          }
+          this.loopUpdatePropVal(val.deviceData)
         }
       },
       deep: true,
@@ -112,7 +138,50 @@ export default defineComponent({
   mounted() {
     this.getTableBodyHeight();
   },
+  unmounted(){
+    if(inter) {
+      clearInterval(inter)
+    }
+  },
   methods: {
+    loopUpdatePropVal(deviceData: []){
+      inter = setInterval(async() => {
+        const propValue = await this.getPropValue(deviceData) || []
+        this.updatePropValue(propValue)
+      }, 3 * 1000)
+    },
+    updatePropValue(propsValues: any[]){
+      this.orgNameData.forEach((x:any) => {
+        propsValues.forEach(pv => {
+          if(x.deviceId === pv.deviceId && x.property ===pv.property){
+            x.updateTime = pv.systime
+            x[`device_property_${x.deviceId}_${x.property}`] = pv[x.property]
+          }
+        })
+      })
+      console.log(this.orgNameData)
+    },
+    async getPropValue(arr: []){
+      const values = []
+      
+      for(let i = 0; i< arr.length;i++){
+        const item = arr[i] as any
+        if(!item.deviceId || !item.property ){
+          return
+        }
+        const params = {
+          entity_id: item.deviceId,
+          attribute: ["systime", item.property],
+        }
+        let { data } = await DataAPI.getCurrentValue(params);
+        if(data.data && data.data.length > 0){
+          const pitem = data.data[0]
+          values.push({deviceId:item.deviceId, property: item.property, ...pitem})
+        }
+      }
+      console.log(values, 'values')
+      return values
+    },
     getDeviceRow(){
       return [
         ...data.deviceRow
