@@ -10,6 +10,7 @@ import { histogram_Attribute, histogram_Data, histogram_Icon, histogram_Main } f
 import { Timer_Attribute, Timer_Data, Timer_Icon, Timer_Main } from "./timer";
 import { Liquid_Icon, Liquid_Main, Liquid_Attribute, Liquid_Data } from "./liquid";
 import { Switch_Attribute, Switch_Data, Switch_Icon, Switch_Main } from "./switch";
+import { Video_Icon, Video_Main, Video_Attribute, Video_Data } from "./video";
 export default {
     views: [
         {
@@ -121,6 +122,17 @@ export default {
             Data: Amap_Data
         },
         {
+            name: "视频",
+            description: "",
+            type: "video",
+            group: "常用组件",
+            icon: Video_Icon,
+            size: { width: 200, height: 200 },
+            Main: Video_Main,
+            Attribute: Video_Attribute,
+            Data: Video_Data
+        },
+        {
             name: "ThreejsDemo",
             description: "",
             type: "3d",
@@ -141,6 +153,6 @@ export default {
             Main: Three_Main2,
             Attribute: Three_Attribute2,
             Data: Three_Data2
-        }
+        },
     ]
 }

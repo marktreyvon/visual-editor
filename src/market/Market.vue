@@ -246,7 +246,6 @@ const install = (id: string) => {
         .finally(() => {
           data.installState = "安装"
         })
-        
       }
     })
   })

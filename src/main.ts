@@ -31,7 +31,7 @@ app.component('tp-color-picker', TpColorPicker);
 Plugins.installElementPlus(app);
 // 使用AMap
 Plugins.installAMap(app);
-// Plugins.installDataV(app);
+Plugins.installDataV(app);
 
 
 app.use(router);

@@ -366,21 +366,22 @@ export const useEvents = () => {
         const baseNodes = ["rect", "circle", "ellipse", "polygon", "polyline", "rect_img"];
         const index = baseNodes.findIndex((item: string) => item === currentNode.shape)
         if (index !== -1) {
-            if(data?.style) return
-            if(currentNode.shape!=='rect_img'){
+            if(data?.style) {
+                if(currentNode.shape!=='rect_img'){
 
-                console.log('基础图形', data.style.body)
-                // 基础图形
-                currentNode.attr('body', { ...data.style.body })
-                console.log('基础图形', currentNode)
-
-            }else{
-                // 图片组件
-                currentNode.attr('image', {...data.style.image} )
-                currentNode.attr('image/xlink:href',data.style.image.xlink )
+                    console.log('基础图形', data.style.body)
+                    // 基础图形
+                    currentNode.attr('body', { ...data.style.body })
+                    console.log('基础图形', currentNode)
+    
+                }else{
+                    // 图片组件
+                    currentNode.attr('image', {...data.style.image} )
+                    currentNode.attr('image/xlink:href',data.style.image.xlink )
+                }
             }
         }
-
+        console.log('useEvents.onChange.storageGraphData', currentNode)
         storageGraphData();
     }
 
