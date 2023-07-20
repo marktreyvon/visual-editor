@@ -18202,6 +18202,7 @@ class qm {
     this.pointercontrols = new Wm(this.camera, document.body), this.moveForward = !1, this.moveBackward = !1, this.moveLeft = !1, this.moveRight = !1, this.moveUp = !1, this.moveDown = !1, this.velocity = new B(0, 0, 0), this.direction = new B(), this.prevTime = performance.now();
     const e = this, t = function(i) {
       let s = !1;
+      console.log(i.code,"843284328432")
       switch (i.code) {
         case "ArrowUp":
         case "KeyW":
@@ -18225,8 +18226,9 @@ class qm {
         case "KeyE":
           e.moveUp = !0, s = !0;
           break;
-        case "Space":
-          if (console.log("Space", i), !i.ctrlKey || !i.altKey)
+        case "Digit1":
+          // if (console.log("Digit1", i), !i.ctrlKey || !i.altKey)
+            if (console.log("Digit1", i), !i.altKey)
             break;
           if (e.pointercontrols.isLocked) {
             if (e.pointercontrols.unlock(), e.orbitControls) {

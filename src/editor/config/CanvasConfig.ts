@@ -371,7 +371,7 @@ class CanvasConfig implements ICanvasConfig {
             return false
         })
 
-        this.graph.bindKey('ctrl+alt+Space', () => {
+        this.graph.bindKey('alt+1', () => {
             // delete
             if(!this.enableSelection) return
 
