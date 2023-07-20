@@ -131,6 +131,7 @@ class StencilConfig implements IStencilConfig {
                 pluginUrl: cpt.plugin.url
             } : null
         });
+        console.log('创建拖拽到画布上的组件', dropNode)
 
         return dropNode;
     }

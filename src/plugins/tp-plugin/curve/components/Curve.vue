@@ -105,10 +105,7 @@ export default defineComponent({
                 // type: 'timeCat',
                 tickCount: 5,
             },
-            slider: {
-                start: 0.1,
-                end: 0.5,
-            },
+            
         });
         (this.line as any).render();
     },
