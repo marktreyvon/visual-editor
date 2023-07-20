@@ -250,9 +250,6 @@ export default defineComponent({
     top: -30px;
 }
 
-.div1 {
-    border: 1px solid red;
-}
 
 .div2 {
     top: 0;
