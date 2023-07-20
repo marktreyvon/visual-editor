@@ -160,10 +160,10 @@ watch(() => state.deviceId, async (value) => {
 
 watchEffect(() => {
     if (state.deviceId && JSON.stringify(deviceOptions.value) !== "{}") {
-        const index: number = deviceOptions.value.findIndex((item: any) => item.value === state.deviceId);
+        const index: number = deviceOptions.value?.findIndex((item: any) => item.value === state.deviceId);
         state.deviceName = index > -1 ? deviceOptions.value[index].label : ''
-        console.log('watchEffect', index, deviceOptions.value[index])
-        if (index === -1) return;
+        if (!index||index === -1) return;
+      console.log('watchEffect', index, deviceOptions?.value[index])
         state.pluginId = deviceOptions.value[index].pluginId;
     }
 })

@@ -12,7 +12,11 @@ export const useScene4 = defineStore('scene4', {
 	actions: {
 		//功能：创建SceneRender
 		createSceneRender(containerDiv) {
-			this.scene = new SceneBackstage(containerDiv);			
+			this.scene = new SceneBackstage(containerDiv);
+			console.log(this.scene,"4343432432")
+
+
+
 		},
 		//功能：修改静态绑定的数据，调用案例
 		freshAttributes(AttributesObj) {

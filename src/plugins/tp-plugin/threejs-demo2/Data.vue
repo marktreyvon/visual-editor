@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import DataAPI from '@/api/data';
 const staticData = {
   Attributes:{
     cylinderName: "二氧化碳气瓶",
@@ -45,9 +46,14 @@ export default {
   },
   data() {
     return {
+      timers:[],
       formData: {
         bindType: 'static',
         static: JSON.stringify(staticData)
+      },
+      formData2: {
+        bindType: 'device',
+        device: null
       },
       bindOptions: [
         { value: 'static', label: '静态数据' },
@@ -57,19 +63,39 @@ export default {
     }
   },
   watch: {
+    formData2:{
+      handler(val) {
+        console.log(val,"222222")
+
+      },
+      deep: true,
+    },
     formData: {
       handler(val) {
+        console.log(val,"4324324")
         this.$emit("onChange", {
           data: { bindType: this.bindType, ...val }
         });
       },
-      deep: true
-    }
+      deep: true,
+    },
+
   },
-  mounted() {
+   mounted() {
+
     if (JSON.stringify(this.data) !== "{}"  && JSON.stringify(this.data) !== "[]") {
-      this.formData = JSON.parse(JSON.stringify(this.data));
+      this.formData.device = JSON.parse(JSON.stringify(this.data));
     }
+   //
+  },
+  unmounted() {
+     if(this.timers.length>0){
+       this.timers.map((i)=>{
+
+         clearInterval(i)
+
+       })
+     }
   },
   methods: {}
 }
