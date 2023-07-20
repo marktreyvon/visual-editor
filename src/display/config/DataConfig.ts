@@ -229,15 +229,21 @@ class DataConfig {
                 let values = [];
                 for(let i = 0; i < deviceList.length; i++) {
                     const device = deviceList[i];
-                    let { data: result } = await DataAPI.getCurrentValue({ entity_id: device.deviceId });
+                    let { data: result } = await DataAPI.getCurrentValue({ entity_id: device.deviceId, attribute: ["systime", device.property] });
                     console.log('parseData.result', result)
                     if (result.code === 200) {
                         const { data } = result;
                         if (data && data.length !== 0) {
-                            let value: any = data[0][device.property] || 0;
-                            let obj: any = {};
-                            obj[device.property] = value;
-                            values.push(obj);
+                            const propValue =  data[0]
+                            values.push({
+                                deviceId:device.deviceId,
+                                ...propValue,
+                                [`device_property_${device.deviceId}_${device.property}`]: propValue[device.property]
+                            })
+                            // let value: any = data[0][device.property] || 0;
+                            // let obj: any = {};
+                            // obj[device.property] = value;
+                            // values.push(obj);
                         }
                     }
                 }

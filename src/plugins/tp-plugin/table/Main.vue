@@ -68,7 +68,8 @@ export default defineComponent({
       orgNameData: data.orgNameData,
       newRows: data.newRows,
       tableBodyHeight: 0,
-      rowHeight: 45
+      rowHeight: 45,
+      bindType: 'static',
     }
   },
   watch: {
@@ -97,12 +98,13 @@ export default defineComponent({
     },
     data: {
       async handler(val){
+        this.bindType = val.bindType 
         if(val.bindType === 'device'){
           this.orgNameData = []
           this.newRows = [
             {
                 show: true,
-                filed: `updateTime`,
+                filed: `systime`,
                 name: `时间`,
                 width: 100,
                 color: '#000000',
@@ -129,6 +131,8 @@ export default defineComponent({
           //   clearInterval(inter)
           // }
           // this.loopUpdatePropVal(val.deviceData)
+        } else {
+          this.newRows = data.newRows
         }
       },
       deep: true,
@@ -154,7 +158,7 @@ export default defineComponent({
       this.orgNameData.forEach((x:any) => {
         propsValues.forEach(pv => {
           if(x.deviceId === pv.deviceId && x.property ===pv.property){
-            x.updateTime = pv.systime
+            x.systime = pv.systime
             x[`device_property_${x.deviceId}_${x.property}`] = pv[x.property]
           }
         })
@@ -190,8 +194,10 @@ export default defineComponent({
     tableChange(_data: any) {
       console.log('---table.tableChange--', _data)
       this.tableHeight = _data.plimit * this.rowHeight + 39 
-      //新数据
-      this.newRows = _data.newRows || data.newRows;
+      // 非设备数据才需要重制表头
+      if( this.bindType!== 'device'){
+        this.newRows = _data.newRows || data.newRows;
+      } 
       //表格外边框
       this.tableStyle.background = _data.table?.bgColor || data.table.bgColor;
       if (_data.table?.showBorder) {
