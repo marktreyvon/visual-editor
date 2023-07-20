@@ -18201,7 +18201,6 @@ class qm {
   init() {
     this.pointercontrols = new Wm(this.camera, document.body), this.moveForward = !1, this.moveBackward = !1, this.moveLeft = !1, this.moveRight = !1, this.moveUp = !1, this.moveDown = !1, this.velocity = new B(0, 0, 0), this.direction = new B(), this.prevTime = performance.now();
     const e = this, t = function(i) {
-      let s = !1;
       switch (i.code) {
         case "ArrowUp":
         case "KeyW":
