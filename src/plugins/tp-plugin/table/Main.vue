@@ -102,7 +102,7 @@ export default defineComponent({
           this.newRows = [
             {
                 show: true,
-                filed: `updateTime`,
+                filed: `systime`,
                 name: `时间`,
                 width: 100,
                 color: '#000000',
@@ -154,7 +154,7 @@ export default defineComponent({
       this.orgNameData.forEach((x:any) => {
         propsValues.forEach(pv => {
           if(x.deviceId === pv.deviceId && x.property ===pv.property){
-            x.updateTime = pv.systime
+            x.systime = pv.systime
             x[`device_property_${x.deviceId}_${x.property}`] = pv[x.property]
           }
         })
