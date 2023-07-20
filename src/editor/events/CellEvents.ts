@@ -125,7 +125,6 @@ class CellEvents implements ICellEvents {
 
         // 节点移动事件
         this.graph.on("node:moved", ({ e, x, y, node, view }) => {
-            console.log(e,"4e324324324")
             e.stopPropagation()
             this.movedListener && this.movedListener({ e, x, y, node, view });
         });
@@ -154,6 +153,7 @@ class CellEvents implements ICellEvents {
         });
 
         this.graph.on("cell:removed", ({  cell, index, options  }) => {
+
         });
 
         this.graph.on("cell:changed", ({ cell, options }) => {
@@ -182,6 +182,7 @@ class CellEvents implements ICellEvents {
         })
 
         this.graph.on('cell:removed', ({ cell }) => {
+
             this.removedListener && this.removedListener({ cell });
         })
 
