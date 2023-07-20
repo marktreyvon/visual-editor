@@ -18201,6 +18201,7 @@ class qm {
   init() {
     this.pointercontrols = new Wm(this.camera, document.body), this.moveForward = !1, this.moveBackward = !1, this.moveLeft = !1, this.moveRight = !1, this.moveUp = !1, this.moveDown = !1, this.velocity = new B(0, 0, 0), this.direction = new B(), this.prevTime = performance.now();
     const e = this, t = function(i) {
+      let s = !1;
       switch (i.code) {
         case "ArrowUp":
         case "KeyW":
@@ -18311,7 +18312,7 @@ class jm extends _n {
     const l = new dn(16777215);
     l.position.set(-15 * a, 0, 0), this.scene.add(l);
     const h = new dn(16777215);
-    h.position.set(0, -1 * a, -15 * a), this.scene.add(h), this.camera = new Dt(40, this.viewerContainer.offsetWidth / this.viewerContainer.offsetHeight, 0.1, 1e4), this.camera.position.set(0.6845150800175966, 0.9031939503329611, 2.008167833397654), this.Orbits = new qg(this.camera, this.viewerContainer), this.Orbits.target.set(1.5374479355509374, 0.7804927592430961, 1.5007725617830416), this.pointercontrols = new qm(this.camera, this.Orbits, this), this.scene.add(this.pointercontrols.getObject()), this.hotspotMgr = new Om(this), this.curModel = null, this.freshModels(), this.initInteractive(this.viewerContainer), this.update();
+    h.position.set(0, -1 * a, -15 * a), this.scene.add(h), this.camera = new Dt(40, this.viewerContainer.offsetWidth / this.viewerContainer.offsetHeight, 0.1, 1e4), this.camera.position.set(2.881337824875068, 0.40755059350961587, 0.48123075915419644), this.Orbits = new qg(this.camera, this.viewerContainer), this.Orbits.target.set(3.2797939750642326, 0.21435917207692637, -0.4153793964102199), this.pointercontrols = new qm(this.camera, this.Orbits, this), this.scene.add(this.pointercontrols.getObject()), this.hotspotMgr = new Om(this), this.curModel = null, this.freshModels(), this.initInteractive(this.viewerContainer), this.update();
   }
   freshArrowFace() {
     if (!this.roomBox)
@@ -18742,7 +18743,7 @@ class jm extends _n {
     this.hotspotMgr.addModel(t, u);
   }
   async onClick(e) {
-    if (e.preventDefault(), e.button === 2 && this.hotspotMgr.releaseAll(), e.button !== 0 || this.transform && this.transform.dragging)
+    if (console.log("-----camera---", this.camera.position, this.Orbits.target), e.preventDefault(), e.button === 2 && this.hotspotMgr.releaseAll(), e.button !== 0 || this.transform && this.transform.dragging)
       return;
     const t = this.renderer.domElement, n = new fe();
     n.x = e.offsetX / t.clientWidth * 2 - 1, n.y = -(e.offsetY / t.clientHeight) * 2 + 1;

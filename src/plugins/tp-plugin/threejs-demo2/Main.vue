@@ -146,23 +146,29 @@ watch(() => props.data,(newValue, oldValue) => {
             // ]
 
             if(index===0){
-              sceneStore.freshAttributes({
-                cylinderName: " ",
-                pumpPower:'可变负压抽采泵'
-              })
+              sceneStore.freshSensors([{sensorId: 1, gatherTime: "", gatherValue:  ""},
+                {sensorId: 2, gatherTime: "", gatherValue:  ""},
+                {sensorId: 3, gatherTime: "", gatherValue:  ""},
+                {sensorId: 4, gatherTime: "", gatherValue:  ""},
+                {sensorId: 5, gatherTime: "", gatherValue:  ""},
+                {sensorId: 6, gatherTime: "", gatherValue:  ""},
+                {sensorId: 7, gatherTime: "", gatherValue:  ""},
+
+              ])
               threeDTimer1=setTimeout(()=>{
-                sceneStore.freshAttributes({
-                  cylinderName: res.data.data[0][i.property],
-                  pumpPower:'可变负压抽采泵'
-                })
+                sceneStore.freshSensors([{sensorId: 1, gatherTime: res.data.data[0].systime, gatherValue:  res.data.data[0][i.property]},{sensorId: 2, gatherTime: res.data.data[0].systime, gatherValue:  res.data.data[0][i.property]},{sensorId: 3, gatherTime: res.data.data[0].systime, gatherValue:  res.data.data[0][i.property]},{sensorId:4, gatherTime: res.data.data[0].systime, gatherValue:  res.data.data[0][i.property]},{sensorId: 5, gatherTime: res.data.data[0].systime, gatherValue:  res.data.data[0][i.property]},{sensorId: 6, gatherTime: res.data.data[0].systime, gatherValue:  res.data.data[0][i.property]},{sensorId: 7, gatherTime: res.data.data[0].systime, gatherValue:  res.data.data[0][i.property]},])
+
               },500)
 
             }
 
             if(index===1){
-              sceneStore.freshSensors([{sensorId: 1, gatherTime: "", gatherValue:  ""},])
+              sceneStore.freshAttributes({
+                cylinderName: " ",
+                pumpPower:'可变负压抽采泵'
+              })
               threeDTimer2=setTimeout(()=>{
-                sceneStore.freshSensors([{sensorId: 1, gatherTime: res.data.data[0].systime, gatherValue:  res.data.data[0][i.property]},])
+
               },500)
 
 
@@ -172,7 +178,7 @@ watch(() => props.data,(newValue, oldValue) => {
         })
         return getDeviceData
       }
-      threeDTimer =setInterval(getDeviceData(),10000)  }
+      threeDTimer =setInterval(getDeviceData(),5000)  }
 
 
 
