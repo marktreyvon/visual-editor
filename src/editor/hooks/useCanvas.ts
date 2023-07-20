@@ -61,7 +61,6 @@ const useCanvas = (id?: any): any => {
                     if(edge?.attr('targetData')?.flowEffect!=="无效果"){
                         canvasConfig.edgeAnimation(edge,edge.attr('targetData'))
                     }
-    
                 })
             }
         })

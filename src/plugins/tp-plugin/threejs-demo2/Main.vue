@@ -7,7 +7,7 @@
 -->
 <template>
   <div  :style="{padding:'10px',color:'#fff',position: 'absolute',width: '100%',height: isEnter,backgroundColor:' #00000000',display: 'flex',justifyContent: 'start',alignItems: 'start'}">
-  <div style='color: #fff;background-color: #00000044;padding: 4px;font-size: 12px'>ctrl+alt+空格,进入3d预览,w:前进，a：后退，s：左移，d：右移，q：降低，e：升高</div>
+  <div style='color: #fff;background-color: #00000044;padding: 4px;font-size: 12px'>alt+1,进入3d预览,预览中请使用，w:前进，a：后退，s：左移，d：右移，q：降低，e：升高</div>
   </div>
   <div class="content" ref="threeBox"></div>
 </template>
@@ -161,16 +161,13 @@ watch(() => props.data,(newValue, oldValue) => {
               },500)
 
             }
-
             if(index===1){
               sceneStore.freshAttributes({
                 cylinderName: " ",
                 pumpPower:'可变负压抽采泵'
               })
               threeDTimer2=setTimeout(()=>{
-
               },500)
-
 
             }
           }

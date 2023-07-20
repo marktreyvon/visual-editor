@@ -371,7 +371,7 @@ class CanvasConfig implements ICanvasConfig {
             return false
         })
 
-        this.graph.bindKey('ctrl+alt+Space', () => {
+        this.graph.bindKey('alt+1', () => {
             // delete
             if(!this.enableSelection) return
 
@@ -728,9 +728,11 @@ class CanvasConfig implements ICanvasConfig {
             throw new Error('Graph is undefined.');
         const pluginConfig: IPluginConfig = PluginConfig.getInstance(null);
         console.log('renderJSON.pluginConfig', pluginConfig)
+        // 配置画布背景
         if (json.graph && json.graph.background) {
             this.setBackground(json.graph.background);
         }
+        // 注册插件
         if (CanvasConfig.instance) {
             pluginConfig.registerComponents("editor", json.cells);
         } else if (CanvasConfig.displayInstance) {

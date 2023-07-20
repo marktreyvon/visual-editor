@@ -19,9 +19,9 @@ export const getDropPicComponent = (url: String): Component => {
         },
         mounted() {
             const node: Node = (this as any).getNode() as Node;
-            node.setData({
-                pic: url
-            })
+            // node.setData({
+            //     pic: url
+            // })
 
             this.setData(node.getData());
             // 监听节点的附加数据变化
@@ -29,6 +29,7 @@ export const getDropPicComponent = (url: String): Component => {
         },
         methods: {
             setData(data: any) {
+                console.log('DropPicComponent.setData', data)
                 if (!data) return;
                 // 判断是否为json字符串
                 const jsonObj = isJSON(data.jsonData);
