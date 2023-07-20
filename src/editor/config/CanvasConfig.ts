@@ -146,9 +146,13 @@ class CanvasConfig implements ICanvasConfig {
             container:  <HTMLDivElement>document.getElementById(this.containerId),
             autoResize: this.autoResize,
             magnetThreshold:5,
+            mousewheel: {
+                enabled: true,
+                modifiers: ['ctrl'],
+            },
             panning: {
                 enabled: this.enableMousePan,
-                eventTypes: ["rightMouseDown", "mouseWheel"]
+                eventTypes: ["rightMouseDown"]
             },
             connecting:{
                 snap: true,

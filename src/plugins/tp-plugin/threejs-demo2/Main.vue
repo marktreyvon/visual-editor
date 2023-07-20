@@ -7,7 +7,7 @@
 -->
 <template>
   <div  :style="{padding:'10px',color:'#fff',position: 'absolute',width: '100%',height: isEnter,backgroundColor:' #00000000',display: 'flex',justifyContent: 'start',alignItems: 'start'}">
-  <div style='color: #fff;background-color: #00000044;padding: 4px;font-size: 12px'>alt+1,进入3d预览,预览中请使用，w:前进，a：后退，s：左移，d：右移，q：降低，e：升高</div>
+  <div style='color: #fff;background-color: #00000044;padding: 4px;font-size: 12px' >alt+1,进入3d预览,预览中请使用，w:前进，a：后退，s：左移，d：右移，q：降低，e：升高</div>
   </div>
   <div class="content" ref="threeBox"></div>
 </template>
@@ -36,6 +36,10 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  style:{type: Object,
+    default: () => {
+      return {};
+    }},
   value: {
     type: String,
     default: () => {
@@ -63,6 +67,9 @@ const is3D=useIs3D()
 const threeBox = ref();
 
 
+
+
+
 function changeData(data: any) {
 
   formData.value = JSON.parse(JSON.stringify(data));
@@ -85,6 +92,7 @@ watch(() => is3D.is3D,(newValue, oldValue) => {
     isEnter.value='0px'
   }
 })
+
 
 onBeforeUnmount(()=>{
   console.log(threeDTimer,"423432432")
@@ -114,6 +122,13 @@ watch(() => props.value,(newValue, oldValue) => {
 let threeDTimer:any=null
 let threeDTimer1:any=null
 let threeDTimer2:any=null
+
+watch(() => props.style,(newValue, oldValue) => {
+
+  sceneStore.setColor(newValue.color
+  ,newValue.bgColor,newValue.fontSize)
+
+})
 watch(() => props.data,(newValue, oldValue) => {
   console.log(props.data.deviceData,"45935098435")
 
@@ -193,6 +208,8 @@ watchEffect(() => {
     nextTick(() => {
       // 创建threejs 场景
       sceneStore.createSceneRender(threeBox.value);
+
+
     });
 });
 

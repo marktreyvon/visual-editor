@@ -23,6 +23,7 @@
 
 <script>
 import DataAPI from '@/api/data';
+import {useScene4} from "@/plugins/tp-plugin/threejs-demo2/store/sceneRenderBackstage.js";
 const staticData = {
   Attributes:{
     cylinderName: "二氧化碳气瓶",

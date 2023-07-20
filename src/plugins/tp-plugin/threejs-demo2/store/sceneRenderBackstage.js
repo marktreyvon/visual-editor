@@ -13,6 +13,38 @@ export const useScene4 = defineStore('scene4', {
 		//功能：创建SceneRender
 		createSceneRender(containerDiv) {
 			this.scene = new SceneBackstage(containerDiv);
+			console.log(this.scene,"432432432432" )
+
+
+
+		},
+		setColor(textColor
+			,bgColor,fontSize){
+			if(	this?.scene?.hotspotMgr){
+				this.scene.hotspotMgr.models.forEach((key,wal)=>{
+					console.log(key,wal,"432432432432" )
+					key.textColor=textColor
+					key.bgColor=bgColor
+					key.fontSize=fontSize
+					key.update()
+
+				})
+			}
+
+
+
+},
+		getColor(){
+			let obj={fontSize:30,
+				textColor:'fff',
+				bgColor:'#00AEFF',}
+			this.scene.hotspotMgr.models.forEach((key,wal)=>{
+				obj.textColor=key.textColor
+				obj.bgColor=key.bgColor
+				obj.fontSize=key.fontSize
+			})
+   return obj
+
 		},
 		//功能：修改静态绑定的数据，调用案例
 		freshAttributes(AttributesObj) {
