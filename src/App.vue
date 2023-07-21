@@ -56,6 +56,7 @@ if (import.meta.env.MODE === 'development') {
 
 // 修改页面标题
 document.title = params.title || '可视化编辑器 - ThingsPanel'
+
 </script>
 
 <template>

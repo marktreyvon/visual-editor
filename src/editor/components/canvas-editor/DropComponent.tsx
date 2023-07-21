@@ -22,6 +22,11 @@ export const getDropComponent = (cpt: Component): Component => {
             node.on("change:data", ({ current }) => {
                 this.setData(current);
             });
+            node.on('wheel', (e:any) => {
+                e.stopPropagation()
+                console.log(e,"432434324324324")
+            });
+
         },
         methods: {
             setData(data: any) {

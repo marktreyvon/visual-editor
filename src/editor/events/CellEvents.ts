@@ -60,7 +60,7 @@ class CellEvents implements ICellEvents {
 
         // 画布缩放事件
         this.graph.on("scale", ({ sx, sy, ox, oy  }) => {
-
+            console.log("tr543543543543543")
             this.graphScaleListener.forEach((listener) => {
                 listener({ sx, sy, ox, oy });
             })

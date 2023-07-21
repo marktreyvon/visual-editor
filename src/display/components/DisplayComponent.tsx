@@ -77,6 +77,7 @@ export const getDisplayComponent = (cpt: Component, nodeData: any, refType: any)
                     style={this.style} 
                     data={this.data} 
                     onChange={this.onChange}
+                     isDisplay={true}
                     />
             )
         }

@@ -43,11 +43,15 @@ export default defineComponent({
     }
   },
   mounted() {
-    this.$nextTick(() => {
-      const containerDiv = this.$refs.scene3d;
-      this.scene = new SceneBackstage(containerDiv);	
-    })
-    
+    const containerDiv=document.getElementById('scene3d')
+    this.scene = new SceneBackstage(containerDiv);
+    // this.$nextTick(() => {
+    //   // const containerDiv = this.$refs.scene3d;
+    //
+    //
+    //   this.scene = new SceneBackstage(containerDiv);
+    // })
+    //
   },
   methods: {
     changeData(data: any) {

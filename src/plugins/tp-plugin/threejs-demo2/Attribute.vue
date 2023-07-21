@@ -20,7 +20,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
+import {useSceneDemo} from "@/plugins/tp-plugin/threejs-demo2/store/sceneRenderBackstage";
+const sceneStore=useSceneDemo()
 export default defineComponent({
   data() {
     return {
@@ -42,6 +43,21 @@ export default defineComponent({
       deep: true
     }
   }
+  ,
+  mounted() {
+    if(sceneStore.scene!==null){
+     let obj= sceneStore.getColor()
+      this.formData.fontSize=obj.fontSize
+          this.formData.color=obj.textColor
+              this.formData.bgColor=obj.bgColor
+    }
+  }
+
+
+
+
+
+
 })
 
 

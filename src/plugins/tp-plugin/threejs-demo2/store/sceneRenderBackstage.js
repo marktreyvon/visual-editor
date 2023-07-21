@@ -3,7 +3,7 @@ import { shallowRef } from 'vue'
 //import { SceneBackstage } from '@/engines/lib/main'
 import { SceneBackstage } from '../scene/lib/engine.js';
 
-export const useScene4 = defineStore('scene4', {
+export const useSceneDemo = defineStore('sceneDemo', {
 	state: () => {
 		return {
 			scene: shallowRef(null),
@@ -13,6 +13,31 @@ export const useScene4 = defineStore('scene4', {
 		//功能：创建SceneRender
 		createSceneRender(containerDiv) {
 			this.scene = new SceneBackstage(containerDiv);
+		},
+		initData(fn){
+			this.scene.addEventListener('sceneLoaded', fn)},
+		setColor(textColor
+			,bgColor,fontSize){
+			if(	this?.scene?.hotspotMgr){
+				this.scene.hotspotMgr.models.forEach((key,wal)=>{
+					key.textColor=textColor
+					key.bgColor=bgColor
+					key.fontSize=fontSize
+					key.update()
+				})
+			}
+},
+		getColor(){
+			let obj={fontSize:30,
+				textColor:'fff',
+				bgColor:'#00AEFF',}
+			this.scene.hotspotMgr.models.forEach((key,wal)=>{
+				obj.textColor=key.textColor
+				obj.bgColor=key.bgColor
+				obj.fontSize=key.fontSize
+			})
+   return obj
+
 		},
 		//功能：修改静态绑定的数据，调用案例
 		freshAttributes(AttributesObj) {
