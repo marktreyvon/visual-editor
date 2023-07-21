@@ -146,7 +146,7 @@ class CanvasConfig implements ICanvasConfig {
             autoResize: this.autoResize,
             magnetThreshold:5,
             mousewheel: {
-                enabled: true,
+                enabled: this.enableMouseWheel,
                 modifiers: ['ctrl'],
             },
             panning: {
