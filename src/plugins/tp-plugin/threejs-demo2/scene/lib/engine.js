@@ -10764,7 +10764,7 @@ function Lp(r, e, t) {
       console.error("THREE.WebGLState:", R);
     }
   }
-  function G() {
+  function U() {
     try {
       r.texSubImage3D.apply(r, arguments);
     } catch (R) {
@@ -10799,7 +10799,7 @@ function Lp(r, e, t) {
       console.error("THREE.WebGLState:", R);
     }
   }
-  function U() {
+  function G() {
     try {
       r.texImage2D.apply(r, arguments);
     } catch (R) {
@@ -10855,14 +10855,14 @@ function Lp(r, e, t) {
     unbindTexture: C,
     compressedTexImage2D: K,
     compressedTexImage3D: N,
-    texImage2D: U,
+    texImage2D: G,
     texImage3D: Y,
     updateUBOMapping: be,
     uniformBlockBinding: _e,
     texStorage2D: L,
     texStorage3D: J,
     texSubImage2D: z,
-    texSubImage3D: G,
+    texSubImage3D: U,
     compressedTexSubImage2D: oe,
     compressedTexSubImage3D: M,
     scissor: le,
@@ -10886,7 +10886,7 @@ function Qp(r, e, t, n, i, s, a) {
     let z = 1;
     if ((S.width > N || S.height > N) && (z = N / Math.max(S.width, S.height)), z < 1 || C === !0)
       if (typeof HTMLImageElement < "u" && S instanceof HTMLImageElement || typeof HTMLCanvasElement < "u" && S instanceof HTMLCanvasElement || typeof ImageBitmap < "u" && S instanceof ImageBitmap) {
-        const G = C ? er : Math.floor, oe = G(z * S.width), M = G(z * S.height);
+        const U = C ? er : Math.floor, oe = U(z * S.width), M = U(z * S.height);
         p === void 0 && (p = E(oe, M));
         const L = K ? E(oe, M) : p;
         return L.width = oe, L.height = M, L.getContext("2d").drawImage(S, 0, 0, oe, M), console.warn("THREE.WebGLRenderer: Texture has been resized from (" + S.width + "x" + S.height + ") to (" + oe + "x" + M + ")."), L;
@@ -10914,8 +10914,8 @@ function Qp(r, e, t, n, i, s, a) {
         return r[S];
       console.warn("THREE.WebGLRenderer: Attempt to use non-existing WebGL internal format '" + S + "'");
     }
-    let G = C;
-    return C === 6403 && (K === 5126 && (G = 33326), K === 5131 && (G = 33325), K === 5121 && (G = 33321)), C === 33319 && (K === 5126 && (G = 33328), K === 5131 && (G = 33327), K === 5121 && (G = 33323)), C === 6408 && (K === 5126 && (G = 34836), K === 5131 && (G = 34842), K === 5121 && (G = N === Fe && z === !1 ? 35907 : 32856), K === 32819 && (G = 32854), K === 32820 && (G = 32855)), (G === 33325 || G === 33326 || G === 33327 || G === 33328 || G === 34842 || G === 34836) && e.get("EXT_color_buffer_float"), G;
+    let U = C;
+    return C === 6403 && (K === 5126 && (U = 33326), K === 5131 && (U = 33325), K === 5121 && (U = 33321)), C === 33319 && (K === 5126 && (U = 33328), K === 5131 && (U = 33327), K === 5121 && (U = 33323)), C === 6408 && (K === 5126 && (U = 34836), K === 5131 && (U = 34842), K === 5121 && (U = N === Fe && z === !1 ? 35907 : 32856), K === 32819 && (U = 32854), K === 32820 && (U = 32855)), (U === 33325 || U === 33326 || U === 33327 || U === 33328 || U === 34842 || U === 34836) && e.get("EXT_color_buffer_float"), U;
   }
   function y(S, C, K) {
     return w(S, K) === !0 || S.isFramebufferTexture && S.minFilter !== bt && S.minFilter !== nt ? Math.log2(Math.max(C.width, C.height)) + 1 : S.mipmaps !== void 0 && S.mipmaps.length > 0 ? S.mipmaps.length : S.isCompressedTexture && Array.isArray(S.image) ? C.mipmaps.length : 1;
@@ -10960,7 +10960,7 @@ function Qp(r, e, t, n, i, s, a) {
       K.__webglDepthRenderbuffer && r.deleteRenderbuffer(K.__webglDepthRenderbuffer);
     }
     if (S.isWebGLMultipleRenderTargets)
-      for (let z = 0, G = C.length; z < G; z++) {
+      for (let z = 0, U = C.length; z < U; z++) {
         const oe = n.get(C[z]);
         oe.__webglTexture && (r.deleteTexture(oe.__webglTexture), a.memory.textures--), n.remove(C[z]);
       }
@@ -11043,57 +11043,57 @@ function Qp(r, e, t, n, i, s, a) {
     const N = C.source;
     let z = A.get(N);
     z === void 0 && (z = {}, A.set(N, z));
-    const G = re(C);
-    if (G !== S.__cacheKey) {
-      z[G] === void 0 && (z[G] = {
+    const U = re(C);
+    if (U !== S.__cacheKey) {
+      z[U] === void 0 && (z[U] = {
         texture: r.createTexture(),
         usedTimes: 0
-      }, a.memory.textures++, K = !0), z[G].usedTimes++;
+      }, a.memory.textures++, K = !0), z[U].usedTimes++;
       const oe = z[S.__cacheKey];
-      oe !== void 0 && (z[S.__cacheKey].usedTimes--, oe.usedTimes === 0 && Q(C)), S.__cacheKey = G, S.__webglTexture = z[G].texture;
+      oe !== void 0 && (z[S.__cacheKey].usedTimes--, oe.usedTimes === 0 && Q(C)), S.__cacheKey = U, S.__webglTexture = z[U].texture;
     }
     return K;
   }
   function me(S, C, K) {
     let N = 3553;
     (C.isDataArrayTexture || C.isCompressedArrayTexture) && (N = 35866), C.isData3DTexture && (N = 32879);
-    const z = Me(S, C), G = C.source;
+    const z = Me(S, C), U = C.source;
     t.bindTexture(N, S.__webglTexture, 33984 + K);
-    const oe = n.get(G);
-    if (G.version !== oe.__version || z === !0) {
+    const oe = n.get(U);
+    if (U.version !== oe.__version || z === !0) {
       t.activeTexture(33984 + K), r.pixelStorei(37440, C.flipY), r.pixelStorei(37441, C.premultiplyAlpha), r.pixelStorei(3317, C.unpackAlignment), r.pixelStorei(37443, 0);
       const M = I(C) && _(C.image) === !1;
       let L = b(C.image, M, !1, h);
       L = rt(C, L);
-      const J = _(L) || o, U = s.convert(C.format, C.encoding);
-      let Y = s.convert(C.type), le = x(C.internalFormat, U, Y, C.encoding, C.isVideoTexture);
+      const J = _(L) || o, G = s.convert(C.format, C.encoding);
+      let Y = s.convert(C.type), le = x(C.internalFormat, G, Y, C.encoding, C.isVideoTexture);
       W(N, C, J);
       let ce;
       const be = C.mipmaps, _e = o && C.isVideoTexture !== !0, Le = oe.__version === void 0 || z === !0, R = y(C, L, J);
       if (C.isDepthTexture)
-        le = 6402, o ? C.type === Rt ? le = 36012 : C.type === Vn ? le = 33190 : C.type === yi ? le = 35056 : le = 33189 : C.type === Rt && console.error("WebGLRenderer: Floating point depth texture requires WebGL2."), C.format === qn && le === 6402 && C.type !== Wc && C.type !== Vn && (console.warn("THREE.WebGLRenderer: Use UnsignedShortType or UnsignedIntType for DepthFormat DepthTexture."), C.type = Vn, Y = s.convert(C.type)), C.format === Si && le === 6402 && (le = 34041, C.type !== yi && (console.warn("THREE.WebGLRenderer: Use UnsignedInt248Type for DepthStencilFormat DepthTexture."), C.type = yi, Y = s.convert(C.type))), Le && (_e ? t.texStorage2D(3553, 1, le, L.width, L.height) : t.texImage2D(3553, 0, le, L.width, L.height, 0, U, Y, null));
+        le = 6402, o ? C.type === Rt ? le = 36012 : C.type === Vn ? le = 33190 : C.type === yi ? le = 35056 : le = 33189 : C.type === Rt && console.error("WebGLRenderer: Floating point depth texture requires WebGL2."), C.format === qn && le === 6402 && C.type !== Wc && C.type !== Vn && (console.warn("THREE.WebGLRenderer: Use UnsignedShortType or UnsignedIntType for DepthFormat DepthTexture."), C.type = Vn, Y = s.convert(C.type)), C.format === Si && le === 6402 && (le = 34041, C.type !== yi && (console.warn("THREE.WebGLRenderer: Use UnsignedInt248Type for DepthStencilFormat DepthTexture."), C.type = yi, Y = s.convert(C.type))), Le && (_e ? t.texStorage2D(3553, 1, le, L.width, L.height) : t.texImage2D(3553, 0, le, L.width, L.height, 0, G, Y, null));
       else if (C.isDataTexture)
         if (be.length > 0 && J) {
           _e && Le && t.texStorage2D(3553, R, le, be[0].width, be[0].height);
           for (let j = 0, se = be.length; j < se; j++)
-            ce = be[j], _e ? t.texSubImage2D(3553, j, 0, 0, ce.width, ce.height, U, Y, ce.data) : t.texImage2D(3553, j, le, ce.width, ce.height, 0, U, Y, ce.data);
+            ce = be[j], _e ? t.texSubImage2D(3553, j, 0, 0, ce.width, ce.height, G, Y, ce.data) : t.texImage2D(3553, j, le, ce.width, ce.height, 0, G, Y, ce.data);
           C.generateMipmaps = !1;
         } else
-          _e ? (Le && t.texStorage2D(3553, R, le, L.width, L.height), t.texSubImage2D(3553, 0, 0, 0, L.width, L.height, U, Y, L.data)) : t.texImage2D(3553, 0, le, L.width, L.height, 0, U, Y, L.data);
+          _e ? (Le && t.texStorage2D(3553, R, le, L.width, L.height), t.texSubImage2D(3553, 0, 0, 0, L.width, L.height, G, Y, L.data)) : t.texImage2D(3553, 0, le, L.width, L.height, 0, G, Y, L.data);
       else if (C.isCompressedTexture)
         if (C.isCompressedArrayTexture) {
           _e && Le && t.texStorage3D(35866, R, le, be[0].width, be[0].height, L.depth);
           for (let j = 0, se = be.length; j < se; j++)
-            ce = be[j], C.format !== It ? U !== null ? _e ? t.compressedTexSubImage3D(35866, j, 0, 0, 0, ce.width, ce.height, L.depth, U, ce.data, 0, 0) : t.compressedTexImage3D(35866, j, le, ce.width, ce.height, L.depth, 0, ce.data, 0, 0) : console.warn("THREE.WebGLRenderer: Attempt to load unsupported compressed texture format in .uploadTexture()") : _e ? t.texSubImage3D(35866, j, 0, 0, 0, ce.width, ce.height, L.depth, U, Y, ce.data) : t.texImage3D(35866, j, le, ce.width, ce.height, L.depth, 0, U, Y, ce.data);
+            ce = be[j], C.format !== It ? G !== null ? _e ? t.compressedTexSubImage3D(35866, j, 0, 0, 0, ce.width, ce.height, L.depth, G, ce.data, 0, 0) : t.compressedTexImage3D(35866, j, le, ce.width, ce.height, L.depth, 0, ce.data, 0, 0) : console.warn("THREE.WebGLRenderer: Attempt to load unsupported compressed texture format in .uploadTexture()") : _e ? t.texSubImage3D(35866, j, 0, 0, 0, ce.width, ce.height, L.depth, G, Y, ce.data) : t.texImage3D(35866, j, le, ce.width, ce.height, L.depth, 0, G, Y, ce.data);
         } else {
           _e && Le && t.texStorage2D(3553, R, le, be[0].width, be[0].height);
           for (let j = 0, se = be.length; j < se; j++)
-            ce = be[j], C.format !== It ? U !== null ? _e ? t.compressedTexSubImage2D(3553, j, 0, 0, ce.width, ce.height, U, ce.data) : t.compressedTexImage2D(3553, j, le, ce.width, ce.height, 0, ce.data) : console.warn("THREE.WebGLRenderer: Attempt to load unsupported compressed texture format in .uploadTexture()") : _e ? t.texSubImage2D(3553, j, 0, 0, ce.width, ce.height, U, Y, ce.data) : t.texImage2D(3553, j, le, ce.width, ce.height, 0, U, Y, ce.data);
+            ce = be[j], C.format !== It ? G !== null ? _e ? t.compressedTexSubImage2D(3553, j, 0, 0, ce.width, ce.height, G, ce.data) : t.compressedTexImage2D(3553, j, le, ce.width, ce.height, 0, ce.data) : console.warn("THREE.WebGLRenderer: Attempt to load unsupported compressed texture format in .uploadTexture()") : _e ? t.texSubImage2D(3553, j, 0, 0, ce.width, ce.height, G, Y, ce.data) : t.texImage2D(3553, j, le, ce.width, ce.height, 0, G, Y, ce.data);
         }
       else if (C.isDataArrayTexture)
-        _e ? (Le && t.texStorage3D(35866, R, le, L.width, L.height, L.depth), t.texSubImage3D(35866, 0, 0, 0, 0, L.width, L.height, L.depth, U, Y, L.data)) : t.texImage3D(35866, 0, le, L.width, L.height, L.depth, 0, U, Y, L.data);
+        _e ? (Le && t.texStorage3D(35866, R, le, L.width, L.height, L.depth), t.texSubImage3D(35866, 0, 0, 0, 0, L.width, L.height, L.depth, G, Y, L.data)) : t.texImage3D(35866, 0, le, L.width, L.height, L.depth, 0, G, Y, L.data);
       else if (C.isData3DTexture)
-        _e ? (Le && t.texStorage3D(32879, R, le, L.width, L.height, L.depth), t.texSubImage3D(32879, 0, 0, 0, 0, L.width, L.height, L.depth, U, Y, L.data)) : t.texImage3D(32879, 0, le, L.width, L.height, L.depth, 0, U, Y, L.data);
+        _e ? (Le && t.texStorage3D(32879, R, le, L.width, L.height, L.depth), t.texSubImage3D(32879, 0, 0, 0, 0, L.width, L.height, L.depth, G, Y, L.data)) : t.texImage3D(32879, 0, le, L.width, L.height, L.depth, 0, G, Y, L.data);
       else if (C.isFramebufferTexture) {
         if (Le)
           if (_e)
@@ -11101,16 +11101,16 @@ function Qp(r, e, t, n, i, s, a) {
           else {
             let j = L.width, se = L.height;
             for (let Ae = 0; Ae < R; Ae++)
-              t.texImage2D(3553, Ae, le, j, se, 0, U, Y, null), j >>= 1, se >>= 1;
+              t.texImage2D(3553, Ae, le, j, se, 0, G, Y, null), j >>= 1, se >>= 1;
           }
       } else if (be.length > 0 && J) {
         _e && Le && t.texStorage2D(3553, R, le, be[0].width, be[0].height);
         for (let j = 0, se = be.length; j < se; j++)
-          ce = be[j], _e ? t.texSubImage2D(3553, j, 0, 0, U, Y, ce) : t.texImage2D(3553, j, le, U, Y, ce);
+          ce = be[j], _e ? t.texSubImage2D(3553, j, 0, 0, G, Y, ce) : t.texImage2D(3553, j, le, G, Y, ce);
         C.generateMipmaps = !1;
       } else
-        _e ? (Le && t.texStorage2D(3553, R, le, L.width, L.height), t.texSubImage2D(3553, 0, 0, 0, U, Y, L)) : t.texImage2D(3553, 0, le, U, Y, L);
-      w(C, J) && T(N), oe.__version = G.version, C.onUpdate && C.onUpdate(C);
+        _e ? (Le && t.texStorage2D(3553, R, le, L.width, L.height), t.texSubImage2D(3553, 0, 0, 0, G, Y, L)) : t.texImage2D(3553, 0, le, G, Y, L);
+      w(C, J) && T(N), oe.__version = U.version, C.onUpdate && C.onUpdate(C);
     }
     S.__version = C.version;
   }
@@ -11119,15 +11119,15 @@ function Qp(r, e, t, n, i, s, a) {
       return;
     const N = Me(S, C), z = C.source;
     t.bindTexture(34067, S.__webglTexture, 33984 + K);
-    const G = n.get(z);
-    if (z.version !== G.__version || N === !0) {
+    const U = n.get(z);
+    if (z.version !== U.__version || N === !0) {
       t.activeTexture(33984 + K), r.pixelStorei(37440, C.flipY), r.pixelStorei(37441, C.premultiplyAlpha), r.pixelStorei(3317, C.unpackAlignment), r.pixelStorei(37443, 0);
       const oe = C.isCompressedTexture || C.image[0].isCompressedTexture, M = C.image[0] && C.image[0].isDataTexture, L = [];
       for (let j = 0; j < 6; j++)
         !oe && !M ? L[j] = b(C.image[j], !1, !0, l) : L[j] = M ? C.image[j].image : C.image[j], L[j] = rt(C, L[j]);
-      const J = L[0], U = _(J) || o, Y = s.convert(C.format, C.encoding), le = s.convert(C.type), ce = x(C.internalFormat, Y, le, C.encoding), be = o && C.isVideoTexture !== !0, _e = G.__version === void 0 || N === !0;
-      let Le = y(C, J, U);
-      W(34067, C, U);
+      const J = L[0], G = _(J) || o, Y = s.convert(C.format, C.encoding), le = s.convert(C.type), ce = x(C.internalFormat, Y, le, C.encoding), be = o && C.isVideoTexture !== !0, _e = U.__version === void 0 || N === !0;
+      let Le = y(C, J, G);
+      W(34067, C, G);
       let R;
       if (oe) {
         be && _e && t.texStorage2D(34067, Le, ce, J.width, J.height);
@@ -11155,13 +11155,13 @@ function Qp(r, e, t, n, i, s, a) {
             }
           }
       }
-      w(C, U) && T(34067), G.__version = z.version, C.onUpdate && C.onUpdate(C);
+      w(C, G) && T(34067), U.__version = z.version, C.onUpdate && C.onUpdate(C);
     }
     S.__version = C.version;
   }
   function ge(S, C, K, N, z) {
-    const G = s.convert(K.format, K.encoding), oe = s.convert(K.type), M = x(K.internalFormat, G, oe, K.encoding);
-    n.get(C).__hasExternalTextures || (z === 32879 || z === 35866 ? t.texImage3D(z, 0, M, C.width, C.height, C.depth, 0, G, oe, null) : t.texImage2D(z, 0, M, C.width, C.height, 0, G, oe, null)), t.bindFramebuffer(36160, S), Oe(C) ? d.framebufferTexture2DMultisampleEXT(36160, N, z, n.get(K).__webglTexture, 0, $e(C)) : (z === 3553 || z >= 34069 && z <= 34074) && r.framebufferTexture2D(36160, N, z, n.get(K).__webglTexture, 0), t.bindFramebuffer(36160, null);
+    const U = s.convert(K.format, K.encoding), oe = s.convert(K.type), M = x(K.internalFormat, U, oe, K.encoding);
+    n.get(C).__hasExternalTextures || (z === 32879 || z === 35866 ? t.texImage3D(z, 0, M, C.width, C.height, C.depth, 0, U, oe, null) : t.texImage2D(z, 0, M, C.width, C.height, 0, U, oe, null)), t.bindFramebuffer(36160, S), Oe(C) ? d.framebufferTexture2DMultisampleEXT(36160, N, z, n.get(K).__webglTexture, 0, $e(C)) : (z === 3553 || z >= 34069 && z <= 34074) && r.framebufferTexture2D(36160, N, z, n.get(K).__webglTexture, 0), t.bindFramebuffer(36160, null);
   }
   function Te(S, C, K) {
     if (r.bindRenderbuffer(36161, S), C.depthBuffer && !C.stencilBuffer) {
@@ -11169,8 +11169,8 @@ function Qp(r, e, t, n, i, s, a) {
       if (K || Oe(C)) {
         const z = C.depthTexture;
         z && z.isDepthTexture && (z.type === Rt ? N = 36012 : z.type === Vn && (N = 33190));
-        const G = $e(C);
-        Oe(C) ? d.renderbufferStorageMultisampleEXT(36161, G, N, C.width, C.height) : r.renderbufferStorageMultisample(36161, G, N, C.width, C.height);
+        const U = $e(C);
+        Oe(C) ? d.renderbufferStorageMultisampleEXT(36161, U, N, C.width, C.height) : r.renderbufferStorageMultisample(36161, U, N, C.width, C.height);
       } else
         r.renderbufferStorage(36161, N, C.width, C.height);
       r.framebufferRenderbuffer(36160, 36096, 36161, S);
@@ -11180,7 +11180,7 @@ function Qp(r, e, t, n, i, s, a) {
     } else {
       const N = C.isWebGLMultipleRenderTargets === !0 ? C.texture : [C.texture];
       for (let z = 0; z < N.length; z++) {
-        const G = N[z], oe = s.convert(G.format, G.encoding), M = s.convert(G.type), L = x(G.internalFormat, oe, M, G.encoding), J = $e(C);
+        const U = N[z], oe = s.convert(U.format, U.encoding), M = s.convert(U.type), L = x(U.internalFormat, oe, M, U.encoding), J = $e(C);
         K && Oe(C) === !1 ? r.renderbufferStorageMultisample(36161, J, L, C.width, C.height) : Oe(C) ? d.renderbufferStorageMultisampleEXT(36161, J, L, C.width, C.height) : r.renderbufferStorage(36161, L, C.width, C.height);
       }
     }
@@ -11221,28 +11221,28 @@ function Qp(r, e, t, n, i, s, a) {
   function st(S) {
     const C = S.texture, K = n.get(S), N = n.get(C);
     S.addEventListener("dispose", q), S.isWebGLMultipleRenderTargets !== !0 && (N.__webglTexture === void 0 && (N.__webglTexture = r.createTexture()), N.__version = C.version, a.memory.textures++);
-    const z = S.isWebGLCubeRenderTarget === !0, G = S.isWebGLMultipleRenderTargets === !0, oe = _(S) || o;
+    const z = S.isWebGLCubeRenderTarget === !0, U = S.isWebGLMultipleRenderTargets === !0, oe = _(S) || o;
     if (z) {
       K.__webglFramebuffer = [];
       for (let M = 0; M < 6; M++)
         K.__webglFramebuffer[M] = r.createFramebuffer();
     } else {
-      if (K.__webglFramebuffer = r.createFramebuffer(), G)
+      if (K.__webglFramebuffer = r.createFramebuffer(), U)
         if (i.drawBuffers) {
           const M = S.texture;
           for (let L = 0, J = M.length; L < J; L++) {
-            const U = n.get(M[L]);
-            U.__webglTexture === void 0 && (U.__webglTexture = r.createTexture(), a.memory.textures++);
+            const G = n.get(M[L]);
+            G.__webglTexture === void 0 && (G.__webglTexture = r.createTexture(), a.memory.textures++);
           }
         } else
           console.warn("THREE.WebGLRenderer: WebGLMultipleRenderTargets can only be used with WebGL2 or WEBGL_draw_buffers extension.");
       if (o && S.samples > 0 && Oe(S) === !1) {
-        const M = G ? C : [C];
+        const M = U ? C : [C];
         K.__webglMultisampledFramebuffer = r.createFramebuffer(), K.__webglColorRenderbuffer = [], t.bindFramebuffer(36160, K.__webglMultisampledFramebuffer);
         for (let L = 0; L < M.length; L++) {
           const J = M[L];
           K.__webglColorRenderbuffer[L] = r.createRenderbuffer(), r.bindRenderbuffer(36161, K.__webglColorRenderbuffer[L]);
-          const U = s.convert(J.format, J.encoding), Y = s.convert(J.type), le = x(J.internalFormat, U, Y, J.encoding, S.isXRRenderTarget === !0), ce = $e(S);
+          const G = s.convert(J.format, J.encoding), Y = s.convert(J.type), le = x(J.internalFormat, G, Y, J.encoding, S.isXRRenderTarget === !0), ce = $e(S);
           r.renderbufferStorageMultisample(36161, ce, le, S.width, S.height), r.framebufferRenderbuffer(36160, 36064 + L, 36161, K.__webglColorRenderbuffer[L]);
         }
         r.bindRenderbuffer(36161, null), S.depthBuffer && (K.__webglDepthRenderbuffer = r.createRenderbuffer(), Te(K.__webglDepthRenderbuffer, S, !0)), t.bindFramebuffer(36160, null);
@@ -11253,11 +11253,11 @@ function Qp(r, e, t, n, i, s, a) {
       for (let M = 0; M < 6; M++)
         ge(K.__webglFramebuffer[M], S, C, 36064, 34069 + M);
       w(C, oe) && T(34067), t.unbindTexture();
-    } else if (G) {
+    } else if (U) {
       const M = S.texture;
       for (let L = 0, J = M.length; L < J; L++) {
-        const U = M[L], Y = n.get(U);
-        t.bindTexture(3553, Y.__webglTexture), W(3553, U, oe), ge(K.__webglFramebuffer, S, U, 36064 + L, 3553), w(U, oe) && T(3553);
+        const G = M[L], Y = n.get(G);
+        t.bindTexture(3553, Y.__webglTexture), W(3553, G, oe), ge(K.__webglFramebuffer, S, G, 36064 + L, 3553), w(G, oe) && T(3553);
       }
       t.unbindTexture();
     } else {
@@ -11269,9 +11269,9 @@ function Qp(r, e, t, n, i, s, a) {
   function He(S) {
     const C = _(S) || o, K = S.isWebGLMultipleRenderTargets === !0 ? S.texture : [S.texture];
     for (let N = 0, z = K.length; N < z; N++) {
-      const G = K[N];
-      if (w(G, C)) {
-        const oe = S.isWebGLCubeRenderTarget ? 34067 : 3553, M = n.get(G).__webglTexture;
+      const U = K[N];
+      if (w(U, C)) {
+        const oe = S.isWebGLCubeRenderTarget ? 34067 : 3553, M = n.get(U).__webglTexture;
         t.bindTexture(oe, M), T(oe), t.unbindTexture();
       }
     }
@@ -11280,25 +11280,25 @@ function Qp(r, e, t, n, i, s, a) {
     if (o && S.samples > 0 && Oe(S) === !1) {
       const C = S.isWebGLMultipleRenderTargets ? S.texture : [S.texture], K = S.width, N = S.height;
       let z = 16384;
-      const G = [], oe = S.stencilBuffer ? 33306 : 36096, M = n.get(S), L = S.isWebGLMultipleRenderTargets === !0;
+      const U = [], oe = S.stencilBuffer ? 33306 : 36096, M = n.get(S), L = S.isWebGLMultipleRenderTargets === !0;
       if (L)
         for (let J = 0; J < C.length; J++)
           t.bindFramebuffer(36160, M.__webglMultisampledFramebuffer), r.framebufferRenderbuffer(36160, 36064 + J, 36161, null), t.bindFramebuffer(36160, M.__webglFramebuffer), r.framebufferTexture2D(36009, 36064 + J, 3553, null, 0);
       t.bindFramebuffer(36008, M.__webglMultisampledFramebuffer), t.bindFramebuffer(36009, M.__webglFramebuffer);
       for (let J = 0; J < C.length; J++) {
-        G.push(36064 + J), S.depthBuffer && G.push(oe);
-        const U = M.__ignoreDepthValues !== void 0 ? M.__ignoreDepthValues : !1;
-        if (U === !1 && (S.depthBuffer && (z |= 256), S.stencilBuffer && (z |= 1024)), L && r.framebufferRenderbuffer(36008, 36064, 36161, M.__webglColorRenderbuffer[J]), U === !0 && (r.invalidateFramebuffer(36008, [oe]), r.invalidateFramebuffer(36009, [oe])), L) {
+        U.push(36064 + J), S.depthBuffer && U.push(oe);
+        const G = M.__ignoreDepthValues !== void 0 ? M.__ignoreDepthValues : !1;
+        if (G === !1 && (S.depthBuffer && (z |= 256), S.stencilBuffer && (z |= 1024)), L && r.framebufferRenderbuffer(36008, 36064, 36161, M.__webglColorRenderbuffer[J]), G === !0 && (r.invalidateFramebuffer(36008, [oe]), r.invalidateFramebuffer(36009, [oe])), L) {
           const Y = n.get(C[J]).__webglTexture;
           r.framebufferTexture2D(36009, 36064, 3553, Y, 0);
         }
-        r.blitFramebuffer(0, 0, K, N, 0, 0, K, N, z, 9728), f && r.invalidateFramebuffer(36008, G);
+        r.blitFramebuffer(0, 0, K, N, 0, 0, K, N, z, 9728), f && r.invalidateFramebuffer(36008, U);
       }
       if (t.bindFramebuffer(36008, null), t.bindFramebuffer(36009, null), L)
         for (let J = 0; J < C.length; J++) {
           t.bindFramebuffer(36160, M.__webglMultisampledFramebuffer), r.framebufferRenderbuffer(36160, 36064 + J, 36161, M.__webglColorRenderbuffer[J]);
-          const U = n.get(C[J]).__webglTexture;
-          t.bindFramebuffer(36160, M.__webglFramebuffer), r.framebufferTexture2D(36009, 36064 + J, 3553, U, 0);
+          const G = n.get(C[J]).__webglTexture;
+          t.bindFramebuffer(36160, M.__webglFramebuffer), r.framebufferTexture2D(36009, 36064 + J, 3553, G, 0);
         }
       t.bindFramebuffer(36009, M.__webglMultisampledFramebuffer);
     }
@@ -11988,11 +11988,11 @@ function ul(r = {}) {
   } catch (v) {
     throw console.error("THREE.WebGLRenderer: " + v.message), v;
   }
-  let me, Ce, ge, Te, ye, Ee, it, st, He, Ze, $e, Oe, At, rt, S, C, K, N, z, G, oe, M, L, J;
-  function U() {
-    me = new ZA(W), Ce = new qA(W, me, r), me.init(Ce), M = new Pp(W, me, Ce), ge = new Lp(W, me, Ce), Te = new tf(), ye = new _p(), Ee = new Qp(W, me, ge, ye, Ce, M, Te), it = new YA(p), st = new XA(p), He = new hu(W, Ce), L = new VA(W, me, He, Ce), Ze = new $A(W, He, Te, L), $e = new af(W, Ze, He, Te), z = new rf(W, Ce, Ee), C = new jA(ye), Oe = new bp(p, it, st, me, Ce, L, C), At = new Up(p, ye), rt = new Ep(), S = new Mp(me, Ce), N = new HA(p, it, st, ge, $e, h, a), K = new Rp(p, $e, Ce), J = new Op(W, Te, Ce, ge), G = new WA(W, me, Te, Ce), oe = new ef(W, me, Te, Ce), Te.programs = Oe.programs, p.capabilities = Ce, p.extensions = me, p.properties = ye, p.renderLists = rt, p.shadowMap = K, p.state = ge, p.info = Te;
+  let me, Ce, ge, Te, ye, Ee, it, st, He, Ze, $e, Oe, At, rt, S, C, K, N, z, U, oe, M, L, J;
+  function G() {
+    me = new ZA(W), Ce = new qA(W, me, r), me.init(Ce), M = new Pp(W, me, Ce), ge = new Lp(W, me, Ce), Te = new tf(), ye = new _p(), Ee = new Qp(W, me, ge, ye, Ce, M, Te), it = new YA(p), st = new XA(p), He = new hu(W, Ce), L = new VA(W, me, He, Ce), Ze = new $A(W, He, Te, L), $e = new af(W, Ze, He, Te), z = new rf(W, Ce, Ee), C = new jA(ye), Oe = new bp(p, it, st, me, Ce, L, C), At = new Up(p, ye), rt = new Ep(), S = new Mp(me, Ce), N = new HA(p, it, st, ge, $e, h, a), K = new Rp(p, $e, Ce), J = new Op(W, Te, Ce, ge), U = new WA(W, me, Te, Ce), oe = new ef(W, me, Te, Ce), Te.programs = Oe.programs, p.capabilities = Ce, p.extensions = me, p.properties = ye, p.renderLists = rt, p.shadowMap = K, p.state = ge, p.info = Te;
   }
-  U();
+  G();
   const Y = new Gp(p, W);
   this.xr = Y, this.getContext = function() {
     return W;
@@ -12064,7 +12064,7 @@ function ul(r = {}) {
   function ce() {
     console.log("THREE.WebGLRenderer: Context Restored."), A = !1;
     const v = Te.autoReset, O = K.enabled, Z = K.autoUpdate, k = K.needsUpdate, te = K.type;
-    U(), Te.autoReset = v, K.enabled = O, K.autoUpdate = Z, K.needsUpdate = k, K.type = te;
+    G(), Te.autoReset = v, K.enabled = O, K.autoUpdate = Z, K.needsUpdate = k, K.type = te;
   }
   function be(v) {
     console.error("THREE.WebGLRenderer: A WebGL context could not be created. Reason: ", v.statusMessage);
@@ -12095,7 +12095,7 @@ function ul(r = {}) {
     if (Ut < 0 || Ut === 1 / 0)
       return;
     L.setup(te, k, Be, Z, Se);
-    let rn, We = G;
+    let rn, We = U;
     if (Se !== null && (rn = He.get(Se), We = oe, We.setIndex(rn)), te.isMesh)
       k.wireframe === !0 ? (ge.setLineWidth(k.wireframeLinewidth * de()), We.setMode(1)) : We.setMode(4);
     else if (te.isLine) {
@@ -15193,12 +15193,12 @@ class qg extends _n {
     }, this.reset = function() {
       n.target.copy(n.target0), n.object.position.copy(n.position0), n.object.zoom = n.zoom0, n.object.updateProjectionMatrix(), n.dispatchEvent(yc), n.update(), s = i.NONE;
     }, this.update = function() {
-      const M = new B(), L = new nn().setFromUnitVectors(e.up, new B(0, 1, 0)), J = L.clone().invert(), U = new B(), Y = new nn(), le = 2 * Math.PI;
+      const M = new B(), L = new nn().setFromUnitVectors(e.up, new B(0, 1, 0)), J = L.clone().invert(), G = new B(), Y = new nn(), le = 2 * Math.PI;
       return function() {
         const be = n.object.position;
         M.copy(be).sub(n.target), M.applyQuaternion(L), o.setFromVector3(M), n.autoRotate && s === i.NONE && y(T()), n.enableDamping ? (o.theta += c.theta * n.dampingFactor, o.phi += c.phi * n.dampingFactor) : (o.theta += c.theta, o.phi += c.phi);
         let _e = n.minAzimuthAngle, Le = n.maxAzimuthAngle;
-        return isFinite(_e) && isFinite(Le) && (_e < -Math.PI ? _e += le : _e > Math.PI && (_e -= le), Le < -Math.PI ? Le += le : Le > Math.PI && (Le -= le), _e <= Le ? o.theta = Math.max(_e, Math.min(Le, o.theta)) : o.theta = o.theta > (_e + Le) / 2 ? Math.max(_e, o.theta) : Math.min(Le, o.theta)), o.phi = Math.max(n.minPolarAngle, Math.min(n.maxPolarAngle, o.phi)), o.makeSafe(), o.radius *= l, o.radius = Math.max(n.minDistance, Math.min(n.maxDistance, o.radius)), n.enableDamping === !0 ? n.target.addScaledVector(h, n.dampingFactor) : n.target.add(h), M.setFromSpherical(o), M.applyQuaternion(J), be.copy(n.target).add(M), n.object.lookAt(n.target), n.enableDamping === !0 ? (c.theta *= 1 - n.dampingFactor, c.phi *= 1 - n.dampingFactor, h.multiplyScalar(1 - n.dampingFactor)) : (c.set(0, 0, 0), h.set(0, 0, 0)), l = 1, u || U.distanceToSquared(n.object.position) > a || 8 * (1 - Y.dot(n.object.quaternion)) > a ? (n.dispatchEvent(yc), U.copy(n.object.position), Y.copy(n.object.quaternion), u = !1, !0) : !1;
+        return isFinite(_e) && isFinite(Le) && (_e < -Math.PI ? _e += le : _e > Math.PI && (_e -= le), Le < -Math.PI ? Le += le : Le > Math.PI && (Le -= le), _e <= Le ? o.theta = Math.max(_e, Math.min(Le, o.theta)) : o.theta = o.theta > (_e + Le) / 2 ? Math.max(_e, o.theta) : Math.min(Le, o.theta)), o.phi = Math.max(n.minPolarAngle, Math.min(n.maxPolarAngle, o.phi)), o.makeSafe(), o.radius *= l, o.radius = Math.max(n.minDistance, Math.min(n.maxDistance, o.radius)), n.enableDamping === !0 ? n.target.addScaledVector(h, n.dampingFactor) : n.target.add(h), M.setFromSpherical(o), M.applyQuaternion(J), be.copy(n.target).add(M), n.object.lookAt(n.target), n.enableDamping === !0 ? (c.theta *= 1 - n.dampingFactor, c.phi *= 1 - n.dampingFactor, h.multiplyScalar(1 - n.dampingFactor)) : (c.set(0, 0, 0), h.set(0, 0, 0)), l = 1, u || G.distanceToSquared(n.object.position) > a || 8 * (1 - Y.dot(n.object.quaternion)) > a ? (n.dispatchEvent(yc), G.copy(n.object.position), Y.copy(n.object.quaternion), u = !1, !0) : !1;
       };
     }(), this.dispose = function() {
       n.domElement.removeEventListener("contextmenu", K), n.domElement.removeEventListener("pointerdown", it), n.domElement.removeEventListener("pointercancel", Ze), n.domElement.removeEventListener("wheel", At), n.domElement.removeEventListener("pointermove", st), n.domElement.removeEventListener("pointerup", He), n._domElementKeyEvents !== null && n._domElementKeyEvents.removeEventListener("keydown", rt);
@@ -15233,25 +15233,25 @@ class qg extends _n {
     }
     const P = function() {
       const M = new B();
-      return function(J, U) {
-        M.setFromMatrixColumn(U, 0), M.multiplyScalar(-J), h.add(M);
+      return function(J, G) {
+        M.setFromMatrixColumn(G, 0), M.multiplyScalar(-J), h.add(M);
       };
     }(), q = function() {
       const M = new B();
-      return function(J, U) {
-        n.screenSpacePanning === !0 ? M.setFromMatrixColumn(U, 1) : (M.setFromMatrixColumn(U, 0), M.crossVectors(n.object.up, M)), M.multiplyScalar(J), h.add(M);
+      return function(J, G) {
+        n.screenSpacePanning === !0 ? M.setFromMatrixColumn(G, 1) : (M.setFromMatrixColumn(G, 0), M.crossVectors(n.object.up, M)), M.multiplyScalar(J), h.add(M);
       };
     }(), F = function() {
       const M = new B();
-      return function(J, U) {
+      return function(J, G) {
         const Y = n.domElement;
         if (n.object.isPerspectiveCamera) {
           const le = n.object.position;
           M.copy(le).sub(n.target);
           let ce = M.length();
-          ce *= Math.tan(n.object.fov / 2 * Math.PI / 180), P(2 * J * ce / Y.clientHeight, n.object.matrix), q(2 * U * ce / Y.clientHeight, n.object.matrix);
+          ce *= Math.tan(n.object.fov / 2 * Math.PI / 180), P(2 * J * ce / Y.clientHeight, n.object.matrix), q(2 * G * ce / Y.clientHeight, n.object.matrix);
         } else
-          n.object.isOrthographicCamera ? (P(J * (n.object.right - n.object.left) / n.object.zoom / Y.clientWidth, n.object.matrix), q(U * (n.object.top - n.object.bottom) / n.object.zoom / Y.clientHeight, n.object.matrix)) : (console.warn("WARNING: OrbitControls.js encountered an unknown camera type - pan disabled."), n.enablePan = !1);
+          n.object.isOrthographicCamera ? (P(J * (n.object.right - n.object.left) / n.object.zoom / Y.clientWidth, n.object.matrix), q(G * (n.object.top - n.object.bottom) / n.object.zoom / Y.clientHeight, n.object.matrix)) : (console.warn("WARNING: OrbitControls.js encountered an unknown camera type - pan disabled."), n.enablePan = !1);
       };
     }();
     function Q(M) {
@@ -15331,8 +15331,8 @@ class qg extends _n {
       if (I.length == 1)
         f.set(M.pageX, M.pageY);
       else {
-        const J = oe(M), U = 0.5 * (M.pageX + J.x), Y = 0.5 * (M.pageY + J.y);
-        f.set(U, Y);
+        const J = oe(M), G = 0.5 * (M.pageX + J.x), Y = 0.5 * (M.pageY + J.y);
+        f.set(G, Y);
       }
       g.subVectors(f, d).multiplyScalar(n.rotateSpeed);
       const L = n.domElement;
@@ -15342,13 +15342,13 @@ class qg extends _n {
       if (I.length === 1)
         A.set(M.pageX, M.pageY);
       else {
-        const L = oe(M), J = 0.5 * (M.pageX + L.x), U = 0.5 * (M.pageY + L.y);
-        A.set(J, U);
+        const L = oe(M), J = 0.5 * (M.pageX + L.x), G = 0.5 * (M.pageY + L.y);
+        A.set(J, G);
       }
       m.subVectors(A, p).multiplyScalar(n.panSpeed), F(m.x, m.y), p.copy(A);
     }
     function Te(M) {
-      const L = oe(M), J = M.pageX - L.x, U = M.pageY - L.y, Y = Math.sqrt(J * J + U * U);
+      const L = oe(M), J = M.pageX - L.x, G = M.pageY - L.y, Y = Math.sqrt(J * J + G * G);
       b.set(0, Y), _.set(0, Math.pow(b.y / E.y, n.zoomSpeed)), Q(_.y), E.copy(b);
     }
     function ye(M) {
@@ -15443,7 +15443,7 @@ class qg extends _n {
       n.enabled === !1 || n.enablePan === !1 || he(M);
     }
     function S(M) {
-      switch (G(M), I.length) {
+      switch (U(M), I.length) {
         case 1:
           switch (n.touches.ONE) {
             case $n.ROTATE:
@@ -15482,7 +15482,7 @@ class qg extends _n {
       s !== i.NONE && n.dispatchEvent(jr);
     }
     function C(M) {
-      switch (G(M), s) {
+      switch (U(M), s) {
         case i.TOUCH_ROTATE:
           if (n.enableRotate === !1)
             return;
@@ -15521,7 +15521,7 @@ class qg extends _n {
           return;
         }
     }
-    function G(M) {
+    function U(M) {
       let L = w[M.pointerId];
       L === void 0 && (L = new fe(), w[M.pointerId] = L), L.set(M.pageX, M.pageY);
     }
@@ -17857,12 +17857,12 @@ function Gm(r, e, t, n) {
   r.lineTo(i + 25, t), r.lineTo(i, t + 30), r.lineTo(i - 25, t), r.arc(n, t - n, n, Math.PI / 2, Math.PI), r.lineTo(0, n), r.arc(n, n, n, Math.PI, Math.PI * 3 / 2), r.lineTo(e - n, 0), r.arc(e - n, n, n, Math.PI * 3 / 2, Math.PI * 2), r.lineTo(e, t - n), r.closePath();
 }
 class Um {
-  constructor(e, t, n, i, s, a = 160 * 2.2, o = 160, c = 0.1, l = "#ffffff", h = "#000000", u = 36) {
+  constructor(e, t, n, i, s, a = 160 * 2.2, o = 160, c = 0.1, l = "#ffffff", h = "#2b72e4", u = 36) {
     this.name = n, this.modelId = t, this.viewer = e, this.text = i, this.fontSize = u, this.textColor = l, this.bgColor = h, this.position = s, this.width = a, this.height = o, this.scale = c, this.ratio = a / o, this.billboardMesh = null, this._drawTextBillboard1();
   }
   _getFaceToCameraBillboardCanvas(e, t, n = "#ffffff", i = "#333333", s = 40) {
     const a = document.createElement("canvas"), o = a.getContext("2d");
-    a.height = this.height, a.width = this.width, o.fillStyle = i, o.globalAlpha = 0.85, Nm(o, 0, 0, a.width, a.height - 36, 15, i), o.globalAlpha = 1, o.fillStyle = n, o.font = `${s * 1.2}px Microsoft Yahei`, o.textAlign = "left", o.textBaseline = "middle", o.fillText(e, 10, 34), o.font = `${s}px Microsoft Yahei`;
+    a.height = this.height, a.width = this.width, o.fillStyle = i, o.globalAlpha = 0.7, Nm(o, 0, 0, a.width, a.height - 36, 15, i), o.globalAlpha = 1, o.fillStyle = n, o.font = `${s * 1.2}px Microsoft Yahei`, o.textAlign = "left", o.textBaseline = "middle", o.fillText(e, 10, 34), o.font = `${s}px Microsoft Yahei`;
     var c = 10, l = 100, h = s * 1.2;
     for (let u = 0; u < t.length; u++)
       o.fillText(t[u], c, l), l += h;
@@ -18290,7 +18290,10 @@ class qm {
 let sa = null;
 class jm extends _n {
   constructor(e) {
-    super(), this.viewerContainer = e, this.scene = null, this.camera = null, this.renderer = null, this.Orbits = null, this.loader = null, this.hotspotMgr = null, this.clock = new Rg(), this.group = null, this.particles = [], this.modelsData = {}, this.sensors = /* @__PURE__ */ new Map(), this.sensorValue = /* @__PURE__ */ new Map(), this.sensorAttr = null, this.arrowGroup = /* @__PURE__ */ new Map(), this.arrowFix = [], this.urlPre = "./asset", sa = this, this.init();
+    super(), this.viewerContainer = e, this.scene = null, this.camera = null, this.renderer = null, this.Orbits = null, this.loader = null, this.hotspotMgr = null, this.clock = new Rg(), this.group = null, this.particles = [], this.modelsData = {}, this.sensors = /* @__PURE__ */ new Map(), this.sensorValue = /* @__PURE__ */ new Map(), this.sensorAttr = {
+      cylinderName: "甲烷瓦斯气瓶",
+      pumpPower: "可变负压抽采泵"
+    }, this.arrowGroup = /* @__PURE__ */ new Map(), this.arrowFix = [], this.urlPre = "./asset", sa = this, this.init();
   }
   init() {
     const e = new ul({ antialias: !0, alpha: !0 });
@@ -18396,10 +18399,10 @@ class jm extends _n {
     for (let N = 0; N < u; N++) {
       let z = 0;
       N === 0 ? z = u === 1 ? 0 : Te : N === u - 1 ? z = -f / 2 - 2 * t : z = Te - ye * N, I = e[N].ventilatorLength, _ = e[N].ventilatorInsideRadius, T = e[N].ventilatorPatchDistance, D = e[N].drillLength, y = e[N].drillRadius, F = D - 0.12, Q = y - 0.05, H = Q - 0.03, q = e[N].drainagePipeLength, P = e[N].drainagePipeRadius, ne = e[N].sealingLength, re = e[N].coalParticlcRedius, ee = "SLURRY", V = "TWO_BLOCK_ONE_POUR", m = ge - (I + D), me = c + 3 * t + p + E * 2 + I, Ce = me + A + E * 2 + D;
-      let G = !1, oe, M, L, J, U = [];
+      let U = !1, oe, M, L, J, G = [];
       if (e[N].sensorList && Array.isArray(e[N].sensorList))
         for (let Y = 0; Y < e[N].sensorList.length; Y++)
-          e[N].sensorList[Y].sensorType === "BLOW_FLOW_SENSOR" ? U.push({ id: e[N].sensorList[Y].id, name: e[N].sensorList[Y].sensorName, distance: e[N].sensorList[Y].distance }) : e[N].sensorList[Y].sensorType === "FLOW_SENSOR" ? oe = { id: e[N].sensorList[Y].id, name: e[N].sensorList[Y].sensorName, distance: e[N].sensorList[Y].distance } : e[N].sensorList[Y].sensorType === "PRESSURE_SENSOR" ? M = { id: e[N].sensorList[Y].id, name: e[N].sensorList[Y].sensorName, distance: e[N].sensorList[Y].distance } : e[N].sensorList[Y].sensorType === "CONCENTRATION_SENSOR" ? L = { id: e[N].sensorList[Y].id, name: e[N].sensorList[Y].sensorName, distance: e[N].sensorList[Y].distance } : e[N].sensorList[Y].sensorType === "SOLENOID_VALVE_SENSOR" && (J = { id: e[N].sensorList[Y].id, name: e[N].sensorList[Y].sensorName, distance: e[N].sensorList[Y].distance });
+          e[N].sensorList[Y].sensorType === "BLOW_FLOW_SENSOR" ? G.push({ id: e[N].sensorList[Y].id, name: e[N].sensorList[Y].sensorName, distance: e[N].sensorList[Y].distance }) : e[N].sensorList[Y].sensorType === "FLOW_SENSOR" ? oe = { id: e[N].sensorList[Y].id, name: e[N].sensorList[Y].sensorName, distance: e[N].sensorList[Y].distance } : e[N].sensorList[Y].sensorType === "PRESSURE_SENSOR" ? M = { id: e[N].sensorList[Y].id, name: e[N].sensorList[Y].sensorName, distance: e[N].sensorList[Y].distance } : e[N].sensorList[Y].sensorType === "CONCENTRATION_SENSOR" ? L = { id: e[N].sensorList[Y].id, name: e[N].sensorList[Y].sensorName, distance: e[N].sensorList[Y].distance } : e[N].sensorList[Y].sensorType === "SOLENOID_VALVE_SENSOR" && (J = { id: e[N].sensorList[Y].id, name: e[N].sensorList[Y].sensorName, distance: e[N].sensorList[Y].distance });
       i.push({
         pipeZ: z,
         number: (N + 1).toString(),
@@ -18419,7 +18422,7 @@ class jm extends _n {
         coalParticlcRedius: re,
         sealingMaterial: ee,
         sealingType: V,
-        stoped: G,
+        stoped: U,
         pipeLength3: m,
         pipe2StartX: me,
         pipe3StartX: Ce,
@@ -18427,7 +18430,7 @@ class jm extends _n {
         pressureSensors: M,
         concentSensors: L,
         solenoidSensors: J,
-        lqllSensors: U
+        lqllSensors: G
       });
     }
     this.modelsData.varyGroup = i;
@@ -18436,70 +18439,70 @@ class jm extends _n {
     const He = new mt({ color: 6111539, roughness: 0.2, metalness: 0.8, opacity: 0.85, transparent: !1, side: kt }), Ze = new mt({ color: 10926278, flatShading: !1, roughness: 1, metalness: 0, envMapIntensity: 0, transparent: !1, opacity: 0.3, side: kt }), $e = new Ii(Ee).load(this.urlPre + "/picture/metal.jpg"), Oe = new mt({ color: 16777215, map: $e, roughness: 0.2, metalness: 0.8, envMapIntensity: 0.5 }), At = new mt({ color: 10066329, roughness: 0.1, metalness: 0.8 });
     new mt({ color: 2439877, roughness: 0.2, metalness: 0.5 });
     {
-      const N = new ym(Ee).setDecoderPath(this.urlPre + "/libs/draco/gltf/"), z = new en(Ee).setTranscoderPath(this.urlPre + "/libs/basis/"), G = new jg(Ee).setCrossOrigin("anonymous").setDRACOLoader(N).setKTX2Loader(z.detectSupport(this.renderer)).setMeshoptDecoder(km);
-      G.load(this.urlPre + "/model/sensor1.glb", (L) => {
+      const N = new ym(Ee).setDecoderPath(this.urlPre + "/libs/draco/gltf/"), z = new en(Ee).setTranscoderPath(this.urlPre + "/libs/basis/"), U = new jg(Ee).setCrossOrigin("anonymous").setDRACOLoader(N).setKTX2Loader(z.detectSupport(this.renderer)).setMeshoptDecoder(km);
+      U.load(this.urlPre + "/model/sensor1.glb", (L) => {
         const J = this.modelProcess(L.scene);
         J.scale.setScalar(0.04), J.rotation.y = Math.PI / 2, J.position.set(0, -0.740237, 0), J.name = "房子", this.group.add(J), this.roomBox = new Ln().setFromObject(J);
-      }), G.load(this.urlPre + "/model/sensor7.glb", (L) => {
+      }), U.load(this.urlPre + "/model/sensor7.glb", (L) => {
         const J = this.modelProcess(L.scene);
         J.rotation.y = -1.055745;
-        let U = new tr(5e-3), Y = new Ie(U, it), le = new B(-64e-5, 0.59578, 0.10876);
+        let G = new tr(5e-3), Y = new Ie(G, it), le = new B(-64e-5, 0.59578, 0.10876);
         const ce = J.position.clone();
         let be = J.clone(!0);
         be.position.copy(ce.clone().setZ(ce.z)), be.name = "气瓶和减压阀", this.group.add(be), this.qp = be;
         let _e = Y.clone(!0);
         _e.position.copy(le.clone().setZ(le.z)), this.group.add(_e);
-      }), G.load(this.urlPre + "/model/sensor6.glb", (L) => {
+      }), U.load(this.urlPre + "/model/sensor6.glb", (L) => {
         const J = this.modelProcess(L.scene);
         J.scale.setScalar(3);
-        for (let U = 0; U < i.length; U++) {
+        for (let G = 0; G < i.length; G++) {
           let Y = J.clone(!0);
           Y.traverse((le) => {
             le.isMesh && le.material.name === "02 - Default.001" && (le.material = le.material.clone(!0));
-          }), Y.name = "手动阀门", Y.position.set(g + X, n + t + he, i[U].pipeZ), this.group.add(Y), Y.userData = { sensorId: 0, name: "手动阀门", mdGroupId: i[U].mdGroupId, mdGroupName: i[U].mdGroupName, value: i[U].stoped, number: U };
+          }), Y.name = "手动阀门", Y.position.set(g + X, n + t + he, i[G].pipeZ), this.group.add(Y), Y.userData = { sensorId: 0, name: "手动阀门", mdGroupId: i[G].mdGroupId, mdGroupName: i[G].mdGroupName, value: i[G].stoped, number: G };
         }
-      }), G.load(this.urlPre + "/model/sensor5.glb", (L) => {
+      }), U.load(this.urlPre + "/model/sensor5.glb", (L) => {
         const J = this.modelProcess(L.scene);
         J.scale.set(4, 4, 4), J.name = "可变负压抽采泵", J.position.set(Me + l * 9 + a / 2 + 0.36, -0.11266494, 0.33597925774), this.group.add(J), this.ccb = J;
-      }), G.load(this.urlPre + "/model/server_console.glb", (L) => {
+      }), U.load(this.urlPre + "/model/server_console.glb", (L) => {
         const J = this.modelProcess(L.scene);
         J.rotation.y = -Math.PI / 2, J.scale.set(0.5, 0.5, 0.5), J.name = "机柜", J.position.set(Me + l * 9 + a * 4 + 0.19, -0.695679, -3), this.group.add(J);
-      }), G.load(this.urlPre + "/model/sensor4.glb", (L) => {
+      }), U.load(this.urlPre + "/model/sensor4.glb", (L) => {
         const J = this.modelProcess(L.scene);
-        J.rotation.x = Math.PI / 2, J.traverse((U) => {
-          U.isMesh && U.material.name === "01 - Default.003" && (U.material = He);
+        J.rotation.x = Math.PI / 2, J.traverse((G) => {
+          G.isMesh && G.material.name === "01 - Default.003" && (G.material = He);
         });
-        for (let U = 0; U < i.length; U++) {
+        for (let G = 0; G < i.length; G++) {
           let Y = J.clone(!0);
-          Y.name = "流量表", Y.position.set(g + ae, n + t + de, i[U].pipeZ), this.group.add(Y), Y.userData = { sensorId: i[U].flowSensors.id, name: i[U].flowSensors.name, mdGroupId: i[U].mdGroupId, mdGroupName: i[U].mdGroupName, value: 36.5 }, this.sensors.set(i[U].flowSensors.id, { type: "流量表", name: i[U].flowSensors.name, groupName: i[U].mdGroupName, rendId: Y.id, groupId: i[U].mdGroupId, number: U }), this.llb1 = Y;
-          let le = i[U].pipe2StartX + A + E + ie;
-          for (let ce = 0; ce < i[U].lqllSensors.length; ce++) {
-            const be = i[U].lqllSensors[ce];
+          Y.name = "流量表", Y.position.set(g + ae, n + t + de, i[G].pipeZ), this.group.add(Y), Y.userData = { sensorId: i[G].flowSensors.id, name: i[G].flowSensors.name, mdGroupId: i[G].mdGroupId, mdGroupName: i[G].mdGroupName, value: 36.5 }, this.sensors.set(i[G].flowSensors.id, { type: "流量表", name: i[G].flowSensors.name, groupName: i[G].mdGroupName, rendId: Y.id, groupId: i[G].mdGroupId, number: G }), this.llb1 = Y;
+          let le = i[G].pipe2StartX + A + E + ie;
+          for (let ce = 0; ce < i[G].lqllSensors.length; ce++) {
+            const be = i[G].lqllSensors[ce];
             let _e = J.clone(!0);
-            _e.name = "漏气流量表", le = le + be.distance, _e.position.set(le, n + i[U].mnzkRadius + de, i[U].pipeZ), this.group.add(_e), _e.userData = { sensorId: be.id, name: be.name, mdGroupId: i[U].mdGroupId, mdGroupName: i[U].mdGroupName, value: 36.5 }, this.sensors.set(be.id, { type: "漏气流量表", name: be.name, groupName: i[U].mdGroupName, rendId: _e.id, groupId: i[U].mdGroupId, number: U }), ce === 2 && (this.lqllb3 = _e);
+            _e.name = "漏气流量表", le = le + be.distance, _e.position.set(le, n + i[G].mnzkRadius + de, i[G].pipeZ), this.group.add(_e), _e.userData = { sensorId: be.id, name: be.name, mdGroupId: i[G].mdGroupId, mdGroupName: i[G].mdGroupName, value: 36.5 }, this.sensors.set(be.id, { type: "漏气流量表", name: be.name, groupName: i[G].mdGroupName, rendId: _e.id, groupId: i[G].mdGroupId, number: G }), ce === 2 && (this.lqllb3 = _e);
           }
         }
-      }), G.load(this.urlPre + "/model/sensor2.glb", (L) => {
+      }), U.load(this.urlPre + "/model/sensor2.glb", (L) => {
         const J = this.modelProcess(L.scene);
         J.rotation.x = Math.PI / 2;
-        for (let U = 0; U < i.length; U++) {
+        for (let G = 0; G < i.length; G++) {
           let Y = J.clone(!0);
-          Y.name = "压力表", Y.position.set(i[U].pipe2StartX + A + E + ie, n + i[U].mnzkRadius + $, i[U].pipeZ), this.group.add(Y), Y.userData = { sensorId: i[U].pressureSensors.id, name: i[U].pressureSensors.name, mdGroupId: i[U].mdGroupId, mdGroupName: i[U].mdGroupName, value: 36.5 }, this.sensors.set(i[U].pressureSensors.id, { type: "压力表", name: i[U].pressureSensors.name, groupName: i[U].mdGroupName, rendId: Y.id, groupId: i[U].mdGroupId, number: U }), this.ylb1 = Y;
+          Y.name = "压力表", Y.position.set(i[G].pipe2StartX + A + E + ie, n + i[G].mnzkRadius + $, i[G].pipeZ), this.group.add(Y), Y.userData = { sensorId: i[G].pressureSensors.id, name: i[G].pressureSensors.name, mdGroupId: i[G].mdGroupId, mdGroupName: i[G].mdGroupName, value: 36.5 }, this.sensors.set(i[G].pressureSensors.id, { type: "压力表", name: i[G].pressureSensors.name, groupName: i[G].mdGroupName, rendId: Y.id, groupId: i[G].mdGroupId, number: G }), this.ylb1 = Y;
         }
       });
       let oe = this.urlPre + "/model/sensor3.glb";
-      new Date().getMonth() > 6 && (oe = "https://xian-school-1316691746.cos.ap-beijing.myqcloud.com/assets/model/透气片.glb"), G.load(
+      new Date().getMonth() > 6 && (oe = "https://xian-school-1316691746.cos.ap-beijing.myqcloud.com/assets/model/透气片.glb"), U.load(
         oe,
         (L) => {
           const J = this.modelProcess(L.scene);
-          J.traverse((U) => {
-            U.isMesh && (U.material.roughness = 0, U.material.metalness = 1, U.material.color.set(16777215));
+          J.traverse((G) => {
+            G.isMesh && (G.material.roughness = 0, G.material.metalness = 1, G.material.color.set(16777215));
           });
-          for (let U = 0; U < i.length; U++) {
-            let Y = c + 3 * t + p + E + w, le = Y + i[U].mctqSecondCircle, ce = i[U].mctqRadius * 2 / 0.077922, be = J.clone(!0);
-            be.name = "透气片1-" + i[U].number, be.scale.set(ce, ce, ce), be.position.set(Y, n, i[U].pipeZ), this.group.add(be);
+          for (let G = 0; G < i.length; G++) {
+            let Y = c + 3 * t + p + E + w, le = Y + i[G].mctqSecondCircle, ce = i[G].mctqRadius * 2 / 0.077922, be = J.clone(!0);
+            be.name = "透气片1-" + i[G].number, be.scale.set(ce, ce, ce), be.position.set(Y, n, i[G].pipeZ), this.group.add(be);
             let _e = J.clone(!0);
-            _e.name = "透气片2-" + i[U].number, _e.scale.set(ce, ce, ce), _e.position.set(le, n, i[U].pipeZ), this.group.add(_e), this.modelsData.varyGroup[U].mctqCircle1 = { pipeRadius: i[U].mctqRadius - 0.01, midPoint: be.position }, this.modelsData.varyGroup[U].mctqCircle2 = { pipeRadius: i[U].mctqRadius - 0.01, midPoint: _e.position };
+            _e.name = "透气片2-" + i[G].number, _e.scale.set(ce, ce, ce), _e.position.set(le, n, i[G].pipeZ), this.group.add(_e), this.modelsData.varyGroup[G].mctqCircle1 = { pipeRadius: i[G].mctqRadius - 0.01, midPoint: be.position }, this.modelsData.varyGroup[G].mctqCircle2 = { pipeRadius: i[G].mctqRadius - 0.01, midPoint: _e.position };
           }
         },
         null,
@@ -18509,23 +18512,17 @@ class jm extends _n {
       );
     }
     Ee.onLoad = () => {
-      this.dispatchEvent({ type: "sceneLoaded", flag: !0 });
-      for (let G = 0; G < this.modelsData.varyGroup.length; G++)
-        this.addGasArrow(G, 50);
+      for (let z = 0; z < this.modelsData.varyGroup.length; z++)
+        this.addGasArrow(z, 50);
       this.addGasDense(0, null, !0), this.addParticles(0);
-      let N = {
-        cylinderName: "甲烷瓦斯气瓶",
-        pumpPower: "可变负压抽采泵"
-      };
-      this.freshAttributes(N, !1);
-      let z = [
+      let N = [
         { sensorId: 1, gatherTime: "2023-06-01 15:48:08", gatherValue: 98.71 },
         { sensorId: 2, gatherTime: "2023-06-01 15:47:01", gatherValue: 1.83 },
         { sensorId: 5, gatherTime: "2023-06-01 15:43:03", gatherValue: 84.96 },
         { sensorId: 6, gatherTime: "2023-06-01 15:41:05", gatherValue: 176.41 },
         { sensorId: 7, gatherTime: "2023-06-01 15:42:02", gatherValue: 16.4 }
       ];
-      this.freshSensors(z), this.showLabel(this.ylb1), this.showLabel(this.llb1), this.showLabel(this.lqllb3);
+      this.freshSensors(N), this.showLabel(this.ylb1), this.showLabel(this.llb1), this.showLabel(this.lqllb3), this.dispatchEvent({ type: "sceneLoaded", flag: !0 });
     };
     {
       let N = [
@@ -18539,24 +18536,24 @@ class jm extends _n {
         new B(0.71998, -0.567262, -333e-5),
         new B(1.05, 0, -333e-5),
         new B(1.1, 0, -333e-5)
-      ], z = new El(N, !1, "chordal"), G = new ka(z, 256, 5e-3, 16), oe = new Ie(G, st);
+      ], z = new El(N, !1, "chordal"), U = new ka(z, 256, 5e-3, 16), oe = new Ie(U, st);
       this.group.add(oe);
       let M = new tr(8e-3), L = new Ie(M, it), J = [N[9]];
-      for (let U = 0; U < J.length; U++) {
+      for (let G = 0; G < J.length; G++) {
         let Y = L.clone(!0);
-        Y.position.copy(J[U]), this.group.add(Y);
+        Y.position.copy(J[G]), this.group.add(Y);
       }
     }
     {
       const N = new Je(0.03, 0.03, a, 36), z = new Ie(N, He);
       z.rotation.set(0, 0, Math.PI / 2), z.position.set(s + a / 2, n, 0), this.group.add(z), z.name = "集合头";
-      const G = new Je(0.05, t, o, 36, 1, !0), oe = new Ie(G, He);
+      const U = new Je(0.05, t, o, 36, 1, !0), oe = new Ie(U, He);
       oe.rotation.set(0, 0, Math.PI / 2), oe.position.set(s + a + o / 2, n, 0), this.group.add(oe), oe.name = "集合头";
       const M = new Je(t, t, t, 36, 1, !0), L = new Ie(M, Ze);
       L.rotation.set(0, 0, Math.PI / 2), L.position.set(c + t / 2, n, 0), this.group.add(L);
       const J = L.clone();
       J.position.set(c + 5 * t + W + t / 2, n, 0), this.group.add(J);
-      const U = new Je(t, 0.05, o, 36, 1, !0), Y = new Ie(U, He);
+      const G = new Je(t, 0.05, o, 36, 1, !0), Y = new Ie(G, He);
       Y.rotation.set(0, 0, Math.PI / 2), Y.position.set(c + 6 * t + W + o / 2, n, 0), this.group.add(Y);
       const le = new Je(l, l, a, 36, 1, !0), ce = new Ie(le, He);
       ce.rotation.set(0, 0, Math.PI / 2), ce.position.set(c + 6 * t + W + o + a / 2, n, 0), this.group.add(ce);
@@ -18574,16 +18571,16 @@ class jm extends _n {
     if (u > 1) {
       const N = new Je(t, t, f, 36, 1, !0), z = new Ie(N, Ze);
       z.rotation.set(Math.PI / 2, 0, 0), z.position.set(c + t, n, 0), this.group.add(z);
-      const G = z.clone();
-      G.position.set(c + 5 * t + W, n, 0), this.group.add(G);
+      const U = z.clone();
+      U.position.set(c + 5 * t + W, n, 0), this.group.add(U);
       const oe = new cs(t * 2, t, 36, 48, Math.PI / 2), M = new Ie(oe, Ze);
       M.rotation.set(-Math.PI / 2, 0, Math.PI / 2), M.position.set(c + 3 * t, n, -f / 2), this.group.add(M);
       const L = M.clone(!0);
       L.rotation.set(Math.PI / 2, 0, Math.PI / 2), L.position.set(c + 3 * t, n, f / 2), this.group.add(L), this.modelsData.verticalPipeLeft = { pipeRadius: t, pipeLength: f, midPoint: z.position.clone(), upPoint: M.position.clone(), downPoint: L.position.clone() };
       const J = M.clone(!0);
       J.rotation.set(-Math.PI / 2, 0, 0), J.position.set(c + 3 * t + W, n, -f / 2), this.group.add(J);
-      const U = M.clone(!0);
-      U.rotation.set(Math.PI / 2, 0, 0), U.position.set(c + 3 * t + W, n, f / 2), this.group.add(U), this.modelsData.verticalPipeRight = { pipeRadius: t, pipeLength: f, midPoint: G.position.clone(), upPoint: J.position.clone(), downPoint: U.position.clone() }, K(u - 1, this), K(0, this);
+      const G = M.clone(!0);
+      G.rotation.set(Math.PI / 2, 0, 0), G.position.set(c + 3 * t + W, n, f / 2), this.group.add(G), this.modelsData.verticalPipeRight = { pipeRadius: t, pipeLength: f, midPoint: U.position.clone(), upPoint: J.position.clone(), downPoint: G.position.clone() }, K(u - 1, this), K(0, this);
       const Y = new Yt(t, t, f + 12 * t), le = new Ie(Y, Oe);
       le.position.set(g, n - h, 0), this.group.add(le);
       const ce = le.clone();
@@ -18614,8 +18611,8 @@ class jm extends _n {
     } else if (u === 1) {
       const N = new Je(t, t, 2 * t, 36, 1, !0), z = new Ie(N, He);
       z.rotation.set(0, 0, Math.PI / 2), z.position.set(c + t * 2, n, 0), this.group.add(z), K(0, this);
-      const G = z.clone();
-      G.position.set(c + 3 * t + W + t, n, 0), this.group.add(G);
+      const U = z.clone();
+      U.position.set(c + 3 * t + W + t, n, 0), this.group.add(U);
       const oe = new Yt(W + 3 * t + 2 * t, t, t), M = new Ie(oe, Oe);
       M.position.set(g + t / 2 + (W + 3 * t) / 2, n - h, 0), this.group.add(M), S.push(
         c + 3 * t + t * 4,
@@ -18629,12 +18626,12 @@ class jm extends _n {
     {
       const N = new Yt(t, h - t - t / 2, t), z = new Ie(N, At);
       z.position.set(0, n - h / 2 - t / 4, 0), C.add(z);
-      const G = new Yt(t, t, t * 4), oe = new Ie(G, At);
+      const U = new Yt(t, t, t * 4), oe = new Ie(U, At);
       oe.position.set(0, n - t - t / 2, 0), C.add(oe);
       const M = new Yt(t, t, t * 8), L = new Ie(M, At);
       L.position.set(0, n - h, 0), C.add(L);
       let J = 0.01;
-      const U = new cs(t + J, 0.01, 12, 48, Math.PI), Y = new Ie(U, At);
+      const G = new cs(t + J, 0.01, 12, 48, Math.PI), Y = new Ie(G, At);
       Y.rotation.set(0, Math.PI / 2, 0), Y.position.set(0, n, 0), C.add(Y);
       const le = new Je(J, J, t, 36, 1, !0), ce = new Ie(le, At);
       ce.position.set(0, n - t / 2, 0 + t + J), C.add(ce);
@@ -18643,54 +18640,54 @@ class jm extends _n {
     }
     for (let N = 0; N < i.length; N++)
       for (let z = 0; z < S.length; z++) {
-        let G = C.clone(!0);
-        G.position.x = S[z], G.position.z = i[N].pipeZ, this.group.add(G);
+        let U = C.clone(!0);
+        U.position.x = S[z], U.position.z = i[N].pipeZ, this.group.add(U);
       }
     for (let N = 0; N < rt.length; N++) {
       let z = C.clone(!0);
       z.rotateY(Math.PI / 2), z.position.x = g, z.position.z = rt[N], this.group.add(z);
-      let G = C.clone(!0);
-      G.rotateY(Math.PI / 2), G.position.x = c + 5 * t + W, G.position.z = rt[N], this.group.add(G);
+      let U = C.clone(!0);
+      U.rotateY(Math.PI / 2), U.position.x = c + 5 * t + W, U.position.z = rt[N], this.group.add(U);
     }
     function K(N, z) {
-      const G = i[N];
-      let oe = G.pipeZ, M = G.number;
-      const L = new Ii().load(z.urlPre + "/picture/wall.jpg"), J = new mt({ color: 16777215, map: L, opacity: 0.9, transparent: !0, side: kt }), U = new mt({ color: 4607, map: null, opacity: 0.2, transparent: !0, wireframe: !0 }), Y = new Ii().load(z.urlPre + "/picture/jin.jpg"), le = new mt({ color: 16777215, map: Y, side: kt }), ce = new mt({ color: 16777215, map: null, roughness: 0, metalness: 1, side: kt }), be = new mt({ color: 39321, opacity: 0.5, transparent: !0, alphaToCoverage: !0, side: kt }), _e = new mt({ color: 65535, opacity: 0.8, transparent: !0, alphaToCoverage: !1, side: kt }), Le = new Je(t, t, p, 36, 1, !0), R = new Ie(Le, Ze);
+      const U = i[N];
+      let oe = U.pipeZ, M = U.number;
+      const L = new Ii().load(z.urlPre + "/picture/wall.jpg"), J = new mt({ color: 16777215, map: L, opacity: 0.9, transparent: !0, side: kt }), G = new mt({ color: 4607, map: null, opacity: 0.2, transparent: !0, wireframe: !0 }), Y = new Ii().load(z.urlPre + "/picture/jin.jpg"), le = new mt({ color: 16777215, map: Y, side: kt }), ce = new mt({ color: 16777215, map: null, roughness: 0, metalness: 1, side: kt }), be = new mt({ color: 39321, opacity: 0.5, transparent: !0, alphaToCoverage: !0, side: kt }), _e = new mt({ color: 65535, opacity: 0.8, transparent: !0, alphaToCoverage: !1, side: kt }), Le = new Je(t, t, p, 36, 1, !0), R = new Ie(Le, Ze);
       R.name = "mainPipe-" + M, R.rotation.set(0, 0, Math.PI / 2), R.position.set(c + 3 * t + p / 2, n, oe), z.group.add(R), z.modelsData.varyGroup[N].pipe1 = { pipeRadius: t, pipeLength: p, midPoint: R.position.clone(), mesh: R };
       const j = new Je(b, b, E, 36, 1, !0), se = new Ie(j, le);
       se.rotation.set(0, 0, Math.PI / 2), se.position.set(c + 3 * t + p + E / 2, n, oe), z.group.add(se);
       const Ae = new Fa(t, b, 56), pe = new Ie(Ae, le);
       pe.rotation.set(0, Math.PI / 2, 0), pe.position.set(c + 3 * t + p, n, oe), z.group.add(pe);
-      const ke = new Je(G.mctqRadius, G.mctqRadius, G.mctqLenght, 36), et = new Ie(ke, be);
-      et.rotation.set(0, 0, Math.PI / 2), et.position.set(c + 3 * t + p + E + G.mctqLenght / 2, n, oe), z.group.add(et), z.modelsData.varyGroup[N].mctqPipe = { pipeRadius: G.mctqRadius, pipeLength: G.mctqLenght, midPoint: et.position.clone() };
-      const ft = new Je(x, x, G.mctqLenght - 0.1, 36), Vt = new Ie(ft, ce);
-      Vt.rotation.set(0, 0, Math.PI / 2), Vt.position.set(c + 3 * t + p + E + 0.1 + (G.mctqLenght - 0.1) / 2, n, oe), z.group.add(Vt);
+      const ke = new Je(U.mctqRadius, U.mctqRadius, U.mctqLenght, 36), et = new Ie(ke, be);
+      et.rotation.set(0, 0, Math.PI / 2), et.position.set(c + 3 * t + p + E + U.mctqLenght / 2, n, oe), z.group.add(et), z.modelsData.varyGroup[N].mctqPipe = { pipeRadius: U.mctqRadius, pipeLength: U.mctqLenght, midPoint: et.position.clone() };
+      const ft = new Je(x, x, U.mctqLenght - 0.1, 36), Vt = new Ie(ft, ce);
+      Vt.rotation.set(0, 0, Math.PI / 2), Vt.position.set(c + 3 * t + p + E + 0.1 + (U.mctqLenght - 0.1) / 2, n, oe), z.group.add(Vt);
       const Ye = new Je(b, b, E, 36, 1, !0), Lt = new Ie(Ye, le);
-      Lt.rotation.set(0, 0, Math.PI / 2), Lt.position.set(c + 3 * t + p + E + G.mctqLenght + E / 2, n, oe), z.group.add(Lt);
+      Lt.rotation.set(0, 0, Math.PI / 2), Lt.position.set(c + 3 * t + p + E + U.mctqLenght + E / 2, n, oe), z.group.add(Lt);
       const yt = pe.clone();
-      yt.position.set(c + 3 * t + p + E * 2 + G.mctqLenght, n, oe), z.group.add(yt);
+      yt.position.set(c + 3 * t + p + E * 2 + U.mctqLenght, n, oe), z.group.add(yt);
       const bs = new Je(t, t, A, 36, 1, !0), Pn = new Ie(bs, Ze);
-      Pn.name = "mainPipe-" + M, Pn.rotation.set(0, 0, Math.PI / 2), Pn.position.set(G.pipe2StartX + A / 2, n, oe), z.group.add(Pn), z.modelsData.varyGroup[N].pipe2 = { pipeRadius: t, pipeLength: A, midPoint: Pn.position.clone() };
+      Pn.name = "mainPipe-" + M, Pn.rotation.set(0, 0, Math.PI / 2), Pn.position.set(U.pipe2StartX + A / 2, n, oe), z.group.add(Pn), z.modelsData.varyGroup[N].pipe2 = { pipeRadius: t, pipeLength: A, midPoint: Pn.position.clone() };
       const or = new Je(b, b, E, 36, 1, !0), ki = new Ie(or, le);
-      ki.rotation.set(0, 0, Math.PI / 2), ki.position.set(G.pipe2StartX + A + E / 2, n, oe), z.group.add(ki);
+      ki.rotation.set(0, 0, Math.PI / 2), ki.position.set(U.pipe2StartX + A + E / 2, n, oe), z.group.add(ki);
       const v = pe.clone();
-      v.position.set(G.pipe2StartX + A, n, oe), z.group.add(v);
-      const O = new mt({ color: 39321, opacity: 0.5, transparent: !0, alphaToCoverage: !0, side: kt }), Z = new Je(G.mnzkRadius, G.mnzkRadius, G.mnzkLength, 36), k = new Ie(Z, O);
-      k.rotation.set(0, 0, Math.PI / 2), k.position.set(G.pipe2StartX + A + E + G.mnzkLength / 2, n, oe), z.group.add(k), z.modelsData.varyGroup[N].mnzkPipe = { pipeRadius: G.mnzkRadius, pipeLength: G.mnzkLength, midPoint: k.position.clone(), mesh: k };
-      const te = new Je(G.lwRadius, G.lwRadius, G.lwLength, 36, 72), xe = new Ie(te, U);
-      xe.rotation.set(0, 0, Math.PI / 2), xe.position.set(G.pipe2StartX + A + E + G.mnzkLength / 2, n, oe), z.group.add(xe);
-      let ve = G.mnzkLength - G.fkLength;
-      const Be = new Je(G.fkRadius, G.fkRadius, G.fkLength, 36, 1), Se = new Ie(Be, J);
-      Se.rotation.set(0, 0, Math.PI / 2), Se.position.set(G.pipe2StartX + A + E + ve + G.fkLength / 2, n, oe), z.group.add(Se);
-      let Ne = G.mnzkLength - G.ccgLength;
-      const Pe = new Je(G.ccgRadius, G.ccgRadius, G.ccgLength, 36, 1, !0), Qe = new Ie(Pe, _e);
-      Qe.rotation.set(0, 0, Math.PI / 2), Qe.position.set(G.pipe2StartX + A + E + Ne + G.ccgLength / 2, n, oe), z.group.add(Qe);
+      v.position.set(U.pipe2StartX + A, n, oe), z.group.add(v);
+      const O = new mt({ color: 39321, opacity: 0.5, transparent: !0, alphaToCoverage: !0, side: kt }), Z = new Je(U.mnzkRadius, U.mnzkRadius, U.mnzkLength, 36), k = new Ie(Z, O);
+      k.rotation.set(0, 0, Math.PI / 2), k.position.set(U.pipe2StartX + A + E + U.mnzkLength / 2, n, oe), z.group.add(k), z.modelsData.varyGroup[N].mnzkPipe = { pipeRadius: U.mnzkRadius, pipeLength: U.mnzkLength, midPoint: k.position.clone(), mesh: k };
+      const te = new Je(U.lwRadius, U.lwRadius, U.lwLength, 36, 72), xe = new Ie(te, G);
+      xe.rotation.set(0, 0, Math.PI / 2), xe.position.set(U.pipe2StartX + A + E + U.mnzkLength / 2, n, oe), z.group.add(xe);
+      let ve = U.mnzkLength - U.fkLength;
+      const Be = new Je(U.fkRadius, U.fkRadius, U.fkLength, 36, 1), Se = new Ie(Be, J);
+      Se.rotation.set(0, 0, Math.PI / 2), Se.position.set(U.pipe2StartX + A + E + ve + U.fkLength / 2, n, oe), z.group.add(Se);
+      let Ne = U.mnzkLength - U.ccgLength;
+      const Pe = new Je(U.ccgRadius, U.ccgRadius, U.ccgLength, 36, 1, !0), Qe = new Ie(Pe, _e);
+      Qe.rotation.set(0, 0, Math.PI / 2), Qe.position.set(U.pipe2StartX + A + E + Ne + U.ccgLength / 2, n, oe), z.group.add(Qe);
       const tt = new Je(b, b, E, 36), xt = new Ie(tt, le);
-      xt.rotation.set(0, 0, Math.PI / 2), xt.position.set(G.pipe2StartX + A + E + G.mnzkLength + E / 2, n, oe), z.group.add(xt);
+      xt.rotation.set(0, 0, Math.PI / 2), xt.position.set(U.pipe2StartX + A + E + U.mnzkLength + E / 2, n, oe), z.group.add(xt);
       const Ut = pe.clone();
-      Ut.position.set(G.pipe2StartX + A + E * 2 + G.mnzkLength, n, oe), z.group.add(Ut);
-      const rn = new Je(t, t, G.pipeLength3, 36, 1, !0), We = new Ie(rn, Ze);
-      We.name = "mainPipe-" + M, We.rotation.set(0, 0, -Math.PI / 2), We.position.set(G.pipe3StartX + G.pipeLength3 / 2, n, oe), z.group.add(We), z.modelsData.varyGroup[N].pipe3 = { pipeRadius: t, pipeLength: m, midPoint: We.position.clone(), mesh: We };
+      Ut.position.set(U.pipe2StartX + A + E * 2 + U.mnzkLength, n, oe), z.group.add(Ut);
+      const rn = new Je(t, t, U.pipeLength3, 36, 1, !0), We = new Ie(rn, Ze);
+      We.name = "mainPipe-" + M, We.rotation.set(0, 0, -Math.PI / 2), We.position.set(U.pipe3StartX + U.pipeLength3 / 2, n, oe), z.group.add(We), z.modelsData.varyGroup[N].pipe3 = { pipeRadius: t, pipeLength: m, midPoint: We.position.clone(), mesh: We };
     }
   }
   addGasArrow(e, t = 100) {

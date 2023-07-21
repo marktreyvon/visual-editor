@@ -14,9 +14,8 @@ import { PluginConfig } from '.';
 import { Keyboard } from '@antv/x6-plugin-keyboard';
 import { ICanvas } from '@antv/g2/lib/dependents';
 
-
 import CellMove from '@/utils/CellMove';
-import {useIs3D} from "@/store/modules/is3DStroe";
+import {useIs3DMode} from "@/store/modules/is3DStroe";
 /**
  * @author cxs
  * @date 2023-04-19
@@ -362,9 +361,9 @@ class CanvasConfig implements ICanvasConfig {
             CellMove(Cells,'right',10)
             return false
         })
-        const is3D=useIs3D()
+        const is3DMode=useIs3DMode()
         this.graph.bindKey('esc', (e) => {
-                is3D.setFalse()
+            is3DMode.setFalse()
         })
         this.graph.bindKey('shift+left', (e) => {
             if(!this.enableSelection) return
@@ -381,12 +380,11 @@ class CanvasConfig implements ICanvasConfig {
 
             if (!that.graph)
                 throw new Error('Graph is undefined.');
-            console.log("确实按了")
 
-            if(is3D.is3D){
-                is3D.setFalse()
+            if(is3DMode.is3DMode){
+                is3DMode.setFalse()
             }else{
-                is3D.setTrue()
+                is3DMode.setTrue()
             }
 
 

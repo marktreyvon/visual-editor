@@ -6,32 +6,38 @@
  * @Description: threejs 场景 通过引入sceneRender源码创建threejs场景
 -->
 <template>
-  <div  :style="{padding:'10px',color:'#fff',position: 'absolute',width: '100%',height: isEnter,backgroundColor:' #00000000',display: 'flex',justifyContent: 'start',alignItems: 'start'}">
-  <div style='color: #fff;background-color: #00000044;padding: 4px;font-size: 12px' >alt+1,进入3d预览,预览中请使用，w:前进，a：后退，s：左移，d：右移，q：降低，e：升高</div>
+<!--  准备遮罩和提示，因拖动冲突，需要再一开始准备遮罩，并把engine.js进入无鼠标模式的快捷设为alt+1（亦可使用其他方式，单需要告知我们）-->
+  <div  :style="{padding:'10px',color:'#fff',position: 'absolute',width: '100%',height: props.isDisplay?'0px':isEnter,backgroundColor:' #00000000',display: 'flex',justifyContent: 'start',alignItems: 'start'}">
+    <div style='color: #fff;background-color: #00000044;padding: 4px;font-size: 12px' >alt+1,进入3d预览,预览中请使用，w:前进，a：后退，s：左移，d：右移，q：降低，e：升高</div>
   </div>
-  <div class="content" ref="threeBox"></div>
+<!-- 准备渲染需要的div，关键点为ref，场景刷入的时候需要这个-->
+  <div  class="content" ref="threeBox"></div>
 </template>
+<!--以下为vue3，组合式api举例，也可以使用其他方式编写-->
 <script lang="ts" setup>
-import { useScene4 } from './store/sceneRenderBackstage';
-import { useIs3D } from '@/store/modules/is3DStroe';
+//引入处理数据的数据仓库，改处理方式也可写在当前文件中
+import { useSceneDemo } from './store/sceneRenderBackstage';
+//引入判断是否进入3d预览模式的数据仓库，固定位置
+import { useIs3DMode } from '@/store/modules/is3DStroe';
+//设备数据的接口，该接口暂时由ThingsPanel提供，后续可使用自己的接口，但需要将接口地址，传出来
+import DataAPI from "@/api/data";
+//其他需要的引用
 import {
   ref,
-  watchEffect,
-  nextTick,
-  computed,
-  defineComponent,
   watch,
   onMounted,
-  onUnmounted,
-  onBeforeUnmount
+  onBeforeUnmount,
 } from 'vue';
-import {useThreeDDeviceData} from "@/store/modules/3DDeviceDataStroe";
 import {isEqual, uniqWith} from "lodash";
-import DataAPI from "@/api/data";
-const ThreeDDeviceData=useThreeDDeviceData()
 
 
+
+//props准备，改数据为固定处理，按如下格式编写即可，其中style为样式配置，value为静态数据，data为设备绑定数据，id是当前node节点Id
 const props = defineProps({
+  isDisplay:{
+    type: Boolean,
+    default: false,
+  },
   isContentReady: {
     type: Boolean,
     default: true,
@@ -43,13 +49,13 @@ const props = defineProps({
   value: {
     type: String,
     default: () => {
-      return {};
+      return '';
     },
   },
   data: {
-    type: Object,
+    type: Object||undefined,
     default: () => {
-      return {};
+      return undefined;
     },
   },
   id: {
@@ -60,158 +66,169 @@ const props = defineProps({
   },
 });
 
-const formData=ref("")
-const sceneStore=useScene4()
-const isEnter=ref('0px')
-const is3D=useIs3D()
+//初始 遮罩高度100%防止拖动的时候镜头转动，之后这个值会被改为0
+const isEnter=ref('100%')
+//3渲染容器的ref
 const threeBox = ref();
-
-
-
-
-
-function changeData(data: any) {
-
-  formData.value = JSON.parse(JSON.stringify(data));
-  // 解析数据传给SceneBackstage实例 更新标签上的数据
-  // ...
-  // this.scene.updateData(this.formData);
-}
-function enter3d(){
-
-  if(isEnter.value==='100%'){
-    isEnter.value='0px'
-    is3D.setTrue()
-  }
-}
-
-watch(() => is3D.is3D,(newValue, oldValue) => {
+//数据准备
+const is3DMode=useIs3DMode()  //是否3d预览模式数据仓库
+const sceneStore=useSceneDemo()  //设置3d数据场景的数据仓仓库
+let deviceDataRequestTimer:any=null   //设备请求度定时器返回值
+let DataDelayTimer1:any=null //设备数据1延时刷新定时器返回值
+let DataDelayTimer2:any=null //设备数据2延时刷新定时器返回值
+//监听是否进入3d模式，如果进入，把遮罩高度设为0
+watch(() => is3DMode.is3DMode,(newValue, oldValue) => {
   if(newValue){
     isEnter.value='0px'
   }else{
     isEnter.value='0px'
   }
 })
-
-
-onBeforeUnmount(()=>{
-  console.log(threeDTimer,"423432432")
-  if(threeDTimer){
-    clearInterval(threeDTimer)
-    clearTimeout(threeDTimer1)
-    clearTimeout(threeDTimer2)
+function setDeviceData(value: any) {
+  if (deviceDataRequestTimer) {
+    clearInterval(deviceDataRequestTimer)
+    clearTimeout(DataDelayTimer1)
+    clearTimeout(DataDelayTimer2)
   }
-})
 
-watch(() => props.value,(newValue, oldValue) => {
-  console.log(props.value,"45935098435")
-  if(threeDTimer){
-    clearInterval(threeDTimer)
-    clearTimeout(threeDTimer1)
-    clearTimeout(threeDTimer2)
+  if (value?.deviceData?.length > 0) {
+    const getDeviceData = () => {
+      value?.deviceData.forEach(async (i: any, index: number) => {
+        let propertyArr = []
+        i.property
+        const res = await DataAPI.getCurrentValue({entity_id: i.deviceId})
+        if (res?.data?.code === 200 && res?.data?.data?.length > 0) {
+          if (index === 0) {
+            sceneStore.freshSensors([{sensorId: 1, gatherTime: "", gatherValue: ""},
+              {sensorId: 2, gatherTime: "", gatherValue: ""},
+              {sensorId: 3, gatherTime: "", gatherValue: ""},
+              {sensorId: 4, gatherTime: "", gatherValue: ""},
+              {sensorId: 5, gatherTime: "", gatherValue: ""},
+              {sensorId: 6, gatherTime: "", gatherValue: ""},
+              {sensorId: 7, gatherTime: "", gatherValue: ""},
+            ])
+            DataDelayTimer1 = setTimeout(() => {
+              sceneStore.freshSensors([{
+                sensorId: 1,
+                gatherTime: res.data.data[0].systime,
+                gatherValue: res.data.data[0][i.property]
+              }, {
+                sensorId: 2,
+                gatherTime: res.data.data[0].systime,
+                gatherValue: res.data.data[0][i.property]
+              }, {
+                sensorId: 3,
+                gatherTime: res.data.data[0].systime,
+                gatherValue: res.data.data[0][i.property]
+              }, {
+                sensorId: 4,
+                gatherTime: res.data.data[0].systime,
+                gatherValue: res.data.data[0][i.property]
+              }, {
+                sensorId: 5,
+                gatherTime: res.data.data[0].systime,
+                gatherValue: res.data.data[0][i.property]
+              }, {
+                sensorId: 6,
+                gatherTime: res.data.data[0].systime,
+                gatherValue: res.data.data[0][i.property]
+              }, {sensorId: 7, gatherTime: res.data.data[0].systime, gatherValue: res.data.data[0][i.property]},])
+
+            }, 500)
+          }
+          if (index === 1) {
+            sceneStore.freshAttributes({
+              cylinderName: " ",
+              pumpPower: '可变负压抽采泵'
+            })
+            DataDelayTimer2 = setTimeout(() => {
+            }, 500)
+
+          }
+        }
+      })
+      return getDeviceData
+    }
+    deviceDataRequestTimer = setInterval(getDeviceData(), 5000)
+  }
+}
+function setStaticData(value: string ) {
+  if (deviceDataRequestTimer) {
+    clearInterval(deviceDataRequestTimer)
+    clearTimeout(DataDelayTimer1)
+    clearTimeout(DataDelayTimer2)
   }
   try {
-    let obj = JSON.parse(newValue);
-    console.log("table.Main.value.obj", obj);
+    //文本数据json转换
+    let obj = JSON.parse(value);
+    //设置静态数据
     sceneStore.freshAttributes(obj.Attributes)
     sceneStore.freshSensors(obj.Sensors)
-  } catch(e) {
+  } catch (e) {
     console.log('传入的数据不是JSON格式');
   }
-})
-let threeDTimer:any=null
-let threeDTimer1:any=null
-let threeDTimer2:any=null
-
-watch(() => props.style,(newValue, oldValue) => {
-
-  sceneStore.setColor(newValue.color
-  ,newValue.bgColor,newValue.fontSize)
-
-})
-watch(() => props.data,(newValue, oldValue) => {
-  console.log(props.data.deviceData,"45935098435")
-
-  if(threeDTimer){
-    clearInterval(threeDTimer)
-    clearTimeout(threeDTimer1)
-    clearTimeout(threeDTimer2)
+}
+//渲染3D场景，并刷入默认或历史数据
+onMounted( ()=>{
+  //如果存在设备请求，清除设备请求定时器
+  if(deviceDataRequestTimer){
+    clearInterval(deviceDataRequestTimer)
+    clearTimeout(DataDelayTimer1)
+    clearTimeout(DataDelayTimer2)
   }
-
-    if(newValue.deviceData?.length>0){
-      const getDeviceData=()=>{
-
-        newValue.deviceData.forEach(async (i:any,index:number)=>{
-          let propertyArr=[]
-          i.property
-          const res = await DataAPI.getCurrentValue({entity_id: i.deviceId})
-          if(res?.data?.code===200&&res?.data?.data?.length>0){
-            console.log(res.data.data[0][i.property],"rrewrewrew")
-
-            // Attributes:{
-            //   cylinderName: "二氧化碳气瓶",
-            //       pumpPower:'可变负压抽采泵'
-            // },
-            // Sensors:[
-            //   {sensorId: 1, gatherTime: '2023-06-01 15:48:08', gatherValue: 98.71},
-            //   {sensorId: 2, gatherTime: '2023-06-01 15:48:08', gatherValue: 1.83},
-            //   {sensorId: 5, gatherTime: '2023-06-01 15:48:08', gatherValue: 84.96},
-            //   {sensorId: 6, gatherTime: '2023-06-01 15:48:08', gatherValue: 176.41},
-            //   {sensorId: 7, gatherTime: '2023-06-01 15:48:08', gatherValue: 16.4}
-            // ]
-
-            if(index===0){
-              sceneStore.freshSensors([{sensorId: 1, gatherTime: "", gatherValue:  ""},
-                {sensorId: 2, gatherTime: "", gatherValue:  ""},
-                {sensorId: 3, gatherTime: "", gatherValue:  ""},
-                {sensorId: 4, gatherTime: "", gatherValue:  ""},
-                {sensorId: 5, gatherTime: "", gatherValue:  ""},
-                {sensorId: 6, gatherTime: "", gatherValue:  ""},
-                {sensorId: 7, gatherTime: "", gatherValue:  ""},
-
-              ])
-              threeDTimer1=setTimeout(()=>{
-                sceneStore.freshSensors([{sensorId: 1, gatherTime: res.data.data[0].systime, gatherValue:  res.data.data[0][i.property]},{sensorId: 2, gatherTime: res.data.data[0].systime, gatherValue:  res.data.data[0][i.property]},{sensorId: 3, gatherTime: res.data.data[0].systime, gatherValue:  res.data.data[0][i.property]},{sensorId:4, gatherTime: res.data.data[0].systime, gatherValue:  res.data.data[0][i.property]},{sensorId: 5, gatherTime: res.data.data[0].systime, gatherValue:  res.data.data[0][i.property]},{sensorId: 6, gatherTime: res.data.data[0].systime, gatherValue:  res.data.data[0][i.property]},{sensorId: 7, gatherTime: res.data.data[0].systime, gatherValue:  res.data.data[0][i.property]},])
-
-              },500)
-
-            }
-            if(index===1){
-              sceneStore.freshAttributes({
-                cylinderName: " ",
-                pumpPower:'可变负压抽采泵'
-              })
-              threeDTimer2=setTimeout(()=>{
-              },500)
-
-            }
-          }
-
-        })
-        return getDeviceData
+  //渲染3d场景
+  sceneStore.createSceneRender(threeBox.value)
+  //调用初始化方法，加入初始化数据
+  sceneStore.initData(()=>{
+    if(props.style){
+      sceneStore.setColor(props.style.color
+          ,props.style.bgColor,props.style.fontSize)
+    }
+    if(props.value ){
+      console.log(props.value,"3dProps")
+      setStaticData(props.value)
+    }else{
+      if(props.data&&JSON.stringify(props.data) !== '{}'){
+        console.log(props.data.deviceData,"3dProps")
+        if(props.data.deviceData.length>0){
+          console.log(props.data.deviceData,"3dProps")
+          setDeviceData(props.data);
+        }
       }
-      threeDTimer =setInterval(getDeviceData(),5000)  }
+    }
+
+  })
+})
+
+//监听样式数据变化，如果变化执行样式设置方法
+watch(() => props.style,(newValue, oldValue) => {
+  sceneStore.setColor(props.style.color
+      ,props.style.bgColor,props.style.fontSize)
+})
 
 
 
-
+//监听设备绑定数据变化，如果变化执行接口请求，并刷新数据，该数据和静态数据只会存在一个
+watch(() => props.data,(newValue, oldValue) => {
+  setDeviceData(newValue);
 
 })
-watchEffect(() => {
-  // 监听 高度是否计算完成
-  if(threeDTimer){
-    clearInterval(threeDTimer)
-    clearTimeout(threeDTimer1)
-    clearTimeout(threeDTimer2)
+
+
+
+//监听静态数据变化，如果变化刷新数据，该数据和设备绑定数据只会存在一个
+watch(() => props.value,(newValue, oldValue) => {
+  setStaticData(newValue);
+})
+
+//组件写在的时候清除所以的定时器
+onBeforeUnmount(()=>{
+  if(deviceDataRequestTimer){
+    clearInterval(deviceDataRequestTimer)
+    clearTimeout(DataDelayTimer1)
+    clearTimeout(DataDelayTimer2)
   }
-  if (props.isContentReady)
-    nextTick(() => {
-      // 创建threejs 场景
-      sceneStore.createSceneRender(threeBox.value);
-
-
-    });
-});
+})
 
 </script>
 <style scoped lang="scss">

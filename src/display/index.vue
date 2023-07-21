@@ -25,6 +25,7 @@ import { getTeleport } from "@antv/x6-vue-shape";
 import { parseParams } from "@/utils";
 import { CanvasConfig } from "@/editor/config";
 import { More }  from "@element-plus/icons-vue";
+import {useIs3DMode} from "@/store/modules/is3DStroe";
 const TeleportContainer = getTeleport();
 
 let { initDisplay, screenName } = useDisplay(Common.DEFAULT_DISPLAY_CONTAINER_ID);
@@ -38,6 +39,7 @@ onMounted(() => {
   } else {
     initDisplay(jsonData, params.id);
   }
+
 });
 
 const containerRect = ref({

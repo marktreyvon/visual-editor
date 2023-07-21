@@ -3,7 +3,7 @@ import { shallowRef } from 'vue'
 //import { SceneBackstage } from '@/engines/lib/main'
 import { SceneBackstage } from '../scene/lib/engine.js';
 
-export const useScene4 = defineStore('scene4', {
+export const useSceneDemo = defineStore('sceneDemo', {
 	state: () => {
 		return {
 			scene: shallowRef(null),
@@ -13,26 +13,19 @@ export const useScene4 = defineStore('scene4', {
 		//功能：创建SceneRender
 		createSceneRender(containerDiv) {
 			this.scene = new SceneBackstage(containerDiv);
-			console.log(this.scene,"432432432432" )
-
-
-
 		},
+		initData(fn){
+			this.scene.addEventListener('sceneLoaded', fn)},
 		setColor(textColor
 			,bgColor,fontSize){
 			if(	this?.scene?.hotspotMgr){
 				this.scene.hotspotMgr.models.forEach((key,wal)=>{
-					console.log(key,wal,"432432432432" )
 					key.textColor=textColor
 					key.bgColor=bgColor
 					key.fontSize=fontSize
 					key.update()
-
 				})
 			}
-
-
-
 },
 		getColor(){
 			let obj={fontSize:30,

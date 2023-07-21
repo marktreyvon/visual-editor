@@ -20,8 +20,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import {useScene4} from "@/plugins/tp-plugin/threejs-demo2/store/sceneRenderBackstage";
-const sceneStore=useScene4()
+import {useSceneDemo} from "@/plugins/tp-plugin/threejs-demo2/store/sceneRenderBackstage";
+const sceneStore=useSceneDemo()
 export default defineComponent({
   data() {
     return {

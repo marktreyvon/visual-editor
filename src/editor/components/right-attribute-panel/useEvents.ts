@@ -6,9 +6,8 @@ import { useTools } from "@/editor/hooks"
 import * as Common from "@/common";
 import {useIsEditEdgeMode} from "@/store/modules/isEditEdgeaModeStore";
 import { Graph, Node, Edge, EdgeView } from '@antv/x6'
-import { useIs3D } from '@/store/modules/is3DStroe';
-import { useThreeDDeviceData } from '@/store/modules/3DDeviceDataStroe';
-import DataAPI from "@/api/data";
+import { useIs3DMode } from '@/store/modules/is3DStroe';
+
 
 
 /**
@@ -46,7 +45,7 @@ export const useEvents = () => {
      */
     const EditEdgeMode = useIsEditEdgeMode();
 
-    const is3D=useIs3D()
+    const is3DMode=useIs3DMode()
     const initEvents = () => {
         let canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
         const events: ICellEvents = canvasConfig.getEvents();
@@ -158,7 +157,7 @@ export const useEvents = () => {
             currentNode = temp;
 
             if (temp === null) {
-                is3D.setFalse()
+                is3DMode.setFalse()
                 // 如果点击的是画布
                 isNode.value = false;
                 isEdge.value=false;
@@ -175,7 +174,7 @@ export const useEvents = () => {
             nodeId = currentNode?.id
 
             if(currentNode.shape!=='ThreejsDemo2'){
-                is3D.setFalse()
+                is3DMode.setFalse()
             }
             // 获取插件管理器
             console.log('initEvents.PluginConfig.getInstance()')
@@ -258,22 +257,8 @@ export const useEvents = () => {
         events.setMountedEventListener((view) => {
             setCellList(view,true)
         });
-        const ThreeDDeviceData=useThreeDDeviceData()
         events.setUnmountedEventListener((view) => {
-            console.log(ThreeDDeviceData.threeDDeviceData,"5673434")
-            if(  ThreeDDeviceData.threeDDeviceData.length>0){
-                console.log(ThreeDDeviceData.threeDDeviceData.length,"5673434")
-                ThreeDDeviceData.threeDDeviceData.map((i:any)=>{
-                    console.log(i.nodeId,view,"5673434")
-                    if(i.nodeId===view.view.cell.id){
-                        console.log(i.timer,"5673434")
-                        clearInterval(i.timer)
-                    }else{
-                        return
-                    }
 
-                })
-            }
             setCellList(view,false)
             if(cellList.value.length===0){
                 isNode.value = false;
@@ -350,12 +335,8 @@ export const useEvents = () => {
      * 用户自定义组件的样式和绑定的数据改变后，会调用这个方法，更新画布上的节点数据
      * @param dataT
      */
-    let threeDTimer:any=null
     const onChange = (data: any) => {
-        const ThreeDDeviceData=useThreeDDeviceData()
-
         console.log('useEvents.onChange1', data)
-
         let jsonStr = "{}";
         if (currentNode?.getData()) {
             // 从节点的附加数据中获取JSON字符串
