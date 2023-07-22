@@ -355,6 +355,11 @@ export default {
 export * as tpPlugin from './tp-plugin';
 ```
 
+# 3d组件开发文档
+[点此查看](./src/plugins/tp-plugin/threejs-demo2/readme.md)
+
+
+
 启动项目后，我们刚编写的文本组件就加载出来了。  
 `pnpm run dev`  
 

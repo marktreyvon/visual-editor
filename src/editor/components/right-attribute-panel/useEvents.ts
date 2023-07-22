@@ -173,7 +173,7 @@ export const useEvents = () => {
 
             nodeId = currentNode?.id
 
-            if(currentNode.shape!=='ThreejsDemo2'){
+            if(currentNode.shape.indexOf("ThreeJs")==-1){
                 is3DMode.setFalse()
             }
             // 获取插件管理器

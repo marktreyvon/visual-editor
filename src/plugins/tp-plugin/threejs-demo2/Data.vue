@@ -2,7 +2,7 @@
   <div style="height:100%">
     <el-row style="margin-bottom: 10px">
       <el-radio-group v-model="formData.bindType">
-        <el-radio v-for="item in bindOptions" :label="item.value" size="small">{{ item.label}}</el-radio>
+        <el-radio v-for="item in bindOptions" :label="item.value" size="small">{{ item.label }}</el-radio>
       </el-radio-group>
     </el-row>
     <el-row style="height:100%">
@@ -13,7 +13,7 @@
         <el-input :rows="2" type="textarea" v-model="formData.dynamic"></el-input>
       </el-form-item>
       <!-- 设备数据 -->
-      <div class="w-full" v-else-if="formData.bindType==='device'" >
+      <div class="w-full" v-else-if="formData.bindType==='device'">
         <slot></slot>
       </div>
 
@@ -23,13 +23,14 @@
 
 <script setup>
 
-import {onMounted, onUnmounted, reactive, ref,watch} from "vue";
+import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
+
 const staticData = {
-  Attributes:{
+  Attributes: {
     cylinderName: "二氧化碳气瓶",
-    pumpPower:'可变负压抽采泵'
+    pumpPower: '可变负压抽采泵'
   },
-  Sensors:[
+  Sensors: [
     {sensorId: 1, gatherTime: '2023-06-01 15:48:08', gatherValue: 98.71},
     {sensorId: 2, gatherTime: '2023-06-01 15:48:08', gatherValue: 1.83},
     {sensorId: 5, gatherTime: '2023-06-01 15:48:08', gatherValue: 84.96},
@@ -44,35 +45,35 @@ const props = defineProps({
     default: () => ({})
   }
 });
-const timers=ref([])
-const formData=reactive({
+const timers = ref([])
+const formData = reactive({
   bindType: 'static',
   static: JSON.stringify(staticData)
 })
-const formData2=reactive({
+const formData2 = reactive({
   bindType: 'device',
   device: null
 })
 
-const bindOptions=ref( [
-  { value: 'static', label: '静态数据' },
-  { value: 'dynamic', label: '动态数据'},
-  { value: 'device', label: '设备数据'}
+const bindOptions = ref([
+  {value: 'static', label: '静态数据'},
+  {value: 'dynamic', label: '动态数据'},
+  {value: 'device', label: '设备数据'}
 ])
-watch(formData,(newValues,oldValues)=>{
-  console.log(newValues,"4324324")
+watch(formData, (newValues, oldValues) => {
+  console.log(newValues, "4324324")
   emit("onChange", {
-    data: { bindType: formData.bindType, ...newValues }
+    data: {bindType: formData.bindType, ...newValues}
   });
 })
-onMounted(()=>{
-  if (JSON.stringify(props.data) !== "{}"  && JSON.stringify(props.data) !== "[]") {
+onMounted(() => {
+  if (JSON.stringify(props.data) !== "{}" && JSON.stringify(props.data) !== "[]") {
     formData.device = JSON.parse(JSON.stringify(props.data));
   }
 })
-onUnmounted(()=>{
-  if(timers.value.length>0){
-    timers.value.map((i)=>{
+onUnmounted(() => {
+  if (timers.value.length > 0) {
+    timers.value.map((i) => {
       clearInterval(i)
     })
   }

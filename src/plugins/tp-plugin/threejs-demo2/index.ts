@@ -1,5 +1,6 @@
-import Three_Attribute2 from './Attribute.vue';
-import Three_Data2 from './Data.vue';
-import Three_Main2 from './Main.vue';
-import Three_Icon2 from './icon.svg';
-export { Three_Attribute2, Three_Data2, Three_Main2, Three_Icon2 }
+import Three2_Attribute from "./Attribute.vue";
+import Three2_Data from "./Data.vue";
+import Three2_Main from "./Main.vue";
+import Three2_Icon from "./icon.svg";
+
+export { Three2_Attribute, Three2_Data, Three2_Main, Three2_Icon };
