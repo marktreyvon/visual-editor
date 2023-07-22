@@ -21,9 +21,9 @@
   </div>
 </template>
 
-<script>
-import DataAPI from '@/api/data';
-import {useSceneDemo} from "@/plugins/tp-plugin/threejs-demo2/store/sceneRenderBackstage.js";
+<script setup>
+
+import {onMounted, onUnmounted, reactive, ref,watch} from "vue";
 const staticData = {
   Attributes:{
     cylinderName: "二氧化碳气瓶",
@@ -37,69 +37,47 @@ const staticData = {
     {sensorId: 7, gatherTime: '2023-06-01 15:48:08', gatherValue: 16.4}
   ]
 }
+const emit = defineEmits(['onChange'])
+const props = defineProps({
+  data: {
+    type: [String, Object],
+    default: () => ({})
+  }
+});
+const timers=ref([])
+const formData=reactive({
+  bindType: 'static',
+  static: JSON.stringify(staticData)
+})
+const formData2=reactive({
+  bindType: 'device',
+  device: null
+})
 
-export default {
-  props: {
-    data: {
-      type: [String, Object],
-      default: () => ({})
-    }
-  },
-  data() {
-    return {
-      timers:[],
-      formData: {
-        bindType: 'static',
-        static: JSON.stringify(staticData)
-      },
-      formData2: {
-        bindType: 'device',
-        device: null
-      },
-      bindOptions: [
-        { value: 'static', label: '静态数据' },
-        { value: 'dynamic', label: '动态数据'},
-        { value: 'device', label: '设备数据'}
-      ]
-    }
-  },
-  watch: {
-    formData2:{
-      handler(val) {
-        console.log(val,"222222")
+const bindOptions=ref( [
+  { value: 'static', label: '静态数据' },
+  { value: 'dynamic', label: '动态数据'},
+  { value: 'device', label: '设备数据'}
+])
+watch(formData,(newValues,oldValues)=>{
+  console.log(newValues,"4324324")
+  emit("onChange", {
+    data: { bindType: formData.bindType, ...newValues }
+  });
+})
+onMounted(()=>{
+  if (JSON.stringify(props.data) !== "{}"  && JSON.stringify(props.data) !== "[]") {
+    formData.device = JSON.parse(JSON.stringify(props.data));
+  }
+})
+onUnmounted(()=>{
+  if(timers.value.length>0){
+    timers.value.map((i)=>{
+      clearInterval(i)
+    })
+  }
+})
 
-      },
-      deep: true,
-    },
-    formData: {
-      handler(val) {
-        console.log(val,"4324324")
-        this.$emit("onChange", {
-          data: { bindType: this.bindType, ...val }
-        });
-      },
-      deep: true,
-    },
-
-  },
-   mounted() {
-
-    if (JSON.stringify(this.data) !== "{}"  && JSON.stringify(this.data) !== "[]") {
-      this.formData.device = JSON.parse(JSON.stringify(this.data));
-    }
-   //
-  },
-  unmounted() {
-     if(this.timers.length>0){
-       this.timers.map((i)=>{
-
-         clearInterval(i)
-
-       })
-     }
-  },
-  methods: {}
-}
 </script>
 <style lang="scss" scoped>
 .el-radio.el-radio--small {

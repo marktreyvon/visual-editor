@@ -28,8 +28,8 @@ export default defineComponent({
       activeNames: 'style',
       formData: {
         fontSize: 30,
-        color: '#fff',
-        bgColor: '#00AEFF',
+        color: '',
+        bgColor: '',
       }
     }
   },
@@ -45,14 +45,19 @@ export default defineComponent({
   }
   ,
   mounted() {
-    if(sceneStore.scene!==null){
-     let obj= sceneStore.getColor()
+  if(this.formData.color===''){
+    
+
+      let obj= sceneStore.getColor()
+      console.log(obj,"32832139213")
       this.formData.fontSize=obj.fontSize
-          this.formData.color=obj.textColor
-              this.formData.bgColor=obj.bgColor
-    }
+      this.formData.color=obj.textColor
+      this.formData.bgColor=obj.bgColor
+
   }
 
+
+    }
 
 
 

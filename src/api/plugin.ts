@@ -27,6 +27,7 @@ export default {
         })
     },
 
+
     /**
      * 上传插件
      * @param data 

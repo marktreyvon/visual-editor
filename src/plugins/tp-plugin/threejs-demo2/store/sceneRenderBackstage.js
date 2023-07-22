@@ -31,6 +31,8 @@ export const useSceneDemo = defineStore('sceneDemo', {
 			let obj={fontSize:30,
 				textColor:'fff',
 				bgColor:'#00AEFF',}
+			console.log(this.scene.hotspotMgr.models,"32832139213")
+
 			this.scene.hotspotMgr.models.forEach((key,wal)=>{
 				obj.textColor=key.textColor
 				obj.bgColor=key.bgColor

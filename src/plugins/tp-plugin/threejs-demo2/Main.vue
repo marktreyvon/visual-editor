@@ -1,9 +1,7 @@
 <!--
- * @Author: MXL
+ * @Author: wbh
  * @Date: 2022-12-29 21:54:11
- * @LastEditors: MXL
- * @LastEditTime: 2022-12-31 00:25:45
- * @Description: threejs 场景 通过引入sceneRender源码创建threejs场景
+ * @LastEditors: wbh
 -->
 <template>
 <!--  准备遮罩和提示，因拖动冲突，需要再一开始准备遮罩，并把engine.js进入无鼠标模式的快捷设为alt+1（亦可使用其他方式，单需要告知我们）-->
@@ -29,7 +27,6 @@ import {
   onBeforeUnmount,
 } from 'vue';
 import {isEqual, uniqWith} from "lodash";
-
 
 
 //props准备，改数据为固定处理，按如下格式编写即可，其中style为样式配置，value为静态数据，data为设备绑定数据，id是当前node节点Id
@@ -180,7 +177,9 @@ onMounted( ()=>{
   sceneStore.createSceneRender(threeBox.value)
   //调用初始化方法，加入初始化数据
   sceneStore.initData(()=>{
-    if(props.style){
+    console.log(props.style,"32832139213")
+    if(JSON.stringify(props.style) !== '{}'){
+
       sceneStore.setColor(props.style.color
           ,props.style.bgColor,props.style.fontSize)
     }
@@ -199,28 +198,19 @@ onMounted( ()=>{
 
   })
 })
-
 //监听样式数据变化，如果变化执行样式设置方法
 watch(() => props.style,(newValue, oldValue) => {
   sceneStore.setColor(props.style.color
       ,props.style.bgColor,props.style.fontSize)
 })
-
-
-
 //监听设备绑定数据变化，如果变化执行接口请求，并刷新数据，该数据和静态数据只会存在一个
 watch(() => props.data,(newValue, oldValue) => {
   setDeviceData(newValue);
-
 })
-
-
-
 //监听静态数据变化，如果变化刷新数据，该数据和设备绑定数据只会存在一个
 watch(() => props.value,(newValue, oldValue) => {
   setStaticData(newValue);
 })
-
 //组件写在的时候清除所以的定时器
 onBeforeUnmount(()=>{
   if(deviceDataRequestTimer){
@@ -229,7 +219,6 @@ onBeforeUnmount(()=>{
     clearTimeout(DataDelayTimer2)
   }
 })
-
 </script>
 <style scoped lang="scss">
 .content {
