@@ -297,7 +297,7 @@ onUnmounted(() => {
 
 ```
 
-## 第六步：编写Main.vue.vue
+## 第六步：编写Main.vue
 
 ```vue
 
