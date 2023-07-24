@@ -6,7 +6,7 @@ import { exportFile, isJSON, message } from "@/utils/tool";
 import * as Common from "@/common"
 import { reactive, ref } from "vue";
 import Clipboard from 'clipboard'
-
+import { dateFormat } from "@/utils";
 /**
  * @author cxs
  * @date 2023-04-20
@@ -145,8 +145,10 @@ export const useTools = (): ITools => {
         VisualAPI.updateJsonDate({id, json_data: JSON.stringify(json)})
             .then(({ data }) => {
                 if (data.code === 200) {
-                    const now = new Date().toLocaleString();
-                    savingState.value = now.slice(-8) + " 已保存";
+                    const timeStamp = data.data[0].create_at;
+                    const fmtTime = dateFormat(timeStamp);
+                    // const now = new Date().toLocaleString();
+                    savingState.value = fmtTime.slice(-8) + " 已保存";
                 }
             });
     };
