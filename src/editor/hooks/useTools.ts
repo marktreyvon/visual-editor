@@ -145,9 +145,8 @@ export const useTools = (): ITools => {
         VisualAPI.updateJsonDate({id, json_data: JSON.stringify(json)})
             .then(({ data }) => {
                 if (data.code === 200) {
-                    const timeStamp = data.data[0].create_at;
+                    const timeStamp = Date.parse(new Date());;
                     const fmtTime = dateFormat(timeStamp);
-                    // const now = new Date().toLocaleString();
                     savingState.value = fmtTime.slice(-8) + " 已保存";
                 }
             });
