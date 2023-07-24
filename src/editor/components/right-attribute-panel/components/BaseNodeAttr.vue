@@ -85,14 +85,15 @@ const handleChange =async (file: any, uploadFiles: any) => {
   console.log(file)
   const fd = new FormData()
 
-  fd.append('files', file.raw)
- await PluginAPI.uploadPicPlugins(fd)
- const res= await getPicPlugins()
-  console.log(res)
-  if(res.length>0){
+  fd.append('file', file.raw)
+  fd.append('type', "logo")
+const res= await PluginAPI.uploadPlugin(fd)
+  console.log(res.data.data)
+
+  if(res.data.data){
     console.log("00000000")
-    formData.image.xlink ='http://dev.thingspanel.cn:9999/'+res[res.length-1].files[0].file_url.replace('.','')
-    console.log(res[res.length-1])
+    formData.image.xlink ='http://dev.thingspanel.cn:9999/'+res.data.data.replace('.','')
+    console.log(res.data.data)
     console.log("111111111")
   }
 }

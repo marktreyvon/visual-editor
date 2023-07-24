@@ -12,13 +12,13 @@
             <span class="align-middle pl-6" style="overflow:hidden;text-overflow:ellipsis" @dblclick="handleDBClick">{{ name }}</span>
             <span class="align-middle pl-6 saving-state">{{ savingState }}</span>
         </div>
-        <div class="ml-64 mr-[400px] w-auto">
+        <div class="head_tools ml-64 mr-[400px] w-auto" style="overflow-x:auto;overflow-y:hidden">
           <div class="inline-flex">
             <!--        变色测试按钮  *@author; 王炳宏 -->
             <!-- <el-button @click="attrColor">变色</el-button> -->
             <el-button text @click="undo" :icon="RefreshLeft">撤销</el-button>
             <el-button text @click="redo" :icon="RefreshRight">重做</el-button>
-            <el-button text @click="changeEditEdgeMode">{{ EditEdgeMode.isEditEdgeMode?"取消连线":"连线" }}</el-button>
+            <el-button text :icon="Link" @click="changeEditEdgeMode">{{ EditEdgeMode.isEditEdgeMode?"取消连线":"连线" }}</el-button>
             <el-button text @click="zoomToFit" :icon="Crop">自适应</el-button>
             <el-button text @click="zoomOut" :icon="ZoomOut">缩小</el-button>
             <el-button text>{{ scaling + '%' }}</el-button>
@@ -74,7 +74,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, toRefs, inject, onMounted } from "vue";
-import { House, HomeFilled,RefreshLeft, RefreshRight, ZoomOut, ZoomIn, Crop, View, Download, Upload, Share, CircleCheck, SwitchButton, QuestionFilled } from "@element-plus/icons-vue";
+import { House, HomeFilled,RefreshLeft,Link, RefreshRight, ZoomOut, ZoomIn, Crop, View, Download, Upload, Share, CircleCheck, SwitchButton, QuestionFilled } from "@element-plus/icons-vue";
 import { ArrowDown } from '@element-plus/icons-vue'
 import { exportFile, readFile } from "@/utils";
 import { CanvasConfig } from "@/editor/config";
@@ -227,5 +227,20 @@ const handleDBClick = () => {
   width: calc(100vw - 600px);
   margin-left:300px;
   margin-right:300px
+}
+
+
+.head_tools::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+
+}
+.head_tools::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.8);
+}
+.head_tools::-webkit-scrollbar-track {
+  border-radius: 0;
+  background: rgba(0,0,0,0.8);
 }
 </style>

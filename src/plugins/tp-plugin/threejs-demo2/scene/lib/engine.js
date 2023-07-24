@@ -17862,7 +17862,7 @@ class Um {
   }
   _getFaceToCameraBillboardCanvas(e, t, n = "#ffffff", i = "#333333", s = 40) {
     const a = document.createElement("canvas"), o = a.getContext("2d");
-    a.height = this.height, a.width = this.width, o.fillStyle = i, o.globalAlpha = 0.7, Nm(o, 0, 0, a.width, a.height - 36, 15, i), o.globalAlpha = 1, o.fillStyle = n, o.font = `${s * 1.2}px Microsoft Yahei`, o.textAlign = "left", o.textBaseline = "middle", o.fillText(e, 10, 34), o.font = `${s}px Microsoft Yahei`;
+    a.height = this.height, a.width = this.width, o.fillStyle = i, o.globalAlpha =1, Nm(o, 0, 0, a.width, a.height - 36, 15, i), o.globalAlpha = 1, o.fillStyle = n, o.font = `${s * 1.2}px Microsoft Yahei`, o.textAlign = "left", o.textBaseline = "middle", o.fillText(e, 10, 34), o.font = `${s}px Microsoft Yahei`;
     var c = 10, l = 100, h = s * 1.2;
     for (let u = 0; u < t.length; u++)
       o.fillText(t[u], c, l), l += h;
