@@ -150,7 +150,7 @@ const dateFormat = (timestamp: string | number) => {
     } else {
       return "";
     }
-    var n = parseInt(timestamp);
+    var n = Number(timestamp);
     var D = new Date(n);
     var year = D.getFullYear(); //四位数年份
   
