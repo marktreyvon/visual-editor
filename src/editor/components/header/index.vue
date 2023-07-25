@@ -123,8 +123,10 @@ const {
   share
 } = useTools();
 const params: any = inject("params", null)
-
-state.visualName = computed(() => props.name);
+watch(() => props.name, (val) => {
+  if (!val) return;
+  state.visualName = val;
+}, { immediate: true })
 /**
  * 更改大屏名称
  * @param val 

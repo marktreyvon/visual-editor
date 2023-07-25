@@ -14,6 +14,8 @@ class DataConfig {
 
     private property: any = {};
 
+    private properties: any[] = [];
+
     private devicesData: any[] = [];
 
     private value: any = undefined;
@@ -50,6 +52,10 @@ class DataConfig {
 
     public setProperty(property: any) {
         this.property = property;
+    }
+
+    public setProperties(properties: any[]) {
+        this.properties = properties;
     }
 
     public setCallback(callback: Function) {

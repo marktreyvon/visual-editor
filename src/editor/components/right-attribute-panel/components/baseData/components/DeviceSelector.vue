@@ -41,7 +41,7 @@
                 </el-form-item>
 
                 <el-form-item v-if="state.deviceId" label="选择属性">
-                    <el-select v-model="state.property" placeholder="选择属性">
+                    <el-select multiple v-model="state.property" placeholder="选择属性">
                         <el-option v-for="item in options.tslOptions" :key="item.name" :label="item.title" :value="item.name" />
                     </el-select>
                 </el-form-item>
@@ -55,8 +55,7 @@
 import { ref, reactive, watch, toRaw, onMounted, watchEffect } from "vue";
 import { Delete } from '@element-plus/icons-vue'
 import DeviceAPI from "@/api/device";
-import { async } from "@antv/x6/lib/registry/marker/async";
-import { loop } from "@antv/x6/lib/registry/router/loop";
+
 const props = defineProps({
     index: Number,
     data: Object
@@ -107,6 +106,8 @@ watch(() => props.data, async (val: any) => {
 
     state.property = val.property || "";
 
+    state.properties = val.properties || [];
+
     state.propertyTitle = val.propertyTitle || "";
 
 
@@ -147,7 +148,6 @@ watch(() => state.deviceId, async (value) => {
     if (!value) return;
     try {
         console.log('watch deviceId', value, options.deviceOptions)
-        
         options.deviceOptions.forEach((item: any) => {
             if (item.children && item.children.length > 0) {
                 item.children.forEach((child: any) => {
@@ -229,7 +229,10 @@ async function getGroupList(groupId: string) {
     })
 }
 
-
+/**
+ * 通过分组id获取设备列表
+ * @param id 
+ */
 async function getDeviceList(id: string) {
     const params = { current_page: 1, per_page: 9999, asset_id: id }
     let { data: result } = await DeviceAPI.getDeviceList(params);
