@@ -180,7 +180,7 @@ const Three2Obj = {
 export default {
   views: [
     ...defaultViews,
-    // Three2Obj, //加入你的组件配置
+    Three2Obj, //加入你的组件配置
   ],
 };
 // {
