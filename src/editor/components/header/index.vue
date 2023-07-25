@@ -9,7 +9,12 @@
             <el-icon class="align-middle" :size="20">
                 <House />
               </el-icon>
-            <span class="align-middle pl-6" style="overflow:hidden;text-overflow:ellipsis" @dblclick="handleDBClick">{{ name }}</span>
+            <!-- <span class="align-middle pl-6" style="overflow:hidden;text-overflow:ellipsis" @dblclick="handleDBClick">
+              {{ name }}
+            </span> -->
+            <span class="align-middle pl-6" style="overflow:hidden;text-overflow:ellipsis" @dblclick="handleDBClick">
+              <el-input class="input-name" style="width:140px" v-model="state.visualName" @change="handleChangeVisualName"></el-input>
+            </span> 
             <span class="align-middle pl-6 saving-state">{{ savingState }}</span>
         </div>
         <div class="head_tools ml-64 mr-[400px] w-auto" style="overflow-x:auto;overflow-y:hidden">
@@ -21,7 +26,7 @@
             <el-button text :icon="Link" @click="changeEditEdgeMode">{{ EditEdgeMode.isEditEdgeMode?"取消连线":"连线" }}</el-button>
             <el-button text @click="zoomToFit" :icon="Crop">自适应</el-button>
             <el-button text @click="zoomOut" :icon="ZoomOut">缩小</el-button>
-            <el-button text>{{ scaling + '%' }}</el-button>
+            <el-button text>{{ state.scaling + '%' }}</el-button>
             <el-button text @click="zoomIn" :icon="ZoomIn">放大</el-button>
             <!-- <el-button @click="disableSnapline">关闭对齐线</el-button> -->
             <!-- <el-button @click="enableSnapline">开启对齐线</el-button> -->
@@ -73,15 +78,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, toRefs, inject, onMounted } from "vue";
+import { ref, reactive, inject, onMounted, watch, computed } from "vue";
 import { House, HomeFilled,RefreshLeft,Link, RefreshRight, ZoomOut, ZoomIn, Crop, View, Download, Upload, Share, CircleCheck, SwitchButton, QuestionFilled } from "@element-plus/icons-vue";
-import { ArrowDown } from '@element-plus/icons-vue'
+import { ArrowDown } from '@element-plus/icons-vue';
 import { exportFile, readFile } from "@/utils";
 import { CanvasConfig } from "@/editor/config";
-import AuthAPI from "@/api/auth"
-import { useTools } from "@/editor/hooks"
-import Market from "@/market/index.vue"
+import AuthAPI from "@/api/auth";
+import { useTools } from "@/editor/hooks";
+import Market from "@/market/index.vue";
 import {useIsEditEdgeMode} from "@/store/modules/isEditEdgeaModeStore";
+import { VisualAPI } from "@/api";
+import { message } from "@/utils/tool"
 const props = defineProps({ 
     tools: {
         type: Object,
@@ -92,7 +99,9 @@ const props = defineProps({
       default: ''
     }
 });
+
 const {
+  state,
   savingState,
   undo,
   redo,
@@ -100,7 +109,6 @@ const {
   zoomOut, 
   zoomIn,
   getZoom,
-  scaling,
   disableSnapline,
   enableSnapline,
   importJSON,
@@ -113,13 +121,28 @@ const {
   save,
   autoSave,
   share
-} = useTools()
+} = useTools();
+const params: any = inject("params", null)
+
+state.visualName = computed(() => props.name);
+/**
+ * 更改大屏名称
+ * @param val 
+ */
+const handleChangeVisualName = (val: string) => {
+  if (!val || !params.id) return;
+  VisualAPI.updateJsonDate({id: params.id, dashboard_name: val})
+    .then(({ data: result }) => {
+      if (result.code === 200) {
+        message.success('名称修改成功');
+      }
+    })
+}
+
 const EditEdgeMode =useIsEditEdgeMode()
 const changeEditEdgeMode=()=>{
   EditEdgeMode.increment()
 }
-const params: any = inject("params", null)
-  console.log('onMounted', params)
 
 onMounted(() => {
   let canvasConfig: ICanvasConfig = CanvasConfig.getInstance();
@@ -127,11 +150,12 @@ onMounted(() => {
 
   events.setGraphScaleEventListener((data: any) => {
       console.log('setGraphScaleEventListener', data)
-      scaling.value = Number((data.sx * 100).toFixed(0));
+      state.scaling = Number((data.sx * 100).toFixed(0));
   });
   zoomToFit();
   getUserInfo();
   autoSave(params?.id)
+
 });
 
 const fileList = ref([]);
@@ -242,5 +266,13 @@ const handleDBClick = () => {
 .head_tools::-webkit-scrollbar-track {
   border-radius: 0;
   background: rgba(0,0,0,0.8);
+}
+:deep .input-name {
+  .el-input__wrapper {
+    box-shadow: none;
+  }
+  .is-focus {
+    box-shadow:  0 0 0 1px var(--el-input-border-color,var(--el-border-color)) inset;
+  }
 }
 </style>

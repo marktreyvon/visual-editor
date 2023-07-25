@@ -6,8 +6,11 @@
  * @interface ITools
  */
 declare interface ITools {
-   
-    scaling: ref<Number>;
+    state: reactive<{
+        scaling: Number,
+        savingState: String,
+        visualName: String
+    }>;
     savingState: ref<string>;
     
     // 测试线条的颜色修改  *@author; 王炳宏  2023-05-23

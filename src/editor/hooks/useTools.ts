@@ -17,11 +17,15 @@ import { dateFormat } from "@/utils";
  */
 export const useTools = (): ITools => {
     const router = useRouter();
-    const state = reactive({
+    const state = reactive<{
+        scaling: Number,
+        savingState: String,
+        visualName: String
+    }>({
        scaling: 100,
-       savingState: "" 
+       savingState: "",
+       visualName: ""
     })
-    const scaling = ref<Number>(100);
     const savingState = ref("");
 
     // 测试线条的颜色修改工具;  *@author; 王炳宏  2023-05-23
@@ -30,16 +34,16 @@ export const useTools = (): ITools => {
     };
 
     function zoomToFit() {
-        scaling.value = CanvasConfig.getInstance().zoomToFit();
+        state.scaling = CanvasConfig.getInstance().zoomToFit();
     };
     function getZoom() {
-        return scaling.value;
+        return state.scaling;
     };
     function zoomOut() {
-        scaling.value = CanvasConfig.getInstance().zoomOut();
+        state.scaling = CanvasConfig.getInstance().zoomOut();
     };
     function zoomIn() {
-        scaling.value = CanvasConfig.getInstance().zoomIn();
+        state.scaling = CanvasConfig.getInstance().zoomIn();
     };
     function enableSnapline() {
         CanvasConfig.getInstance().enableSnapline();
@@ -62,7 +66,6 @@ export const useTools = (): ITools => {
         console.log('importJSON', jsonObj)
         const instance= CanvasConfig.getInstance()
         if (jsonObj) {
-
             instance.renderJSON(jsonObj);
         }
         const  theg = instance.getGraph()
@@ -152,7 +155,7 @@ export const useTools = (): ITools => {
             });
     };
     return {
-        scaling, savingState,  setLineStyle, zoomToFit, getZoom, zoomOut, zoomIn, enableSnapline, disableSnapline,undo, 
+        state, savingState,  setLineStyle, zoomToFit, getZoom, zoomOut, zoomIn, enableSnapline, disableSnapline,undo, 
         redo, toJSON, importJSON, exportJPEG, exportPNG, exportSVG, preview, help, share, autoSave, save
     }
 }
