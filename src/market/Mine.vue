@@ -18,7 +18,7 @@
       <div class="flex justify-between mt-4 mb-2">
         <div></div>
         <div>
-          <el-button>文档教程</el-button>
+          <el-button @click="gotoDocs">文档教程</el-button>
           <el-popover
             placement="top-start"
             title="Secret"
@@ -264,6 +264,11 @@ const getSecret = () => {
   MarketApi.getSecret().then(res => {
     data.secret = res.data.secret
   })
+}
+
+const gotoDocs = () => {
+  window.open('http://thingspanel.io/zh-Hans/docs/overview');
+
 }
 
 const removePlugin = (id: string) => {

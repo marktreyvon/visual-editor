@@ -236,6 +236,7 @@ class DataConfig {
                 resolve(true);
             } else if (this.refType === 'table') {
                 // ===================================表格=========================================
+                
                 let values = [];
                 for(let i = 0; i < deviceList.length; i++) {
                     const device = deviceList[i];

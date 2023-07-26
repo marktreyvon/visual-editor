@@ -36,6 +36,7 @@ class HttpRequest {
     interceptors(instance: any) {
         // 添加请求拦截器
         instance.interceptors.request.use((config: any) => {
+            console.log('config', config)
             // 在发送请求之前做些什么
             if (config.url.startsWith('/')) {
                 config.url = config.url.replace('/', '')

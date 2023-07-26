@@ -5,7 +5,7 @@ import { getDropPicComponent } from '../components/canvas-editor/DropPicComponen
 import { getPicAttrComponent } from '../components/right-attribute-panel/components/PicAttr';
 import { useStencil } from ".";
 import tpPlugin from '@/plugins/tp-plugin' 
-
+import Plugins from  "@/plugins"
 /**
  * @author cxs
  * @date 2023-04-28
@@ -18,13 +18,15 @@ export const usePlugins = (): any => {
     const localUrl = import.meta.env.VITE_BASE_URL || document.location.origin;
     const { initStencil } = useStencil();
     // 通过jsonData里的插件url加载插件
-    const plugins: any = {};
     // 官方插件
     // plugins.tpPlugin = { default: tpPlugin }
     const loadPlugins = (
         _callback: Function, 
         options: { mode: 'editor' | 'display'} = { mode: 'editor'}
         ): void => {
+        const localPlugins: any = <any>Plugins;
+        console.log('loadPlugins', localPlugins)
+        
         let remotePlugins: Record<string, any> = {};
         const baseUrl = localUrl.replace(/:\d+/, "");
 
@@ -42,7 +44,11 @@ export const usePlugins = (): any => {
                         }
                         remotePlugins[data[i].id] = modules[i];
                     }
-                    remotePlugins.tpPlugin = { default: tpPlugin }
+                    for (const pluginName in localPlugins) {
+                        // console.log('loadPlugins', plugin, localPlugins[plugin])
+                        remotePlugins[pluginName] = { default: localPlugins[pluginName] }
+                    }
+                    // remotePlugins.tpPlugin = { default: tpPlugin }
                     let result = await getPicPlugins();
                     remotePlugins.picPlugins = result;
                     console.log('PluginAPI.getPluginList', remotePlugins)
