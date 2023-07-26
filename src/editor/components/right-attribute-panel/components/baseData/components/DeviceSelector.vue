@@ -41,7 +41,7 @@
                 </el-form-item>
 
                 <el-form-item v-if="state.deviceId" label="选择属性">
-                    <el-select multiple v-model="state.property" placeholder="选择属性">
+                    <el-select multiple v-model="state.properties" placeholder="选择属性">
                         <el-option v-for="item in options.tslOptions" :key="item.name" :label="item.title" :value="item.name" />
                     </el-select>
                 </el-form-item>
@@ -63,7 +63,20 @@ const props = defineProps({
 const emit = defineEmits(["delete", 'change']);
 
 const activeNames = ref<string[]>(['style']);
-const state = reactive({
+const state = reactive<{
+    projectId: string,
+    projectName: string,
+    groupId: string,
+    groupName: string,
+    deviceId: string,
+    deviceName: string,
+    pluginId: string,
+    property: string,
+    propertyTitle: string,
+    properties: string[],
+    propertyList: any[],
+    devices: any[],
+}>({
     projectId: '',
     projectName: '',
     groupId: '',
@@ -73,8 +86,9 @@ const state = reactive({
     pluginId: '',
     property: '',
     propertyTitle: '',
+    properties: [],
+    propertyList: [],
     devices: [],
-    properties: []
 })
 
 const options = reactive({
@@ -188,10 +202,21 @@ watchEffect(() => {
 /**
  * 属性改变
  */
-watch(() => state.property, async (value) => {
-    if (!value) return;
-    const index = tslOptions.value.findIndex((item: any) => item.name === value);
-    state.propertyTitle = tslOptions.value[index].title;
+// watch(() => state.property, async (value) => {
+//     if (!value) return;
+//     const index = tslOptions.value.findIndex((item: any) => item.name === value);
+//     state.propertyTitle = tslOptions.value[index].title;
+// })
+watch(() => state.properties, async (value) => {
+    if (!value || value.length === 0) return;
+    console.log('watch properties', value, options.tslOptions)
+    state.propertyList = [];
+    value.forEach((item: any) => {
+        const index = options.tslOptions.findIndex((tsl: any) => tsl.name === item);
+        console.log('watch properties index', index, options.tslOptions[index])
+        state.propertyList.push(JSON.parse(JSON.stringify(options.tslOptions[index])));
+    })
+    console.log('watch properties a', a)
 })
 
 /**

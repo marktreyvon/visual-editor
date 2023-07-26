@@ -75,7 +75,7 @@ export default defineComponent({
   watch: {
     value: {
       handler(val) {
-        console.log("table.Main.value", val);
+        console.log("DataConfig.table.Main.value", val);
         try {
             let obj = JSON.parse(val);
             console.log("table.Main.value.obj", obj);

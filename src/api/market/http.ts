@@ -15,6 +15,7 @@ $market.interceptors.response.use(res => {
 }, err => {
   const res = err.response as AxiosResponse
   if (res.status > 300 && res.data.message) {
+    if (res.status === 401) return;
     ElMessage({
       message: res.data.message,
       type: 'error'

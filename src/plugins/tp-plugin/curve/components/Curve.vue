@@ -34,8 +34,11 @@ export default defineComponent({
                 return {};
             },
         },
+        value: {
+            type: [Object],
+            default: () => ({})
+        }
     },
-
     data() {
         return {
             id: "container_curve_" + randomString(10),
@@ -56,11 +59,7 @@ export default defineComponent({
                 {
                     xAxis: '周四',
                     scales: 12
-                },
-                // {
-                //     xAxis: '周五',
-                //     scales: 4
-                // }
+                }
             ],
             border: "border:5px solid red",
             padding: 'auto',
@@ -94,28 +93,31 @@ export default defineComponent({
             },
         }
     },
-
     mounted() {
+
+        console.log('curve.Main.mounted0', this.data);
+        let temp = this.getCurveData(this.value);
+        let data = temp || this.data;
+        console.log('curve.Main.mounted1', this.id, data);
         (this.line as any) = new Line(this.id, {
-            data: this.data,
+            data: data,
             padding: this.padding as any,
             xField: 'xAxis',
             yField: 'scales',
             xAxis: {
-                // type: 'timeCat',
                 tickCount: 5,
             },
-            
+            seriesField: 'category',
         });
         (this.line as any).render();
     },
-
     watch: {
         formData: {
             handler(val) {
+                if (!val || JSON.stringify(val) === "{}") return;
                 console.log(val);
                 function hexToRgba(hex: any, alpha: any) {
-                  if(!hex?.slice) return "rgba(" + 0 + ", " + 0 + ", " +0 + ", " + alpha + ")";
+                    if (!hex?.slice) return "rgba(" + 0 + ", " + 0 + ", " + 0 + ", " + alpha + ")";
                     var r = parseInt(hex.slice(1, 3), 16);
                     var g = parseInt(hex.slice(3, 5), 16);
                     var b = parseInt(hex.slice(5, 7), 16);
@@ -171,7 +173,7 @@ export default defineComponent({
         },
         formData1: {
             handler(val) {
-                console.log(val);
+                console.log('formData1', val);
                 if (val !== '') {
                     let arr = Array.from(val)
                     let jsonStr = arr.join("").replace(/\s+/g, "");
@@ -181,7 +183,7 @@ export default defineComponent({
 
                     obj.xAxis.map((item: any, index: number) => {
                         let newObj = {
-                            xAxis: item.slice(11, 16),
+                            xAxis: item.slice(10, 15),
                             scales: Number(obj.series[0].data[Number(index)])
                         }
                         newArr.push(newObj)
@@ -200,6 +202,58 @@ export default defineComponent({
 
             },
             deep: true,
+        },
+        value: {
+            async handler(val) {
+                console.log('curve.Main.value0', val)
+
+                let data = this.getCurveData(val);
+                console.log('curve.Main.value1', data)
+                if (!data) return;
+                await this.$nextTick();
+                (this.line as any).options.data = data;
+                (this.line as any).render();
+            }
+        }
+    },
+    methods: {
+        getCurveData(val: any) {
+            if (!val || val === "{}" || JSON.stringify(val) === "{}") return undefined;
+            let data: any[] = [];
+            let jsonObj = JSON.parse(val);
+            console.log('curve.Main.value0', jsonObj)
+            /*
+                示例：
+                {
+                    "xAxis": [ "2023-07-25 11:39:40", "2023-07-25 16:23:16", "2023-07-25 16:45:29",
+                        "2023-07-25 17:29:11","2023-07-25 18:05:18"],
+                    "series": [
+                        {
+                            "category": "温度",
+                            "data": [ "11","22","33","55","11" ]
+                        },
+                        {
+                            "category": "湿度",
+                            "data": [ "22","33","44","44","22" ]
+                        }
+                    ]
+                }
+            */
+            // 遍历时间
+            for (let i = 0; i < jsonObj.xAxis.length; i++) {
+                    const systime = jsonObj.xAxis[i];
+                    const hour = (new Date(systime)).getHours()
+                    const min = (new Date(systime)).getMinutes()
+                    // 遍历series
+                    jsonObj.series.forEach((serie: any) => {
+                        data.push({
+                            category: serie.category,
+                            xAxis: hour + ":" + min,
+                            scales: Number(serie.data[i])
+                        })
+                    })
+            }
+            return data;
         }
     }
 })

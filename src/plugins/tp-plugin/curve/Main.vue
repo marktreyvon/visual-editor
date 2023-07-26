@@ -1,5 +1,5 @@
 <template>
-  <Line id="yibiaopan" :formData="formData" :formData1="formData1"></Line>
+  <Line id="yibiaopan" :value="value" :formData="formData" :formData1="formData1"></Line>
 </template>
 
 <script lang="ts">
