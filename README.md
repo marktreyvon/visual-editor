@@ -112,10 +112,10 @@ pnpm run dev
 ```
 
 # 插件开发：
-在src/plugins目录创建自定义的插件目录，例：tp-plugin 
+在src/plugins目录创建自定义的插件目录，例：test-plugin 
 每个插件由两部分组成:  配置文件和组件    
 ```
-├── tp-plugin  
+├── test-plugin  
 │   ├── index.ts               -- 配置文件  
 │   ├── pm25                   -- PM2.5组件  
 │   │   ├── Attribute.vue      -- 右侧属性面板  
@@ -132,7 +132,7 @@ pnpm run dev
 ![文本组件](readme_files/text_example.png)    
 
 ### 第一步：创建组件所需的文件
-官方插件所在的目录是tp-plugins文件夹，我们在这个文件夹里创建`text`目录，然后在text目录创建以下4个文件：  
+官方插件所在的目录是test-plugins文件夹，我们在这个文件夹里创建`text`目录，然后在text目录创建以下4个文件：  
 index.ts、Main.vue、Data.vue、Attribute.vue
 
 ### 第二步：编写Main.vue
@@ -327,7 +327,7 @@ export { Text_Attribute, Text_Data, Text_Main }
 ```
 
 ### 第六步：配置
-在tp-plugin/index.ts文件中进行配置
+在test-plugin/index.ts文件中进行配置
 ```ts
 import { Text_Attribute, Text_Data, Text_Main } from "./text";
 
@@ -336,7 +336,7 @@ export default {
         {
             name: "文本",      // 组件名称, 不可和其他组件重名
             description: "",
-            group: "官方插件",   // 左侧组件列表的分组名称
+            group: "自定义插件",   // 左侧组件列表的分组名称
             icon: "",         // 左侧列表的组件图标，base64或在线图片地址
             size: { width: 120, height: 60 },
             Main: Text_Main,    // 将要在画布上渲染的节点
@@ -352,11 +352,18 @@ export default {
 ### 第七步：导出插件
 最后，在src/plugins/index.ts导出该插件
 ```ts
-export * as tpPlugin from './tp-plugin';
+import testPlugin from './test-plugin';
+export default { testPlugin } 
 ```
+至此，我们的第一个插件就开发完成了。
+
+`pnpm run dev`  
+启动项目后，我们刚编写的文本组件就加载出来了。  
+左侧组件列表  
+![组件列表](readme_files/visual_plugin_7_1.png)   
 
 # 3d组件开发文档
-[点此查看](./src/plugins/tp-plugin/threejs-demo2/readme.md)
+[点此查看](./src/plugins/test-plugin/threejs-demo2/readme.md)
 
 
 
