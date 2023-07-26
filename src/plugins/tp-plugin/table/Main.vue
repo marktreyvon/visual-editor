@@ -98,7 +98,7 @@ export default defineComponent({
     },
     data: {
       async handler(val){
-        this.bindType = val.bindType 
+        this.bindType = val.bindType
         if(val.bindType === 'device'){
           this.orgNameData = []
           this.newRows = [
@@ -110,23 +110,28 @@ export default defineComponent({
                 color: '#000000',
                 size: 10
             }
-          ]
-          console.error(val.deviceData, 'val.deviceData');
+          ];          
           (val.deviceData || []).forEach((x:any,index:any) => {
-            this.orgNameData.push({
-              ...x, 
-              seqNo: index+1,
-              [`device_property_${x.deviceId}_${x.property}`]: '',
-            })
-            this.newRows.push({
-                show: true,
-                filed: `device_property_${x.deviceId}_${x.property}`,
-                name: `${x.propertyTitle}`,
-                width: 100,
-                color: '#000000',
-                size: 10
-            })
-          })
+            if(x.propertyList && x.propertyList.length > 0){
+              const devPros:any[] = []
+              x.propertyList.forEach((pitem:any) => {
+                devPros.push({[`device_property_${x.deviceId}_${pitem.title}`]: ''})             
+                this.newRows.push({
+                  show: true,
+                  filed: `device_property_${x.deviceId}_${pitem.name}`,
+                  name: `${pitem.title}`,
+                  width: 100,
+                  color: '#000000',
+                  size: 10
+                })
+              })
+              this.orgNameData.push({
+                ...x, 
+                seqNo: index+1,
+                ...devPros,
+              })
+            }
+           })
           // if(inter) {
           //   clearInterval(inter)
           // }

@@ -239,23 +239,22 @@ class DataConfig {
                 
                 let values = [];
                 for(let i = 0; i < deviceList.length; i++) {
-                    const device = deviceList[i];
-                    device.property = device.propertyList[0].name;
-                    let { data: result } = await DataAPI.getCurrentValue({ entity_id: device.deviceId, attribute: ["systime", device.property] });
+                    const device = deviceList[i];                    
+                    const propertys = device.propertyList.map((x:any) => x.name)
+                    let { data: result } = await DataAPI.getCurrentValue({ entity_id: device.deviceId, attribute: ["systime", ...propertys] });
                     console.log('parseData.result', result)
                     if (result.code === 200) {
                         const { data } = result;
                         if (data && data.length !== 0) {
-                            const propValue =  data[0]
-                            values.push({
-                                deviceId:device.deviceId,
-                                ...propValue,
-                                [`device_property_${device.deviceId}_${device.property}`]: propValue[device.property]
-                            })
-                            // let value: any = data[0][device.property] || 0;
-                            // let obj: any = {};
-                            // obj[device.property] = value;
-                            // values.push(obj);
+                            const propCurrentValue = data[0]
+                            const valueItem:any = {deviceId:device.deviceId}
+                            for (const [key, value] of Object.entries(propCurrentValue)) {                                                                                            
+                                valueItem[`device_property_${device.deviceId}_${key}`] = value
+                                if(key === 'systime'){
+                                    valueItem.systime = value
+                                }                                
+                            }                                                                                   
+                            values.push(valueItem)                             
                         }
                     }
                 }
