@@ -220,10 +220,10 @@ onMounted(() => {
   })
 })
 //监听样式数据变化，如果变化执行样式设置方法
-watch(() => props.style, (newValue, oldValue) => {
+watch(() => props.style, debounce((newValue, oldValue) => {
   sceneStore.setColor(props.style.color
       , props.style.bgColor, props.style.fontSize)
-})
+},1000))
 //监听设备绑定数据变化，如果变化执行接口请求，并刷新数据，该数据和静态数据只会存在一个
 
 watch(() => props.data, debounce((newValue, oldValue) => {
@@ -235,9 +235,9 @@ watch(() => props.data, debounce((newValue, oldValue) => {
 
 },1000))
 //监听静态数据变化，如果变化刷新数据，该数据和设备绑定数据只会存在一个
-watch(() => props.value, (newValue, oldValue) => {
+watch(() => props.value, debounce((newValue, oldValue) => {
   setStaticData(newValue);
-})
+},1000))
 //组件写在的时候清除所以的定时器
 onBeforeUnmount(() => {
   if (deviceDataRequestTimer) {
