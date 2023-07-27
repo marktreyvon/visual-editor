@@ -216,7 +216,7 @@ watch(() => state.properties, async (value) => {
         console.log('watch properties index', index, options.tslOptions[index])
         state.propertyList.push(JSON.parse(JSON.stringify(options.tslOptions[index])));
     })
-    console.log('watch properties a', a)
+    console.log('watch properties a', value)
 })
 
 /**

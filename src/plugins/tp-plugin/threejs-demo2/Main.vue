@@ -16,6 +16,7 @@
 </template>
 <!--以下为vue3，组合式api举例，也可以使用其他方式编写-->
 <script lang="ts" setup>
+
 //引入处理数据的数据仓库，改处理方式也可写在当前文件中
 import {useSceneDemo} from './store/sceneRenderBackstage';
 //引入判断是否进入3d预览模式的数据仓库，固定位置
@@ -28,8 +29,10 @@ import {
   watch,
   onMounted,
   onBeforeUnmount,
+  h
 } from 'vue';
-import {isEqual, uniqWith} from "lodash";
+import { ElMessage } from 'element-plus'
+import {isEqual, uniqWith,debounce} from "lodash";
 
 
 //props准备，改数据为固定处理，按如下格式编写即可，其中style为样式配置，value为静态数据，data为设备绑定数据，id是当前node节点Id
@@ -94,59 +97,69 @@ function setDeviceData(value: any) {
     clearTimeout(DataDelayTimer2)
   }
 
+
   if (value?.deviceData?.length > 0) {
     const getDeviceData = () => {
       value?.deviceData.forEach(async (i: any, index: number) => {
         let propertyArr = []
-        i.property
-        const res = await DataAPI.getCurrentValue({entity_id: i.deviceId})
-        if (res?.data?.code === 200 && res?.data?.data?.length > 0) {
-          if (index === 0) {
-            sceneStore.freshSensors([{sensorId: 1, gatherTime: "", gatherValue: ""},
-              {sensorId: 2, gatherTime: "", gatherValue: ""},
-              {sensorId: 3, gatherTime: "", gatherValue: ""},
-              {sensorId: 4, gatherTime: "", gatherValue: ""},
-              {sensorId: 5, gatherTime: "", gatherValue: ""},
-              {sensorId: 6, gatherTime: "", gatherValue: ""},
-              {sensorId: 7, gatherTime: "", gatherValue: ""},
-            ])
-            DataDelayTimer1 = setTimeout(() => {
-              sceneStore.freshSensors([{
-                sensorId: 1,
-                gatherTime: res.data.data[0].systime,
-                gatherValue: res.data.data[0][i.property]
-              }, {
-                sensorId: 2,
-                gatherTime: res.data.data[0].systime,
-                gatherValue: res.data.data[0][i.property]
-              }, {
-                sensorId: 3,
-                gatherTime: res.data.data[0].systime,
-                gatherValue: res.data.data[0][i.property]
-              }, {
-                sensorId: 4,
-                gatherTime: res.data.data[0].systime,
-                gatherValue: res.data.data[0][i.property]
-              }, {
-                sensorId: 5,
-                gatherTime: res.data.data[0].systime,
-                gatherValue: res.data.data[0][i.property]
-              }, {
-                sensorId: 6,
-                gatherTime: res.data.data[0].systime,
-                gatherValue: res.data.data[0][i.property]
-              }, {sensorId: 7, gatherTime: res.data.data[0].systime, gatherValue: res.data.data[0][i.property]},])
+        if (i.properties.length > 0) {
+          const res = await DataAPI.getCurrentValue({entity_id: i.deviceId, attribute: i.properties})
+          console.log(res, "09098877666")
+          if (res?.data?.code === 200 && res?.data?.data?.length > 0) {
+            if (index === 0) {
+              sceneStore.freshSensors([{sensorId: 1, gatherTime: "", gatherValue: ""},
+                {sensorId: 2, gatherTime: "", gatherValue: ""},
+                {sensorId: 3, gatherTime: "", gatherValue: ""},
+                {sensorId: 4, gatherTime: "", gatherValue: ""},
+                {sensorId: 5, gatherTime: "", gatherValue: ""},
+                {sensorId: 6, gatherTime: "", gatherValue: ""},
+                {sensorId: 7, gatherTime: "", gatherValue: ""},
+              ])
+              DataDelayTimer1 = setTimeout(() => {
+                sceneStore.freshSensors([{
+                  sensorId: 1,
+                  gatherTime: res.data.data[0].systime,
+                  gatherValue: res.data.data[0][i.property]
+                }, {
+                  sensorId: 2,
+                  gatherTime: res.data.data[0].systime,
+                  gatherValue: res.data.data[0][i.property]
+                }, {
+                  sensorId: 3,
+                  gatherTime: res.data.data[0].systime,
+                  gatherValue: res.data.data[0][i.property]
+                }, {
+                  sensorId: 4,
+                  gatherTime: res.data.data[0].systime,
+                  gatherValue: res.data.data[0][i.property]
+                }, {
+                  sensorId: 5,
+                  gatherTime: res.data.data[0].systime,
+                  gatherValue: res.data.data[0][i.property]
+                }, {
+                  sensorId: 6,
+                  gatherTime: res.data.data[0].systime,
+                  gatherValue: res.data.data[0][i.property]
+                }, {sensorId: 7, gatherTime: res.data.data[0].systime, gatherValue: res.data.data[0][i.property]},])
 
-            }, 500)
-          }
-          if (index === 1) {
-            sceneStore.freshAttributes({
-              cylinderName: " ",
-              pumpPower: '可变负压抽采泵'
+              }, 500)
+            }
+            if (index === 1) {
+              sceneStore.freshAttributes({
+                cylinderName: " ",
+                pumpPower: '可变负压抽采泵'
+              })
+              DataDelayTimer2 = setTimeout(() => {
+              }, 500)
+
+            }
+          }else{
+            ElMessage({
+              message: h('p', null, [
+                h('span', null, res.data.message),
+                h('i', { style: 'color: teal' }, '数据为空'),
+              ]),
             })
-            DataDelayTimer2 = setTimeout(() => {
-            }, 500)
-
           }
         }
       })
@@ -212,9 +225,15 @@ watch(() => props.style, (newValue, oldValue) => {
       , props.style.bgColor, props.style.fontSize)
 })
 //监听设备绑定数据变化，如果变化执行接口请求，并刷新数据，该数据和静态数据只会存在一个
-watch(() => props.data, (newValue, oldValue) => {
-  setDeviceData(newValue);
-})
+
+watch(() => props.data, debounce((newValue, oldValue) => {
+
+  if (newValue?.deviceData?.length > 0 && newValue?.deviceData[0].properties?.length > 0) {
+    setDeviceData(newValue)
+
+  }
+
+},1000))
 //监听静态数据变化，如果变化刷新数据，该数据和设备绑定数据只会存在一个
 watch(() => props.value, (newValue, oldValue) => {
   setStaticData(newValue);
