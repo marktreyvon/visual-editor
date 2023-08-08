@@ -33,6 +33,7 @@ export const useEvents = () => {
     // 当前节点的组件
     let component: any = {};
     // 当前节点的数据
+    let haveToolNode = ref<any>(null);
     let nodeData = ref<any>({});
     let edgeData = ref<any>({});
     let nodeId = ref<any>(null)
@@ -153,7 +154,7 @@ export const useEvents = () => {
         events.setClickEventListener((data: any) => {
             const temp = data.node || data.cell || null;
             // 节点工具
-            setNodeTools(temp, currentNode);
+            setNodeTools(temp, currentNode,graph);
             currentNode = temp;
 
             if (temp === null) {
@@ -399,13 +400,18 @@ export const useEvents = () => {
         data.baseStyle.zIndex && currentNode.setZIndex(data?.baseStyle?.zIndex);
     }
 
-    const setNodeTools = (newNode: any, oldNode: any) => {
+    const setNodeTools = (newNode: any, oldNode: any,graph:any) => {
+        console.log(graph.getSelectedCells(),"321321321")
         if (oldNode) {
             // 删除旧节点的工具
             oldNode.removeTools();
         }
+        if(haveToolNode.value){
+            haveToolNode.value.removeTools();
+        }
         if (newNode) {
             // 添加新节点的工具
+            haveToolNode.value=newNode
             if(EditEdgeMode.isEditEdgeMode) return
             newNode.addTools({
                 name: 'button-remove',
