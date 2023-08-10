@@ -4,5 +4,6 @@ export const styleData = {
     color: '#000000',
     backgroundColor: '',
     borderWidth: 0,
-    borderColor: '#000000'
+    borderColor: '#000000',
+    textAlign: 'left',
 }
