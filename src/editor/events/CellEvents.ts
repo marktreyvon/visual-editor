@@ -89,6 +89,7 @@ class CellEvents implements ICellEvents {
 
         // 单击事件 
         this.graph.on("cell:click", ({ e, x, y, cell, view }) => {
+
             e.stopPropagation()
             this.clickListener.forEach((listener) => {
                 listener({ e, x, y, cell, view });
@@ -125,6 +126,7 @@ class CellEvents implements ICellEvents {
 
         // 节点移动事件
         this.graph.on("node:moved", ({ e, x, y, node, view }) => {
+
             e.stopPropagation()
             this.movedListener && this.movedListener({ e, x, y, node, view });
         });

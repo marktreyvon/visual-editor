@@ -21,12 +21,28 @@
                 <el-form-item label="边框颜色">
                     <tp-color-picker v-model="formData.borderColor" />
                 </el-form-item>
+                <el-form-item label="对齐方式">
+                    <el-select v-model="formData.textAlign" placeholder="对齐方式">
+                        <el-option
+                            v-for="item in alignOptions"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                            />
+                    </el-select>
+                </el-form-item>
             </el-form>
         </el-collapse-item>
     </el-collapse>
 </template>
   
 <script>
+const alignOptions = [
+    {label: '左对齐', value: 'left'},
+    {label: '居中对齐', value: 'center'},
+    {label: '右对齐', value: 'right'},
+    {label: '两端对齐', value: 'justify'},
+]
 import { styleData } from './default'
 export default {
     props: {
@@ -37,6 +53,7 @@ export default {
     },
     data() {
         return {
+            alignOptions,
             activeNames: 'style',
             formData: JSON.parse(JSON.stringify(styleData))
         }
