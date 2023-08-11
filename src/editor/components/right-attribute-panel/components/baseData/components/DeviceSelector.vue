@@ -202,11 +202,6 @@ watchEffect(() => {
 /**
  * 属性改变
  */
-// watch(() => state.property, async (value) => {
-//     if (!value) return;
-//     const index = tslOptions.value.findIndex((item: any) => item.name === value);
-//     state.propertyTitle = tslOptions.value[index].title;
-// })
 watch(() => state.properties, async (value) => {
     if (!value || value.length === 0) return;
     console.log('watch properties', value, options.tslOptions)
@@ -216,7 +211,6 @@ watch(() => state.properties, async (value) => {
         console.log('watch properties index', index, options.tslOptions[index])
         state.propertyList.push(JSON.parse(JSON.stringify(options.tslOptions[index])));
     })
-    console.log('watch properties a', a)
 })
 
 /**
@@ -297,6 +291,7 @@ function getPlugin(pluginId: string) {
                     const tsl = JSON.parse(data[0].chart_data).tsl;
                     const opt = JSON.parse(JSON.stringify(tsl.properties));
                     options.tslOptions = opt;
+                    console.log('getPlugin opt', opt)
                     resolve(opt);
                 }
             })

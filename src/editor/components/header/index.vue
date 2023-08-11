@@ -68,12 +68,13 @@
         </div>
 
         <div class="absolute inset-y-0 right-0 w-auto">
-            <el-button :icon="Share" id="share-btn" @click="share(params)" >分享</el-button>
+            <el-button :icon="Share" id="share-btn" @click="data.shareVisible = true" >分享</el-button>
             <el-button :icon="CircleCheck" @click="save(params.id)">保存</el-button>
             <el-button :icon="QuestionFilled" @click="help" >帮助</el-button>
             <el-button :icon="HomeFilled" @click="data.marketVisible = true">插件市场</el-button>
         </div>
     </div>
+    <ShareForm v-model:visible="data.shareVisible"/>
     <Market v-model:visible="data.marketVisible"/>
 </template>
 
@@ -88,7 +89,8 @@ import { useTools } from "@/editor/hooks";
 import Market from "@/market/index.vue";
 import {useIsEditEdgeMode} from "@/store/modules/isEditEdgeaModeStore";
 import { VisualAPI } from "@/api";
-import { message } from "@/utils/tool"
+import { message } from "@/utils/tool";
+import ShareForm from "./ShareForm.vue";
 const props = defineProps({ 
     tools: {
         type: Object,
@@ -204,7 +206,8 @@ const getUserInfo = () => {
   }, 1000 * 30)
 }
 const data = reactive({
-  marketVisible: false
+  marketVisible: false,
+  shareVisible: false
 })
 
 const handleDBClick = () => {

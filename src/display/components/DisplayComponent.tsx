@@ -53,6 +53,7 @@ export const getDisplayComponent = (cpt: Component, nodeData: any, refType: any)
         },
         methods: {
             onChange(value: any, _callback: any) {
+                console.log(value)
                 const { device, property, switch: switchValue } = value; 
                 if (refType === 'switch') {
                     this.dataConfig.setCallback(_callback);

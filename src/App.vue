@@ -32,7 +32,7 @@ const getTokenInfoByAPI = async () => {
     setTokenInfo(params);
     // 注入参数
     provide('params', params);
-    router.push({ name: 'editor', query: { id: params.id } });
+    // router.push({ name: 'editor', query: { id: params.id } });
   }
 }
 

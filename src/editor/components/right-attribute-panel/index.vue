@@ -60,7 +60,7 @@ const bindData = ref<any>({});
 
 
 watch(nodeData, (value) => {
-
+    console.log('watch nodeData', value)
     cellIndex.value=-1
     if (!value) return;
     if (!value.data) {

@@ -72,7 +72,8 @@ class DataConfig {
             // 开关不需要定时器
             if (this.value === undefined) return;
             const values: any = {};
-            values[this.property] = this.value;
+            const property = this.devicesData[0].propertyList[0].name;
+            values[property] = this.value;
             DataAPI.setDeviceValue({ device_id: this.deviceId, values })
                 .then(({ data: result}) => {
                     if (result.code !== 200) return;
@@ -107,7 +108,8 @@ class DataConfig {
                     deviceId: device.deviceId,
                     property: device.property,
                     propertyTitle: device.propertyTitle,
-                    propertyList: device.propertyList
+                    propertyList: device.propertyList,
+                    properties: device.properties
                 })
             });
             console.log('DataConfig.parseData.deviceList', deviceList)
@@ -119,7 +121,8 @@ class DataConfig {
                     console.log('start', data)
                     let value = "无数据";
                     if (data && data.length !== 0) {
-                        value = data[0][deviceList[0].propertyList[0].name];
+                        const property = deviceList[0].propertyList[0]?.name || deviceList[0].properties[0];
+                        value = data[0][property];
                     }
                     this.callback(value);
                 }

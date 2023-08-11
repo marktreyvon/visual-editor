@@ -1,3 +1,4 @@
+// text/Data.vue
 <template>
   <div style="height:100%">
     <el-row style="margin-bottom: 10px">
@@ -50,22 +51,12 @@ export default {
         });
       },
       deep: true
-    },
-    data: {
-      handler(val) {
-        console.log('text.data', val)
-        if (JSON.stringify(val) !== "{}") {
-          this.formData = JSON.parse(JSON.stringify(val));
-        }
-      },
-      deep: true,
-      immediate: true
     }
   },
   mounted() {
-    // if (JSON.stringify(this.data) !== "{}") {
-    //   this.formData = JSON.parse(JSON.stringify(this.data));
-    // }
+    if (JSON.stringify(this.data) !== "{}") {
+      this.formData = JSON.parse(JSON.stringify(this.data));
+    }
   },
   methods: {
     
