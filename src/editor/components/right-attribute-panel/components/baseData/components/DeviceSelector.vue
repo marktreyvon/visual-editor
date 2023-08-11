@@ -124,6 +124,8 @@ watch(() => props.data, async (val: any) => {
 
     state.propertyTitle = val.propertyTitle || "";
 
+    state.propertyList = val.propertyList || [];
+
 
 }, { deep: true, immediate: true });
 

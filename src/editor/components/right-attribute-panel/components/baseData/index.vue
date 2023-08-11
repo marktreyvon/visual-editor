@@ -60,14 +60,17 @@ const addDevice = () => {
     deviceId: '',
     property: '',
     pluginId: '',
-    propertyTitle: ''
+    propertyTitle: '',
+    propertyList: []
   })
 }
 
 watch(() => props.data, (val) => {
-  console.log('baseData.data', val)
+  console.log('baseData.watch.props.data', val)
   if (JSON.stringify(val) !== "{}" && val.deviceData) {
     deviceData.value = JSON.parse(JSON.stringify(val.deviceData));
+    console.log('baseData.watch.props.data.deviceData', deviceData.value)
+
   } else {
     deviceData.value = [
       {
@@ -77,7 +80,8 @@ watch(() => props.data, (val) => {
         deviceId: '',
         property: '',
         pluginId: '',
-        propertyTitle: ''
+        propertyTitle: '',
+        propertyList: []
       }
     ]
   }
@@ -85,7 +89,7 @@ watch(() => props.data, (val) => {
 
 
 watch(deviceData, (value) => {
-  console.log('baseData.device', value)
+  console.log('baseData.watch.deviceData', value)
   emit('onChange', { data: { bindType: 'device', deviceData: toRaw(deviceData.value) }})
 }, {deep: true});
 

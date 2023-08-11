@@ -152,14 +152,15 @@ export const useEvents = () => {
         })
         // 点击node
         events.setClickEventListener((data: any) => {
+            console.log('setClickEventListener', data)
             const temp = data.node || data.cell || null;
             // 节点工具
             setNodeTools(temp, currentNode,graph);
             currentNode = temp;
 
             if (temp === null) {
-                is3DMode.setFalse()
                 // 如果点击的是画布
+                is3DMode.setFalse()
                 isNode.value = false;
                 isEdge.value=false;
                 nodeData.value = {};
@@ -169,6 +170,7 @@ export const useEvents = () => {
                     init({ x:data.x, y:data.y })
                     container.addEventListener('mousemove', onMouseMove)
                 }
+                console.log('如果点击的是画布')
                 return;
             }
 
@@ -194,17 +196,7 @@ export const useEvents = () => {
                 attributeCpt.value = component.Attribute;
                 // 当前组件的Data组件
                 dataCpt.value = component.Data;
-                for (const key in component.Main.methods) {
-                    console.log('element.key', key)
-                    if (Object.prototype.hasOwnProperty.call(component.Main.methods, key)) {
-                        const element = component.Main.methods[key];
-                        if (typeof element === 'function') {
-                            // actionHandlers[key] = element;
-                        }
-                        console.log('element.hasOwnProperty', key, typeof element)
-                        // actionHanders[key] =
-                    }
-                }
+                
             } else {
                 // 连线或基础节点
                 if(currentNode.shape==='edge'){
@@ -226,8 +218,6 @@ export const useEvents = () => {
                         // currentNode.attr('line/stroke','#7e14ff')
                         console.log(isEdge.value)
                     }
-
-
                 } else {
                     // 基础节点
                     isNode.value = true;
