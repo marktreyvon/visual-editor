@@ -87,7 +87,7 @@ export const usePlugins = (): any => {
     const getPicPlugins = async () => {
         let { data: result } = await PluginAPI.getPicPlugins({ current_page: Common.DEFAULT_API_CURRENT_PAGE, per_page: Common.DEFAULT_API_PER_PAGE })
         if (result.code === 200) {
-            const data = result.data.data;
+            const data = result.data?.data || [];
             let picPlugins: { default: { views: any[] } } = { default: { views: [] } }
             const getPicUrl = (fileUrl: String) => {
                 if (fileUrl.startsWith('.')) {
@@ -95,7 +95,7 @@ export const usePlugins = (): any => {
                 }
                 return localUrl;
             }
-            data.forEach((plugin: any) => {
+            data && data.forEach((plugin: any) => {
                 plugin.files.forEach((file: any) => {
                     const item = {
                         name: plugin.plugin_name + "_" + file.file_name,
