@@ -21,7 +21,9 @@ export default {
   },
   data() {
     return {
-      myStyle: styleData,
+      myStyle: {
+        ...styleData, fontSize: styleData.fontSize + 'px'
+      },
       textValue: '文本',
       mode: "view"
     }
