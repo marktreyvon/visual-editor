@@ -72,8 +72,20 @@ class DataConfig {
             // 开关不需要定时器
             if (this.value === undefined) return;
             const values: any = {};
-            const property = this.devicesData[0].propertyList[0].name;
-            values[property] = this.value;
+            const { name: property, dataRange, dataType } = this.devicesData[0].propertyList[0];
+            try {
+                let off = dataRange.split('-')[0]
+                let on = dataRange.split('-')[1]
+                if (off === 'true' || off === true) off = 'false';
+                if (on === 'false' || on === false) on = 'true';
+                if (off === '1' || off === 1) off = '0';
+                if (on === '0' || on === 0) on = '1';
+                off = this.typeConvert(off, dataType);
+                on = this.typeConvert(on, dataType);
+                values[property] = this.value ? on : off;
+            } catch(err) {
+                values[property] = this.value
+            }
             DataAPI.setDeviceValue({ device_id: this.deviceId, values })
                 .then(({ data: result}) => {
                     if (result.code !== 200) return;
@@ -311,6 +323,13 @@ class DataConfig {
             return { xAxis, series}
         }
     }
+
+    private typeConvert(value: any, type: any): any {
+        if (type.toLowerCase() == "integer") return Number(value);
+        if (type.toLowerCase() == "string" || type.toLowerCase() == "text") return String(value);
+        if (type.toLowerCase() == "bool" || type.toLowerCase() == "boolean") return value === 'true' || value === true;
+        if (type.toLowerCase() == "float") return parseFloat(value);
+      }
 
 }
 
