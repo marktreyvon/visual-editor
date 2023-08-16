@@ -40,7 +40,7 @@ export const usePlugins = (): any => {
                     for (let i = 0; i < modules.length; i++) {
                         for (let j = 0; j < modules[i].default.views.length; j++) {
                             const view = modules[i].default.views[j];
-                            view.plugin = data[i];
+                            if (view) view.plugin = data[i];
                         }
                         remotePlugins[data[i].id] = modules[i];
                     }
