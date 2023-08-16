@@ -280,6 +280,21 @@ class DataConfig {
                 // ===================================开关=========================================
                 console.log('DataConfig.parseData.switch', this.deviceId, this.property)
                 this.stop();
+            } else if (this.refType === 'weather') {
+                // ===================================气象站=========================================
+                let { data: result } = await DataAPI.getCurrentValue({ entity_id: deviceList[0].deviceId });
+                if (result.code === 200) {
+                    const { data } = result;
+                    console.log('start', data)
+                    let value = "无数据";
+                    if (data && data.length !== 0) {
+                        // const property = deviceList[0].propertyList[0]?.name || deviceList[0].properties[0];
+                        // console.error(property, data)
+                        value = data[0];
+                    }
+                    this.callback(value);
+                }
+                resolve(true);
             }
         })
 
