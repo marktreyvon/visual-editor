@@ -60,7 +60,8 @@ const data = reactive({
 })
 onMounted(() => {
     console.log('ShareForm.params', localUrl)
-    data.shareUrl = `${localUrl}/share/${params.id}`
+
+    data.shareUrl = `${localUrl}/share/${params?.id || ""}`
 });
 const handleCopyShareUrl = () => {
     var clipboard = new Clipboard('#share-btn', {

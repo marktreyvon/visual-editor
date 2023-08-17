@@ -123,6 +123,7 @@ const oss = import.meta.env.VITE_OSS
 
 
 const data = reactive({
+  localPluginList: [] as any[],
   installed: false,
   keyword: '',
   page: 1,
@@ -141,6 +142,7 @@ onMounted(() => {
   getPlugins();
   getUpdateTotal();
 })
+
 const getPlugins = async () => {
   return new Promise((resolve, reject) => {
     MarketApi.getPlugins({
@@ -150,9 +152,10 @@ const getPlugins = async () => {
       keyword: data.keyword
     }).then(async (res) => {
       const {data: localPluginsRes } = await PluginAPI.getPluginList({current_page: 1, per_page: 9999});
+      data.localPluginList = localPluginsRes.data.data || [];
       // 在本地插件列表中检索，判断是否已安装
       res.data.list.forEach((item: any) => {
-        item.installed = localPluginsRes.data.data.find((localItem: any) => localItem.id === item.id)
+        item.installed = data.localPluginList.find((localItem: any) => localItem.id === item.id)
       })
       data.list = res.data.list
       data.total = res.data.total
@@ -164,7 +167,7 @@ const getPlugins = async () => {
 const expand = (row: any) => {
   let history = data.historyMap.get(row.id) || { page: 1, pageSize: 10, total: 0, list: [] }
   history.page = 1
-  MarketApi.getHistory({ pluginId: row.id, page: history.page, pageSize: history.pageSize, state: 'passed' }).then(res => {
+  MarketApi.getHistory({ pluginId: row.id, page: history.page, pageSize: history.pageSize, state: 'passed' }).then(async (res) => {
     history.list = res.data.list
     history.total = res.data.total
     data.historyMap.set(row.id, history)

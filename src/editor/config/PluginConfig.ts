@@ -61,11 +61,9 @@ class PluginConfig implements IPluginConfig  {
         console.log('============registerComponents===================', this.plugins)
         const plugins: any = this.plugins;
         for (const key in plugins) {
-            console.log('registerComponents', key)
             const plugin = plugins[key];
             const { views } = plugin.default;
             views.forEach((view: any) => {
-                console.log("registerComponents.view", view)
                 if (data) {
                     data.forEach((cell: any) => {
                         if (cell.shape === view.name) {
@@ -73,13 +71,11 @@ class PluginConfig implements IPluginConfig  {
                                 const cpt: any = getDropComponent(view.Main);
                                 this.registerComponent(cell, cpt);
                             } else if (mode === 'display') {
-                                console.log('registerComponents.view.Data', cell.data)
                                 const cpt: Component = getDisplayComponent(view.Main, cell.data || null, view.type);
                                 this.registerComponent(cell, cpt);
                             }
                         } else if (cell.data && cell.data.pic) {
                             if (mode === 'editor') {
-                                console.log('registerComponents.pic.editor', view.Main)
                                 const cpt: any = getDropPicComponent(cell.data.pic);
                                 this.registerComponent(cell, cpt);
                             } else if (mode === 'display') {

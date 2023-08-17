@@ -630,7 +630,10 @@ class CanvasConfig implements ICanvasConfig {
         // } else {
         //     this.graph.zoomToFit({ minScale: wScale, maxScale: wScale, padding: 0 });
         // }
-        this.graph.zoomToFit({minScale: 1, maxScale: 1});
+        // this.graph.zoomToFit({minScale: 1, maxScale: 1});
+
+        let result = this.graph.zoomToFit({});
+        console.log('zoomToFit', result)
         this.graph.centerContent();
         return Number((this.graph.zoom() * 100).toFixed(0));
     }

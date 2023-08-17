@@ -62,6 +62,7 @@ export const useDisplay = (containerId: string) => {
                     console.log(edge.attr('targetData'))
                     canvasConfig.edgeAnimation(edge,edge.attr('targetData'))
                 })
+                canvasConfig.zoomToFit();
             }, { mode: 'display' });
         }
     }
