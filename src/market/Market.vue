@@ -118,7 +118,6 @@ import PluginAPI from '@/api/plugin'
 import dayjs from 'dayjs'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import Mine from '@/market/Mine.vue'
-import histogram from '@/plugins/tp-plugin/histogram/components/histogram.vue'
 
 const oss = import.meta.env.VITE_OSS
 
@@ -149,7 +148,12 @@ const getPlugins = async () => {
       pageSize: data.pageSize,
       installed: data.installed,
       keyword: data.keyword
-    }).then(res => {
+    }).then(async (res) => {
+      const {data: localPluginsRes } = await PluginAPI.getPluginList({current_page: 1, per_page: 9999});
+      // 在本地插件列表中检索，判断是否已安装
+      res.data.list.forEach((item: any) => {
+        item.installed = localPluginsRes.data.data.find((localItem: any) => localItem.id === item.id)
+      })
       data.list = res.data.list
       data.total = res.data.total
       resolve(res.data)
