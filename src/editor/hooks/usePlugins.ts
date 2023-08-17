@@ -30,40 +30,6 @@ export const usePlugins = (): any => {
         let remotePlugins: Record<string, any> = {};
         const baseUrl = localUrl.replace(/:\d+/, "");
         
-        // const initLocalPlugins = async () => {
-        //     for (const pluginName in localPlugins) {
-        //         remotePlugins[pluginName] = { default: localPlugins[pluginName] }
-        //     }
-        //     let result = await getPicPlugins();
-        //     remotePlugins.picPlugins = result;
-        //     console.log('PluginAPI.getPluginList', remotePlugins)
-        //     initPluginConfig(remotePlugins);
-        //     // 如果是编辑模式，则加载左侧组件列表
-        //     options?.mode ==='editor' && initStencil(remotePlugins);
-        // }
-
-        // PluginAPI.getPluginList({ current_page: Common.DEFAULT_API_CURRENT_PAGE, per_page: Common.DEFAULT_API_PER_PAGE })
-        //     .then(({ data: result }) => {
-        //         const data = result.data.data as any[];
-        //         Promise.all(data.map(p => {
-        //             const pluginUrl = p.plugin_url.startsWith('.') ? p.plugin_url.slice(1) : p.plugin_url;
-        //             return System.import(`${baseUrl}${pluginUrl}`);
-        //         })).then(async (modules: any) => {
-        //             for (let i = 0; i < modules.length; i++) {
-        //                 for (let j = 0; j < modules[i].default.views.length; j++) {
-        //                     const view = modules[i].default.views[j];
-        //                     if (view) view.plugin = data[i];
-        //                 }
-        //                 remotePlugins[data[i].id] = modules[i];
-        //             }
-        //             await initLocalPlugins();
-        //             _callback && _callback();
-        //         })
-        //     })
-        //     .catch(async (err) => {
-        //         await initLocalPlugins();
-        //         _callback && _callback();
-        //     })
         const initLocalPlugins = async () => {
             // 加载本地插件
             for (const pluginName in localPlugins) {
@@ -94,10 +60,12 @@ export const usePlugins = (): any => {
                 await initLocalPlugins();
                 _callback && _callback();
             }).catch(async (err) => {
+                console.log('loadPlugins.promise', err)
                 await initLocalPlugins();
                 _callback && _callback();
             })
         } catch (err) {
+            console.log('loadPlugins.try', err)
             await initLocalPlugins();
             _callback && _callback();
         }
