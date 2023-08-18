@@ -60,7 +60,6 @@ class CellEvents implements ICellEvents {
 
         // 画布缩放事件
         this.graph.on("scale", ({ sx, sy, ox, oy  }) => {
-            console.log("tr543543543543543")
             this.graphScaleListener.forEach((listener) => {
                 listener({ sx, sy, ox, oy });
             })
@@ -162,6 +161,7 @@ class CellEvents implements ICellEvents {
         });
 
         this.graph.on('edge:selected', ({ edge }) => {
+            console.log(EditEdgeMode.isEditEdgeMode,"43243243243")
             if(EditEdgeMode.isEditEdgeMode) return
             edge.addTools([ { name: "segments" ,args:{stopPropagation:false,}},{ name: "vertices" ,args:{stopPropagation:false,}}, { name: "target-arrowhead" ,args:{stopPropagation:false}},  { name: "source-arrowhead" ,args:{
                     attrs: {

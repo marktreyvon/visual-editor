@@ -9,5 +9,8 @@ export const useIsEditEdgeMode = defineStore('isEditEdgeMode', {
         increment() {
             this.isEditEdgeMode=!this.isEditEdgeMode
         },
+        setFalse() {
+            this.isEditEdgeMode=false
+        },
     },
 })

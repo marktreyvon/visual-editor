@@ -173,6 +173,7 @@ const handleChange = (uploadFile: any) => {
 
 const handleClickExport = () => {
     const json = toJSON();
+
     exportFile("data.json", JSON.stringify(json, null, 4));
 }
 
