@@ -35,7 +35,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from "vue";
+import { CanvasConfig } from "@/editor/config";
+import { ref, reactive, watch, onMounted, nextTick } from "vue";
 const activeNames = ref("ruler");
 const formData = reactive({
     showGrid: true,
@@ -48,6 +49,19 @@ const formData = reactive({
         height: 1080
     }
 })
+
+
+onMounted(() => {
+    const canvasConfig: CanvasConfig = CanvasConfig.getInstance();
+    canvasConfig.getGraphOptions((graphOptions: any) => {
+        formData.backgroundColor = graphOptions.background.color || "#F2F7FA";
+        formData.showGrid = graphOptions.showGrid;
+        formData.showRuler = graphOptions.showRuler;
+        formData.gridSize = graphOptions.gridSize;
+    });
+
+});
+
 const emit = defineEmits(["onChange"]);
 watch(formData, (newVal) => {
     emit('onChange', newVal)

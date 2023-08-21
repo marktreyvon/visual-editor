@@ -92,7 +92,6 @@ class PluginConfig implements IPluginConfig  {
     }
 
     public registerComponent(cell: any, component: any): void {
-        console.log('registerComponent',this.screenRect, cell.size)
         register({
             shape: cell.shape,
             width: cell.size.width === '100%' ? this.screenRect.width : cell.size.width,

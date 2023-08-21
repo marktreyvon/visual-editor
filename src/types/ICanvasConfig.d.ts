@@ -171,6 +171,11 @@ declare interface ICanvasConfig {
      * @param options 
      */
     setBackground(options: ICanvasConfig.BackgroundOptions): void;
+
+    /**
+     * 获取画布背景
+     */
+    getGraphOptions(_cb: any): ICanvasConfig.GraphOptions;
     
     /**
      * 获取网格大小

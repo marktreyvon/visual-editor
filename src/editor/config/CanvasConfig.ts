@@ -59,6 +59,7 @@ class CanvasConfig implements ICanvasConfig {
     screenRect: { width: number, height: number } = Common.DEFAULT_SCREEN_RECT;
 
     rulerCallbacks: ICanvasConfig.RulerCallback[] = [];
+    callbackGraphOptions: any;
 
     private constructor(containerId: string, options?: ICanvasConfig.Options) {
         this.containerId = containerId;
@@ -255,11 +256,11 @@ class CanvasConfig implements ICanvasConfig {
         if (this.enableSelection) {
             this.selection = new Selection({
                 enabled: true,
-                multiple: false,
+                multiple: true,
                 rubberband: true,
                 rubberEdge: true,
                 movable: true,
-                showNodeSelectionBox: false
+                showNodeSelectionBox: true
             })
             this.graph.use(this.selection);
         }
@@ -618,22 +619,7 @@ class CanvasConfig implements ICanvasConfig {
     public zoomToFit(): Number {
         if (!this.graph)
             throw new Error('Graph is undefined.');
-        // console.log('getContentBBox', this.graph.getContentBBox())
-        // console.log('getContentArea', this.graph.getContentArea())
-        // console.log('getContentBBox.screenRect', this.screenRect)
-        // let wScale = this.screenRect.width / this.graph.getContentArea().width;
-        // let hScale = this.screenRect.height / this.graph.getContentArea().height;
-        // console.log('Scale', wScale, hScale)
-        // if (wScale > hScale) {
-        //     // this.graph.zoom(hScale);
-        //     this.graph.zoomToFit({ minScale: hScale, maxScale: wScale, padding: 0 });
-        // } else {
-        //     this.graph.zoomToFit({ minScale: wScale, maxScale: wScale, padding: 0 });
-        // }
-        // this.graph.zoomToFit({minScale: 1, maxScale: 1});
-
         let result = this.graph.zoomToFit({});
-        console.log('zoomToFit', result)
         this.graph.centerContent();
         return Number((this.graph.zoom() * 100).toFixed(0));
     }
@@ -704,11 +690,13 @@ class CanvasConfig implements ICanvasConfig {
     public setBackground(options: ICanvasConfig.BackgroundOptions): void {
         if (!this.graph)
             throw new Error('Graph is undefined.');
-        this.graph.drawBackground(options);
         this.graphOptions.background = options;
+        this.callbackGraphOptions && this.callbackGraphOptions(this.graphOptions);
+        this.graph.drawBackground(options);
     }
 
-    public getGrahOptions() {
+    public getGraphOptions(_cb: any) {
+        this.callbackGraphOptions = _cb;
         return this.graphOptions;
     }
 
@@ -751,7 +739,7 @@ class CanvasConfig implements ICanvasConfig {
         } else if (CanvasConfig.displayInstance) {
             pluginConfig.registerComponents("display", json.cells);
         }
-        console.log('renderJSOn', json)
+        console.log('renderJson', json)
         this.graph.fromJSON(json);
     }
 
