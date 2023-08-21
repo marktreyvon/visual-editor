@@ -43,6 +43,9 @@ import {
   Three2_Main,
 } from "./threejs-demo2";
 //官方默认配置，请勿修改
+
+import eleView from "@/plugins/tp-plugin/electric-plugin"
+
 let defaultViews = [
   {
     name: "文本",
@@ -181,6 +184,7 @@ export default {
   views: [
     ...defaultViews,
     Three2Obj, //加入你的组件配置
+      ...eleView.views
   ],
 };
 // {

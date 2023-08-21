@@ -79,6 +79,7 @@ export const useEvents = () => {
                         targetMarker: null,
                         stroke: '#A2B1C3',
                         strokeWidth: 2,
+                        sourceMarker: null,
                     },
                 },
             })
@@ -136,7 +137,10 @@ export const useEvents = () => {
                     }
                 }
                 editNode = null
-                EditEdgeMode.increment()
+                console.log(1,EditEdgeMode.isEditEdgeMode)
+                EditEdgeMode.setFalse()
+
+                console.log(2, EditEdgeMode.isEditEdgeMode)
                 container.removeEventListener('mousemove', onMouseMove)
             }
         }
@@ -391,7 +395,6 @@ export const useEvents = () => {
     }
 
     const setNodeTools = (newNode: any, oldNode: any,graph:any) => {
-        console.log(graph.getSelectedCells(),"321321321")
         if (oldNode) {
             // 删除旧节点的工具
             oldNode.removeTools();
