@@ -76,7 +76,7 @@ const state = reactive<{
   description: string;
   json: string;
 }>({
-  zh_name: props.data.visualName,
+  zh_name: "",
   icon: "",
   description: "",
   json: ""
@@ -95,10 +95,11 @@ const submit = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   await formEl.validate(async (valid, fields) => {
     if (valid) {
+      state.zh_name = props.data.visualName;
       state.json = JSON.stringify(CanvasConfig.getInstance().toJSON());
       let res = await MarketApi.addScreen(state)
       if (res.data.id) {
-        message.success("发布成功")
+        message.success("发布成功，请等待管理员审核")
         dialogVisible.value = false
       } else {
         message.error("发布失败")
