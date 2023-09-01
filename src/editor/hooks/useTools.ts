@@ -2,11 +2,13 @@ import { Cell } from "@antv/x6";
 import { CanvasConfig,StencilConfig } from "../config"
 import { useRouter } from "vue-router";
 import VisualAPI from "@/api/visual";
+import { MarketApi } from "@/api/market"
 import { exportFile, isJSON, message } from "@/utils/tool";
 import * as Common from "@/common"
 import { reactive, ref } from "vue";
 import Clipboard from 'clipboard'
 import { dateFormat } from "@/utils";
+import { useMarketStore } from "@/store"
 /**
  * @author cxs
  * @date 2023-04-20
@@ -20,11 +22,17 @@ export const useTools = (): ITools => {
     const state = reactive<{
         scaling: Number,
         savingState: String,
-        visualName: String
+        visualName: String,
+        publishVisible: Boolean,
+        shareVisible: Boolean,
+        marketVisible: Boolean
     }>({
        scaling: 100,
        savingState: "",
-       visualName: ""
+       visualName: "",
+       publishVisible: false,
+       shareVisible: false,
+       marketVisible: false
     })
     const savingState = ref("");
 
@@ -89,9 +97,7 @@ export const useTools = (): ITools => {
     };
     function preview() {
         // 获取大屏数据
-
         const instance= CanvasConfig.getInstance()
-
         const nodes=  instance.graph?.getNodes()
         nodes?.forEach((node)=>{
             const ports=node.getPorts()
@@ -101,10 +107,7 @@ export const useTools = (): ITools => {
             })
             console.log(ports)
         })
-
-
         const jsonData =instance.toJSON();
-
         // 大屏数据存入session
         sessionStorage.setItem(Common.PREVIEW_JSON_DATA_KEY, JSON.stringify(jsonData));
         const url = router.resolve({
@@ -117,6 +120,16 @@ export const useTools = (): ITools => {
     };
     function help() {
         window.open('http://thingspanel.io/zh-Hans/docs/overview');
+    };
+    async function publishScreen() {
+        const json = CanvasConfig.getInstance().toJSON()
+        let isLogined = await useMarketStore().loginStatus()
+        if (isLogined) {
+            let result = await MarketApi.addScreen({ json: JSON.stringify(json), zh_name: "大屏3", icon: "market/assets/JRnRJwJJ0aD2U_2TPrA1J_230817100925.png"});
+            console.log("publishScreen.result", result)
+        } else {
+            message.success('未登录插件市场!')
+        }
     };
     function share(params: any) {
         const url = router.resolve({
@@ -156,6 +169,6 @@ export const useTools = (): ITools => {
     };
     return {
         state, savingState,  setLineStyle, zoomToFit, getZoom, zoomOut, zoomIn, enableSnapline, disableSnapline,undo, 
-        redo, toJSON, importJSON, exportJPEG, exportPNG, exportSVG, preview, help, share, autoSave, save
+        redo, toJSON, importJSON, exportJPEG, exportPNG, exportSVG, preview, help, share, autoSave, save, publishScreen
     }
 }

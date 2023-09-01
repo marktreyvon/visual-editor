@@ -110,4 +110,8 @@ declare interface ITools {
      * 保存大屏数据
      */
     save(id: string, jsonData?: any): void;
+    /**
+     * 发布大屏到应用市场
+     */
+    publishScreen(): void;
 }

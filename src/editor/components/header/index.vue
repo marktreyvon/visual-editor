@@ -68,19 +68,24 @@
         </div>
 
         <div class="absolute inset-y-0 right-0 w-auto">
-            <el-button :icon="Share" id="share-btn" @click="data.shareVisible = true" >分享</el-button>
+            <el-button :icon="Share" id="share-btn" @click="state.shareVisible = true" >分享</el-button>
+            <el-button :icon="UploadFilled" @click="state.publishVisible = true">发布</el-button>
             <el-button :icon="CircleCheck" @click="save(params.id)">保存</el-button>
             <el-button :icon="QuestionFilled" @click="help" >帮助</el-button>
-            <el-button :icon="HomeFilled" @click="data.marketVisible = true">插件市场</el-button>
+            <el-button :icon="HomeFilled" @click="state.marketVisible = true">插件市场</el-button>
         </div>
     </div>
-    <ShareForm v-model:visible="data.shareVisible"/>
-    <Market v-model:visible="data.marketVisible"/>
+    <!-- 发布 -->
+    <PublishForm v-model:visible="state.publishVisible" v-model:data="state"/>
+    <!-- 分享 -->
+    <ShareForm v-model:visible="state.shareVisible"/>
+    <!-- 插件市场 -->
+    <Market v-model:visible="state.marketVisible"/>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, inject, onMounted, watch, computed } from "vue";
-import { House, HomeFilled,RefreshLeft,Link, RefreshRight, ZoomOut, ZoomIn, Crop, View, Download, Upload, Share, CircleCheck, SwitchButton, QuestionFilled } from "@element-plus/icons-vue";
+import { House, HomeFilled,RefreshLeft,Link, RefreshRight, ZoomOut, ZoomIn, Crop, View, Download, Upload, UploadFilled, Share, CircleCheck, SwitchButton, QuestionFilled } from "@element-plus/icons-vue";
 import { ArrowDown } from '@element-plus/icons-vue';
 import { exportFile, readFile } from "@/utils";
 import { CanvasConfig } from "@/editor/config";
@@ -91,6 +96,7 @@ import {useIsEditEdgeMode} from "@/store/modules/isEditEdgeaModeStore";
 import { VisualAPI } from "@/api";
 import { message } from "@/utils/tool";
 import ShareForm from "./ShareForm.vue";
+import PublishForm from "./PublishForm.vue"
 const props = defineProps({ 
     tools: {
         type: Object,
@@ -122,7 +128,8 @@ const {
   help,
   save,
   autoSave,
-  share
+  share,
+  publishScreen
 } = useTools();
 const params: any = inject("params", null)
 watch(() => props.name, (val) => {
@@ -146,6 +153,7 @@ const handleChangeVisualName = (val: string) => {
 const EditEdgeMode =useIsEditEdgeMode()
 const changeEditEdgeMode=()=>{
   EditEdgeMode.increment()
+
 }
 
 onMounted(() => {
@@ -159,15 +167,18 @@ onMounted(() => {
   zoomToFit();
   getUserInfo();
   autoSave(params?.id)
+  
+  
 
 });
+  
 
 const fileList = ref([]);
 const handleChange = (uploadFile: any) => {
   const raw = uploadFile.raw;
   readFile(raw)
     .then(result => {
-      importJSON(result)
+      importJSON(result);
     });
 }
 
@@ -206,10 +217,7 @@ const getUserInfo = () => {
     })
   }, 1000 * 30)
 }
-const data = reactive({
-  marketVisible: false,
-  shareVisible: false
-})
+
 
 const handleDBClick = () => {
   console.log('handleDBClick')

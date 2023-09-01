@@ -111,5 +111,8 @@ export const MarketApi = {
     return axios.get(url, 
       // { responseType: 'arraybuffer' }
     )
+  },
+  addScreen(data: { json: string, zh_name: string, icon: string, description?: string}) {
+    return $market.post('/market/addScreen', data)
   }
 }

@@ -127,7 +127,7 @@ const rules = reactive<FormRules>({
     message: '请填写插件描述'
   }
 })
-const uploadIcon = async (e: InputEvent) => {
+const uploadIcon = async (e: Event) => {
   const file = (e.target as HTMLInputElement).files?.[0]
   if (file) {
     const res = await MarketApi.upload(file)
