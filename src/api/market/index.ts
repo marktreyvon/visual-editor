@@ -58,7 +58,8 @@ export const MarketApi = {
     page: number
     pageSize: number
     keyword: string
-    installed: boolean
+    installed: boolean,
+    type?: string
   }) {
     return $market.get('/market/plugins', {
       params: {

@@ -115,13 +115,13 @@ watch(() => props.data, async (val: any) => {
     state.groupId = val.groupId || "";
     // 设备
     state.deviceId = val.deviceId || "";
-
+    // 插件
     state.pluginId = val.pluginId || "";
-
+    // 属性
     state.property = val.property || "";
-
+    // 属性数组
     state.properties = val.properties || [];
-
+    // 属性标题
     state.propertyTitle = val.propertyTitle || "";
 
     state.propertyList = val.propertyList || [];
@@ -134,7 +134,7 @@ onMounted(async () => {
 });
 
 /**
- * 项目改变
+ * 项目改变的回调
  */
 watch(() => state.projectId, async (value) => {
     if (!value) return;
@@ -148,17 +148,21 @@ watch(() => state.projectId, async (value) => {
 }, { immediate: true });
 
 /**
- * 分组改变
+ * 分组改变的回调
  */
 watch(() => state.groupId, async (value) => {
     if (!value) return;
     const index: number = groupOptions.value.findIndex((item: any) => item.value === state.groupId);
     state.groupName = index > -1 ? groupOptions.value[index].label : ''
-    getDeviceList(value);
+    options.deviceOptions = await getDeviceList(value);
+    state.devices = [...options.deviceOptions];
+
+    console.log('watch deviceOptions', options.deviceOptions)
+
 }, { immediate: true, deep: true });
 
 /**
- * 设备改变
+ * 设备改变的回调
  */
 watch(() => state.deviceId, async (value) => {
     if (!value) return;
@@ -181,11 +185,16 @@ watch(() => state.deviceId, async (value) => {
     }
 }, { immediate: true, deep: true });
 
+/**
+ * @description: 插件id改变的回调
+ * @return {*}
+ */
 watch(() => state.pluginId, async (value) => {
     if (!value) return;
     console.log('watch pluginId', value)
     getPlugin(value);
 }, { immediate: true, deep: true })
+
 
 watchEffect(() => {
     if (state.deviceId && JSON.stringify(options.deviceOptions) !== "{}" && JSON.stringify(options.deviceOptions) !== "[]") {
@@ -220,17 +229,23 @@ watch(() => state.properties, async (value) => {
  * @returns 
  */
 async function getProjectList() {
-    return new Promise((resolve, reject) => {
-        DeviceAPI.getProjectList(null)
-            .then(({ data: result }) => {
-                if (result.code === 200) {
-                    const { data } = result.data;
-                    const options = data.map((item: any) => ({ value: item.id, label: item.name }))
-                    resolve(options)
-                }
-            })
+    const { data: result } = await DeviceAPI.getProjectList(null);
+    if (result.code === 200) {
+        const { data } = result.data;
+        const options = data.map((item: any) => ({ value: item.id, label: item.name }))
+        return options;
+    }
+    // return new Promise((resolve, reject) => {
+    //     DeviceAPI.getProjectList(null)
+    //         .then(({ data: result }) => {
+    //             if (result.code === 200) {
+    //                 const { data } = result.data;
+    //                 const options = data.map((item: any) => ({ value: item.id, label: item.name }))
+    //                 resolve(options)
+    //             }
+    //         })
 
-    })
+    // })
 }
 /**
  * 通过项目id获取分组列表
@@ -238,16 +253,21 @@ async function getProjectList() {
  * @returns 
  */
 async function getGroupList(groupId: string) {
-    return new Promise((resolve, reject) => {
-        DeviceAPI.getGroupList({ current_page: 1, per_page: 9999, business_id: groupId })
-            .then(({ data: result }) => {
-                if (result.code === 200) {
-                    const { data } = result;
-                    const options = data.map((item: any) => ({ value: item.id, label: item.name }))
-                    resolve(options)
-                }
-            })
-    })
+    const { data: result } = await DeviceAPI.getGroupList({ current_page: 1, per_page: 9999, business_id: groupId })
+    if (result.code === 200) {
+        const { data } = result;
+        return data.map((item: any) => ({ value: item.id, label: item.name }))
+    }
+    // return new Promise((resolve, reject) => {
+    //     DeviceAPI.getGroupList({ current_page: 1, per_page: 9999, business_id: groupId })
+    //         .then(({ data: result }) => {
+    //             if (result.code === 200) {
+    //                 const { data } = result;
+    //                 const options = data.map((item: any) => ({ value: item.id, label: item.name }))
+    //                 resolve(options)
+    //             }
+    //         })
+    // })
 }
 
 /**
@@ -260,7 +280,7 @@ async function getDeviceList(id: string) {
     console.log('getDeviceList', result)
     if (result.code !== 200) return [];
     let arr = result.data?.data || [];
-    options.deviceOptions = arr.map((item: any) => {
+    return arr.map((item: any) => {
         if (item.children && item.children.length > 0) {
             item.children = item.children.map((child: any) => {
                 return {
@@ -275,6 +295,7 @@ async function getDeviceList(id: string) {
             children: item.children || []
         }
     });
+     
 
 }
 

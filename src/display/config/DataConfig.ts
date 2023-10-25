@@ -112,7 +112,7 @@ class DataConfig {
     }
 
     private parseData() {
-        console.log('DataConfig.parseData', this.devicesData)
+        console.log('DataConfig.parseData.devicesData', this.devicesData)
         return new Promise(async (resolve, reject) => {
             let deviceList: any[] = [];
             this.devicesData.forEach((device: any) => {
@@ -134,7 +134,7 @@ class DataConfig {
                     let value = "无数据";
                     if (data && data.length !== 0) {
                         const property = deviceList[0].propertyList[0]?.name || deviceList[0].properties[0];
-                        value = data[0][property];
+                        value = data[property];
                     }
                     this.callback(value);
                 }
@@ -149,7 +149,7 @@ class DataConfig {
                         const { data } = result;
                         device.propertyList.forEach((property: any) => {
                             if (data && data.length !== 0) {
-                                let value = data[0][property.name] || 0;
+                                let value = data[property.name] || 0;
                                 values.push({ type: property.title, value: Number(value)})
                             } else {
                                 values.push({ type: property.title, value: 0})
@@ -170,7 +170,7 @@ class DataConfig {
                         const { data } = result;
                         device.propertyList.forEach((property: any) => {
                             if (data && data.length !== 0) {
-                                let value = data[0][property.name] || 0;
+                                let value = data[property.name] || 0;
                                 values.push({ type: property.title, sales: Number(value)})
                             } else {
                                 values.push({ type: property.title, sales: 0})
@@ -217,18 +217,20 @@ class DataConfig {
                 resolve(true);
             } else if (this.refType === 'xzy') {
                 // ===================================xzy=========================================
-                console.log('DataConfig.parseData.xzy', this.deviceId, this.property);
-                if (!this.deviceId) {
+                const deviceId = this.deviceId;
+                console.log('DataConfig.parseData.xzy', deviceId);
+
+                if (!deviceId) {
                     resolve(true);
                     return;
                 }
-                let { data: result } = await DataAPI.getCurrentValue({ entity_id: this.deviceId });
+                let { data: result } = await DataAPI.getCurrentValue({ entity_id: deviceId });
                 if (result.code === 200) {
                     const { data } = result;
                     console.log('start', data)
                     let value = {};
                     if (data && data.length !== 0) {
-                        value = data[0];
+                        value = data;
                         this.callback({ current: value});
                     }
                 }
@@ -261,7 +263,7 @@ class DataConfig {
                     if (result.code === 200) {
                         const { data } = result;
                         if (data && data.length !== 0) {
-                            const propCurrentValue = data[0]
+                            const propCurrentValue = data；
                             const valueItem:any = {deviceId:device.deviceId}
                             for (const [key, value] of Object.entries(propCurrentValue)) {                                                                                            
                                 valueItem[`device_property_${device.deviceId}_${key}`] = value
@@ -290,7 +292,7 @@ class DataConfig {
                     if (data && data.length !== 0) {
                         // const property = deviceList[0].propertyList[0]?.name || deviceList[0].properties[0];
                         // console.error(property, data)
-                        value = data[0];
+                        value = data;
                     }
                     this.callback(value);
                 }

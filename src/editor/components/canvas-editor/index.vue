@@ -91,7 +91,7 @@ onMounted(() => {
     border: 0px;
     border-radius: 0px;
     background-color: #ffffff;
-    z-index: 9999;
+    z-index: 2;
   }
   .horizontal-container {
     position:absolute;

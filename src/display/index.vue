@@ -69,12 +69,13 @@ onMounted(() => {
 })
 
 function handleToolsCommand(command: string) {
+  const canvasConfig: ICanvasConfig = CanvasConfig.getDisplayInstance(Common.DEFAULT_DISPLAY_CONTAINER_ID);
   switch (command) {
     case "fullScreen":
       fullScreen();
+      canvasConfig.zoomToFit();
       break;
     case "fit":
-      const canvasConfig: ICanvasConfig = CanvasConfig.getDisplayInstance(Common.DEFAULT_DISPLAY_CONTAINER_ID);
       canvasConfig.zoomToFit();
       break;
   }
@@ -83,7 +84,7 @@ function handleToolsCommand(command: string) {
 let isFullScreen = ref<any>(false);
 function fullScreen() {
   if (!isFullScreen.value) {
-    document.documentElement.requestFullscreen();
+    document.documentElement.requestFullscreen()
     isFullScreen.value = true;
   }
 }

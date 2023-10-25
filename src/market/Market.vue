@@ -1,114 +1,133 @@
 <template>
-  <div class="p-4 h-[calc(100%_-_48px)] overflow-y-auto">
-    <div class="flex justify-between">
-      <el-form inline>
-        <el-form-item label="插件名">
-          <el-input placeholder="回车搜索" v-model="data.keyword" @keydown.enter="keydown" />
-        </el-form-item>
-        <el-form-item label="已安装">
-          <el-checkbox v-model="data.installed" @change="data.page = 1; getPlugins()" />
-          <span class="mr-4">
-            <el-badge :value="data.waitingUpdateTotal" type="warning" v-if="data.waitingUpdateTotal > 0">
-              <span class="text-sm text-gray-500">
-                待更新
-              </span>
-            </el-badge>
-          </span>
-        </el-form-item>
-      </el-form>
-      <div>
-        <el-button :icon="HelpFilled" @click="data.openMine = true" type="primary">
-          发布插件
-        </el-button>
-      </div>
-    </div>
-    <el-table :data="data.list" @expand-change="expand">
-      <el-table-column type="expand">
-        <template #default="props">
-          <div class="pl-10 pr-4 mt-4">
-            <div class="flex text-sm mb-4">
-              <span>插件描述：</span>
-              <div class="flex-1 ml-2" v-html="props.row.description"></div>
-            </div>
-            <el-table size="small" max-height="250" :data="data.historyMap.get(props.row.id)?.list || []">
-              <el-table-column label="版本号" prop="version">
-                <template #default="scope">
-                  <el-tag>{{ scope.row.version }}</el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column label="发布说明">
-                <template #default="scope">
-                  <el-popover title="发布说明" :width="400" trigger="click">
-                    <template #reference>
-                      <el-button type="primary" size="small" link>查看</el-button>
-                    </template>
-                    <div class="whitespace-pre">
-                      {{ scope.row.releaseNote }}
-                    </div>
-                  </el-popover>
-                </template>
-              </el-table-column>
-              <el-table-column label="发布时间">
-                <template #default="scope">
-                  {{ dayjs(scope.row.created).format('YYYY-MM-DD HH:mm') }}
-                </template>
-              </el-table-column>
-              <el-table-column label="状态">
-                <template #default="{ row }">
-                  <el-tag :type="row.state === 'passed' ? 'success' : 'warning'">{{ row.state === 'passed' ? '正常' :
-                    '待审核' }}</el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column label="安装">
-                <template #default="{ row }">
-                  <el-button size="small" type="primary" v-if="!row.installed" @click="install(row.id)">
-                    安装
-                  </el-button>
-                  <div v-else>已安装</div>
-                </template>
-              </el-table-column>
-            </el-table>
-            <div class="mt-2 justify-end flex" v-if="data.historyMap.get(props.row.id)?.total > 10">
-              <el-pagination layout="prev, pager, next" small @current-change="e => pageChange(props.row.id, e)"
-                :total="data.historyMap.get(props.row.id)?.total || 0"
-                :model-value="data.historyMap.get(props.row.id)?.page || 0"
-                :page-size="data.historyMap.get(props.row.id)?.pageSize || 10" />
+  <div>
+    <el-tabs v-model="data.activeName" class="market-tabs" type="border-card" @tab-change="getPlugins">
+      <el-tab-pane label="组件" name="plugin">
+        <div class="p-4 h-[calc(100%_-_48px)] overflow-y-auto">
+          <div class="flex justify-between">
+            <el-form inline>
+              <el-form-item label="插件名">
+                <el-input placeholder="回车搜索" v-model="data.keyword" @keydown.enter="keydown" />
+              </el-form-item>
+              <el-form-item label="已安装">
+                <el-checkbox v-model="data.installed" @change="data.page = 1; getPlugins()" />
+                <span class="mr-4">
+                  <el-badge :value="data.waitingUpdateTotal" type="warning" v-if="data.waitingUpdateTotal > 0">
+                    <span class="text-sm text-gray-500">
+                      待更新
+                    </span>
+                  </el-badge>
+                </span>
+              </el-form-item>
+            </el-form>
+            <div>
+              <el-button :icon="HelpFilled" @click="data.openMine = true" type="primary">
+                发布插件
+              </el-button>
             </div>
           </div>
-        </template>
-      </el-table-column>
-      <el-table-column width="70">
-        <template #default="scope">
-          <img :src="`${oss}/${scope.row.icon}`" class="w-10 h-10" />
-        </template>
-      </el-table-column>
-      <el-table-column label="插件名" prop="zh_name" />
-      <el-table-column label="版本" prop="store.version" />
-      <el-table-column label="发布时间">
-        <template #default="scope">
-          <span>{{ dayjs(scope.row.store.created).format('YYYY-MM-DD HH:mm') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作">
-        <template #default="scope">
-          <el-button type="success" v-if="scope.row.upgrade" size="small" @click="upgrade(scope.row.id)">
-            升级
-          </el-button>
-          <el-button size="small" type="primary" v-if="!scope.row.installed" @click="install(scope.row.store.id)">
-            {{ data.installState }}
-          </el-button>
-          <el-button size="small" type="warning" @click="uninstall(scope.row)" v-if="scope.row.installed">
-            卸载
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="mt-4 justify-end flex">
-      <el-pagination background layout="prev, pager, next" :total="data.total" v-model:current-page="data.page"
-        :page-size="data.pageSize" />
-    </div>
+          <el-table :data="data.list" @expand-change="expand">
+            <el-table-column type="expand">
+              <template #default="props">
+                <div class="pl-10 pr-4 mt-4">
+                  <div class="flex text-sm mb-4">
+                    <span>插件描述：</span>
+                    <div class="flex-1 ml-2" v-html="props.row.description"></div>
+                  </div>
+                  <el-table size="small" max-height="250" :data="data.historyMap.get(props.row.id)?.list || []">
+                    <el-table-column label="版本号" prop="version">
+                      <template #default="scope">
+                        <el-tag>{{ scope.row.version }}</el-tag>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="发布说明">
+                      <template #default="scope">
+                        <el-popover title="发布说明" :width="400" trigger="click">
+                          <template #reference>
+                            <el-button type="primary" size="small" link>查看</el-button>
+                          </template>
+                          <div class="whitespace-pre">
+                            {{ scope.row.releaseNote }}
+                          </div>
+                        </el-popover>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="发布时间">
+                      <template #default="scope">
+                        {{ dayjs(scope.row.created).format('YYYY-MM-DD HH:mm') }}
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="状态">
+                      <template #default="{ row }">
+                        <el-tag :type="row.state === 'passed' ? 'success' : 'warning'">{{ row.state === 'passed' ? '正常' :
+                          '待审核' }}</el-tag>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="安装">
+                      <template #default="{ row }">
+                        <el-button size="small" type="primary" v-if="!row.installed" @click="install(row.id)">
+                          安装
+                        </el-button>
+                        <div v-else>已安装</div>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                  <div class="mt-2 justify-end flex" v-if="data.historyMap.get(props.row.id)?.total > 10">
+                    <el-pagination layout="prev, pager, next" small @current-change="e => pageChange(props.row.id, e)"
+                      :total="data.historyMap.get(props.row.id)?.total || 0"
+                      :model-value="data.historyMap.get(props.row.id)?.page || 0"
+                      :page-size="data.historyMap.get(props.row.id)?.pageSize || 10" />
+                  </div>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column width="70">
+              <template #default="scope">
+                <img :src="`${oss}/${scope.row.icon}`" class="w-10 h-10" />
+              </template>
+            </el-table-column>
+            <el-table-column label="插件名" prop="zh_name" />
+            <el-table-column label="版本" prop="store.version" />
+            <el-table-column label="发布时间">
+              <template #default="scope">
+                <span>{{ dayjs(scope.row.store.created).format('YYYY-MM-DD HH:mm') }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作">
+              <template #default="scope">
+                <el-button type="success" v-if="scope.row.upgrade" size="small" @click="upgrade(scope.row.id)">
+                  升级
+                </el-button>
+                <el-button size="small" type="primary" v-if="!scope.row.installed" @click="install(scope.row.store.id)">
+                  {{ data.installState }}
+                </el-button>
+                <el-button size="small" type="warning" @click="uninstall(scope.row)" v-if="scope.row.installed">
+                  卸载
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="mt-4 justify-end flex">
+            <el-pagination background layout="prev, pager, next" :total="data.total" v-model:current-page="data.page"
+              :page-size="data.pageSize" />
+          </div>
+        </div>
+        <Mine v-model:visible="data.openMine" />
+      </el-tab-pane>
+      <el-tab-pane label="大屏" name="screen">
+        <div class="p-4 h-[calc(100%_-_48px)] overflow-y-auto">
+          <el-table :data="data.screenList" >
+
+          </el-table>
+          <div class="mt-4 justify-end flex">
+            <el-pagination background layout="prev, pager, next" :total="data.total" v-model:current-page="data.page"
+              :page-size="data.pageSize" />
+          </div>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
   </div>
-  <Mine v-model:visible="data.openMine" />
+  
+  
 </template>
 <script setup lang="ts">
 import { onMounted, reactive, watch } from 'vue'
@@ -123,6 +142,7 @@ const oss = import.meta.env.VITE_OSS
 
 
 const data = reactive({
+  activeName: 'plugin',
   localPluginList: [] as any[],
   installed: false,
   keyword: '',
@@ -134,7 +154,8 @@ const data = reactive({
   openMine: false,
   waitingUpdateTotal: 0,
   manager: false,
-  installState: "安装"
+  installState: "安装",
+  screenList: []
 })
 onMounted(() => {
   console.log('market.onMounted')
@@ -149,7 +170,8 @@ const getPlugins = async () => {
       page: data.page,
       pageSize: data.pageSize,
       installed: data.installed,
-      keyword: data.keyword
+      keyword: data.keyword,
+      type: data.activeName
     }).then(async (res) => {
       const {data: localPluginsRes } = await PluginAPI.getPluginList({current_page: 1, per_page: 9999});
       data.localPluginList = localPluginsRes.data.data || [];
@@ -289,10 +311,16 @@ const getUpdateTotal = () => {
   })
 }
 </script>
-<style lang="scss">
+<style lang="scss" scope>
 .market-drawer {
   .el-drawer__body {
     padding: 0;
+  }
+}
+.market-tabs  {
+  padding: 0 0 0 30px;
+  .el-tabs__header {
+    background-color: #ffffff;
   }
 }
 </style>

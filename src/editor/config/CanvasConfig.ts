@@ -94,7 +94,6 @@ class CanvasConfig implements ICanvasConfig {
      * @returns
      */
     public static getInstance(containerId: string = Common.DEFAULT_CONTAINER_ID, options?: ICanvasConfig.Options): CanvasConfig {
-        console.log('getInstance', CanvasConfig.instance)
         if (!CanvasConfig.instance) {
             CanvasConfig.instance = new CanvasConfig(containerId, options);
         }
