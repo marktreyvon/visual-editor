@@ -263,7 +263,7 @@ class DataConfig {
                     if (result.code === 200) {
                         const { data } = result;
                         if (data && data.length !== 0) {
-                            const propCurrentValue = data；
+                            const propCurrentValue = data;
                             const valueItem:any = {deviceId:device.deviceId}
                             for (const [key, value] of Object.entries(propCurrentValue)) {                                                                                            
                                 valueItem[`device_property_${device.deviceId}_${key}`] = value
